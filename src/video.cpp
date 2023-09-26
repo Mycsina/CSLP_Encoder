@@ -23,6 +23,7 @@ void video::load(string filename) {
 void video::play() {
     if (loaded()) {
         for (auto & it : im_reel) {
+// TODO either display image stops waiting for enter or we pass a parameter to change the behaviour
             it.display_image();
         }
     }
