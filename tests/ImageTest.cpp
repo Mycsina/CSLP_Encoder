@@ -42,8 +42,9 @@ TEST(ImageTestSuite, PixelWiseCloning) {
     for (auto it = im1.begin(); it != im1.end(); ++it) {
         im2.set_pixel(it.pos().y, it.pos().x, *it);
     }
+    im2.save("../../tests/resource/pbp.png");
     ASSERT_EQ(im1.get_image_type(), im2.get_image_type());
     ASSERT_EQ(im1.get_pixel(0, 39), im2.get_pixel(0, 39));
     ASSERT_EQ(im1.get_pixel(345, 256), im2.get_pixel(345, 256));
-    im2.save("../../tests/resource/pbp.png");
+    remove("../../tests/resource/pbp.png");
 }

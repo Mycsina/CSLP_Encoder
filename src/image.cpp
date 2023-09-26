@@ -22,8 +22,9 @@ void image::load(const char* filename, ImreadModes mode)
         image.convertTo(conv, CV_8UC3);
         image_mat_ = conv;
     }
-    else
+    else {
         throw std::runtime_error("image has already been loaded");
+    }
 }
 
 void image::save(const char* filename, const vector<int>& compression_params)
@@ -68,6 +69,8 @@ void image::set_pixel(int row, int col, Vec3b color_values) {
         }
         image_mat_.at<Vec3b>(row, col) = color_values;
 }
+
+
 
 image image::clone() {
     if (loaded()) {
