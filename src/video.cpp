@@ -14,9 +14,9 @@ void video::load(string filename) {
         Mat buf;
         image im;
         cap >> buf;
-        im_reel.push_back(*im.load(&buf));
         if (buf.empty())
             break;
+        im_reel.push_back(*im.load(&buf));
     }
 }
 
