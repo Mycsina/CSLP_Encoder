@@ -8,6 +8,12 @@
 using namespace std;
 using namespace cv;
 
+
+image* image::load(Mat *arr) {
+    image_mat_ = arr->clone();
+    return this;
+}
+
 void image::load(const char* filename, ImreadModes mode)
 {
     Mat image, conv;

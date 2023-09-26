@@ -30,6 +30,10 @@ public:
     //! @return Iterator to the last pixel in the image
     MatIterator_<Vec3b> end() { return image_mat_.end<Vec3b>(); }
 
+    //! Loads an image from a cv::Mat
+    //! @return Image file
+    image* load(Mat *arr2d);
+
     //! Loads an image from a file
     //! \details The image is stored in a 8-bit unsigned integer matrix with 3 channels (BGR)
     //! @param  filename Absolute path to image file

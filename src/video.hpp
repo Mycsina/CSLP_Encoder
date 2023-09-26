@@ -12,10 +12,12 @@ class video
 {
     vector<image> im_reel;
 public:
+    video() = default;
+    ~video() = default;
     image getFrame(int pos) {
         return im_reel[pos];
     }
     void load(string filename);
     void play();
-    bool loaded() const {return !im_reel.empty()};
+    bool loaded() const {return !im_reel.empty();};
 };
