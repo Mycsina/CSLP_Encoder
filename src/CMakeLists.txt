@@ -17,9 +17,3 @@ add_library(Video video.hpp
 target_link_libraries(Video ${OpenCV_LIBS})
 set_target_properties(Video PROPERTIES LINKER_LANGUAGE CXX)
 
-## Executables
-### VideoPlayer
-add_executable(VideoPlayer videoPlayer.hpp)
-
-target_link_libraries(VideoPlayer ${OpenCV_LIBS})
-set_target_properties(VideoPlayer PROPERTIES LINKER_LANGUAGE CXX)
