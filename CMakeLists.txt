@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.14)
 project(CSLP_Project)
 
+# CMake configuration
+## Avoid compile warning CMP0135
+cmake_policy(SET CMP0135 NEW)
+
 # Dependencies
 ## OpenCV
 find_package( OpenCV REQUIRED )
@@ -19,6 +23,9 @@ FetchContent_Declare(
 ### For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
+
+# Source files
+add_subdirectory(src)
 
 # Testing
 add_subdirectory(tests)
