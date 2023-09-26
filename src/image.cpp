@@ -18,7 +18,7 @@ void image::load(const char* filename, ImreadModes mode)
 {
     Mat image, conv;
 	image = imread(filename, mode);
-	if (!loaded()) {
+	if (!image.empty()) {
         image.convertTo(conv, CV_8UC3);
         image_mat_ = conv;
     }
@@ -61,14 +61,10 @@ Vec3b image::get_pixel(int row, int col) const {
 }
 
 void image::set_pixel(int row, int col, Vec3b color_values) {
-    if (loaded()) {
         if (row < 0 || row >= image_mat_.rows || col < 0 || col >= image_mat_.cols) {
             throw std::runtime_error("Pixel out of bounds");
         }
         image_mat_.at<Vec3b>(row, col) = color_values;
-    }
-    else
-        throw std::runtime_error("image hasn't been loaded");
 }
 
 image image::clone() {

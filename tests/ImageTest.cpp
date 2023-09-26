@@ -15,9 +15,9 @@ TEST(ImageTestSuite, ImageLoadTest){
 }
 
 TEST(ImageTestSuite, ImageLoadFailTest){
-    image image;
+    image im;
     auto gibb = "gibber-ish";
-    ASSERT_ANY_THROW(image.load(gibb));
+    ASSERT_ANY_THROW(im.load(gibb));
 }
 
 TEST(ImageTestSuite, PixelSetPersistTest){
@@ -37,7 +37,7 @@ TEST(ImageTestSuite, PixelWiseCloning) {
     image im1;
     im1.load(img_file);
     image im2;
-    im2._get_image_mat().copySize(im1._get_image_mat());
+// TODO allocate big enough cv::Mat to im2
     for (auto it = im1.begin(); it != im1.end(); ++it) {
         im2.set_pixel(it.pos().y, it.pos().x, *it);
     }

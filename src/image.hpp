@@ -20,6 +20,7 @@ private:
     Mat image_mat_;
 public:
 
+    Mat _set_image_mat() { return image_mat_; }
     Mat _get_image_mat() { return image_mat_; }
 
     //! Used to iterate over all pixels in the image
