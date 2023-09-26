@@ -1,6 +1,6 @@
-﻿//! @file Image class declaration
+﻿//! @file image class declaration
 /*!
- Declares the Image class, representing a digital image.
+ Declares the image class, representing a digital image.
 */
 #pragma once
 #include <opencv2/core/mat.hpp>
@@ -14,7 +14,7 @@ using namespace cv;
     Video player
     */
 
-class Image
+class image
 {
 private:
     Mat image_mat_;
@@ -73,6 +73,6 @@ public:
     void set_pixel(int row, int col, Vec3b value);
 
     //! Get a deep copy of the image
-    //! @return Image object containing a deep copy of the image
-    Image clone();
+    //! @return image object containing a deep copy of the image
+    image clone();
 };
