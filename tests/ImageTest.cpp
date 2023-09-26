@@ -37,6 +37,7 @@ TEST(ImageTestSuite, PixelWiseCloning) {
     image im1;
     im1.load(img_file);
     image im2;
+    im2._set_image_mat(Mat::zeros(im1.get_image_size()[0], im1.get_image_size()[1], im1.get_image_type()));
 // TODO allocate big enough cv::Mat to im2
     for (auto it = im1.begin(); it != im1.end(); ++it) {
         im2.set_pixel(it.pos().y, it.pos().x, *it);
