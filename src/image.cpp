@@ -37,16 +37,18 @@ void image::save(const char* filename, const vector<int>& compression_params)
     }
 }
 
-void image::display_image()
-{
-	if (loaded()) {
-	imshow("image", image_mat_);
-	waitKey(0);
-	}
-	else
-	{
+void image::display_image(bool vid_ctx) {
+    if (loaded()) {
+        imshow("image", image_mat_);
+        if (!vid_ctx)
+            waitKey(0);
+        else
+            waitKey(25);
+    }
+    else
+    {
         throw std::runtime_error("image hasn't been loaded");
-	}
+    }
 }
 
 Vec3b image::get_pixel(int row, int col) const {

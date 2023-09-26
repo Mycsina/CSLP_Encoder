@@ -57,8 +57,9 @@ public:
     int get_image_type() const { return image_mat_.type(); }
 
     //! Displays the image in a window
+    //! @params vid_ctx Indicates whether it is to be used in displaying a video
     //! @return Void
-	void display_image();
+	void display_image(bool vid_ctx = false);
 
     //! Returns whether the image has been loaded
     //! @return Boolean indicating whether the image has been loaded
