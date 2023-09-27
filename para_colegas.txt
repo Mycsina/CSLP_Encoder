@@ -1,0 +1,6 @@
+Instalei Clion+WSL e o teste do vídeo funciona. YAY!
+Mandei o vosso telemóvel para brunopascoa03@ua.pt para criar um grupo whattsapp
+Vou tentar fazer funções para converter de RGB para YUV e vice-versa (encontrei uma fórmula), e vou tentar fazer a conversão para greyscale e aquilo do threshhold.
+Porém, gostaria de deixar-vos as funções que as chamam (bem como aquilo do botão)
+Se tiver tempo (pois ainda não comecei SIO), vou tentar também fazer aquilo do watermark (que, pelo menos por agora, vai ser apenas pegar nos píxeis de uma imagem e colocá-los numa outra)
+Isto pode parecer muito à primeira vista, mas queria compensar pela semana passada.
