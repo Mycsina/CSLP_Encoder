@@ -3,7 +3,8 @@ project(tests)
 enable_testing()
 
 include_directories(${gtest_SOURCE_DIR_}/include ${gtest_SOURCE_DIR_})
-set(SOURCE_FILES ImageTest.cpp VideoTest.cpp)
+set(SOURCE_FILES ImageTest.cpp VideoTest.cpp
+        ImageEffectsTest.cpp)
 add_executable(tests_run ${SOURCE_FILES})
 
 message(STATUS "OpenCV library status:")

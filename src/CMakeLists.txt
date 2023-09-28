@@ -5,15 +5,22 @@ project(CSLP_lib)
 
 ## Libraries
 ### Image
-add_library(Image image.hpp)
+add_library(Image image.hpp
+        imageProcessing.cpp
+        imageProcessing.hpp)
 
 target_link_libraries(Image ${OpenCV_LIBS})
 set_target_properties(Image PROPERTIES LINKER_LANGUAGE CXX)
 
 ### Video
 add_library(Video video.hpp
-        video.cpp)
+)
 
 target_link_libraries(Video ${OpenCV_LIBS})
 set_target_properties(Video PROPERTIES LINKER_LANGUAGE CXX)
 
+### VideoPlayer
+add_library(VideoPlayer videoPlayer.hpp)
+
+target_link_libraries(VideoPlayer ${OpenCV_LIBS})
+set_target_properties(VideoPlayer PROPERTIES LINKER_LANGUAGE CXX)

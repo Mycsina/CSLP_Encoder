@@ -17,6 +17,7 @@ void video::load(string filename) {
         cap >> buf;
         if (buf.empty())
             break;
+        im._set_color(BGR);
         im_reel.push_back(*im.load(&buf));
 
     }

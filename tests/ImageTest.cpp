@@ -3,12 +3,15 @@
 
 using namespace std;
 
-auto img_file = "../../tests/resource/img.png";
+// auto img_file = "../../tests/resource/img.png";
+auto img_file = "../../tests/resource/tulips.ppm";
+
 
 TEST(ImageTestSuite, ImageLoadTest){
     image image;
     Mat I = imread(img_file, IMREAD_COLOR);
     ASSERT_NO_THROW(image.load(img_file));
+    image.display_image();
     ASSERT_EQ(image.get_image_size()[0], I.rows);
     ASSERT_EQ(image.get_image_size()[1], I.cols);
 
@@ -38,7 +41,6 @@ TEST(ImageTestSuite, PixelWiseCloning) {
     im1.load(img_file);
     image im2;
     im2._set_image_mat(Mat::zeros(im1.get_image_size()[0], im1.get_image_size()[1], im1.get_image_type()));
-// TODO allocate big enough cv::Mat to im2
     for (auto it = im1.begin(); it != im1.end(); ++it) {
         im2.set_pixel(it.pos().y, it.pos().x, *it);
     }
