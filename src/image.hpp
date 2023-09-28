@@ -10,15 +10,44 @@ using namespace std;
 using namespace cv;
 
 /* TODO
-    Pixel manipulation. Setting and getting pixel values, converting between color spaces.
-    Video player
+    Converting between color spaces.
     */
+
+enum COLOR_FORMAT {
+    BGR,
+    YUV
+};
 
 class image
 {
 private:
     Mat image_mat_;
+    COLOR_FORMAT format;
 public:
+
+    //! Used to get a pixel's BGR values
+    //! @param x,y: the pixel's coordinates
+    //! @return Vector with the BGR values (in that order)
+    Vec3b get_BGR_values(int x, int y);
+
+    //! Used to get a pixel's YUV values
+    //! @param x,y: the pixel's coordinates
+    //! @return Vector with the YUV values (in that order)
+    Vec3f get_YUV_values(int x, int y);
+
+    //! Used to convert BGR values to YUV values
+    //! @param bgr: a matrix with the BGR values
+    //! @return Vector with the YUV values
+    Vec3f convert_BGR_YUV(Vec3b bgr);
+
+    //! Used to convert YUV values to BGR values
+    //! @param yuv: a matrix with the YUV values
+    //! @return Vector with the BGR values
+    Vec3b convert_YUV_BGR(Vec3f yuv);
+
+    //! converts current image from BGR to YUV or vice-versa
+    //! @return converted image (original image is not altered)
+    image convert_image();
 
     Mat _set_image_mat(Mat mat) { image_mat_=mat; return image_mat_; }
     Mat _get_image_mat() { return image_mat_; }

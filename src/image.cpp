@@ -8,6 +8,15 @@
 using namespace std;
 using namespace cv;
 
+Vec3b image::get_BGR_values(int x, int y) {
+    if(x>=image_mat_.cols or y>=image_mat_.rows or x<0 or y<0){
+        throw std::runtime_error("coordinates out of bounds");
+    }else if(format!=BGR){
+        throw std::runtime_error("image is not in BGR format");
+    }else{
+        image_mat_.at<cv::Vec3b>(y,x);
+    }
+}
 
 image* image::load(Mat *arr) {
     image_mat_ = arr->clone();
