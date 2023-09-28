@@ -25,13 +25,31 @@ class image
 {
 private:
     Mat image_mat_;
-    COLOR_FORMAT format;
+    COLOR_FORMAT format=BGR;
 public:
 
-    Mat convert_BGR_YUV444();
+    //! Converts image from BGR to YUV 4:4:4
+    //! @return converted copy
+    image convert_BGR_YUV444();
 
-    Mat _set_image_mat(Mat mat) { image_mat_=mat; return image_mat_; }
+    //! Converts image from BGR to YUV 4:2:2
+    //! @return converted copy
+    image convert_BGR_YUV422();
+
+    //! Converts image from BGR to YUV 4:2:0
+    //! @return converted copy
+    image convert_BGR_YUV420();
+
+    //! Converts image from YUV to BGR
+    //! @return converted copy
+    image convert_YUV_BGR();
+
+    void _set_image_mat(Mat mat) { image_mat_=mat; }
     Mat _get_image_mat() { return image_mat_; }
+    void _set_format(COLOR_FORMAT f){ format=f; }
+    COLOR_FORMAT _get_format(){ return format; }
+
+
 
     //! Used to iterate over all pixels in the image
     //! @return Iterator to the first pixel in the image
