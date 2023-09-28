@@ -8,13 +8,28 @@
 using namespace std;
 using namespace cv;
 
-Vec3b image::get_BGR_values(int x, int y) {
-    if(x>=image_mat_.cols or y>=image_mat_.rows or x<0 or y<0){
-        throw std::runtime_error("coordinates out of bounds");
-    }else if(format!=BGR){
-        throw std::runtime_error("image is not in BGR format");
-    }else{
-        image_mat_.at<cv::Vec3b>(y,x);
+Mat image::convert_BGR_YUV444() {
+    int rows=image_mat_.rows;
+    int cols=image_mat_.cols;
+
+    Mat yPlane(rows,cols,CV_8UC1);
+    Mat uPlane(rows,cols,CV_8UC1);
+    Mat vPlane(rows,cols,CV_8UC1);
+
+    for(int row=0;row<rows;row++){
+        for(int col=0;col<cols;col++){
+            u_char b= image_mat_.at<u_char>(row,col,0);
+            u_char g= image_mat_.at<u_char>(row,col,1);
+            u_char r= image_mat_.at<u_char>(row,col,2);
+
+            u_char y=0.299*r+0.587*g+0.114*b;
+            u_char u=-0.14713*r - 0.28886*g + 0.436*b;
+            u_char v=0.615*r - 0.51498*g - 0.10001*b;
+
+            yPlane.at<u_char>(row,col)=y;
+            uPlane.at<u_char>(row,col)=u;
+            vPlane.at<u_char>(row,col)=v;
+        }
     }
 }
 
