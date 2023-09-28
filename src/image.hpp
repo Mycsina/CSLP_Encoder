@@ -5,22 +5,28 @@
 #pragma once
 #include <opencv2/core/mat.hpp>
 #include <opencv2/imgcodecs.hpp>
+#include <utility>
 
 using namespace std;
 using namespace cv;
 
 /* TODO
-    Pixel manipulation. Setting and getting pixel values, converting between color spaces.
-    Video player
+    Converting between color spaces.
     */
+
+enum COLOR_FORMAT {
+    BGR,
+    YUV
+};
 
 class image
 {
 private:
     Mat image_mat_;
+    COLOR_FORMAT color;
 public:
 
-    Mat _set_image_mat(Mat mat) { image_mat_=mat; return image_mat_; }
+    Mat _set_image_mat(Mat mat) { image_mat_= std::move(mat); return image_mat_; }
     Mat _get_image_mat() { return image_mat_; }
 
     //! Used to iterate over all pixels in the image
