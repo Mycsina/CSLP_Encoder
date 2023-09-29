@@ -14,6 +14,6 @@ TEST(VideoTestSuite, VideoTest){
 
 TEST(VideoTestSuite, Y4MVideoTest){
     video vid;
-    vid.loadY4M(vid_file,YUV420);
+    vid.loadY4M(vid_yuv_file,YUV420);
     vid.play();
 }
