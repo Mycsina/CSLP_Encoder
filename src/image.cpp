@@ -21,7 +21,7 @@ void image::load(const basic_string<char> &filename, ImreadModes mode)
     // By default, imread loads images in BGR format
     //TODO add support for other formats | currently everything gets converted to BGR format and all operations expect a BGR image
 	image = imread(filename, mode);
-    color = BGR;
+    c_space = BGR;
 	if (!image.empty()) {
         image.convertTo(conv, CV_8UC3);
         image_mat_ = conv;

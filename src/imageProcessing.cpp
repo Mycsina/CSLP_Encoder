@@ -1,3 +1,4 @@
+#include <iostream>
 #include "imageProcessing.hpp"
 
 using namespace std;
@@ -21,9 +22,8 @@ void watermark(image im, image *mark, Point2i coord1, Point2i coord2, double alp
     addWeighted(roi, alpha, markMat, 1.0 - alpha, 0.0, roi);
 }
 
-//! Convert an image from BGR to YUV color space (as explained in wikipedia)
-//! @param matrix Pointer to the matrix to be converted
-void BGR2YUV(Mat *matrix) {
+void BGR2YUV(image im) {
+    Mat *matrix = im._get_image_mat();
     if (matrix->channels() != 3) {
         throw std::runtime_error("Original matrix must have 3 channels");
     }
@@ -42,9 +42,8 @@ void BGR2YUV(Mat *matrix) {
     }
 }
 
-//! Convert an image from YUV to BGR color space (as explained in wikipedia)
-//! @param matrix Pointer to the matrix to be converted
-void YUV2BGR(Mat *matrix) {
+void YUV2BGR(image im) {
+    Mat *matrix = im._get_image_mat();
     if (matrix->channels() != 3) {
         throw std::runtime_error("Original matrix must have 3 channels");
     }
@@ -61,6 +60,58 @@ void YUV2BGR(Mat *matrix) {
             matrix->at<Vec3b>(i, j) = {B, G, R};
         }
     }
+}
+
+void BGR2GRAY(image im) {
+    Mat *matrix = im._get_image_mat();
+    if (matrix->channels() != 3) {
+        throw std::runtime_error("Original matrix must have 3 channels");
+    }
+    if (matrix->depth() != CV_8U) {
+        throw std::runtime_error("Original matrix must have 8-bit unsigned integers");
+    }
+    for (int i = 0; i < matrix->rows; i++) {
+        for (int j = 0; j < matrix->cols; j++) {
+            Vec3b color = matrix->at<Vec3b>(i, j);
+            int R = color[2], G = color[1], B = color[0];
+            uchar Y = 0.299 * R + 0.587 * G + 0.114 * B;
+            matrix->at<Vec3b>(i, j) = {Y, Y, Y};
+        }
+    }
+}
+
+//! Subsample the non-luma channels of an image
+//! @param im Image to be subsampled
+//! @param ratio Subsampling ratio
+void subsample(image im, CHROMA_SUBSAMPLING ratio) {
+    Mat *matrix = im._get_image_mat();
+    Mat channels[3];
+    split(*matrix, channels);
+    Size target_size = Size(channels[0].size[1], channels[0].size[0]);
+    float scaling[2];
+    if (matrix->cols % 2 != 0) {
+        throw std::runtime_error("Matrix must have an even number of columns");
+    }
+    switch (ratio) {
+        case CS_444:
+            cout << "No subsampling has been performed" << endl;
+            break;
+        case CS_422:
+            // 1/2 horizontal sampling, full vertical sampling
+            scaling[0] = 0.5;
+            scaling[1] = 1;
+            break;
+        case CS_420:
+            // 1/2 horizontal sampling, 1/2 vertical sampling
+            scaling[0] = 0.5;
+            scaling[1] = 0.5;
+            break;
+        default:
+            throw std::runtime_error("Invalid subsampling ratio");
+    }
+    resize(channels[1], channels[1], target_size, scaling[0], scaling[1], INTER_LINEAR);
+    resize(channels[2], channels[2], target_size, scaling[0], scaling[1], INTER_LINEAR);
+    merge(channels, 3, *matrix);
 }
 
 // TODO are we supposed to implement this too?

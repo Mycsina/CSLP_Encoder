@@ -15,17 +15,27 @@ using namespace cv;
     Converting between color spaces.
     */
 
-enum COLOR_FORMAT
+enum COLOR_SPACE
 {
     BGR,
-    YUV
+    YUV,
+    GRAY
 };
+
+enum CHROMA_SUBSAMPLING {
+    NA,
+    CS_444,
+    CS_422,
+    CS_420
+};
+
 
 class image
 {
 private:
     Mat image_mat_;
-    COLOR_FORMAT color = BGR;
+    COLOR_SPACE c_space = BGR;
+    CHROMA_SUBSAMPLING cs_ratio = NA;
 
 public:
     image() = default;
@@ -36,8 +46,18 @@ public:
     }
     Mat *_get_image_mat() { return &image_mat_; }
 
-    void _set_color(COLOR_FORMAT col) { color = col; }
-    COLOR_FORMAT _get_color() { return color; }
+    void _set_color(COLOR_SPACE col) { c_space = col; }
+
+    COLOR_SPACE _get_color() { return c_space; }
+
+    void _set_chroma(CHROMA_SUBSAMPLING cs) {
+        if (c_space == YUV)
+            cs_ratio = cs;
+        else
+            throw std::runtime_error("Chroma subsampling only makes sense in YUV color space");
+    }
+
+    CHROMA_SUBSAMPLING _get_chroma() { return cs_ratio; }
 
     //! Used to iterate over all pixels in the image
     //! @return Iterator to the first pixel in the image
@@ -51,7 +71,10 @@ public:
     //! @return Image file
     image *load(Mat *arr2d);
 
-    explicit image(Mat *arr2d) { load(arr2d); color = BGR; }
+    explicit image(Mat *arr2d) {
+        load(arr2d);
+        c_space = BGR;
+    }
 
     //! Return size of image
     //! @return Array of integers containing the size of the image in the format <rows, cols>
