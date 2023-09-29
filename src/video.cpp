@@ -7,6 +7,8 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
 #include <fstream>
+#include <cstdlib>
+#include <cstdio>
 
 using namespace std;
 using namespace cv;
@@ -23,18 +25,18 @@ void video::load(string filename) {
     }
 }
 
-void video::loadY4M(string filename, COLOR_FORMAT format){
+void video::loadY4M(const char *filename, COLOR_FORMAT format){
     int width,height,frameSize,uvWidth,uvHeight;
     float fps;
 
-    ifstream file(filename);
+    FILE *file=fopen(filename,"rb");
 
-    if(!file.is_open() || file.peek()==EOF){
-        throw new std::runtime_error("File could not be opened or is empty");
+    if(file==nullptr){
+        throw new std::runtime_error("Error opening file");
     }
 
     //get header
-    video::getHeaderData(&file, &width, &height, &fps);
+    video::getHeaderData(file, &width, &height, &fps);
     fps_=fps;
 
     //use yuv format to get size of frame
@@ -59,12 +61,12 @@ void video::loadY4M(string filename, COLOR_FORMAT format){
             throw new std::runtime_error("Unrecognised UV format");
     }
 
-    while(file.peek()!=EOF){ //read all frames one-by-one and add them
-        video::readFrame(&file, width, height, frameSize, uvWidth, uvHeight);
+    while(!feof(file)){ //read all frames one-by-one and add them
+        video::readFrame(file, width, height, frameSize, uvWidth, uvHeight,format);
     }
 }
 
-void video::readFrame(std::ifstream  *file, int width, int height, int frameSize, int uvWidth, int uvHeight, COLOR_FORMAT format){
+void video::readFrame(FILE  *file, int width, int height, int frameSize, int uvWidth, int uvHeight, COLOR_FORMAT format){
     image im;
     char buffer[5];
     im._set_format(format);
@@ -75,30 +77,26 @@ void video::readFrame(std::ifstream  *file, int width, int height, int frameSize
     vector<Mat> channels;
 
     //remove the "FRAME", if exists
-    std::streampos old_position=file->tellg();
-    file->read(buffer,5);
-    if(file->gcount()!=width*height){
+    if(fread(buffer,1,5,file)!=5){
         throw new std::runtime_error("incomplete reading");
-    }else if(!strcasecomp(c_str(buffer),"FRAME")){ //we're already past the frame (or this frame doesn't specify that a frame has started
-        file->seekg(old_position); // go back
+    }else if(string(buffer)!="FRAME"){ //we're already past the frame (or this frame doesn't specify that a frame has started
+        fseek(file,-5,SEEK_CUR);
     }
 
 
     //read yPlane
-    file->read(reinterpret_cast<char*>(yPlane.data),width*height);
-    if(file->gcount()!=width*height){
+    if(fread(reinterpret_cast<char*>(yPlane.data),1,width*height,file)!=width*height){
         throw new std::runtime_error("yPlane reading not completed");
     }
 
+
     //read uPlane
-    file->read(reinterpret_cast<char*>(uPlane.data),uvWidth*uvHeight);
-    if(file->gcount()!=uvWidth*uvHeight){
+    if(fread(reinterpret_cast<char*>(uPlane.data),1,uvWidth*uvHeight,file)!=uvWidth*uvHeight){
         throw new std::runtime_error("uPlane reading not completed");
     }
 
     //read vPlane
-    file->read(reinterpret_cast<char*>(vPlane.data),uvWidth*uvHeight);
-    if(file->gcount()!=uvWidth*uvHeight){
+    if(fread(reinterpret_cast<char*>(vPlane.data),1,uvWidth*uvHeight,file)!=uvWidth*uvHeight){
         throw new std::runtime_error("vPlane reading not completed");
     }
 
@@ -119,11 +117,17 @@ void video::readFrame(std::ifstream  *file, int width, int height, int frameSize
     im_reel.push_back(im);
 }
 
-void video::getHeaderData(std::ifstream *file, int *width, int *height, float *fps) {
-    string header,discard;
+void video::getHeaderData(FILE *file, int *width, int *height, float *fps) {
+    char header[90];
+    char discard[200]; //should be enough for the rest
     int frame_rate_num,frame_rate_den;
-    getline(*file,header)
-    if(sscanf(header.c_str(),"YUV4MPEG2 W%d H%d F%d:%d %s",width,height,&frame_rate_num,&frame_rate_den,&discard)!=5){
+    int i;
+
+    // TODO: HEEELP, can't get proper results(even compared to the file itself)
+    fgets(header,90,file);
+    std::cout << "abc" << header << std::endl;
+
+    if(sscanf(header,"YUV4MPEG2 W%d H%d F%d:%d %s",width,height,&frame_rate_num,&frame_rate_den,&discard)!=5){
         throw new std::runtime_error("Error parsing header");
     }
     *fps=(float)frame_rate_num/(float)frame_rate_den;
