@@ -5,6 +5,7 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/highgui.hpp>
+#include <opencv2/opencv.hpp>
 #include <fstream>
 
 using namespace std;
@@ -51,7 +52,7 @@ void video::loadY4M(string filename, COLOR_FORMAT format){
         case YUV420:
             frameSize=width*height*3/2;
             uvWidth=width/2;
-            uvHeight=height/2
+            uvHeight=height/2;
             break;
         default:
             //TODO: Check if there are more fitting error types (for this and others)
@@ -59,11 +60,63 @@ void video::loadY4M(string filename, COLOR_FORMAT format){
     }
 
     while(file.peek()!=EOF){ //read all frames one-by-one and add them
-        readFrame(&file, width, height, frameSize, uvWidth, uvHeight);
+        video::readFrame(&file, width, height, frameSize, uvWidth, uvHeight);
     }
 }
 
-void video::readFrame(std::ifstream  *file, int width, int height, int frameSize, int uvWidth, int uvHeight){
+void video::readFrame(std::ifstream  *file, int width, int height, int frameSize, int uvWidth, int uvHeight, COLOR_FORMAT format){
+    image im;
+    char buffer[5];
+    im._set_format(format);
+    Mat yPlane(height,width,CV_8UC1);
+    Mat uPlane(uvHeight,uvWidth,CV_8UC1);
+    Mat vPlane(uvHeight,uvWidth,CV_8UC1);
+    Mat frame(height,width,CV_8UC3);
+    vector<Mat> channels;
+
+    //remove the "FRAME", if exists
+    std::streampos old_position=file->tellg();
+    file->read(buffer,5);
+    if(file->gcount()!=width*height){
+        throw new std::runtime_error("incomplete reading");
+    }else if(!strcasecomp(c_str(buffer),"FRAME")){ //we're already past the frame (or this frame doesn't specify that a frame has started
+        file->seekg(old_position); // go back
+    }
+
+
+    //read yPlane
+    file->read(reinterpret_cast<char*>(yPlane.data),width*height);
+    if(file->gcount()!=width*height){
+        throw new std::runtime_error("yPlane reading not completed");
+    }
+
+    //read uPlane
+    file->read(reinterpret_cast<char*>(uPlane.data),uvWidth*uvHeight);
+    if(file->gcount()!=uvWidth*uvHeight){
+        throw new std::runtime_error("uPlane reading not completed");
+    }
+
+    //read vPlane
+    file->read(reinterpret_cast<char*>(vPlane.data),uvWidth*uvHeight);
+    if(file->gcount()!=uvWidth*uvHeight){
+        throw new std::runtime_error("vPlane reading not completed");
+    }
+
+    // resize u and v (if it's 4:4:4 they're already at the correct size)
+    if(format!=YUV444){
+        resize(uPlane,uPlane,Size(width,height));
+        resize(vPlane,vPlane,Size(width,height));
+    }
+
+    //merge the three channels
+    channels[0]=yPlane;
+    channels[1]=uPlane;
+    channels[2]=vPlane;
+    merge(channels,frame);
+
+    im._set_image_mat(frame);
+
+    im_reel.push_back(im);
 }
 
 void video::getHeaderData(std::ifstream *file, int *width, int *height, float *fps) {
