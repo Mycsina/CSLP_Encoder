@@ -35,6 +35,7 @@ void video::loadY4M(string filename, COLOR_FORMAT format){
     }
 
     video::getHeaderData(&file, &width, &height, &fps);
+    fps_=fps;
 
 
 
@@ -50,12 +51,12 @@ void video::getHeaderData(std::ifstream *file, int *width, int *height, float *f
     *fps=(float)frame_rate_num/(float)frame_rate_den;
 }
 
-void video::play(float fps) {
+void video::play() {
     if (loaded()) {
         for (auto & it : im_reel) {
 // TODO either display image stops waiting for enter or we pass a parameter to change the behaviour
             it.display_image();
-            if(cv::waitKey((int)(1/fps)*1000==27)){ // Press ESC to stop, also ensures that the scene with the same fps (some minor variation may happen due to computation costs)
+            if(cv::waitKey((int)(1/fps_)*1000==27)){ // Press ESC to stop, also ensures that the scene with the same fps (some minor variation may happen due to computation costs)
                 break;
             }
         }

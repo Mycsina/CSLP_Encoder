@@ -11,6 +11,7 @@ using namespace cv;
 class video
 {
     vector<image> im_reel;
+    float fps_;
 public:
     video() = default;
     ~video() = default;
@@ -24,6 +25,6 @@ public:
     //! @param *file, pointer to the file stream
     //! @param height,width,fps pointers on which to store the relevant data
     void getHeaderData(ifstream* file, int* width, int* height, float* fps);
-    void play(float fps);
+    void play();
     bool loaded() const {return !im_reel.empty();};
 };
