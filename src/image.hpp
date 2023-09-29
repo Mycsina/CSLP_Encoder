@@ -18,7 +18,7 @@ enum COLOR_FORMAT {
     BGR,
     YUV444,
     YUV422,
-    YUV420
+    YUV420,
 };
 
 class image

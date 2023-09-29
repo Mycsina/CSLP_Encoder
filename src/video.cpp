@@ -23,28 +23,53 @@ void video::load(string filename) {
 }
 
 void video::loadY4M(string filename, COLOR_FORMAT format){
-    int width; //width of the frame
-    int height; //height of the frame
-    int frameSize; // number of bytes per frame
+    int width,height,frameSize,uvWidth,uvHeight;
     float fps;
 
     ifstream file(filename);
 
-    if(!file.is_open()){
-        throw new std::runtime_error("Error opening file");
+    if(!file.is_open() || file.peek()==EOF){
+        throw new std::runtime_error("File could not be opened or is empty");
     }
 
+    //get header
     video::getHeaderData(&file, &width, &height, &fps);
     fps_=fps;
 
+    //use yuv format to get size of frame
+    switch(format){
+        case YUV444:
+            frameSize=width*height*3;
+            uvWidth=width;
+            uvHeight=height;
+            break;
+        case YUV422:
+            frameSize=width*height*2;
+            uvWidth=width/2;
+            uvHeight=height;
+            break;
+        case YUV420:
+            frameSize=width*height*3/2;
+            uvWidth=width/2;
+            uvHeight=height/2
+            break;
+        default:
+            //TODO: Check if there are more fitting error types (for this and others)
+            throw new std::runtime_error("Unrecognised UV format");
+    }
 
+    while(file.peek()!=EOF){ //read all frames one-by-one and add them
+        readFrame(&file, width, height, frameSize, uvWidth, uvHeight);
+    }
+}
 
+void video::readFrame(std::ifstream  *file, int width, int height, int frameSize, int uvWidth, int uvHeight){
 }
 
 void video::getHeaderData(std::ifstream *file, int *width, int *height, float *fps) {
     string header,discard;
     int frame_rate_num,frame_rate_den;
-    getline(*file,header);
+    getline(*file,header)
     if(sscanf(header.c_str(),"YUV4MPEG2 W%d H%d F%d:%d %s",width,height,&frame_rate_num,&frame_rate_den,&discard)!=5){
         throw new std::runtime_error("Error parsing header");
     }

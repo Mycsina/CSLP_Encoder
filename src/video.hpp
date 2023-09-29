@@ -26,5 +26,6 @@ public:
     //! @param height,width,fps pointers on which to store the relevant data
     void getHeaderData(ifstream* file, int* width, int* height, float* fps);
     void play();
+    void readFrame(std::ifstream  *file, int width, int height, int frameSize, int uvWidth, int uvHeight){}
     bool loaded() const {return !im_reel.empty();};
 };

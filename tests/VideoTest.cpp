@@ -8,5 +8,5 @@ auto vid_file = "../../tests/resource/video.mp4";
 TEST(VideoTestSuite, VideoTest){
     video vid;
     vid.load(vid_file);
-    vid.play(30);
+    vid.play();
 }
