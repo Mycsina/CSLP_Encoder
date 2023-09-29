@@ -4,6 +4,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/core/mat.hpp>
+#include <fstream>
 
 using namespace std;
 using namespace cv;
@@ -18,6 +19,34 @@ void video::load(string filename) {
             break;
         im_reel.push_back(*im.load(&buf));
     }
+}
+
+void video::loadY4M(string filename, COLOR_FORMAT format){
+    int width; //width of the frame
+    int height; //height of the frame
+    int frameSize; // number of bytes per frame
+    float fps;
+
+    ifstream file(filename);
+
+    if(!file.is_open()){
+        throw new std::runtime_error("Error opening file");
+    }
+
+    video::getHeaderData(&file, &width, &height, &fps);
+
+
+
+}
+
+void video::getHeaderData(std::ifstream *file, int *width, int *height, float *fps) {
+    string header,discard;
+    int frame_rate_num,frame_rate_den;
+    getline(*file,header);
+    if(sscanf(header.c_str(),"YUV4MPEG2 W%d H%d F%d:%d %s",width,height,&frame_rate_num,&frame_rate_den,&discard)!=5){
+        throw new std::runtime_error("Error parsing header");
+    }
+    *fps=(float)frame_rate_num/(float)frame_rate_den;
 }
 
 void video::play() {

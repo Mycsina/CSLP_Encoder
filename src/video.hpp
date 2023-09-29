@@ -18,6 +18,12 @@ public:
         return im_reel[pos];
     }
     void load(string filename);
+    void loadY4M(string filename, COLOR_FORMAT format);
+
+    //! parses the header data into the pointers (the read pointer is advanced to the byte after the header)
+    //! @param *file, pointer to the file stream
+    //! @param height,width,fps pointers on which to store the relevant data
+    void getHeaderData(ifstream* file, int* width, int* height, float* fps);
     void play();
     bool loaded() const {return !im_reel.empty();};
 };
