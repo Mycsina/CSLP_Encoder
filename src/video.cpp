@@ -68,18 +68,18 @@ void video::loadY4M(const char *filename, COLOR_FORMAT format){
 
 void video::readFrame(FILE  *file, int width, int height, int frameSize, int uvWidth, int uvHeight, COLOR_FORMAT format){
     image im;
-    char buffer[5];
+    char buffer[6];
     im._set_format(format);
     Mat yPlane(height,width,CV_8UC1);
     Mat uPlane(uvHeight,uvWidth,CV_8UC1);
     Mat vPlane(uvHeight,uvWidth,CV_8UC1);
     Mat frame(height,width,CV_8UC3);
-    vector<Mat> channels;
+    vector<Mat> channels(3);
 
     //remove the "FRAME", if exists
-    if(fread(buffer,1,5,file)!=5){
+    if(fread(buffer,1,6,file)!=6){
         throw new std::runtime_error("incomplete reading");
-    }else if(string(buffer)!="FRAME"){ //we're already past the frame (or this frame doesn't specify that a frame has started
+    }else if(string(buffer)!="FRAME\n"){ //we're already past the frame (or this frame doesn't specify that a frame has started
         fseek(file,-5,SEEK_CUR);
     }
 
@@ -106,10 +106,14 @@ void video::readFrame(FILE  *file, int width, int height, int frameSize, int uvW
         resize(vPlane,vPlane,Size(width,height));
     }
 
+    if(yPlane.type()!=CV_8UC1 || uPlane.type()!=CV_8UC1 || vPlane.type()!=CV_8UC1 || frame.type!=CV_8UC3){
+        std::cout << "error" << std::endl;
+    }
+
     //merge the three channels
-    channels[0]=yPlane;
-    channels[1]=uPlane;
-    channels[2]=vPlane;
+    channels.push_back(yPlane);
+    channels.push_back(uPlane);
+    channels.push_back(vPlane);
     merge(channels,frame);
 
     im._set_image_mat(frame);
@@ -125,7 +129,6 @@ void video::getHeaderData(FILE *file, int *width, int *height, float *fps) {
 
     // TODO: HEEELP, can't get proper results(even compared to the file itself)
     fgets(header,90,file);
-    std::cout << "abc" << header << std::endl;
 
     if(sscanf(header,"YUV4MPEG2 W%d H%d F%d:%d %s",width,height,&frame_rate_num,&frame_rate_den,&discard)!=5){
         throw new std::runtime_error("Error parsing header");
