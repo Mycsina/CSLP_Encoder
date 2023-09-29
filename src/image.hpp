@@ -48,6 +48,28 @@ public:
 
     void _set_color(COLOR_SPACE col) { c_space = col; }
 
+    //! Converts image from BGR to YUV 4:4:4
+    //! @return converted copy
+    image convert_BGR_YUV444();
+
+    //! Converts image from BGR to YUV 4:2:2
+    //! @return converted copy
+    image convert_BGR_YUV422();
+
+    //! Converts image from BGR to YUV 4:2:0
+    //! @return converted copy
+    image convert_BGR_YUV420();
+
+    //! Converts image from YUV to BGR
+    //! @return converted copy
+    image convert_YUV_BGR();
+
+    void _set_image_mat(Mat mat) { image_mat_=mat; }
+    Mat _get_image_mat() { return image_mat_; }
+    void _set_format(COLOR_FORMAT f){ format=f; }
+    COLOR_FORMAT _get_format(){ return format; }
+
+
     COLOR_SPACE _get_color() { return c_space; }
 
     void _set_chroma(CHROMA_SUBSAMPLING cs) {
@@ -69,7 +91,7 @@ public:
 
     //! Loads an image from a cv::Mat
     //! @return Image file
-    image *load(Mat *arr2d);
+    image* load(Mat *arr2d);
 
     explicit image(Mat *arr2d) {
         load(arr2d);
@@ -85,29 +107,30 @@ public:
     //! @param  filename Absolute path to image file
     //! @param  mode Mode to load image in (see cv:ImreadModes for available modes)
     //! @return Boolean indicating whether image was loaded successfully
-    void load(const basic_string<char> &filename, ImreadModes mode = IMREAD_COLOR);
+	void load(const char* filename, ImreadModes mode = IMREAD_COLOR);
 
     //! Saves an image to a file
     //! @param  filename Absolute path to image file
     //! @param  compression_params Vector of integers specifying the compression parameters with format <paramID, paramValue> (see cv:ImwriteFlags for available parameters)
     //! @return Boolean indicating whether image was saved successfully
-    void save(const char *filename, const vector<int> &compression_params = {});
+    void save(const char* filename, const vector<int>& compression_params = {});
 
     //! Get size of image
     //! @return Array of integers containing the size of the image in the format <rows, cols>
-    array<int, 2> get_image_size() const { return {image_mat_.rows, image_mat_.cols}; }
+    array<int, 2> get_image_size() const { return { image_mat_.rows, image_mat_.cols }; }
 
     //! Get data type of image
-    //! @return Integer indicating the data type of the backing matrix
+    //! @return Integer indicating the data type of the image
     int get_image_type() const { return image_mat_.type(); }
 
     //! Displays the image in a window
     //! @params vid_ctx Indicates whether it is to be used in displaying a video
-    void display_image(bool vid_ctx = false);
+    //! @return Void
+	void display_image(bool vid_ctx = false);
 
     //! Returns whether the image has been loaded
     //! @return Boolean indicating whether the image has been loaded
-    bool loaded() const { return !image_mat_.empty(); }
+	bool loaded() const { return !image_mat_.empty(); }
 
     //! Get color values from a pixel
     //! @param  row Row of pixel / y-coordinate
@@ -119,7 +142,8 @@ public:
     //! @param  row Row of pixel / y-coordinate
     //! @param  col Column of pixel / x-coordinate
     //! @param  value Array of integers containing the color values of the pixel in the format <B, G, R>
-    void set_pixel(int row, int col, const Vec3b &value);
+    //! @return Void
+    void set_pixel(int row, int col, Vec3b value);
 
     //! Get a deep copy of the image
     //! @return image object containing a deep copy of the image

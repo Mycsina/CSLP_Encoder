@@ -51,3 +51,20 @@ TEST(ImageTestSuite, PixelWiseCloning) {
     ASSERT_EQ(im1.get_pixel(345, 256), im2.get_pixel(345, 256));
     remove("../../tests/resource/pbp.png");
 }
+
+TEST(ImageTestSuite, YUV_BGR_Conversion){
+    image im1;
+    im1.load(img_file);
+    im1.display_image();
+
+    image im2;
+    im2=im1.convert_BGR_YUV444();
+    im2=im2.convert_YUV_BGR();
+    im2.display_image();
+
+    im2=im1.convert_BGR_YUV422().convert_YUV_BGR();
+    im2.display_image();
+
+    im2=im1.convert_BGR_YUV420().convert_YUV_BGR();
+    im2.display_image();
+}
