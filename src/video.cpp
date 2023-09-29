@@ -4,6 +4,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/core/mat.hpp>
+#include <opencv2/highgui.hpp>
 #include <fstream>
 
 using namespace std;
@@ -49,11 +50,14 @@ void video::getHeaderData(std::ifstream *file, int *width, int *height, float *f
     *fps=(float)frame_rate_num/(float)frame_rate_den;
 }
 
-void video::play() {
+void video::play(float fps) {
     if (loaded()) {
         for (auto & it : im_reel) {
 // TODO either display image stops waiting for enter or we pass a parameter to change the behaviour
             it.display_image();
+            if(cv::waitKey((int)(1/fps)*1000==27)){ // Press ESC to stop, also ensures that the scene with the same fps (some minor variation may happen due to computation costs)
+                break;
+            }
         }
     }
     else
