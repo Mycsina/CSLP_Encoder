@@ -24,8 +24,8 @@ image image::convert_BGR_YUV444() {
             u_char g= pixel.val[1];
             u_char r= pixel.val[2];
             
-            u_char y=0.299*r+0.587*g+0.114*b;
-            u_char u=-0.14713*r - 0.28886*g + 0.436*b;
+            u_int8_t y=0.299*r+0.587*g+0.114*b;
+            u_char u=-0.147*r - 0.289*g + 0.436*b;
             u_char v=0.615*r - 0.51498*g - 0.10001*b;
 
             yPlane.at<u_char>(row,col)=y;
@@ -137,34 +137,29 @@ image image::convert_YUV_BGR() {
     int rows=image_mat_.rows;
     int cols=image_mat_.cols;
 
-    Mat rPlane=Mat(rows,cols,CV_8UC1);
-    Mat gPlane(rows,cols,CV_8UC1);
-    Mat bPlane(rows,cols,CV_8UC1);
+    Mat bgr(rows,cols,CV_8UC3);
 
     for(int row=0;row<rows;row++){
         for(int col=0;col<cols;col++){
             Vec3b pixel=image_mat_.at<Vec3b>(row,col);
-            u_char y= pixel.val[0];
-            u_char u= pixel.val[1];
-            u_char v= pixel.val[2];
+            double y= pixel.val[0];
+            double u= pixel.val[1]-128.0;
+            double v= pixel.val[2]-128.0;
 
-            u_char r= y + 1.140*v;
-            u_char g= y - 0.395*u - 0.581*v;
-            u_char b= y + 2.032*u;
+            double r = y + 1.13983 * v;
+            double g = y - 0.39465 * u - 0.58060 * v;
+            double b = y + 2.03211 * u;
 
-            rPlane.at<u_char>(row,col)=r;
-            gPlane.at<u_char>(row,col)=g;
-            bPlane.at<u_char>(row,col)=b;
+            // Ensure values are within [0, 255]
+            r = std::min(255.0, std::max(0.0, r));
+            g = std::min(255.0, std::max(0.0, g));
+            b = std::min(255.0, std::max(0.0, b));
+
+            // Set the BGR pixel values
+            bgr.at<cv::Vec3b>(row,col) = cv::Vec3b(static_cast<uchar>(b), static_cast<uchar>(g), static_cast<uchar>(r));
         }
     }
 
-    Mat bgr(rows,cols,CV_8UC3);
-    vector<Mat> channels;
-    channels.push_back(bPlane);
-    channels.push_back(gPlane);
-    channels.push_back(rPlane);
-
-    merge(channels,bgr);
     image result;
     result._set_image_mat(bgr);
     result._set_format(BGR);
@@ -202,7 +197,6 @@ void image::save(const char* filename, const vector<int>& compression_params)
 
 void image::display_image(bool vid_ctx) {
     if (loaded()){
-        cvtColor(image_mat_,image_mat_,COLOR_YUV2BGR);
         imshow("image", image_mat_);
     }
     else
