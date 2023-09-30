@@ -201,7 +201,8 @@ void image::save(const char* filename, const vector<int>& compression_params)
 }
 
 void image::display_image(bool vid_ctx) {
-    if (loaded()) {
+    if (loaded()){
+        cvtColor(image_mat_,image_mat_,COLOR_YUV2BGR);
         imshow("image", image_mat_);
     }
     else
