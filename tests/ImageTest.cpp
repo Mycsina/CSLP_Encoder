@@ -53,15 +53,17 @@ TEST(ImageTestSuite, YUV_BGR_Conversion){
     image im1;
     im1.load(img_file);
     im1.display_image();
+    waitKey(0);
 
-    image im2;
-    im2=im1.convert_BGR_YUV444();
-    im2=im2.convert_YUV_BGR();
-    im2.display_image();
 
-    im2=im1.convert_BGR_YUV422().convert_YUV_BGR();
-    im2.display_image();
+    im1.convert_BGR_YUV444().convert_YUV_BGR().display_image();
+    waitKey(0);
 
-    im2=im1.convert_BGR_YUV420().convert_YUV_BGR();
-    im2.display_image();
+
+   im1.convert_BGR_YUV422().convert_YUV_BGR().display_image();
+   waitKey(0);
+
+
+    im1.convert_BGR_YUV420().convert_YUV_BGR().display_image();
+    waitKey(0);
 }
