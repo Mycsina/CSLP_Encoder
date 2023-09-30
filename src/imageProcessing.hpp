@@ -1,4 +1,8 @@
-//!  @file Declares functions that change the data of an object
+//!  @file Declares functions that change the data of an image
+/*!
+ * @brief Declares functions that change the data of an image
+ */
+
 #pragma once
 
 #include "image.hpp"
@@ -15,7 +19,8 @@ using namespace cv;
  * @param coord2 The bottom right corner of the watermark
  * @param alpha The opacity of the watermark (1.0 = transparent, 0.0 = opaque)
  */
-void watermark(image im, image *mark, Point2i coord1, Point2i coord2, double alpha);
+void watermark(image im, image *mark, Point2i coord1, Point2i coord2,
+               double alpha);
 
 //! Convert an image from BGR to YUV color space (as explained in wikipedia)
 //! @param im Image to be converted

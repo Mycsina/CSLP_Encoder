@@ -6,8 +6,8 @@ project(CSLP_lib)
 ## Libraries
 ### Image
 add_library(Image image.hpp
-        imageProcessing.cpp
-        imageProcessing.hpp)
+        imageProcessing.hpp
+        Histogram.cpp)
 
 target_link_libraries(Image ${OpenCV_LIBS})
 set_target_properties(Image PROPERTIES LINKER_LANGUAGE CXX)

@@ -242,3 +242,58 @@ image image::clone() {
   } else
     throw std::runtime_error("Image hasn't been loaded");
 }
+
+vector<Mat> image::color_histograms(int bins, bool fill_hist, int width,
+                                    int height) {
+  if (loaded()) {
+    vector<Mat> histograms;
+    vector<Mat> channels;
+    // Array of colors for each channel
+    Scalar colors[] = {Scalar(255, 0, 0), Scalar(0, 255, 0), Scalar(0, 0, 255)};
+    split(image_mat_, channels);
+    for (int i = 0; i < channels.size(); i++) {
+      Histogram hist = Histogram(256);
+      hist.color = colors[i];
+      calcHist(&channels[i], 1, 0, Mat(), hist.mat_, 1, &bins, 0);
+      Mat backMat = hist.mat_;
+      int bin_w = cvRound((double)width / 256);
+      Vec3b backColor = (0, 0, 0);
+
+      Mat histImage(height, width, CV_8UC3, backColor);
+
+      normalize(backMat, backMat, 0, histImage.rows, NORM_MINMAX, -1, Mat());
+
+      for (int j = 1; j < 256; j++) {
+        line(histImage,
+             Point(bin_w * (j - 1), height - cvRound(backMat.at<float>(j - 1))),
+             Point(bin_w * (j), height - cvRound(backMat.at<float>(j))),
+             hist.color, 2, 8, 0);
+      }
+
+      if (fill_hist) {
+        for (int j = 0; j < histImage.cols; j++) {
+          Mat col = histImage.col(j);
+          for (int k = col.rows - 1; k >= 0; k--) {
+            // Fill column with color until a non-<backColor> pixel is found
+            if (col.at<Vec3b>(k) != backColor) {
+              break;
+            }
+            Vec3b color = {(uchar)hist.color[0], (uchar)hist.color[1],
+                           (uchar)hist.color[2]};
+            col.at<Vec3b>(k) = color;
+            // If we reach end of column without finding a non-<backColor> pixel
+            // zero the column
+            if (k == 0) {
+              col = Mat::zeros(col.rows, 1, CV_8UC3);
+            }
+          }
+        }
+      }
+
+      histograms.push_back(histImage);
+    }
+    return histograms;
+
+  } else
+    throw std::runtime_error("Image hasn't been loaded");
+}

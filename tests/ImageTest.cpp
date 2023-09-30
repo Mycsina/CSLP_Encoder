@@ -38,7 +38,6 @@ TEST(ImageTestSuite, PixelWiseCloning) {
   image im1;
   im1.load(img_file);
   image im2;
-  // TODO perguntar ao professor porque é que isto causa um SIGILL
   im2._set_image_mat(Mat::zeros(im1.get_image_size()[0],
                                 im1.get_image_size()[1], im1.get_image_type()));
   for (auto it = im1.begin(); it != im1.end(); ++it) {
@@ -49,21 +48,4 @@ TEST(ImageTestSuite, PixelWiseCloning) {
   ASSERT_EQ(im1.get_pixel(0, 39), im2.get_pixel(0, 39));
   ASSERT_EQ(im1.get_pixel(345, 256), im2.get_pixel(345, 256));
   remove("../../tests/resource/pbp.png");
-}
-
-TEST(ImageTestSuite, YUV_BGR_Conversion) {
-  image im1;
-  im1.load(img_file);
-  im1.display_image();
-
-  image im2;
-  im2 = im1.convert_BGR_YUV444();
-  im2 = im2.convert_YUV_BGR();
-  im2.display_image();
-
-  im2 = im1.convert_BGR_YUV422().convert_YUV_BGR();
-  im2.display_image();
-
-  im2 = im1.convert_BGR_YUV420().convert_YUV_BGR();
-  im2.display_image();
 }

@@ -89,29 +89,3 @@ TEST(ImageProcessingSuite, ConversionIdempotenceTest) {
                  (color2[0] + color2[1] + color2[2]));
   EXPECT_TRUE(diff < 3);
 }
-
-TEST(ImageProcessingSuite, WatermarkTest) {
-  string mark_file = "../../tests/resource/lena.ppm";
-  image im;
-  im.load(img_name);
-  image mark;
-  mark.load(mark_file);
-  watermark(im, &mark, {0, 0},
-            {mark.get_image_size()[1], mark.get_image_size()[0]}, 0.5);
-  im.display_image();
-}
-
-TEST(ImageProcessingSuite, SubsamplingDemo) {
-  image im;
-  im.load(img_name);
-  cvtColor(*im._get_image_mat(), *im._get_image_mat(), COLOR_BGR2YUV);
-  // BGR2YUV(im);
-  image im2;
-  im2 = im.clone();
-  // im2.display_image();
-  im.display_image();
-  subsample(&im, YUV422);
-  im.display_image();
-  subsample(&im2, YUV420);
-  im2.display_image();
-}

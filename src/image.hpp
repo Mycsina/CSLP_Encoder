@@ -1,12 +1,14 @@
 ﻿//! @file image class declaration
 /*!
- Declares the image class, representing a digital image.
+ @brief Declares the image class, representing a digital image.
 */
 #pragma once
 #include <opencv2/core/mat.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <utility>
+
+#include "Histogram.cpp"
 
 using namespace std;
 using namespace cv;
@@ -134,4 +136,13 @@ public:
   //! Get a deep copy of the image
   //! @return image object containing a deep copy of the image
   image clone();
+
+  //! Create color histograms of a BGR image
+  //! @param  hist Histogram to be displayed
+  //! @param  fill_hist Indicates whether the histogram should be filled
+  //! @param  width Width in pixels of the histogram
+  //! @param  height Height in pixels of the histogram
+  //! @return Vector with resulting Histograms
+  vector<Mat> color_histograms(int bins = 256, bool fill_hist = false,
+                               int width = 512, int height = 400);
 };
