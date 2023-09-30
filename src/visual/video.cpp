@@ -71,6 +71,7 @@ void video::readFrame(FILE *file, int width, int height, int frameSize,
                       int uvWidth, int uvHeight, CHROMA_SUBSAMPLING format) {
   Image im;
   char buffer[6];
+  im._set_color(YUV);
   im._set_chroma(format);
   Mat yPlane(height, width, CV_8UC1);
   Mat uPlane(uvHeight, uvWidth, CV_8UC1);
@@ -163,7 +164,7 @@ void video::play(int stop_key) {
 
 void video::convertTo(COLOR_SPACE f1, COLOR_SPACE f2) {
   vector<Image> temp;
-  if (f2 == BGR && (f1 == YUV) {
+  if (f2 == BGR && (f1 == YUV)) {
     for (int i = 0; i < im_reel.size(); i++) {
       temp.push_back(im_reel[i].convert_YUV_BGR());
     }
