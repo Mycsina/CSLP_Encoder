@@ -27,6 +27,7 @@ public:
     void getHeaderData(FILE* file, int* width, int* height, float* fps);
     void readFrame(FILE  *file, int width, int height, int frameSize, int uvWidth, int uvHeight, COLOR_FORMAT format);
     void play();
+    void convertTo(COLOR_FORMAT f1, COLOR_FORMAT f2);
 
     bool loaded() const {return !im_reel.empty();};
 };

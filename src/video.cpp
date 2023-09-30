@@ -152,3 +152,13 @@ void video::play() {
         throw std::runtime_error("Video hasn't been loaded");
     }
 }
+
+void video::convertTo(COLOR_FORMAT f1, COLOR_FORMAT f2) {
+    vector<image> temp;
+    if(f2==BGR && (f1==YUV420 || f1==YUV422 || f1==YUV444)){
+        for(int i=0;i<im_reel.size();i++) {
+            temp.push_back(im_reel[i].convert_YUV_BGR());
+        }
+    }
+    im_reel=temp;
+}

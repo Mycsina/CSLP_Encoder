@@ -203,10 +203,6 @@ void image::save(const char* filename, const vector<int>& compression_params)
 void image::display_image(bool vid_ctx) {
     if (loaded()) {
         imshow("image", image_mat_);
-        if (!vid_ctx)
-            waitKey(0);
-        else
-            waitKey(25);
     }
     else
     {
