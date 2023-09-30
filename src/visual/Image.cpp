@@ -176,9 +176,8 @@ Image Image::convert_YUV_BGR()
   return result;
 }
 
-Image *Image::load(Mat *arr)
-{
-  image_mat_ = arr->clone();
+Image *Image::load(const Mat &arr) {
+  image_mat_ = arr.clone();
   return this;
 }
 
@@ -201,8 +200,8 @@ void Image::load(const basic_string<char> &filename, ImreadModes mode)
   }
 }
 
-void Image::save(const char *filename, const vector<int> &compression_params)
-{
+void Image::save(const basic_string<char> &filename,
+                 const vector<int> &compression_params) {
   if (loaded())
   {
     imwrite(filename, image_mat_, compression_params);
@@ -220,6 +219,8 @@ void Image::display_image(bool vid_ctx)
     imshow("Image", image_mat_);
     if (!vid_ctx)
       waitKey(0);
+    else
+      waitKey(25);
   }
   else
   {
@@ -273,12 +274,15 @@ vector<Mat> Image::color_histograms(int bins, bool fill_hist, int width,
     // Array of colors for each channel
     Scalar colors[] = {Scalar(255, 0, 0), Scalar(0, 255, 0), Scalar(0, 0, 255)};
     split(image_mat_, channels);
+    // If image is grayscale, set color to white
+    if (channels.size() == 1) {
+      colors[0] = Scalar(255, 255, 255);
+    }
     for (int i = 0; i < channels.size(); i++)
     {
-      Histogram hist = Histogram(256);
+      Histogram hist = Histogram(bins);
       hist.color = colors[i];
-      calcHist(&channels[i], 1, 0, Mat(), hist.mat_, 1, &bins, 0);
-      Mat backMat = hist.mat_;
+      Mat backMat = histogram<uchar>(channels[i], bins);
       int bin_w = cvRound((double)width / 256);
       Vec3b backColor = (0, 0, 0);
 

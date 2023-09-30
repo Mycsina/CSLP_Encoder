@@ -73,10 +73,15 @@ public:
 
   //! Loads an Image from a cv::Mat
   //! @return Image file
-  Image *load(Mat *arr2d);
+  Image *load(const Mat &arr2d);
 
-  explicit Image(Mat *arr2d) {
+  explicit Image(const Mat &arr2d) {
     load(arr2d);
+    c_space = BGR;
+  }
+
+  explicit Image(const basic_string<char> &filename) {
+    load(filename);
     c_space = BGR;
   }
 
@@ -99,7 +104,8 @@ public:
   //! @param  compression_params Vector of integers specifying the compression
   //! parameters with format <paramID, paramValue> (see cv:ImwriteFlags for
   //! available parameters)
-  void save(const char *filename, const vector<int> &compression_params = {});
+  void save(const basic_string<char> &filename,
+            const vector<int> &compression_params = {});
 
   //! Get size of Image
   //! @return Array of integers containing the size of the Image in the format
@@ -146,3 +152,19 @@ public:
   vector<Mat> color_histograms(int bins = 256, bool fill_hist = false,
                                int width = 512, int height = 400);
 };
+
+//! @brief Creates basic histogram of matrix\n
+//! @details The functions needs to be called with the correct template type,
+//! according to the type of the matrix\n
+//! @param  matrix Matrix with data
+//! @param  bins Number of bins (probably use the same number as the number of
+//! possible values in the matrix)
+//! @return Histogram of matrix
+template <typename T> Mat histogram(const Mat &matrix, int bins = 256) {
+  Mat histValues = Mat::zeros(1, bins, CV_32F);
+  // TODO benchmark array pointer arithmetic vs Mat.forEach
+  matrix.forEach<T>([&](T &pixel, const int position[]) -> void {
+    histValues.at<float>(pixel) += 1;
+  });
+  return histValues;
+}

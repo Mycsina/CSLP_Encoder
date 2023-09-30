@@ -6,10 +6,10 @@ using namespace cv;
 
 // TODO how manually are we supposed to implement this?
 
-void watermark(Image im, Image *mark, Point2i coord1, Point2i coord2,
+void watermark(Image &im, Image mark, Point2i coord1, Point2i coord2,
                double alpha) {
   Mat imageMat = *im._get_image_mat();
-  Mat markMat = *mark->_get_image_mat();
+  Mat markMat = *mark._get_image_mat();
   int height = coord2.y - coord1.y;
   int width = coord2.x - coord1.x;
   // Resize the watermark to fit the desired area
@@ -25,8 +25,8 @@ void watermark(Image im, Image *mark, Point2i coord1, Point2i coord2,
   addWeighted(roi, alpha, markMat, 1.0 - alpha, 0.0, roi);
 }
 
-void BGR2YUV(Image *im) {
-  Mat *matrix = im->_get_image_mat();
+void BGR2YUV(Image &im) {
+  Mat *matrix = im._get_image_mat();
   if (matrix->channels() != 3) {
     throw std::runtime_error("Original matrix must have 3 channels");
   }
@@ -46,8 +46,8 @@ void BGR2YUV(Image *im) {
   }
 }
 
-void YUV2BGR(Image *im) {
-  Mat *matrix = im->_get_image_mat();
+void YUV2BGR(Image &im) {
+  Mat *matrix = im._get_image_mat();
   if (matrix->channels() != 3) {
     throw std::runtime_error("Original matrix must have 3 channels");
   }
@@ -67,8 +67,8 @@ void YUV2BGR(Image *im) {
   }
 }
 
-void BGR2GRAY(Image *im) {
-  Mat *matrix = im->_get_image_mat();
+void BGR2GRAY(Image &im) {
+  Mat *matrix = im._get_image_mat();
   Mat gray(matrix->rows, matrix->cols, CV_8UC1);
   if (matrix->channels() != 3) {
     throw std::runtime_error("Original matrix must have 3 channels");
@@ -85,14 +85,15 @@ void BGR2GRAY(Image *im) {
       gray.at<uchar>(i, j) = Y;
     }
   }
-  im->_set_image_mat(gray);
+  im._set_image_mat(gray);
+  im._set_color(GRAY);
 }
 
 //! Subsample the non-luma channels of an Image
 //! @param im Image to be subsampled
 //! @param ratio Subsampling ratio
-void subsample(Image *im, CHROMA_SUBSAMPLING ratio) {
-  Mat *matrix = im->_get_image_mat();
+void subsample(Image &im, CHROMA_SUBSAMPLING ratio) {
+  Mat *matrix = im._get_image_mat();
   Mat channels[3];
   split(*matrix, channels);
   Size target_size = Size(channels[0].size[1], channels[0].size[0]);
@@ -125,10 +126,10 @@ void subsample(Image *im, CHROMA_SUBSAMPLING ratio) {
 }
 
 // TODO are we supposed to implement this too?
-void biline_interp(Mat *matrix, int width, int height) {}
+void biline_interp(Mat &matrix, int width, int height) {}
 
-void equalize_hist(Image *im) {
-  Mat *matrix = im->_get_image_mat();
+void equalize_hist(Image &im) {
+  Mat *matrix = im._get_image_mat();
   vector<Mat> channels;
   split(*matrix, channels);
   if (matrix->depth() != CV_8U) {
@@ -139,4 +140,73 @@ void equalize_hist(Image *im) {
     equalizeHist(channel, channel);
   }
   merge(channels, *matrix);
+}
+
+Mat ecdf(const Mat &histogram, int total) {
+  Mat res = Mat::zeros(histogram.rows, histogram.cols, CV_32F);
+  float cumsum = 0;
+  for (int j = 0; j < histogram.cols; j++) {
+    cumsum += histogram.at<float>(j);
+    float val = cumsum / (float)total;
+    res.at<float>(j) = val;
+  }
+  return res;
+}
+
+void binarize(Image &im) {
+  Mat matrix = *im._get_image_mat();
+  int pix_num = matrix.rows * matrix.cols;
+  int bins = 256;
+  if (matrix.depth() != CV_8U) {
+    throw std::runtime_error(
+        "Original matrix must have 8-bit unsigned integers");
+  }
+  if (matrix.channels() == 3) {
+    cout << "Converting to grayscale" << endl;
+    BGR2GRAY(im);
+    matrix = *im._get_image_mat();
+  }
+  Mat hist = histogram<uchar>(matrix, bins);
+  // Get empirical cumulative distribution function
+  Mat distrib = ecdf(hist, pix_num);
+  // Get best threshold
+  int best_threshold = 0;
+  double max_variance = 0;
+  for (int thresh = 1; thresh < bins - 1; thresh++) {
+    // Calculate percentage of pixels above and below threshold (foreground and
+    // background)
+    // w0
+    double fg_prob = distrib.at<float>(thresh);
+    // w1
+    double bg_prob = 1 - fg_prob;
+    // Skip if one of the percentages is 0
+    if (fg_prob == 0 || bg_prob == 0) {
+      continue;
+    }
+    // μ0 and μ1
+    float fg_mean = 0, bg_mean = 0;
+    for (int i = 0; i < thresh; i++) {
+      fg_mean += i * hist.at<float>(i);
+    }
+    for (int i = thresh; i < bins; i++) {
+      bg_mean += i * hist.at<float>(i);
+    }
+    fg_mean /= fg_prob;
+    bg_mean /= bg_prob;
+    double inter_variance =
+        fg_prob * bg_prob * ((fg_mean - bg_mean) * (fg_mean - bg_mean));
+    if (inter_variance > max_variance) {
+      max_variance = inter_variance;
+      best_threshold = thresh;
+    }
+  }
+  // Binarize image
+  matrix.forEach<uchar>(
+      [&best_threshold](uchar &pixel, const int *position) -> void {
+        if (pixel > best_threshold) {
+          pixel = 255;
+        } else {
+          pixel = 0;
+        }
+      });
 }

@@ -18,26 +18,30 @@ using namespace cv;
  * @param coord2 The bottom right corner of the watermark
  * @param alpha The opacity of the watermark (1.0 = transparent, 0.0 = opaque)
  */
-void watermark(Image im, Image *mark, Point2i coord1, Point2i coord2,
+void watermark(Image &im, Image mark, Point2i coord1, Point2i coord2,
                double alpha);
 
 //! Convert an Image from BGR to YUV color space (as explained in wikipedia)
 //! @param im Image to be converted
-void BGR2YUV(Image *im);
+void BGR2YUV(Image &im);
 
 //! Convert an Image from YUV to BGR color space (as explained in wikipedia)
 //! @param im Image to be converted
-void YUV2BGR(Image *im);
+void YUV2BGR(Image &im);
 
 //! Convert an Image from BGR to GRAY color space (using formula for luma)
 //! @param im Image to be converted
-void BGR2GRAY(Image *im);
+void BGR2GRAY(Image &im);
 
 //! Convert an Image from a higher YUV subsampling to a lower one
 //! @param im Image to be converted
 //! @param cs Chroma subsampling format
-void subsample(Image *im, CHROMA_SUBSAMPLING cs);
+void subsample(Image &im, CHROMA_SUBSAMPLING cs);
 
 //! Equalize the color histogram of an Image
 //! @param im Image to be equalized
-void equalize_hist(Image *im);
+void equalize_hist(Image &im);
+
+//! Apply Otsu's method to an Image
+//! @param im Image to be binarized
+void binarize(Image &im);

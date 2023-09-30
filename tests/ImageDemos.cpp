@@ -35,6 +35,7 @@ TEST_F(ImageDemo, ColorHist_Demo) {
   // equalize_hist(&im);
   ////////////////////////////////////
   im.display_image();
+  BGR2GRAY(im);
   vector<Mat> hists = im.color_histograms(256, true, 1024, 800);
   // NOTE I found that if you try to allocate a new array with same shape and
   // type, it will return the previous array, so it's needed to assure that it
@@ -57,7 +58,7 @@ TEST_F(ImageDemo, WatermarkDemo) {
   string mark_file = "../../tests/resource/lena.ppm";
   Image mark;
   mark.load(mark_file);
-  watermark(im, &mark, {0, 0},
+  watermark(im, mark, {0, 0},
             {mark.get_image_size()[1], mark.get_image_size()[0]}, 0.5);
   im.display_image();
 }
@@ -67,8 +68,14 @@ TEST_F(ImageDemo, SubsamplingDemo) {
   // BGR2YUV(im);
   // im2.display_image();
   im.display_image();
-  subsample(&im, YUV422);
+  subsample(im, YUV422);
   im.display_image();
-  subsample(&im2, YUV420);
+  subsample(im2, YUV420);
   im2.display_image();
+}
+
+TEST_F(ImageDemo, ThresholdDemo) {
+  Image img("../../tests/resource/otsu.jpg");
+  binarize(img);
+  img.display_image();
 }
