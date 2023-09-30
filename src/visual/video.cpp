@@ -57,8 +57,7 @@ void video::loadY4M(const char *filename, CHROMA_SUBSAMPLING format) {
     uvWidth = width / 2;
     uvHeight = height / 2;
     break;
-  default:
-    // TODO: Check if there are more fitting error types (for this and others)
+      default:
     throw new std::runtime_error("Unrecognised UV format");
   }
 
@@ -150,8 +149,8 @@ void video::play(int stop_key) {
     for (auto &it : im_reel) {
       // TODO either display Image stops waiting for enter or we pass a
       // parameter to change the behaviour
-      it.display_image();
-      if (waitKey((int)(1 / fps_) * 1000 == stop_key)) {
+      it.display_image(1);
+      if (waitKey((int)(1 / fps_ * 1000 ))== stop_key) {
         // Ensures that the scene with the same fps (some minor variation may
         // happen due to computation costs)
         break;

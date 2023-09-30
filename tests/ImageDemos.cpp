@@ -63,7 +63,7 @@ TEST_F(ImageDemo, WatermarkDemo) {
 }
 
 TEST_F(ImageDemo, SubsamplingDemo) {
-  cvtColor(*im._get_image_mat(), *im._get_image_mat(), COLOR_BGR2YUV);
+  im=im.convert_BGR_YUV444();
   // BGR2YUV(im);
   // im2.display_image();
   im.display_image();

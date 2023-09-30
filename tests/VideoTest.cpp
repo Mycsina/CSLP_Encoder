@@ -24,6 +24,6 @@ TEST(VideoTestSuite, Y4M2BGRVideoTest)
 {
     video vid;
     vid.loadY4M(vid_yuv_file, YUV420);
-    vid.convertTo(YUV420, BGR);
+    vid.convertTo(YUV, BGR);
     vid.play();
 }

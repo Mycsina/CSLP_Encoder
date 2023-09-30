@@ -220,8 +220,6 @@ void Image::display_image(bool vid_ctx)
     imshow("Image", image_mat_);
     if (!vid_ctx)
       waitKey(0);
-    else
-      waitKey(25);
   }
   else
   {
