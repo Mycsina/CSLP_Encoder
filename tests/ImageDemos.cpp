@@ -57,7 +57,7 @@ TEST_F(ImageDemo, WatermarkDemo) {
   string mark_file = "../../tests/resource/lena.ppm";
   Image mark;
   mark.load(mark_file);
-  watermark(im, &mark, {0, 0},
+  watermark(im, mark, {0, 0},
             {mark.get_image_size()[1], mark.get_image_size()[0]}, 0.5);
   im.display_image();
 }
@@ -67,8 +67,8 @@ TEST_F(ImageDemo, SubsamplingDemo) {
   // BGR2YUV(im);
   // im2.display_image();
   im.display_image();
-  subsample(&im, YUV422);
+  subsample(im, YUV422);
   im.display_image();
-  subsample(&im2, YUV420);
+  subsample(im2, YUV420);
   im2.display_image();
 }

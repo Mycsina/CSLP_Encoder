@@ -73,9 +73,9 @@ public:
 
   //! Loads an Image from a cv::Mat
   //! @return Image file
-  Image *load(Mat *arr2d);
+  Image *load(const Mat &arr2d);
 
-  explicit Image(Mat *arr2d) {
+  explicit Image(const Mat &arr2d) {
     load(arr2d);
     c_space = BGR;
   }
@@ -99,7 +99,8 @@ public:
   //! @param  compression_params Vector of integers specifying the compression
   //! parameters with format <paramID, paramValue> (see cv:ImwriteFlags for
   //! available parameters)
-  void save(const char *filename, const vector<int> &compression_params = {});
+  void save(const basic_string<char> &filename,
+            const vector<int> &compression_params = {});
 
   //! Get size of Image
   //! @return Array of integers containing the size of the Image in the format
