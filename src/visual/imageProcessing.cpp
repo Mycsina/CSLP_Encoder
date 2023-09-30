@@ -86,6 +86,7 @@ void BGR2GRAY(Image &im) {
     }
   }
   im._set_image_mat(gray);
+  im._set_color(GRAY);
 }
 
 //! Subsample the non-luma channels of an Image
@@ -141,4 +142,73 @@ void equalize_hist(Image &im) {
   merge(channels, *matrix);
 }
 
-void binarize(Image *im) {}
+Mat ecdf(const Mat &histogram, int total) {
+  Mat res = Mat::zeros(histogram.rows, histogram.cols, CV_32F);
+  float cumsum = 0;
+  for (int j = 0; j < histogram.cols; j++) {
+    cumsum += histogram.at<float>(j);
+    float val = cumsum / (float)total;
+    res.at<float>(j) = val;
+  }
+  return res;
+}
+
+void binarize(Image &im) {
+  Mat matrix = *im._get_image_mat();
+  int pix_num = matrix.rows * matrix.cols;
+  int bins = 256;
+  if (matrix.depth() != CV_8U) {
+    throw std::runtime_error(
+        "Original matrix must have 8-bit unsigned integers");
+  }
+  if (matrix.channels() == 3) {
+    cout << "Converting to grayscale" << endl;
+    BGR2GRAY(im);
+    matrix = *im._get_image_mat();
+  }
+  Mat hist = histogram<uchar>(matrix, bins);
+  // Get empirical cumulative distribution function
+  Mat distrib = ecdf(hist, pix_num);
+  // Get best threshold
+  int best_threshold = 0;
+  double max_variance = 0;
+  for (int thresh = 1; thresh < bins - 1; thresh++) {
+    // Calculate percentage of pixels above and below threshold (foreground and
+    // background)
+    // w0
+    double fg_prob = distrib.at<float>(thresh);
+    // w1
+    double bg_prob = 1 - fg_prob;
+    // Skip if one of the percentages is 0
+    if (fg_prob == 0 || bg_prob == 0) {
+      continue;
+    }
+    // μ0 and μ1
+    float fg_mean = 0, bg_mean = 0;
+    for (int i = 0; i < thresh; i++) {
+      fg_mean += i * hist.at<float>(i);
+    }
+    for (int i = thresh; i < bins; i++) {
+      bg_mean += i * hist.at<float>(i);
+    }
+    fg_mean /= fg_prob;
+    bg_mean /= bg_prob;
+    double inter_variance =
+        fg_prob * bg_prob * ((fg_mean - bg_mean) * (fg_mean - bg_mean));
+    if (inter_variance > max_variance) {
+      max_variance = inter_variance;
+      best_threshold = thresh;
+    }
+  }
+  // Binarize image
+  matrix.forEach<uchar>(
+      [&best_threshold](uchar &pixel, const int *position) -> void {
+        if (pixel > best_threshold) {
+          pixel = 255;
+        } else {
+          pixel = 0;
+        }
+      });
+  imshow("Binarized", matrix);
+  waitKey(0);
+}

@@ -239,11 +239,14 @@ vector<Mat> Image::color_histograms(int bins, bool fill_hist, int width,
     // Array of colors for each channel
     Scalar colors[] = {Scalar(255, 0, 0), Scalar(0, 255, 0), Scalar(0, 0, 255)};
     split(image_mat_, channels);
+    // If image is grayscale, set color to white
+    if (channels.size() == 1) {
+      colors[0] = Scalar(255, 255, 255);
+    }
     for (int i = 0; i < channels.size(); i++) {
-      Histogram hist = Histogram(256);
+      Histogram hist = Histogram(bins);
       hist.color = colors[i];
-      calcHist(&channels[i], 1, 0, Mat(), hist.mat_, 1, &bins, 0);
-      Mat backMat = hist.mat_;
+      Mat backMat = histogram<uchar>(channels[i], bins);
       int bin_w = cvRound((double)width / 256);
       Vec3b backColor = (0, 0, 0);
 

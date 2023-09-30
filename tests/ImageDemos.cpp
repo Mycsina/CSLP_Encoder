@@ -35,6 +35,7 @@ TEST_F(ImageDemo, ColorHist_Demo) {
   // equalize_hist(&im);
   ////////////////////////////////////
   im.display_image();
+  BGR2GRAY(im);
   vector<Mat> hists = im.color_histograms(256, true, 1024, 800);
   // NOTE I found that if you try to allocate a new array with same shape and
   // type, it will return the previous array, so it's needed to assure that it
@@ -71,4 +72,10 @@ TEST_F(ImageDemo, SubsamplingDemo) {
   im.display_image();
   subsample(im2, YUV420);
   im2.display_image();
+}
+
+TEST_F(ImageDemo, ThresholdDemo) {
+  Image img("../../tests/resource/otsu.jpg");
+  // im.display_image();
+  binarize(img);
 }

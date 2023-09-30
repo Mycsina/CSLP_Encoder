@@ -40,7 +40,7 @@ TEST_F(ImageTest, BGREquivalenceTest) {
   // im2.display_image();
   cvtColor(*im2._get_image_mat(), *im2._get_image_mat(), COLOR_YUV2BGR);
   // img.display_image();
-  YUV2BGR(&img);
+  YUV2BGR(img);
   // img.display_image();
   int rand_row = rand() % img.get_image_size()[0];
   int rand_col = rand() % img.get_image_size()[1];
@@ -55,7 +55,7 @@ TEST_F(ImageTest, BGREquivalenceTest) {
 TEST_F(ImageTest, GRAYEquivalenceTest) {
   cvtColor(*img._get_image_mat(), *img._get_image_mat(), COLOR_BGR2GRAY);
   img.display_image();
-  BGR2GRAY(&im2);
+  BGR2GRAY(im2);
   im2.display_image();
   int rand_row = rand() % img.get_image_size()[0];
   int rand_col = rand() % img.get_image_size()[1];
