@@ -79,28 +79,34 @@ void video::readFrame(FILE *file, int width, int height, int frameSize,
   vector<Mat> channels(3);
 
   // remove the "FRAME", if exists
-  if (fread(buffer, 1, 6, file) != 6) {
+  if (fread(buffer, sizeof(char), 6, file) != 6 && !feof(file)) {
     throw new std::runtime_error("incomplete reading");
   } else if (string(buffer) !=
              "FRAME\n") { // we're already past the frame (or this frame doesn't
                           // specify that a frame has started
-    fseek(file, -5, SEEK_CUR);
+    fseek(file, -6, SEEK_CUR);
+    std::cout << buffer << " went back" << std::endl;
+  }
+
+  if (feof(file)) {
+    return;
   }
 
   // read yPlane
-  if (fread(reinterpret_cast<char *>(yPlane.data), 1, width * height, file) !=
-      width * height) {
-    throw new std::runtime_error("yPlane reading not completed");
+  if (fread(reinterpret_cast<char *>(yPlane.data), sizeof(uint8_t),
+            width * height, file) != width * height) {
+    throw new runtime_error("yPlane reading not completed");
   }
+
   // read uPlane
-  if (fread(reinterpret_cast<char *>(uPlane.data), 1, uvWidth * uvHeight,
-            file) != uvWidth * uvHeight) {
+  if (fread(reinterpret_cast<char *>(uPlane.data), sizeof(uint8_t),
+            uvWidth * uvHeight, file) != uvWidth * uvHeight) {
     throw new std::runtime_error("uPlane reading not completed");
   }
 
   // read vPlane
-  if (fread(reinterpret_cast<char *>(vPlane.data), 1, uvWidth * uvHeight,
-            file) != uvWidth * uvHeight) {
+  if (fread(reinterpret_cast<char *>(vPlane.data), sizeof(uint8_t),
+            uvWidth * uvHeight, file) != uvWidth * uvHeight) {
     throw new std::runtime_error("vPlane reading not completed");
   }
 
@@ -110,15 +116,11 @@ void video::readFrame(FILE *file, int width, int height, int frameSize,
     resize(vPlane, vPlane, Size(width, height));
   }
 
-  if (yPlane.type() != CV_8UC1 || uPlane.type() != CV_8UC1 ||
-      vPlane.type() != CV_8UC1) {
-    std::cout << "error" << std::endl;
-  }
-
   // merge the three channels
-  channels.push_back(yPlane);
-  channels.push_back(uPlane);
-  channels.push_back(vPlane);
+  split(frame, channels);
+  channels[0] = yPlane;
+  channels[1] = uPlane;
+  channels[2] = vPlane;
   merge(channels, frame);
 
   im._set_image_mat(frame);
@@ -157,4 +159,14 @@ void video::play(int stop_key) {
   } else {
     throw std::runtime_error("Video hasn't been loaded");
   }
+}
+
+void video::convertTo(COLOR_SPACE f1, COLOR_SPACE f2) {
+  vector<Image> temp;
+  if (f2 == BGR && (f1 == YUV) {
+    for (int i = 0; i < im_reel.size(); i++) {
+      temp.push_back(im_reel[i].convert_YUV_BGR());
+    }
+  }
+  im_reel = temp;
 }

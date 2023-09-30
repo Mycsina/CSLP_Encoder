@@ -67,4 +67,6 @@ public:
   //! Signals whether the video has been loaded
   //! @return true if the video has been loaded, false otherwise
   bool loaded() const { return !im_reel.empty(); };
+
+  void convertTo(COLOR_SPACE f1, COLOR_SPACE f2);
 };
