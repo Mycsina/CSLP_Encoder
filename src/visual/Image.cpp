@@ -10,14 +10,17 @@
 using namespace std;
 using namespace cv;
 
-Image Image::convert_BGR_YUV444() {
+Image Image::convert_BGR_YUV444()
+{
   int rows = image_mat_.rows;
   int cols = image_mat_.cols;
 
   cv::Mat yuv(rows, cols, CV_8UC3);
 
-  for (int row = 0; row < rows; row++) {
-    for (int col = 0; col < cols; col++) {
+  for (int row = 0; row < rows; row++)
+  {
+    for (int col = 0; col < cols; col++)
+    {
       Vec3b pixel = image_mat_.at<Vec3b>(row, col);
       double b = pixel.val[0];
       double g = pixel.val[1];
@@ -40,7 +43,8 @@ Image Image::convert_BGR_YUV444() {
   return result;
 }
 
-Image Image::convert_BGR_YUV422() {
+Image Image::convert_BGR_YUV422()
+{
   int rows = image_mat_.rows;
   int cols = image_mat_.cols;
 
@@ -48,8 +52,10 @@ Image Image::convert_BGR_YUV422() {
   Mat uPlane(rows, cols / 2, CV_8UC1);
   Mat vPlane(rows, cols / 2, CV_8UC1);
 
-  for (int row = 0; row < rows; row++) {
-    for (int col = 0; col < cols; col++) {
+  for (int row = 0; row < rows; row++)
+  {
+    for (int col = 0; col < cols; col++)
+    {
       Vec3b pixel = image_mat_.at<Vec3b>(row, col);
       double b = pixel.val[0];
       double g = pixel.val[1];
@@ -60,7 +66,8 @@ Image Image::convert_BGR_YUV422() {
       double v = 0.877 * (r - y) + 128.0;
 
       yPlane.at<u_char>(row, col) = static_cast<uchar>(y);
-      if (col % 2 == 0) {
+      if (col % 2 == 0)
+      {
         uPlane.at<u_char>(row, col / 2) = static_cast<uchar>(u);
         vPlane.at<u_char>(row, col / 2) = static_cast<uchar>(v);
       }
@@ -84,7 +91,8 @@ Image Image::convert_BGR_YUV422() {
   return result;
 }
 
-Image Image::convert_BGR_YUV420() {
+Image Image::convert_BGR_YUV420()
+{
   int rows = image_mat_.rows;
   int cols = image_mat_.cols;
 
@@ -92,8 +100,10 @@ Image Image::convert_BGR_YUV420() {
   Mat uPlane(rows / 2, cols / 2, CV_8UC1);
   Mat vPlane(rows / 2, cols / 2, CV_8UC1);
 
-  for (int row = 0; row < rows; row++) {
-    for (int col = 0; col < cols; col++) {
+  for (int row = 0; row < rows; row++)
+  {
+    for (int col = 0; col < cols; col++)
+    {
       Vec3b pixel = image_mat_.at<Vec3b>(row, col);
       double b = pixel.val[0];
       double g = pixel.val[1];
@@ -104,7 +114,8 @@ Image Image::convert_BGR_YUV420() {
       double v = 0.877 * (r - y) + 128.0;
 
       yPlane.at<u_char>(row, col) = static_cast<uchar>(y);
-      if (row % 2 == 0 && col % 2 == 0) {
+      if (row % 2 == 0 && col % 2 == 0)
+      {
         uPlane.at<u_char>(row / 2, col / 2) = static_cast<uchar>(u);
         vPlane.at<u_char>(row / 2, col / 2) = static_cast<uchar>(v);
       }
@@ -128,14 +139,17 @@ Image Image::convert_BGR_YUV420() {
   return result;
 }
 
-Image Image::convert_YUV_BGR() {
+Image Image::convert_YUV_BGR()
+{
   int rows = image_mat_.rows;
   int cols = image_mat_.cols;
 
   Mat bgr(rows, cols, CV_8UC3);
 
-  for (int row = 0; row < rows; row++) {
-    for (int col = 0; col < cols; col++) {
+  for (int row = 0; row < rows; row++)
+  {
+    for (int col = 0; col < cols; col++)
+    {
       Vec3b pixel = image_mat_.at<Vec3b>(row, col);
       double y = pixel.val[0];
       double u = pixel.val[1] - 128.0;
@@ -162,50 +176,66 @@ Image Image::convert_YUV_BGR() {
   return result;
 }
 
-Image *Image::load(Mat *arr) {
+Image *Image::load(Mat *arr)
+{
   image_mat_ = arr->clone();
   return this;
 }
 
-void Image::load(const basic_string<char> &filename, ImreadModes mode) {
+void Image::load(const basic_string<char> &filename, ImreadModes mode)
+{
   Mat image, conv;
   // By default, imread loads images in BGR format
   // TODO add support for other formats | currently everything gets converted to
   // BGR format and all operations expect a BGR Image
   image = imread(filename, mode);
   c_space = BGR;
-  if (!image.empty()) {
+  if (!image.empty())
+  {
     image.convertTo(conv, CV_8UC3);
     image_mat_ = conv;
-  } else {
+  }
+  else
+  {
     throw std::runtime_error("Image has already been loaded");
   }
 }
 
-void Image::save(const char *filename, const vector<int> &compression_params) {
-  if (loaded()) {
+void Image::save(const char *filename, const vector<int> &compression_params)
+{
+  if (loaded())
+  {
     imwrite(filename, image_mat_, compression_params);
-  } else {
+  }
+  else
+  {
     throw std::runtime_error("Image hasn't been loaded");
   }
 }
 
-void Image::display_image(bool vid_ctx) {
-  if (loaded()) {
+void Image::display_image(bool vid_ctx)
+{
+  if (loaded())
+  {
     imshow("Image", image_mat_);
     if (!vid_ctx)
       waitKey(0);
     else
       waitKey(25);
-  } else {
+  }
+  else
+  {
     throw std::runtime_error("Image hasn't been loaded");
   }
 }
 
-Vec3b Image::get_pixel(int row, int col) const {
-  if (loaded()) {
+Vec3b Image::get_pixel(int row, int col) const
+{
+  if (loaded())
+  {
     if (row < 0 || row >= image_mat_.rows || col < 0 ||
-        col >= image_mat_.cols) {
+        col >= image_mat_.cols)
+    {
       throw std::runtime_error("Pixel out of bounds");
     }
     Vec3b color_values = image_mat_.at<Vec3b>(row, col);
@@ -214,31 +244,39 @@ Vec3b Image::get_pixel(int row, int col) const {
   throw std::runtime_error("Image hasn't been loaded");
 }
 
-void Image::set_pixel(int row, int col, const Vec3b &color_values) {
-  if (row < 0 || row >= image_mat_.rows || col < 0 || col >= image_mat_.cols) {
+void Image::set_pixel(int row, int col, const Vec3b &color_values)
+{
+  if (row < 0 || row >= image_mat_.rows || col < 0 || col >= image_mat_.cols)
+  {
     throw std::runtime_error("Pixel out of bounds");
   }
   image_mat_.at<Vec3b>(row, col) = color_values;
 }
 
-Image Image::clone() {
-  if (loaded()) {
+Image Image::clone()
+{
+  if (loaded())
+  {
     Image clone;
     clone.image_mat_ = image_mat_.clone();
     return clone;
-  } else
+  }
+  else
     throw std::runtime_error("Image hasn't been loaded");
 }
 
 vector<Mat> Image::color_histograms(int bins, bool fill_hist, int width,
-                                    int height) {
-  if (loaded()) {
+                                    int height)
+{
+  if (loaded())
+  {
     vector<Mat> histograms;
     vector<Mat> channels;
     // Array of colors for each channel
     Scalar colors[] = {Scalar(255, 0, 0), Scalar(0, 255, 0), Scalar(0, 0, 255)};
     split(image_mat_, channels);
-    for (int i = 0; i < channels.size(); i++) {
+    for (int i = 0; i < channels.size(); i++)
+    {
       Histogram hist = Histogram(256);
       hist.color = colors[i];
       calcHist(&channels[i], 1, 0, Mat(), hist.mat_, 1, &bins, 0);
@@ -250,19 +288,24 @@ vector<Mat> Image::color_histograms(int bins, bool fill_hist, int width,
 
       normalize(backMat, backMat, 0, histImage.rows, NORM_MINMAX, -1, Mat());
 
-      for (int j = 1; j < 256; j++) {
+      for (int j = 1; j < 256; j++)
+      {
         line(histImage,
              Point(bin_w * (j - 1), height - cvRound(backMat.at<float>(j - 1))),
              Point(bin_w * (j), height - cvRound(backMat.at<float>(j))),
              hist.color, 2, 8, 0);
       }
 
-      if (fill_hist) {
-        for (int j = 0; j < histImage.cols; j++) {
+      if (fill_hist)
+      {
+        for (int j = 0; j < histImage.cols; j++)
+        {
           Mat col = histImage.col(j);
-          for (int k = col.rows - 1; k >= 0; k--) {
+          for (int k = col.rows - 1; k >= 0; k--)
+          {
             // Fill column with color until a non-<backColor> pixel is found
-            if (col.at<Vec3b>(k) != backColor) {
+            if (col.at<Vec3b>(k) != backColor)
+            {
               break;
             }
             Vec3b color = {(uchar)hist.color[0], (uchar)hist.color[1],
@@ -270,7 +313,8 @@ vector<Mat> Image::color_histograms(int bins, bool fill_hist, int width,
             col.at<Vec3b>(k) = color;
             // If we reach end of column without finding a non-<backColor> pixel
             // zero the column
-            if (k == 0) {
+            if (k == 0)
+            {
               col = Mat::zeros(col.rows, 1, CV_8UC3);
             }
           }
@@ -280,7 +324,7 @@ vector<Mat> Image::color_histograms(int bins, bool fill_hist, int width,
       histograms.push_back(histImage);
     }
     return histograms;
-
-  } else
+  }
+  else
     throw std::runtime_error("Image hasn't been loaded");
 }
