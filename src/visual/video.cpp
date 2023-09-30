@@ -17,7 +17,7 @@ void video::load(string filename) {
   VideoCapture cap = VideoCapture(filename);
   while (cap.isOpened()) {
     Mat buf;
-    image im;
+    Image im;
     cap >> buf;
     if (buf.empty())
       break;
@@ -69,7 +69,7 @@ void video::loadY4M(const char *filename, CHROMA_SUBSAMPLING format) {
 
 void video::readFrame(FILE *file, int width, int height, int frameSize,
                       int uvWidth, int uvHeight, CHROMA_SUBSAMPLING format) {
-  image im;
+  Image im;
   char buffer[6];
   im._set_chroma(format);
   Mat yPlane(height, width, CV_8UC1);
@@ -145,7 +145,7 @@ void video::getHeaderData(FILE *file, int *width, int *height, float *fps) {
 void video::play(int stop_key) {
   if (loaded()) {
     for (auto &it : im_reel) {
-      // TODO either display image stops waiting for enter or we pass a
+      // TODO either display Image stops waiting for enter or we pass a
       // parameter to change the behaviour
       it.display_image();
       if (waitKey((int)(1 / fps_) * 1000 == stop_key)) {

@@ -1,4 +1,4 @@
-﻿#include "image.hpp"
+﻿#include "Image.hpp"
 
 #include <iostream>
 #include <opencv2/core/core.hpp>
@@ -10,7 +10,7 @@
 using namespace std;
 using namespace cv;
 
-image image::convert_BGR_YUV444() {
+Image Image::convert_BGR_YUV444() {
   int rows = image_mat_.rows;
   int cols = image_mat_.cols;
 
@@ -42,14 +42,14 @@ image image::convert_BGR_YUV444() {
   channels.push_back(vPlane);
 
   merge(channels, yuv);
-  image result;
+  Image result;
   result._set_image_mat(yuv);
   result._set_color(YUV);
   result._set_chroma(YUV444);
   return result;
 }
 
-image image::convert_BGR_YUV422() {
+Image Image::convert_BGR_YUV422() {
   int rows = image_mat_.rows;
   int cols = image_mat_.cols;
 
@@ -86,14 +86,14 @@ image image::convert_BGR_YUV422() {
   channels.push_back(vPlane);
 
   merge(channels, yuv);
-  image result;
+  Image result;
   result._set_image_mat(yuv);
   result._set_color(YUV);
   result._set_chroma(YUV422);
   return result;
 }
 
-image image::convert_BGR_YUV420() {
+Image Image::convert_BGR_YUV420() {
   int rows = image_mat_.rows;
   int cols = image_mat_.cols;
 
@@ -130,14 +130,14 @@ image image::convert_BGR_YUV420() {
   channels.push_back(vPlane);
 
   merge(channels, yuv);
-  image result;
+  Image result;
   result._set_image_mat(yuv);
   result._set_color(YUV);
   result._set_chroma(YUV420);
   return result;
 }
 
-image image::convert_YUV_BGR() {
+Image Image::convert_YUV_BGR() {
   int rows = image_mat_.rows;
   int cols = image_mat_.cols;
 
@@ -169,22 +169,22 @@ image image::convert_YUV_BGR() {
   channels.push_back(rPlane);
 
   merge(channels, bgr);
-  image result;
+  Image result;
   result._set_image_mat(bgr);
   result._set_color(BGR);
   return result;
 }
 
-image *image::load(Mat *arr) {
+Image *Image::load(Mat *arr) {
   image_mat_ = arr->clone();
   return this;
 }
 
-void image::load(const basic_string<char> &filename, ImreadModes mode) {
+void Image::load(const basic_string<char> &filename, ImreadModes mode) {
   Mat image, conv;
   // By default, imread loads images in BGR format
   // TODO add support for other formats | currently everything gets converted to
-  // BGR format and all operations expect a BGR image
+  // BGR format and all operations expect a BGR Image
   image = imread(filename, mode);
   c_space = BGR;
   if (!image.empty()) {
@@ -195,7 +195,7 @@ void image::load(const basic_string<char> &filename, ImreadModes mode) {
   }
 }
 
-void image::save(const char *filename, const vector<int> &compression_params) {
+void Image::save(const char *filename, const vector<int> &compression_params) {
   if (loaded()) {
     imwrite(filename, image_mat_, compression_params);
   } else {
@@ -203,7 +203,7 @@ void image::save(const char *filename, const vector<int> &compression_params) {
   }
 }
 
-void image::display_image(bool vid_ctx) {
+void Image::display_image(bool vid_ctx) {
   if (loaded()) {
     imshow("Image", image_mat_);
     if (!vid_ctx)
@@ -215,7 +215,7 @@ void image::display_image(bool vid_ctx) {
   }
 }
 
-Vec3b image::get_pixel(int row, int col) const {
+Vec3b Image::get_pixel(int row, int col) const {
   if (loaded()) {
     if (row < 0 || row >= image_mat_.rows || col < 0 ||
         col >= image_mat_.cols) {
@@ -227,23 +227,23 @@ Vec3b image::get_pixel(int row, int col) const {
   throw std::runtime_error("Image hasn't been loaded");
 }
 
-void image::set_pixel(int row, int col, const Vec3b &color_values) {
+void Image::set_pixel(int row, int col, const Vec3b &color_values) {
   if (row < 0 || row >= image_mat_.rows || col < 0 || col >= image_mat_.cols) {
     throw std::runtime_error("Pixel out of bounds");
   }
   image_mat_.at<Vec3b>(row, col) = color_values;
 }
 
-image image::clone() {
+Image Image::clone() {
   if (loaded()) {
-    image clone;
+    Image clone;
     clone.image_mat_ = image_mat_.clone();
     return clone;
   } else
     throw std::runtime_error("Image hasn't been loaded");
 }
 
-vector<Mat> image::color_histograms(int bins, bool fill_hist, int width,
+vector<Mat> Image::color_histograms(int bins, bool fill_hist, int width,
                                     int height) {
   if (loaded()) {
     vector<Mat> histograms;

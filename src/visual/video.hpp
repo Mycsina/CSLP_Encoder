@@ -5,13 +5,13 @@
  */
 #pragma once
 
-#include "image.hpp"
+#include "Image.hpp"
 
 using namespace std;
 using namespace cv;
 
 class video {
-  vector<image> im_reel;
+  vector<Image> im_reel;
   float fps_;
 
 public:
@@ -19,9 +19,9 @@ public:
 
   ~video() = default;
 
-  vector<image> *_get_reel() { return &im_reel; };
+  vector<Image> *_get_reel() { return &im_reel; };
 
-  void _set_reel(vector<image> reel) { im_reel = std::move(reel); };
+  void _set_reel(vector<Image> reel) { im_reel = std::move(reel); };
 
   float _get_fps() const { return fps_; };
 
@@ -29,12 +29,12 @@ public:
 
   //! Returns frame at given position
   //! @param pos position of the frame
-  //! @return image object representing the frame
-  image getFrame(int pos) { return im_reel[pos]; }
+  //! @return Image object representing the frame
+  Image getFrame(int pos) { return im_reel[pos]; }
 
   //! Applies a function to every frame in the video
   //! @param func function to be applied
-  void map(function<void(image &)> func) {
+  void map(function<void(Image &)> func) {
     for (auto &it : im_reel) {
       func(it);
     }

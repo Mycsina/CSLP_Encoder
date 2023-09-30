@@ -6,7 +6,7 @@ using namespace cv;
 
 // TODO how manually are we supposed to implement this?
 
-void watermark(image im, image *mark, Point2i coord1, Point2i coord2,
+void watermark(Image im, Image *mark, Point2i coord1, Point2i coord2,
                double alpha) {
   Mat imageMat = *im._get_image_mat();
   Mat markMat = *mark->_get_image_mat();
@@ -20,12 +20,12 @@ void watermark(image im, image *mark, Point2i coord1, Point2i coord2,
     flag = INTER_LINEAR;
   }
   resize(markMat, markMat, Size(width, height), 0, 0, flag);
-  // Blend the watermark with the image
+  // Blend the watermark with the Image
   Mat roi = imageMat(Rect(coord1.x, coord1.y, width, height));
   addWeighted(roi, alpha, markMat, 1.0 - alpha, 0.0, roi);
 }
 
-void BGR2YUV(image *im) {
+void BGR2YUV(Image *im) {
   Mat *matrix = im->_get_image_mat();
   if (matrix->channels() != 3) {
     throw std::runtime_error("Original matrix must have 3 channels");
@@ -46,7 +46,7 @@ void BGR2YUV(image *im) {
   }
 }
 
-void YUV2BGR(image *im) {
+void YUV2BGR(Image *im) {
   Mat *matrix = im->_get_image_mat();
   if (matrix->channels() != 3) {
     throw std::runtime_error("Original matrix must have 3 channels");
@@ -67,7 +67,7 @@ void YUV2BGR(image *im) {
   }
 }
 
-void BGR2GRAY(image *im) {
+void BGR2GRAY(Image *im) {
   Mat *matrix = im->_get_image_mat();
   Mat gray(matrix->rows, matrix->cols, CV_8UC1);
   if (matrix->channels() != 3) {
@@ -88,10 +88,10 @@ void BGR2GRAY(image *im) {
   im->_set_image_mat(gray);
 }
 
-//! Subsample the non-luma channels of an image
+//! Subsample the non-luma channels of an Image
 //! @param im Image to be subsampled
 //! @param ratio Subsampling ratio
-void subsample(image *im, CHROMA_SUBSAMPLING ratio) {
+void subsample(Image *im, CHROMA_SUBSAMPLING ratio) {
   Mat *matrix = im->_get_image_mat();
   Mat channels[3];
   split(*matrix, channels);
@@ -126,3 +126,17 @@ void subsample(image *im, CHROMA_SUBSAMPLING ratio) {
 
 // TODO are we supposed to implement this too?
 void biline_interp(Mat *matrix, int width, int height) {}
+
+void equalize_hist(Image *im) {
+  Mat *matrix = im->_get_image_mat();
+  vector<Mat> channels;
+  split(*matrix, channels);
+  if (matrix->depth() != CV_8U) {
+    throw std::runtime_error(
+        "Original matrix must have 8-bit unsigned integers");
+  }
+  for (auto &channel : channels) {
+    equalizeHist(channel, channel);
+  }
+  merge(channels, *matrix);
+}
