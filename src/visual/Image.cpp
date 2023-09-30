@@ -11,168 +11,153 @@ using namespace std;
 using namespace cv;
 
 Image Image::convert_BGR_YUV444() {
-  int rows = image_mat_.rows;
-  int cols = image_mat_.cols;
+    int rows=image_mat_.rows;
+    int cols=image_mat_.cols;
 
-  Mat yPlane(rows, cols, CV_8UC1);
-  Mat uPlane(rows, cols, CV_8UC1);
-  Mat vPlane(rows, cols, CV_8UC1);
+    cv::Mat yuv(rows, cols, CV_8UC3);
 
-  for (int row = 0; row < rows; row++) {
-    for (int col = 0; col < cols; col++) {
-      Vec3b pixel = image_mat_.at<Vec3b>(row, col);
-      u_char b = pixel.val[0];
-      u_char g = pixel.val[1];
-      u_char r = pixel.val[2];
+    for(int row=0;row<rows;row++){
+        for(int col=0;col<cols;col++){
+            Vec3b pixel=image_mat_.at<Vec3b>(row,col);
+            double b= pixel.val[0];
+            double g= pixel.val[1];
+            double r= pixel.val[2];
 
-      u_char y = 0.299 * r + 0.587 * g + 0.114 * b;
-      u_char u = -0.14713 * r - 0.28886 * g + 0.436 * b;
-      u_char v = 0.615 * r - 0.51498 * g - 0.10001 * b;
+            double y = 0.299 * r + 0.587 * g + 0.114 * b;
+            double u = 0.492 * (b - y) + 128.0;
+            double v = 0.877 * (r - y) + 128.0;
 
-      yPlane.at<u_char>(row, col) = y;
-      uPlane.at<u_char>(row, col) = u;
-      vPlane.at<u_char>(row, col) = v;
+            // Set the YUV pixel values
+            yuv.at<cv::Vec3b>(row,col) = cv::Vec3b(static_cast<uchar>(y), static_cast<uchar>(u), static_cast<uchar>(v));
+        }
     }
-  }
 
-  Mat yuv(rows, cols, CV_8UC3);
-  vector<Mat> channels;
-  channels.push_back(yPlane);
-  channels.push_back(uPlane);
-  channels.push_back(vPlane);
-
-  merge(channels, yuv);
-  Image result;
-  result._set_image_mat(yuv);
-  result._set_color(YUV);
-  result._set_chroma(YUV444);
-  return result;
+    Image result;
+    result._set_image_mat(yuv);
+    result._set_color(YUV);
+    result._set_chroma(YUV444);
+    return result;
 }
 
 Image Image::convert_BGR_YUV422() {
-  int rows = image_mat_.rows;
-  int cols = image_mat_.cols;
+    int rows=image_mat_.rows;
+    int cols=image_mat_.cols;
 
-  Mat yPlane(rows, cols, CV_8UC1);
-  Mat uPlane(rows, cols / 2, CV_8UC1);
-  Mat vPlane(rows, cols / 2, CV_8UC1);
+    Mat yPlane(rows,cols,CV_8UC1);
+    Mat uPlane(rows,cols/2,CV_8UC1);
+    Mat vPlane(rows,cols/2,CV_8UC1);
 
-  for (int row = 0; row < rows; row++) {
-    for (int col = 0; col < cols; col++) {
-      Vec3b pixel = image_mat_.at<Vec3b>(row, col);
-      u_char b = pixel.val[0];
-      u_char g = pixel.val[1];
-      u_char r = pixel.val[2];
+    for(int row=0;row<rows;row++){
+        for(int col=0;col<cols;col++){
+            Vec3b pixel=image_mat_.at<Vec3b>(row,col);
+            double b= pixel.val[0];
+            double g= pixel.val[1];
+            double r= pixel.val[2];
 
-      u_char y = 0.299 * r + 0.587 * g + 0.114 * b;
-      u_char u = -0.14713 * r - 0.28886 * g + 0.436 * b;
-      u_char v = 0.615 * r - 0.51498 * g - 0.10001 * b;
+            double y = 0.299 * r + 0.587 * g + 0.114 * b;
+            double u = 0.492 * (b - y) + 128.0;
+            double v = 0.877 * (r - y) + 128.0;
 
-      yPlane.at<u_char>(row, col) = y;
-      if (col % 2 == 0) {
-        uPlane.at<u_char>(row / 2, col) = u;
-        vPlane.at<u_char>(row / 2, col) = v;
-      }
+            yPlane.at<u_char>(row,col)=static_cast<uchar>(y);
+            if(col%2==0) {
+                uPlane.at<u_char>(row, col/2) = static_cast<uchar>(u);
+                vPlane.at<u_char>(row, col/2) = static_cast<uchar>(v);
+            }
+        }
     }
-  }
 
-  resize(uPlane, uPlane, Size(cols, rows));
-  resize(vPlane, vPlane, Size(cols, rows));
+    resize(uPlane,uPlane,Size(cols,rows));
+    resize(vPlane,vPlane,Size(cols,rows));
 
-  Mat yuv(rows, cols, CV_8UC3);
-  vector<Mat> channels;
-  channels.push_back(yPlane);
-  channels.push_back(uPlane);
-  channels.push_back(vPlane);
+    Mat yuv(rows,cols,CV_8UC3);
+    vector<Mat> channels;
+    channels.push_back(yPlane);
+    channels.push_back(uPlane);
+    channels.push_back(vPlane);
 
-  merge(channels, yuv);
-  Image result;
-  result._set_image_mat(yuv);
-  result._set_color(YUV);
-  result._set_chroma(YUV422);
-  return result;
+    merge(channels,yuv);
+    Image result;
+    result._set_image_mat(yuv);
+    result._set_color(YUV);
+    result._set_chroma(YUV422);
+    return result;
 }
 
 Image Image::convert_BGR_YUV420() {
-  int rows = image_mat_.rows;
-  int cols = image_mat_.cols;
+    int rows=image_mat_.rows;
+    int cols=image_mat_.cols;
 
-  Mat yPlane(rows, cols, CV_8UC1);
-  Mat uPlane(rows / 2, cols / 2, CV_8UC1);
-  Mat vPlane(rows / 2, cols / 2, CV_8UC1);
+    Mat yPlane(rows,cols,CV_8UC1);
+    Mat uPlane(rows/2,cols/2,CV_8UC1);
+    Mat vPlane(rows/2,cols/2,CV_8UC1);
 
-  for (int row = 0; row < rows; row++) {
-    for (int col = 0; col < cols; col++) {
-      Vec3b pixel = image_mat_.at<Vec3b>(row, col);
-      u_char b = pixel.val[0];
-      u_char g = pixel.val[1];
-      u_char r = pixel.val[2];
+    for(int row=0;row<rows;row++){
+        for(int col=0;col<cols;col++){
+            Vec3b pixel=image_mat_.at<Vec3b>(row,col);
+            double b= pixel.val[0];
+            double g= pixel.val[1];
+            double r= pixel.val[2];
 
-      u_char y = 0.299 * r + 0.587 * g + 0.114 * b;
-      u_char u = -0.14713 * r - 0.28886 * g + 0.436 * b;
-      u_char v = 0.615 * r - 0.51498 * g - 0.10001 * b;
+            double y = 0.299 * r + 0.587 * g + 0.114 * b;
+            double u = 0.492 * (b - y) + 128.0;
+            double v = 0.877 * (r - y) + 128.0;
 
-      yPlane.at<u_char>(row, col) = y;
-      if (col % 2 == 0 and row % 2 == 0) {
-        uPlane.at<u_char>(row / 2, col / 2) = u;
-        vPlane.at<u_char>(row / 2, col / 2) = v;
-      }
+            yPlane.at<u_char>(row,col)=static_cast<uchar>(y);
+            if(row%2==0 && col%2==0) {
+                uPlane.at<u_char>(row / 2, col / 2) = static_cast<uchar>(u);
+                vPlane.at<u_char>(row / 2, col / 2) = static_cast<uchar>(v);
+            }
+        }
     }
-  }
 
-  resize(uPlane, uPlane, Size(cols, rows));
-  resize(vPlane, vPlane, Size(cols, rows));
+    resize(uPlane,uPlane,Size(cols,rows));
+    resize(vPlane,vPlane,Size(cols,rows));
 
-  Mat yuv(rows, cols, CV_8UC3);
-  vector<Mat> channels;
-  channels.push_back(yPlane);
-  channels.push_back(uPlane);
-  channels.push_back(vPlane);
+    Mat yuv(rows,cols,CV_8UC3);
+    vector<Mat> channels;
+    channels.push_back(yPlane);
+    channels.push_back(uPlane);
+    channels.push_back(vPlane);
 
-  merge(channels, yuv);
-  Image result;
-  result._set_image_mat(yuv);
-  result._set_color(YUV);
-  result._set_chroma(YUV420);
-  return result;
+    merge(channels,yuv);
+    Image result;
+    result._set_image_mat(yuv);
+    result._set_color(YUV);
+    result._set_chroma(YUV420);
+    return result;
 }
 
 Image Image::convert_YUV_BGR() {
-  int rows = image_mat_.rows;
-  int cols = image_mat_.cols;
+    int rows=image_mat_.rows;
+    int cols=image_mat_.cols;
 
-  Mat rPlane = Mat(rows, cols, CV_8UC1);
-  Mat gPlane(rows, cols, CV_8UC1);
-  Mat bPlane(rows, cols, CV_8UC1);
+    Mat bgr(rows,cols,CV_8UC3);
 
-  for (int row = 0; row < rows; row++) {
-    for (int col = 0; col < cols; col++) {
-      Vec3b pixel = image_mat_.at<Vec3b>(row, col);
-      u_char y = pixel.val[0];
-      u_char u = pixel.val[1];
-      u_char v = pixel.val[2];
+    for(int row=0;row<rows;row++){
+        for(int col=0;col<cols;col++){
+            Vec3b pixel=image_mat_.at<Vec3b>(row,col);
+            double y= pixel.val[0];
+            double u= pixel.val[1]-128.0;
+            double v= pixel.val[2]-128.0;
 
-      u_char r = y + 1.140 * v;
-      u_char g = y - 0.395 * u - 0.581 * v;
-      u_char b = y + 2.032 * u;
+            double r = y + 1.13983 * v;
+            double g = y - 0.39465 * u - 0.58060 * v;
+            double b = y + 2.03211 * u;
 
-      rPlane.at<u_char>(row, col) = r;
-      gPlane.at<u_char>(row, col) = g;
-      bPlane.at<u_char>(row, col) = b;
+            // Ensure values are within [0, 255]
+            r = std::min(255.0, std::max(0.0, r));
+            g = std::min(255.0, std::max(0.0, g));
+            b = std::min(255.0, std::max(0.0, b));
+
+            // Set the BGR pixel values
+            bgr.at<cv::Vec3b>(row,col) = cv::Vec3b(static_cast<uchar>(b), static_cast<uchar>(g), static_cast<uchar>(r));
+        }
     }
-  }
 
-  Mat bgr(rows, cols, CV_8UC3);
-  vector<Mat> channels;
-  channels.push_back(bPlane);
-  channels.push_back(gPlane);
-  channels.push_back(rPlane);
-
-  merge(channels, bgr);
-  Image result;
-  result._set_image_mat(bgr);
-  result._set_color(BGR);
-  return result;
+    Image result;
+    result._set_image_mat(bgr);
+    result._set_color(BGR);
+    return result;
 }
 
 Image *Image::load(Mat *arr) {
