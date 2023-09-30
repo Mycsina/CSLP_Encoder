@@ -77,43 +77,45 @@ void video::readFrame(FILE  *file, int width, int height, int frameSize, int uvW
     vector<Mat> channels(3);
 
     //remove the "FRAME", if exists
-    if(fread(buffer,1,6,file)!=6){
+    if(fread(buffer,sizeof(char),6,file)!=6 && !feof(file)){
         throw new std::runtime_error("incomplete reading");
     }else if(string(buffer)!="FRAME\n"){ //we're already past the frame (or this frame doesn't specify that a frame has started
-        fseek(file,-5,SEEK_CUR);
+        fseek(file,-6,SEEK_CUR);
+        std::cout << buffer << " went back" << std::endl;
+    }
+
+    if(feof(file)){
+        return;
     }
 
 
     //read yPlane
-    if(fread(reinterpret_cast<char*>(yPlane.data),1,width*height,file)!=width*height){
+    if(fread(reinterpret_cast<char*>(yPlane.data),sizeof(uint8_t),width*height,file)!=width*height){
         throw new std::runtime_error("yPlane reading not completed");
     }
 
 
     //read uPlane
-    if(fread(reinterpret_cast<char*>(uPlane.data),1,uvWidth*uvHeight,file)!=uvWidth*uvHeight){
+    if(fread(reinterpret_cast<char*>(uPlane.data),sizeof(uint8_t),uvWidth*uvHeight,file)!=uvWidth*uvHeight){
         throw new std::runtime_error("uPlane reading not completed");
     }
 
     //read vPlane
-    if(fread(reinterpret_cast<char*>(vPlane.data),1,uvWidth*uvHeight,file)!=uvWidth*uvHeight){
+    if(fread(reinterpret_cast<char*>(vPlane.data),sizeof(uint8_t),uvWidth*uvHeight,file)!=uvWidth*uvHeight){
         throw new std::runtime_error("vPlane reading not completed");
     }
 
     // resize u and v (if it's 4:4:4 they're already at the correct size)
-    if(format!=YUV444){
-        resize(uPlane,uPlane,Size(width,height));
-        resize(vPlane,vPlane,Size(width,height));
-    }
-
-    if(yPlane.type()!=CV_8UC1 || uPlane.type()!=CV_8UC1 || vPlane.type()!=CV_8UC1 || frame.type!=CV_8UC3){
-        std::cout << "error" << std::endl;
+    if(format!=YUV444) {
+        resize(uPlane, uPlane, Size(width, height));
+        resize(vPlane, vPlane, Size(width, height));
     }
 
     //merge the three channels
-    channels.push_back(yPlane);
-    channels.push_back(uPlane);
-    channels.push_back(vPlane);
+    split(frame,channels);
+    channels[0]=yPlane;
+    channels[1]=uPlane;
+    channels[2]=vPlane;
     merge(channels,frame);
 
     im._set_image_mat(frame);
@@ -127,7 +129,6 @@ void video::getHeaderData(FILE *file, int *width, int *height, float *fps) {
     int frame_rate_num,frame_rate_den;
     int i;
 
-    // TODO: HEEELP, can't get proper results(even compared to the file itself)
     fgets(header,90,file);
 
     if(sscanf(header,"YUV4MPEG2 W%d H%d F%d:%d %s",width,height,&frame_rate_num,&frame_rate_den,&discard)!=5){
@@ -139,9 +140,9 @@ void video::getHeaderData(FILE *file, int *width, int *height, float *fps) {
 void video::play() {
     if (loaded()) {
         for (auto & it : im_reel) {
-// TODO either display image stops waiting for enter or we pass a parameter to change the behaviour
             it.display_image();
-            if(cv::waitKey((int)(1/fps_)*1000==27)){ // Press ESC to stop, also ensures that the scene with the same fps (some minor variation may happen due to computation costs)
+            //TODO: Figure why I have to press enter for it to work
+            if(cv::waitKey(30)==27){ // Press ESC to stop, also ensures that the scene with the same fps (some minor variation may happen due to computation costs)
                 break;
             }
         }
