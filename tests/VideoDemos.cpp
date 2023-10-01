@@ -19,3 +19,11 @@ TEST(VideoDemos, Y4MVideoTest) {
   vid.loadY4M(vid_yuv_file, YUV420);
   vid.play();
 }
+
+TEST(VideoTestSuite, Y4M2BGRVideoTest)
+{
+    video vid;
+    vid.loadY4M(vid_yuv_file, YUV420);
+    vid.convertTo(YUV, BGR);
+    vid.play();
+}
