@@ -2,15 +2,21 @@
 #define BITSTREAM_HPP
 
 #include <fstream>
+#include <string>
 
 /**
- * @brief BitStream class for reading and writing bits to a file.
+ * @brief The BitStream class provides methods for reading and writing bits to a file.
  */
 class BitStream {
 private:
     std::ofstream file;        ///< Output file stream.
     unsigned char buffer;      ///< Buffer to store bits.
     int bufferSize;            ///< Current size of the buffer.
+
+    /**
+     * @brief Helper function to flush the buffer by writing its contents to the file.
+     */
+    void flushBuffer();
 
 public:
     /**
@@ -22,6 +28,7 @@ public:
 
     /**
      * @brief Destructor for the BitStream class.
+     * Flushes the buffer to ensure that any remaining bits are written to the file.
      */
     ~BitStream();
 
@@ -54,15 +61,16 @@ public:
     /**
      * @brief Writes a string to the file.
      * @param str The string to be written.
+     * Writes the length of the string followed by the binary representation of each character.
      */
     void writeString(const std::string& str);
 
     /**
      * @brief Reads a string from the file.
-     * @return The read string.
+     * @return The read string, or an empty string if the end of the file is reached.
+     * Reads the length of the string and then reads the binary representation of each character.
      */
     std::string readString();
-
 };
 
 #endif // BITSTREAM_HPP
