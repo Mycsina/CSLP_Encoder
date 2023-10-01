@@ -75,7 +75,38 @@ TEST_F(ImageDemo, SubsamplingDemo) {
 }
 
 TEST_F(ImageDemo, ThresholdDemo) {
-  Image img("../../tests/resource/otsu.jpg");
-  binarize(img);
-  img.display_image();
+    Image img("../../tests/resource/otsu.jpg");
+    binarize(img);
+    img.display_image();
+}
+
+TEST_F(ImageDemo, GaussianDemoFlat1){
+    // 1  1  1
+    // 1  1  1
+    // 1  1  1
+    im.display_image();
+    Mat blur(3,3,CV_8UC3,Scalar(1,1,1));
+    im.gaussian_blur(blur).display_image();
+}
+
+TEST_F(ImageDemo, GaussianDemoFlat2){
+    //[11x11]
+    im.display_image();
+    Mat blur(11,11,CV_8UC3,Scalar(1,1,1));
+    im.gaussian_blur(blur).display_image();
+}
+
+TEST_F(ImageDemo, GaussianDemoDistanceBased1){
+    // 1  2  1
+    // 2  3  2
+    // 1  2  1
+    Mat blur(3,3,CV_8UC3,Scalar(1,1,1));
+    blur.at<Vec3b>(1,1)=Vec3b(3,3,3);
+
+    blur.at<Vec3b>(0,1)=Vec3b(2,2,2);
+    blur.at<Vec3b>(1,0)=Vec3b(2,2,2);
+    blur.at<Vec3b>(2,1)=Vec3b(2,2,2);
+    blur.at<Vec3b>(1,2)=Vec3b(2,2,2);
+    im.display_image();
+    im.gaussian_blur(blur).display_image();
 }
