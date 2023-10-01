@@ -5,6 +5,7 @@ project(CSLP_io)
 
 ## Libraries
 ### BitStream
-add_library(BitStream BitStream.hpp)
+add_library(BitStream BitStream.hpp
+        BitStream.cpp)
 
 set_target_properties(BitStream PROPERTIES LINKER_LANGUAGE CXX)
