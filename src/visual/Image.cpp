@@ -346,9 +346,12 @@ Image Image::gaussian_blur(cv::Mat blur) {
     for(int row=0; row<image_mat_.rows; row++){
         for(int col=0; col<image_mat_.cols; col++){
             Vec3b pixel;
-            temp=get_neighbors(radiusR,radiusC,row,col);
+
+            Mat blur_temp=cut(blur,row,col); //cut the blur filter as needed
+            temp=get_neighbors(radiusR,radiusC,row,col); //get the neighbors
+
             //apply the blur
-            multiply(temp,blur,temp);
+            temp=temp.mul(blur_temp);
             sum=cv::sum(temp);
 
             //normalize
@@ -359,6 +362,7 @@ Image Image::gaussian_blur(cv::Mat blur) {
             m->at<Vec3b>(row,col)=pixel;
         }
     }
+    return i;
 }
 
 Mat Image::get_neighbors(int radiusR, int radiusC,int r, int c) {
@@ -367,10 +371,28 @@ Mat Image::get_neighbors(int radiusR, int radiusC,int r, int c) {
     }
 
     //get the min and max values, making sure to stay in bounds
-    int rMin=r-radiusR<0?0:r-radiusR;
-    int rMax=r+radiusR>=image_mat_.rows?image_mat_.rows-1:r+radiusR;
-    int cMin=c-radiusC<0?0:c-radiusC;
-    int cMax=c+radiusC>=image_mat_.cols?image_mat_.cols-1:c+radiusC;
+    int rMin=max(0,r-radiusR);
+    int rMax=min(image_mat_.rows-1,r+radiusR);
+    int cMin=max(0,c-radiusC);
+    int cMax=min(image_mat_.cols-1,c+radiusC);
 
-    return image_mat_(Range(rMin,rMax),Range(cMin,cMax));
+    return image_mat_(Range(rMin,rMax+1),Range(cMin,cMax+1));
+}
+
+Mat Image::cut(Mat m, int row, int col) {
+    int centerRow=m.rows/2;
+    int centerCol=m.cols/2;
+    //check distance in image_mat from this pixel to the edge
+    int distUp = row - 0;
+    int distDown = (image_mat_.rows - 1) - row;
+    int distLeft = col - 0;
+    int distRight = (image_mat_.cols - 1) - col;
+
+    //check for need to cut
+    int rMin=max((centerRow-distUp),0);
+    int rMax=min((centerRow+distDown),m.rows-1);
+    int cMin=max((centerCol-distLeft),0);
+    int cMax=min((centerCol+distRight),m.cols-1);
+
+    return m(Range(rMin,rMax+1),Range(cMin,cMax+1));
 }

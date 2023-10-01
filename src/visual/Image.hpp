@@ -157,4 +157,10 @@ public:
   //! @param r,c the coordinates of the central pixel
   //! @return The selected submatrix
   Mat get_neighbors(int radiusR, int radiusC,int r,int c);
+
+  //! Cuts the given matrix so that, if the center of that matrix were to be placed at the given coordinates in image_mat_, it would not overflow
+  //! @param m the given matrix
+  //! @param r,c the coordinates
+  //! @return The cut submatrix
+  Mat cut(Mat m, int r, int c);
 };
