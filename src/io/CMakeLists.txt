@@ -6,6 +6,7 @@ project(CSLP_io)
 ## Libraries
 ### BitStream
 add_library(BitStream BitStream.hpp
+        BitStream.cpp
         Golomb.hpp
         Golomb.cpp)
 
