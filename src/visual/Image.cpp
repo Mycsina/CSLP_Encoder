@@ -326,3 +326,51 @@ vector<Mat> Image::color_histograms(int bins, bool fill_hist, int width,
   else
     throw std::runtime_error("Image hasn't been loaded");
 }
+
+Image Image::gaussian_blur(cv::Mat blur) {
+    Image i=this->clone();
+    Mat *m=i._get_image_mat();
+    int totalBlur=int(sum(blur)[0]);
+    int radiusR,radiusC;
+    cv::Scalar sum;
+    Mat temp;
+
+    //Check if the blur matrix has proper dimensions
+    if(blur.rows%2==0 || blur.cols%2==0) {
+        throw std::invalid_argument("blur matrix must have odd rows and columns");
+    }
+    radiusR=blur.rows/2;
+    radiusC=blur.cols/2;
+
+    //iterate every pixel to apply the filter
+    for(int row=0; row<image_mat_.rows; row++){
+        for(int col=0; col<image_mat_.cols; col++){
+            Vec3b pixel;
+            temp=get_neighbors(radiusR,radiusC,row,col);
+            //apply the blur
+            multiply(temp,blur,temp);
+            sum=cv::sum(temp);
+
+            //normalize
+            for(int a=0;a<sum.rows;a++){
+                pixel[a]=(int)(sum[a]/totalBlur);
+            }
+
+            m->at<Vec3b>(row,col)=pixel;
+        }
+    }
+}
+
+Mat Image::get_neighbors(int radiusR, int radiusC,int r, int c) {
+    if(r<0 || r>=image_mat_.rows || c<0 || c>=image_mat_.cols){
+        throw std::out_of_range("Pixel out of bounds");
+    }
+
+    //get the min and max values, making sure to stay in bounds
+    int rMin=r-radiusR<0?0:r-radiusR;
+    int rMax=r+radiusR>=image_mat_.rows?image_mat_.rows-1:r+radiusR;
+    int cMin=c-radiusC<0?0:c-radiusC;
+    int cMax=c+radiusC>=image_mat_.cols?image_mat_.cols-1:c+radiusC;
+
+    return image_mat_(Range(rMin,rMax),Range(cMin,cMax));
+}

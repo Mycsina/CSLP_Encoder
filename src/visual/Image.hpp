@@ -145,4 +145,16 @@ public:
   //! @return Vector with resulting Histograms
   vector<Mat> color_histograms(int bins = 256, bool fill_hist = false,
                                int width = 512, int height = 400);
+
+  //! Apply the gaussian blur filter to this image
+  //! @param blur the blur coefficient matrix (values are int)
+  //! @return Copy of image with the blur applied
+  Image gaussian_blur(Mat blur);
+
+  //! Copies a portion of the image matrix (values out of range are excluded)
+  //! @param radiusR vertical radius
+  //! @param radiusC horizontal radius
+  //! @param r,c the coordinates of the central pixel
+  //! @return The selected submatrix
+  Mat get_neighbors(int radiusR, int radiusC,int r,int c);
 };

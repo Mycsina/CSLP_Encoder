@@ -72,3 +72,11 @@ TEST_F(ImageDemo, SubsamplingDemo) {
   subsample(&im2, YUV420);
   im2.display_image();
 }
+
+TEST_F(ImageDemo, GaussianDemo){
+    // 1  1  1
+    // 1  1  1
+    // 1  1  1
+    Mat blur(3,3,CV_8UC1,Scalar(1));
+    im.gaussian_blur(blur).display_image();
+}
