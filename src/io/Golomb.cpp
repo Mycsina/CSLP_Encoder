@@ -36,8 +36,8 @@ void Golomb::encode(int n, int m_){
 int Golomb::readUnary(){
     string buffer="";
     int bit_=-1;
-    while(bit_==-1 || bit_==1){
-        bit_=bs->readBit();
+    while(bit_!=0){
+        std::cout << bs->readBit();
         buffer.append(std::bitset<1>(bit_).to_string());
     }
     return stoi(buffer,nullptr,2);

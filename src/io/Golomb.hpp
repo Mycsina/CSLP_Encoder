@@ -16,7 +16,7 @@ private:
 
 public:
     Golomb(const std::string& filePath) {
-        bs= new BitStream(filePath,std::ios::binary);
+        bs= new BitStream(filePath,std::ios::in|std::ios::out);
         filepath=filePath;
     }
     ~Golomb() {free(bs);}
@@ -61,6 +61,6 @@ public:
     //! @param n the int to convert
     //! @param len the length of the binary string
     //! @return a binary string
-    string toBinary(int n, int len);
+    static string toBinary(int n, int len);
 };
 

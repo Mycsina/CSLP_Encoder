@@ -73,4 +73,5 @@ public:
      * Reads the length of the string and then reads the binary representation of each character.
      */
     std::string readString();
+
 };
