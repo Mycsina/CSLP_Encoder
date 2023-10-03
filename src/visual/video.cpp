@@ -62,12 +62,12 @@ void video::loadY4M(const char *filename, CHROMA_SUBSAMPLING format) {
   }
 
   while (!feof(file)) { // read all frames one-by-one and add them
-    video::readFrame(file, width, height, frameSize, uvWidth, uvHeight, format);
+    video::readFrame(file, width, height, uvWidth, uvHeight, format);
   }
 }
 
-void video::readFrame(FILE *file, int width, int height, int frameSize,
-                      int uvWidth, int uvHeight, CHROMA_SUBSAMPLING format) {
+void video::readFrame(FILE *file, int width, int height, int uvWidth,
+                      int uvHeight, CHROMA_SUBSAMPLING format) {
   Image im;
   char buffer[6];
   im._set_color(YUV);

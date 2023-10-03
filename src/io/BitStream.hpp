@@ -1,6 +1,8 @@
-#ifndef BITSTREAM_HPP
-#define BITSTREAM_HPP
-
+//! @file BitStream class declaration
+/*!
+ * Declares the BitStream class, which defines methods to access individual bits of a file
+ */
+#pragma once
 #include <fstream>
 #include <string>
 
@@ -9,7 +11,7 @@
  */
 class BitStream {
 private:
-    std::ofstream file;        ///< Output file stream.
+    std::fstream file;        ///< Output file stream.
     unsigned char buffer;      ///< Buffer to store bits.
     int bufferSize;            ///< Current size of the buffer.
 
@@ -72,5 +74,3 @@ public:
      */
     std::string readString();
 };
-
-#endif // BITSTREAM_HPP
