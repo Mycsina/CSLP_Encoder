@@ -15,11 +15,11 @@ private:
     string filepath;
 
 public:
-    Golomb(const std::string& filePath) {
+    Golomb(const std::string& filePath,std::ios_base::openmode mode) {
         bs= new BitStream(filePath,std::ios::in|std::ios::out);
         filepath=filePath;
     }
-    ~Golomb() {free(bs);}
+    ~Golomb() {delete bs;}
 
     void reset(){
         free(bs);

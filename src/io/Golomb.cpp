@@ -37,7 +37,7 @@ int Golomb::readUnary(){
     string buffer="";
     int bit_=-1;
     while(bit_!=0){
-        std::cout << bs->readBit();
+        bit_=bs->readBit();
         buffer.append(std::bitset<1>(bit_).to_string());
     }
     return stoi(buffer,nullptr,2);

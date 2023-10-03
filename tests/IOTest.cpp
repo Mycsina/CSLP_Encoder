@@ -22,9 +22,9 @@ TEST(IOTestSuite, BitStreamReadWriteTest){
 //TODO: check wrong value
 TEST(IOTestSuite, GolombReadWriteTest){
     int m=10;
-    Golomb *g=new Golomb(golomb_dst);
-    g->encode(25,m);
+    Golomb *g=new Golomb(golomb_dst,std::ios::out);
+    g->encode(26,m);
     delete g;
-    g=new Golomb(golomb_dst);
-    std::cout << g->decode() << std::endl;
+    g=new Golomb(golomb_dst,std::ios::in);
+    std::cout << g->decode();
 }
