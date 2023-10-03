@@ -17,6 +17,7 @@ TEST(IOTestSuite, BitStreamReadWriteTest){
     ASSERT_EQ(bs->readBit(),1);
     ASSERT_EQ(bs->readBits(4),0b111);
     ASSERT_EQ(bs->readBits(4),0b111);
+    delete bs;
 }
 
 //TODO: check wrong value
@@ -24,7 +25,9 @@ TEST(IOTestSuite, GolombReadWriteTest){
     int m=10;
     Golomb *g=new Golomb(golomb_dst,std::ios::out);
     g->encode(26,m);
+    g->encode(69,m);
     delete g;
     g=new Golomb(golomb_dst,std::ios::in);
-    std::cout << g->decode();
+    ASSERT_EQ(g->decode(),26);
+    ASSERT_EQ(g->decode(),69);
 }

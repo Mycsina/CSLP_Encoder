@@ -35,12 +35,14 @@ void Golomb::encode(int n, int m_){
 
 int Golomb::readUnary(){
     string buffer="";
+    int q=0;
     int bit_=-1;
     while(bit_!=0){
         bit_=bs->readBit();
-        buffer.append(std::bitset<1>(bit_).to_string());
+        q++;
     }
-    return stoi(buffer,nullptr,2);
+    q--; //the last one (0) doesn't count
+    return q;
 }
 
 void Golomb::writeUnary(int n) {
@@ -52,7 +54,7 @@ void Golomb::writeUnary(int n) {
 
 int Golomb::readBinaryTrunc() {
     int k=floor(log2(m));
-    int u= (1<<(k+1))-m;
+    int u= pow(k+1,2)-m;
     int k_bits=bs->readBits(k);
     if(k_bits<u){
         return k_bits;
@@ -63,31 +65,11 @@ int Golomb::readBinaryTrunc() {
 
 void Golomb::writeBinaryTrunc(int n){
     int k=floor(log2(m));
-    int u = (1 << (k + 1)) - m;
-    string temp; //because I can't just write the string directly
-
-    if (n < u)
-        temp=toBinary(n, k);
+    int u = pow(k+1,2) - m;
+    if(n<u)
+        bs->writeBits(n,k);
     else
-        temp=toBinary(n + u, k + 1);
-
-    for(int i=0;i<temp.length();i++){
-        bs->writeBit(int(temp[i]));
-    }
-}
-
-string Golomb::toBinary(int n, int len){
-    string buffer = "";
-    while (n != 0) {
-        if (n%2==0)
-            buffer = '0' + buffer;
-        else  buffer = '1' + buffer;
-
-        n >>= 1;
-    }
-    while (buffer.length() < len)
-        buffer = '0' + buffer;
-    return buffer;
+        bs->writeBits(n+u,k+1);
 }
 
 

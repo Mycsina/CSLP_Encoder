@@ -56,11 +56,5 @@ public:
     //! Encodes and writes a single int to file using unary encoding
     //! @param n the int to encode
     void writeBinaryTrunc(int n);
-
-    //! converts n from an int to a binary string
-    //! @param n the int to convert
-    //! @param len the length of the binary string
-    //! @return a binary string
-    static string toBinary(int n, int len);
 };
 
