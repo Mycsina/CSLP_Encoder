@@ -10,12 +10,21 @@ using namespace std;
 
 class Golomb{
 private:
-    BitStream bs;
+    BitStream* bs;
     int m=-1;
+    string filepath;
 
 public:
-    Golomb(const string& filepath) { bs=new BitStream(filepath);}
-    ~Golomb() = default;
+    Golomb(const std::string& filePath) {
+        bs= new BitStream(filePath,std::ios::binary);
+        filepath=filePath;
+    }
+    ~Golomb() {free(bs);}
+
+    void reset(){
+        free(bs);
+        bs=new BitStream(filepath,std::ios::binary);
+    }
 
     void _set_m(int m_) {m=m_;}
     int _get_m() {return m;}

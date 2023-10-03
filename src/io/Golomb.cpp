@@ -8,7 +8,7 @@ using namespace std;
 
 int Golomb::decode(){
     if(m<=0){
-        m=bs.readBits(8);
+        m=bs->readBits(8);
     }
     int q=readUnary();
     int r=readBinaryTrunc();
@@ -28,7 +28,7 @@ void Golomb::encode(int n){
 void Golomb::encode(int n, int m_){
     if(m<=0){
         m=m_;
-        bs.writeBits(m_,8);
+        bs->writeBits(m_,8);
     }
     encode(n);
 }
@@ -36,8 +36,8 @@ void Golomb::encode(int n, int m_){
 int Golomb::readUnary(){
     string buffer="";
     int bit_=-1;
-    while(bit_<=1){
-        bit_=bs.readBit();
+    while(bit_==-1 || bit_==1){
+        bit_=bs->readBit();
         buffer.append(std::bitset<1>(bit_).to_string());
     }
     return stoi(buffer,nullptr,2);
@@ -45,19 +45,19 @@ int Golomb::readUnary(){
 
 void Golomb::writeUnary(int n) {
     for(int i=0;i<n;i++){
-        bs.writeBit(1);
+        bs->writeBit(1);
     }
-    bs.writeBit(0);
+    bs->writeBit(0);
 }
 
 int Golomb::readBinaryTrunc() {
     int k=floor(log2(m));
     int u= (1<<(k+1))-m;
-    int k_bits=bs.readBits(k);
+    int k_bits=bs->readBits(k);
     if(k_bits<u){
         return k_bits;
     }else{
-        return ((k_bits<<1)+bs.readBit())-u;
+        return ((k_bits<<1)+bs->readBit())-u;
     }
 }
 
@@ -72,7 +72,7 @@ void Golomb::writeBinaryTrunc(int n){
         temp=toBinary(n + u, k + 1);
 
     for(int i=0;i<temp.length();i++){
-        bs.writeBit(int(temp[i]));
+        bs->writeBit(int(temp[i]));
     }
 }
 
