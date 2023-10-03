@@ -57,8 +57,9 @@ public:
   //! @param fps pointer to the fps variable
   static void getHeaderData(FILE *file, int *width, int *height, float *fps);
 
-  void readFrame(FILE *file, int width, int height, int frameSize, int uvWidth,
-                 int uvHeight, CHROMA_SUBSAMPLING format);
+  //!
+  void readFrame(FILE *file, int width, int height, int uvWidth, int uvHeight,
+                 CHROMA_SUBSAMPLING format);
 
   //! Plays the video
   //! @param stop_key value of the key that stops the video
@@ -68,5 +69,8 @@ public:
   //! @return true if the video has been loaded, false otherwise
   bool loaded() const { return !im_reel.empty(); };
 
+  //! Convert video between color spaces
+  //! @param f1 source color space
+  //! @param f2 destination color space
   void convertTo(COLOR_SPACE f1, COLOR_SPACE f2);
 };
