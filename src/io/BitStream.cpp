@@ -1,8 +1,13 @@
+#include <iostream>
+#include <bitset>
 #include "BitStream.hpp"
 
 BitStream::BitStream(const std::string &filePath,
                      std::ios_base::openmode mode) {
   file.open(filePath, mode | std::ios::binary);
+  if(!file.is_open()){
+      throw std::runtime_error("File does not exist or can't be opened");
+  }
   buffer = 0;
   bufferSize = 0;
 }
@@ -14,9 +19,10 @@ BitStream::~BitStream() {
 
 void BitStream::writeBit(int bit) {
   buffer <<= 1;
-  buffer |= bit;
+  if(bit){ //!=0
+    buffer|=1;
+  }
   bufferSize++;
-
   if (bufferSize == 8) {
     file.put(buffer);
     buffer = 0;
@@ -26,10 +32,10 @@ void BitStream::writeBit(int bit) {
 
 int BitStream::readBit() {
   if (bufferSize == 0) {
-    file.read(reinterpret_cast<char *>(&buffer), 1);
     if (!file) {
       return -1; // End of file
     }
+    file.read(reinterpret_cast<char *>(&buffer), 1);
     bufferSize = 8;
   }
 
@@ -39,10 +45,14 @@ int BitStream::readBit() {
 }
 
 void BitStream::writeBits(int value, int n) {
+    for(int i=n-1;i>=0;i--){
+        writeBit(value>>i & 1); //get the nth byte and write it
+    }
+    /*
   buffer |= value << (8 - n);
   bufferSize += n;
-
   flushBuffer(); // Write the buffer to the file if it's full
+     */
 }
 
 int BitStream::readBits(int n) {
@@ -87,6 +97,7 @@ std::string BitStream::readString() {
 
 void BitStream::flushBuffer() {
   if (bufferSize > 0) {
+    buffer<<=(8-bufferSize);
     file.put(buffer);
     buffer = 0;
     bufferSize = 0;
