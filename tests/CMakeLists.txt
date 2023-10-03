@@ -4,7 +4,8 @@ enable_testing()
 
 include_directories(${gtest_SOURCE_DIR_}/include ${gtest_SOURCE_DIR_})
 set(SOURCE_FILES ImageTest.cpp VideoTest.cpp
-        ImageProcTest.cpp)
+        ImageProcTest.cpp
+        IOTest.cpp)
 add_executable(tests_run ${SOURCE_FILES})
 add_executable(Demos VideoDemos.cpp
         ImageDemos.cpp)
