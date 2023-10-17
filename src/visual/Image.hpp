@@ -21,6 +21,9 @@ enum COLOR_SPACE { BGR, YUV, GRAY };
 
 enum CHROMA_SUBSAMPLING { NA, YUV444, YUV422, YUV420 };
 
+/**
+ * @brief The Image class provides methods for reading and writing and converting images in RGB and YUV formats
+ */
 class Image {
 private:
   Mat image_mat_;

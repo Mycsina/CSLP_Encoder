@@ -7,7 +7,9 @@
 #include <string>
 
 using namespace std;
-
+/**
+ * @brief The Golomb class provides methods to encode/decode int values using Golomb
+ */
 class Golomb{
 private:
     BitStream* bs;

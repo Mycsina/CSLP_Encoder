@@ -10,6 +10,9 @@
 using namespace std;
 using namespace cv;
 
+/**
+ * @brief The video class provides methods for video reading/playing/processing
+ */
 class video {
   vector<Image> im_reel;
   float fps_;
