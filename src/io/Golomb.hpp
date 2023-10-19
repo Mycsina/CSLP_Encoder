@@ -10,26 +10,26 @@ using namespace std;
 /**
  * @brief The Golomb class provides methods to encode/decode int values using Golomb
  */
-class Golomb{
+class Golomb {
 private:
-    BitStream* bs;
-    int m=-1;
+    BitStream *bs;
+    int m = -1;
     string filepath;
 
 public:
-    Golomb(const std::string& filePath,std::ios_base::openmode mode) {
-        bs= new BitStream(filePath,std::ios::in|std::ios::out);
-        filepath=filePath;
+    Golomb(const std::string &filePath, std::ios_base::openmode mode) {
+        bs = new BitStream(filePath, std::ios::in | std::ios::out);
+        filepath = filePath;
     }
-    ~Golomb() {delete bs;}
+    ~Golomb() { delete bs; }
 
-    void reset(){
+    void reset() {
         free(bs);
-        bs=new BitStream(filepath,std::ios::binary);
+        bs = new BitStream(filepath, std::ios::binary);
     }
 
-    void _set_m(int m_) {m=m_;}
-    int _get_m() {return m;}
+    void _set_m(int m_) { m = m_; }
+    int _get_m() const { return m; }
     //! Reads and decodes a single int from file
     //! @return the decoded int
     int decode();
@@ -55,8 +55,7 @@ public:
     //! @return the decoded int
     int readBinaryTrunc();
 
-    //! Encodes and writes a single int to file using unary encoding
+    //! Encodes and writes a single int to file using truncated binary
     //! @param n the int to encode
     void writeBinaryTrunc(int n);
 };
-

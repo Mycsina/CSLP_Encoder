@@ -1,9 +1,15 @@
-<map id="src/visual/Histogram.cpp" name="src/visual/Histogram.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="208,5,391,32"/>
-<area shape="rect" id="node2" href="$Image_8hpp.html" title=" " alt="" coords="221,80,378,107"/>
-<area shape="rect" id="node3" href="$Image_8cpp.html" title=" " alt="" coords="5,155,161,181"/>
-<area shape="rect" id="node4" href="$imageProcessing_8hpp.html" title=" " alt="" coords="186,155,413,181"/>
-<area shape="rect" id="node6" href="$video_8hpp.html" title=" " alt="" coords="437,155,589,181"/>
-<area shape="rect" id="node5" href="$imageProcessing_8cpp.html" title=" " alt="" coords="186,229,413,256"/>
-<area shape="rect" id="node7" href="$video_8cpp.html" title=" " alt="" coords="437,229,588,256"/>
+<map id="Histogram.cpp" name="Histogram.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="131,5,236,31"/>
+<area shape="rect" id="Node000002" href="$Image_8hpp.html" title=" " alt="" coords="143,79,224,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,46,186,79,181,79,181,46"/>
+<area shape="rect" id="Node000003" href="$Image_8cpp.html" title=" " alt="" coords="5,153,87,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="148,115,71,154,68,150,145,110"/>
+<area shape="rect" id="Node000004" href="$imageProcessing_8hpp.html" title=" " alt="" coords="111,153,256,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="186,120,186,152,181,152,181,120"/>
+<area shape="rect" id="Node000006" href="$video_8hpp.html" title=" " alt="" coords="280,153,356,178"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="221,110,296,150,294,154,219,115"/>
+<area shape="rect" id="Node000005" href="$imageProcessing_8cpp.html" title=" " alt="" coords="111,226,256,252"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="186,194,186,226,181,226,181,194"/>
+<area shape="rect" id="Node000007" href="$video_8cpp.html" title=" " alt="" coords="280,226,356,252"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="321,194,321,226,315,226,315,194"/>
 </map>
