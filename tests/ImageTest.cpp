@@ -6,8 +6,7 @@ using namespace std;
 // auto img_file = "../../tests/resource/img.png";
 auto img_file = "../../tests/resource/tulips.ppm";
 
-TEST(ImageTestSuite, ImageLoadTest)
-{
+TEST(ImageTestSuite, ImageLoadTest) {
     Image image;
     Mat I = imread(img_file, IMREAD_COLOR);
     ASSERT_NO_THROW(image.load(img_file));
@@ -16,15 +15,13 @@ TEST(ImageTestSuite, ImageLoadTest)
     ASSERT_EQ(image.get_image_size()[1], I.cols);
 }
 
-TEST(ImageTestSuite, ImageLoadFailTest)
-{
+TEST(ImageTestSuite, ImageLoadFailTest) {
     Image im;
     auto gibb = "gibber-ish";
     ASSERT_ANY_THROW(im.load(gibb));
 }
 
-TEST(ImageTestSuite, PixelSetPersistTest)
-{
+TEST(ImageTestSuite, PixelSetPersistTest) {
     auto tempImage = "../../tests/resource/persist.png";
     Image im;
     im.load(img_file);
@@ -37,15 +34,13 @@ TEST(ImageTestSuite, PixelSetPersistTest)
     remove(tempImage);
 }
 
-TEST(ImageTestSuite, PixelWiseCloning)
-{
+TEST(ImageTestSuite, PixelWiseCloning) {
     Image im1;
     im1.load(img_file);
     Image im2;
     im2._set_image_mat(Mat::zeros(im1.get_image_size()[0],
                                   im1.get_image_size()[1], im1.get_image_type()));
-    for (auto it = im1.begin(); it != im1.end(); ++it)
-    {
+    for (auto it = im1.begin(); it != im1.end(); ++it) {
         im2.set_pixel(it.pos().y, it.pos().x, *it);
     }
     im2.save("../../tests/resource/pbp.png");

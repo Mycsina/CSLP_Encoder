@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['yuv2bgr_176',['YUV2BGR',['../imageProcessing_8cpp.html#ab5f8e9c9727357e3a56d084ba2a4cba7',1,'YUV2BGR(Image &amp;im):&#160;imageProcessing.cpp'],['../imageProcessing_8hpp.html#ab5f8e9c9727357e3a56d084ba2a4cba7',1,'YUV2BGR(Image &amp;im):&#160;imageProcessing.cpp']]]
+  ['_7ebitstream_0',['~BitStream',['../classBitStream.html#a63cf0f27c7519417a7984c476a32c9c9',1,'BitStream']]],
+  ['_7egolomb_1',['~Golomb',['../classGolomb.html#a3695ea307f313060e2d2f7d32fc5fad9',1,'Golomb']]],
+  ['_7eimage_2',['~Image',['../classImage.html#ad9a2b967d96a3ea6278c85a7b1223145',1,'Image']]],
+  ['_7evideo_3',['~Video',['../classVideo.html#a4f3cd2a5a638ed077b86c7f9b090bf03',1,'Video']]]
 ];

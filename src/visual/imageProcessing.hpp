@@ -9,29 +9,36 @@
 using namespace std;
 using namespace cv;
 
-//! Inserts a watermark into an Image
 /*!
  * Inserts a watermark into an Image
  * @param im The Image to be watermarked
  * @param mark The watermark Image
  * @param coord1 The top left corner of the watermark
  * @param coord2 The bottom right corner of the watermark
- * @param alpha The opacity of the watermark (1.0 = transparent, 0.0 = opaque)
+ * @param alpha The transparency of the watermark (1.0 = transparent, 0.0 = opaque)
  */
 void watermark(Image &im, Image mark, Point2i coord1, Point2i coord2,
                double alpha);
 
-//! Convert an Image from BGR to YUV color space (as explained in wikipedia)
-//! @param im Image to be converted
-void BGR2YUV(Image &im);
+//! Converts Image from BGR to YUV 4:4:4
+//! @return Image converted to YUV 4:4:4
+Image convert_BGR_YUV444(Image &im);
 
-//! Convert an Image from YUV to BGR color space (as explained in wikipedia)
-//! @param im Image to be converted
-void YUV2BGR(Image &im);
+//! Converts Image from BGR to YUV 4:2:2
+//! @return Image converted to YUV 4:2:2
+Image convert_BGR_YUV422(Image &im);
 
-//! Convert an Image from BGR to GRAY color space (using formula for luma)
-//! @param im Image to be converted
-void BGR2GRAY(Image &im);
+//! Converts Image from BGR to YUV 4:2:0
+//! @return Image converted to YUV 4:2:0
+Image convert_BGR_YUV420(Image &im);
+
+//! Converts Image from YUV to BGR
+//! @return Image converted from YUV to BGR
+Image convert_YUV_BGR(Image &im);
+
+//! Converts Image from BGR to GRAY
+//! @return Image converted from BGR to GRAY
+Image convert_BGR_GRAY(Image &im);
 
 //! Convert an Image from a higher YUV subsampling to a lower one
 //! @param im Image to be converted
@@ -42,6 +49,6 @@ void subsample(Image &im, CHROMA_SUBSAMPLING cs);
 //! @param im Image to be equalized
 void equalize_hist(Image &im);
 
-//! Apply Otsu's method to an Image
+//! Apply [Otsu's method](https://en.wikipedia.org/wiki/Otsu%27s_method#) to an Image
 //! @param im Image to be binarized
 void binarize(Image &im);

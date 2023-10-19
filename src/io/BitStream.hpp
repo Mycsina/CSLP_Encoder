@@ -11,9 +11,9 @@
  */
 class BitStream {
 private:
-    std::fstream file;        ///< Output file stream.
-    unsigned char buffer;      ///< Buffer to store bits.
-    int bufferSize;            ///< Current size of the buffer.
+    std::fstream file;   ///< Output file stream.
+    unsigned char buffer;///< Buffer to store bits.
+    int bufferSize;      ///< Current size of the buffer.
 
     /**
      * @brief Helper function to flush the buffer by writing its contents to the file.
@@ -26,7 +26,7 @@ public:
      * @param filePath The path to the file.
      * @param mode The open mode for the file stream.
      */
-    BitStream(const std::string& filePath, std::ios_base::openmode mode);
+    BitStream(const std::string &filePath, std::ios_base::openmode mode);
 
     /**
      * @brief Destructor for the BitStream class.
@@ -65,7 +65,7 @@ public:
      * @param str The string to be written.
      * Writes the length of the string followed by the binary representation of each character.
      */
-    void writeString(const std::string& str);
+    void writeString(const std::string &str);
 
     /**
      * @brief Reads a string from the file.

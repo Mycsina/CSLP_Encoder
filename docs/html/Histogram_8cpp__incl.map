@@ -1,4 +1,5 @@
-<map id="src/visual/Histogram.cpp" name="src/visual/Histogram.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,188,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="19,80,174,107"/>
+<map id="Histogram.cpp" name="Histogram.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="23,5,128,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,146,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="78,31,78,63,73,63,73,31"/>
 </map>

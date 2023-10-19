@@ -1,8 +1,13 @@
-<map id="src/io/BitStream.cpp" name="src/io/BitStream.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="62,5,215,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,80,85,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="109,80,168,107"/>
-<area shape="rect" id="node4" href="$BitStream_8hpp.html" title=" " alt="" coords="192,80,307,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="167,155,241,181"/>
-<area shape="rect" id="node6" title=" " alt="" coords="265,155,324,181"/>
+<map id="BitStream.cpp" name="BitStream.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="130,5,234,31"/>
+<area shape="rect" id="Node000002" href="$BitStream_8hpp.html" title=" " alt="" coords="28,79,131,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,34,111,72,107,68,163,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="155,79,209,105"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="185,31,185,63,179,63,179,31"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="233,79,304,105"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="198,29,244,67,241,71,195,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,153,71,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="75,106,55,141,50,138,70,104"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="95,153,149,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="89,104,109,138,105,141,84,106"/>
 </map>
