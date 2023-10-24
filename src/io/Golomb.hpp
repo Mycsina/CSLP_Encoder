@@ -4,6 +4,7 @@
  */
 #pragma once
 
+#include "BitStream.hpp"
 #include <string>
 
 using namespace std;

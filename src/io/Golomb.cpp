@@ -37,9 +37,7 @@ int Golomb::readUnary() {
     string buffer;
     int q = 0;
     int bit_ = -1;
-    bs.readBit();
     while (bit_ != 0) {
-        bit_ = bs.readBit();
         bit_ = bs->readBit();
         q++;
     }

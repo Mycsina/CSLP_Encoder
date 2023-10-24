@@ -3,6 +3,7 @@
  @brief Declares the Image class, representing a digital Image.
 */
 #pragma once
+
 #include <opencv2/core/mat.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>

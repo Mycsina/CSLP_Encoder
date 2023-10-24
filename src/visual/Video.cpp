@@ -15,7 +15,8 @@ using namespace std;
 using namespace cv;
 
 void Video::load(const char *filename) {
-    VideoCapture cap = VideoCapture(filename);
+    string ext = filename;
+    VideoCapture cap = VideoCapture(ext);
     while (cap.isOpened()) {
         Mat buf;
         Image im;
@@ -146,7 +147,7 @@ void Video::play(int stop_key) {
     if (loaded()) {
         for (auto &it: im_reel) {
             it.display_image(true);
-            if (waitKey((int) (1 / fps_ * 1000)) == stop_key) {
+            if (pollKey() == stop_key) {
                 // Ensures that the scene with the same fps (some minor variation may
                 // happen due to computation costs)
                 break;

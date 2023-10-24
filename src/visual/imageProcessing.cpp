@@ -1,5 +1,6 @@
 #include "imageProcessing.hpp"
 #include <iostream>
+#include <opencv2/highgui.hpp>
 
 using namespace std;
 using namespace cv;
@@ -315,4 +316,5 @@ void binarize(Image &im) {
                     pixel = 0;
                 }
             });
+    im._set_image_mat(matrix);
 }
