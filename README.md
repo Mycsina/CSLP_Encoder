@@ -20,6 +20,59 @@ For example:
 ./Demos --gtest_filter='VideoTestSuite.VideoPlay'
 ```
 
+### List of demos
+#### Image
+- Show a BGR image subsampled and converted back
+    ```bash
+    ./Demos --gtest_filter='ImageDemo.SubSampling_Demo'
+    ```
+- Show an images' color histograms
+    ```bash
+    ./Demos --gtest_filter='ImageDemo.ColorHist_Demo'
+    ```
+- Show a histogram equalized image and its color histogram
+    ```bash
+    ./Demos --gtest_filter='ImageDemo.EqualizedColorHist_Demo'
+    ```
+- Add a watermark to an image
+    ```bash
+    ./Demos --gtest_filter='ImageDemo.WatermarkDemo'
+    ```
+- Show an image subsampled without converting to RGB and then to YUV
+    ```bash
+    ./Demos --gtest_filter='ImageDemo.SubsamplingDemo'
+    ```
+- Show an image thresholded
+    ```bash
+    ./Demos --gtest_filter='ImageDemo.ThresholdDemo'
+    ```
+- Show an image with a Gaussian filter applied
+    ```bash
+    ./Demos --gtest_filter='ImageDemo.GaussianDemoFlat1'
+    ```
+- Show an image with a stronger Gaussian filter applied
+    ```bash
+    ./Demos --gtest_filter='ImageDemo.GaussianDemoFlat2'
+    ```
+- Show an image with a distance based filter applied
+    ```bash
+    ./Demos --gtest_filter='ImageDemo.GaussianDemoDistanceBased1'
+    ```
+
+#### Video
+- Show a video from a file
+    ```bash
+    ./Demos --gtest_filter='VideoTestSuite.VideoPlay'
+    ```
+- Show a video from a Y4M file
+    ```bash
+    ./Demos --gtest_filter='VideoTestSuite.Y4MVideoTest'
+    ```
+- Show a video from a Y4M file converted to RGB
+    ```bash
+    ./Demos --gtest_filter='VideoTestSuite.Y4M2BGRVideoTest'
+    ```
+
 ## Testing
 Build the tests target.
 ```bash
