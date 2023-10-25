@@ -4,24 +4,16 @@
 */
 #pragma once
 
-#include <opencv2/core/mat.hpp>
+#include <iostream>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
+#include <opencv2/opencv.hpp>
 #include <utility>
 
 using namespace std;
 using namespace cv;
-
-//! @brief Histogram struct declaration
-struct Histogram {
-    Scalar color = Scalar(255, 255, 255);//!< Color to be used for drawing the histogram
-    int bins_;                           //!< Number of bins
-    Mat mat_;                            //!< cv:Matrix containing the histogram data
-    explicit Histogram(int bins) {
-        bins_ = bins;
-        mat_ = Mat::zeros(bins_, 1, CV_32SC1);
-    }
-};
 
 enum COLOR_SPACE {
     BGR,//!< Blue-Green-Red
@@ -162,18 +154,36 @@ public:
     //! @return Copy of image with the blur applied
     Image gaussian_blur(Mat blur);
 
-    //! Copies a portion of the image matrix (values out of range are excluded)
+    //! Returns a square slice of the image matrix
+    //! @param  row Row of the first pixel
+    //! @param  col Column of the first pixel
+    //! @param  size Size of the square
+    //! @return Matrix containing the slice
+    Mat get_slice(int row, int col, int size) const;
+
+    //! Returns a copy of a portion of the image matrix (values out of range are excluded)
     //! @param radiusR vertical radius
     //! @param radiusC horizontal radius
     //! @param r,c the coordinates of the central pixel
     //! @return The selected submatrix
-    Mat get_neighbors(int radiusR, int radiusC, int r, int c);
+    Mat get_neighbors(int radiusR, int radiusC, int r, int c) const;
 
     //! Cuts the given matrix so that, if the center of that matrix were to be placed at the given coordinates in image_mat_, it would not overflow
     //! @param m the given matrix
     //! @param r,c the coordinates
     //! @return The cut submatrix
     Mat cut(const Mat &m, int r, int c) const;
+};
+
+//! @brief Histogram struct declaration
+struct Histogram {
+    Scalar color = Scalar(255, 255, 255);//!< Color to be used for drawing the histogram
+    int bins_;                           //!< Number of bins
+    Mat mat_;                            //!< cv:Matrix containing the histogram data
+    explicit Histogram(int bins) {
+        bins_ = bins;
+        mat_ = Mat::zeros(bins_, 1, CV_32SC1);
+    }
 };
 
 //! @brief Creates basic histogram of matrix\n

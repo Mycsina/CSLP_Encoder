@@ -1,12 +1,5 @@
 ﻿#include "Image.hpp"
 
-#include <iostream>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/opencv.hpp>
-
 using namespace std;
 using namespace cv;
 
@@ -168,7 +161,8 @@ Image Image::gaussian_blur(cv::Mat blur) {
     return im;
 }
 
-Mat Image::get_neighbors(int radiusR, int radiusC, int r, int c) {
+
+Mat Image::get_neighbors(int radiusR, int radiusC, int r, int c) const {
     if (r < 0 || r >= image_mat_.rows || c < 0 || c >= image_mat_.cols) {
         throw std::out_of_range("Pixel out of bounds");
     }
@@ -178,16 +172,16 @@ Mat Image::get_neighbors(int radiusR, int radiusC, int r, int c) {
     int cMin = max(0, c - radiusC);
     int cMax = min(image_mat_.cols - 1, c + radiusC);
 
-    return image_mat_(Range(rMin, rMax + 1), Range(cMin, cMax + 1));
+    return image_mat_(Range(rMin, rMax + 1), Range(cMin, cMax + 1)).clone();
 }
 
 Mat Image::cut(const Mat &m, int row, int col) const {
     int centerRow = m.rows / 2;
     int centerCol = m.cols / 2;
     // check distance in image_mat from this pixel to the edge
-    int distUp = row - 0;
+    int distUp = row;
     int distDown = (image_mat_.rows - 1) - row;
-    int distLeft = col - 0;
+    int distLeft = col;
     int distRight = (image_mat_.cols - 1) - col;
 
     // check for need to cut
@@ -197,4 +191,11 @@ Mat Image::cut(const Mat &m, int row, int col) const {
     int cMax = min((centerCol + distRight), m.cols - 1);
 
     return m(Range(rMin, rMax + 1), Range(cMin, cMax + 1));
+}
+
+Mat Image::get_slice(int row, int col, int size) const {
+    if (row < 0 || row + size > image_mat_.rows || col < 0 || col + size > image_mat_.cols) {
+        throw std::out_of_range("Slice out of bounds");
+    }
+    return image_mat_(Rect(col, row, size, size));
 }

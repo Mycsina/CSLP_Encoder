@@ -3,3 +3,4 @@ project(CSLP_src)
 
 add_subdirectory(visual)
 add_subdirectory(io)
+add_subdirectory(codec)

@@ -4,20 +4,20 @@
 
 using namespace std;
 
-auto img_name = "../../tests/resource/tulips.ppm";
+auto imageProcImg = "../../tests/resource/tulips.ppm";
 
 class ImageTest : public ::testing::Test {
 protected:
     Image img, im2, im3;
     void SetUp() override {
-        img.load(img_name);
+        img.load(imageProcImg);
         im2 = img.clone();
         im3 = img.clone();
     }
 };
 
 TEST_F(ImageTest, YUVEquivalenceTest) {
-    Image im(img_name);
+    Image im(imageProcImg);
     Image img = convert_BGR_YUV444(im);
     // img.display_image();
     cvtColor(*im2._get_image_mat(), *im2._get_image_mat(), COLOR_BGR2YUV);

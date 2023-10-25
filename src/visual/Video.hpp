@@ -30,10 +30,11 @@ public:
 
     void _set_fps(float fps) { fps_ = fps; };
 
+    //TODO this should be a frame
     //! Returns frame at given position
     //! @param pos position of the frame
     //! @return Image object representing the frame
-    Image getFrame(int pos) { return im_reel[pos]; }
+    Image getFrame(int pos) { return Image(im_reel[pos]); }
 
     //! Applies a function to every frame in the video
     //! @param func function to be applied
