@@ -83,8 +83,7 @@ public:
     cv::MatIterator_<cv::Vec3b> end();
 
     //! Return size of Image
-    //! @return Array of integers containing the size of the Image in the format
-    //! <rows, cols>
+    //! @return Array of integers containing the size of the Image in the format <rows, cols>
     std::array<int, 2> size() const;
 
     //! Loads an Image from a file
