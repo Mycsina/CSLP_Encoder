@@ -1,4 +1,6 @@
 #include "Video.hpp"
+#include "Image.hpp"
+#include "imageProcessing.hpp"
 
 #include <cstdio>
 #include <iostream>
@@ -9,10 +11,24 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
 
-#include "imageProcessing.hpp"
 
 using namespace std;
 using namespace cv;
+
+const vector<Image> &Video::get_reel() { return im_reel; }
+void Video::set_reel(vector<Image> *reel) { im_reel = *reel; }
+float Video::get_fps() const { return fps_; }
+void Video::set_fps(float fps) { fps_ = fps; }
+Image Video::getFrame(int pos) {
+    return {im_reel[pos]};
+}
+bool Video::loaded() const { return !im_reel.empty(); }
+
+void Video::map(const function<void(Image &)> &func) {
+    for (auto &it: im_reel) {
+        func(it);
+    }
+}
 
 void Video::load(const char *filename) {
     string ext = filename;

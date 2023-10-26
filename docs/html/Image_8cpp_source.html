@@ -1,24 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta content="text/xhtml;charset=UTF-8" http-equiv="Content-Type"/>
+<meta content="IE=11" http-equiv="X-UA-Compatible"/>
+<meta content="Doxygen 1.9.8" name="generator"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>CSLP_2023_2024: Image.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="dynsections.js"></script>
+<script src="jquery.js" type="text/javascript"></script>
+<script src="dynsections.js" type="text/javascript"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="search/searchdata.js"></script>
-<script type="text/javascript" src="search/search.js"></script>
-<script type="text/javascript" src="darkmode_toggle.js"></script>
+<script src="search/searchdata.js" type="text/javascript"></script>
+<script src="search/search.js" type="text/javascript"></script>
+<script src="darkmode_toggle.js" type="text/javascript"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table cellpadding="0" cellspacing="0">
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
@@ -36,8 +36,8 @@
 var searchBox = new SearchBox("searchBox", "search/",'.html');
 /* @license-end */
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+<script src="menudata.js" type="text/javascript"></script>
+<script src="menu.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
@@ -54,9 +54,9 @@ $(document).ready(function() { init_codefold(0); });
 </script>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
-     onmouseover="return searchBox.OnSearchSelectShow()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)"
      onmouseout="return searchBox.OnSearchSelectHide()"
-     onkeydown="return searchBox.OnSearchSelectKey(event)">
+     onmouseover="return searchBox.OnSearchSelectShow()">
 </div>
 
 <!-- iframe showing the search results (closed by default) -->
@@ -73,7 +73,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
+<div class="navpath" id="nav-path">
   <ul>
 <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5594f77850edb42952de1f5e8c94226d.html">visual</a></li>  </ul>
 </div>
@@ -84,247 +84,1566 @@ $(document).ready(function() { init_codefold(0); });
 <div class="contents">
 <a href="Image_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="Image_8hpp.html">Image.hpp</a>&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;opencv2/core/core.hpp&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;opencv2/highgui.hpp&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;opencv2/imgcodecs.hpp&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;opencv2/imgproc.hpp&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;opencv2/opencv.hpp&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">using namespace </span>std;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">using namespace </span>cv;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="classImage.html#a0dd7d32886e27f6e0288c274f345116c">   13</a></span><a class="code hl_class" href="classImage.html">Image</a> *<a class="code hl_function" href="classImage.html#a0dd7d32886e27f6e0288c274f345116c">Image::load</a>(<span class="keyword">const</span> Mat &amp;arr) {</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    image_mat_ = arr.clone();</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>}</div>
+    <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span
+            class="keyword">using namespace </span>std;
+    </div>
+    <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span
+            class="keyword">using namespace </span>cv;
+    </div>
+    <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>
+    </div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00006">
+        <div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a
+                class="line"
+                href="structHistogram.html#a35234282bbe987b249fab0f15a706e3e">    6</a></span><a
+                class="code hl_function"
+                href="structHistogram.html#a35234282bbe987b249fab0f15a706e3e">Histogram::Histogram</a>(<span
+                class="keywordtype">int</span> bins) {
+        </div>
+        <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>
+            <a class="code hl_variable"
+               href="structHistogram.html#aff3a490dcdc58eb44a50198590458739">bins_</a>
+            = bins;
+        </div>
+        <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>
+            <a class="code hl_variable"
+               href="structHistogram.html#ab7236b3a7232984dc97ff31770e2953d">mat_</a>
+            = Mat::zeros(<a class="code hl_variable"
+                            href="structHistogram.html#aff3a490dcdc58eb44a50198590458739">bins_</a>,
+            1, CV_32SC1);
+        </div>
+        <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>}
+        </div>
 </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classImage.html#a6aa3534f9ecfab4e04c05938e107f4ce">   18</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classImage.html#a0dd7d32886e27f6e0288c274f345116c">Image::load</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename, ImreadModes mode) {</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    Mat image, conv;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="comment">// By default, cv:imread loads images in BGR format</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    image = imread(filename, mode);</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    c_space = <a class="code hl_enumvalue" href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">BGR</a>;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordflow">if</span> (!image.empty()) {</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        image.convertTo(conv, CV_8UC3);</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        image_mat_ = conv;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Image was not loaded&quot;</span>);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    }</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
+    <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>
+    </div>
+    <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><a
+            class="code hl_function"
+            href="classImage.html#a5502e928122744be1d3b89648298e162">Image::Image</a>(<span
+            class="keyword">const</span> Mat &amp;arr2d) {
+    </div>
+    <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>
+        <a class="code hl_function"
+           href="classImage.html#a26ecdab6edc13b31fb9d0c5a9319bc9b">load</a>(arr2d);
+    </div>
+    <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>
+        c_space = <a class="code hl_enumvalue"
+                     href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">BGR</a>;
+    </div>
+    <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>}
+    </div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00015">
+        <div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#a9700f58efb58b13e23666f19c67d3839">   15</a></span><a
+                class="code hl_function"
+                href="classImage.html#a5502e928122744be1d3b89648298e162">Image::Image</a>(<span
+                class="keyword">const</span> <span
+                class="keywordtype">char</span> *filename) {
+        </div>
+        <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>
+            <a class="code hl_function"
+               href="classImage.html#a26ecdab6edc13b31fb9d0c5a9319bc9b">load</a>(filename);
+        </div>
+        <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>
+            c_space = <a class="code hl_enumvalue"
+                         href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">BGR</a>;
+        </div>
+        <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}
+        </div>
 </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classImage.html#abc0394f8cd550a94674cbaa1956ba51e">   31</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classImage.html#abc0394f8cd550a94674cbaa1956ba51e">Image::save</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename, <span class="keyword">const</span> vector&lt;int&gt; &amp;compression_params) {</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">loaded</a>()) {</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        imwrite(filename, image_mat_, compression_params);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Image hasn&#39;t been loaded&quot;</span>);</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    }</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
+    <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>
+    </div>
+    <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><a
+            class="code hl_class" href="classImage.html">Image</a> *<a
+            class="code hl_function"
+            href="classImage.html#a26ecdab6edc13b31fb9d0c5a9319bc9b">Image::load</a>(<span
+            class="keyword">const</span> Mat &amp;arr) {
+    </div>
+    <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>
+        image_mat_ = arr.clone();
+    </div>
+    <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>
+        <span class="keywordflow">return</span> <span
+                class="keyword">this</span>;
+    </div>
+    <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>}
+    </div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00024">
+        <div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#aa6537a9dab317694974d89cf8f5d3cd9">   24</a></span><span
+                class="keywordtype">void</span> <a class="code hl_function"
+                                                   href="classImage.html#aa6537a9dab317694974d89cf8f5d3cd9">Image::_set_image_mat</a>(Mat
+            mat) {
+        </div>
+        <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>
+            image_mat_ = std::move(mat);
+        </div>
+        <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>}
+        </div>
 </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classImage.html#a7ebed07195740f92e2705e22315aec33">   39</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classImage.html#a7ebed07195740f92e2705e22315aec33">Image::display_image</a>(<span class="keywordtype">bool</span> vid_ctx) {</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">loaded</a>()) {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        imshow(<span class="stringliteral">&quot;Image&quot;</span>, image_mat_);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keywordflow">if</span> (!vid_ctx)</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            waitKey(0);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            waitKey(25);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Image hasn&#39;t been loaded&quot;</span>);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    }</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00027">
+        <div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#a3e66df2cac97a70aeb2aae34698c6d16">   27</a></span>Mat
+            *<a class="code hl_function"
+                href="classImage.html#a3e66df2cac97a70aeb2aae34698c6d16">Image::_get_image_mat</a>()
+            {
+        </div>
+        <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>
+            <span class="keywordflow">return</span> &amp;image_mat_;
+        </div>
+        <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}
+        </div>
 </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classImage.html#a7f884a307aedf84348f56913a6363fc4">   51</a></span>Vec3b <a class="code hl_function" href="classImage.html#a7f884a307aedf84348f56913a6363fc4">Image::get_pixel</a>(<span class="keywordtype">int</span> row, <span class="keywordtype">int</span> col)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">loaded</a>()) {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordflow">if</span> (row &lt; 0 || row &gt;= image_mat_.rows || col &lt; 0 ||</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            col &gt;= image_mat_.cols) {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Pixel out of bounds&quot;</span>);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        }</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        Vec3b color_values = image_mat_.at&lt;Vec3b&gt;(row, col);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <span class="keywordflow">return</span> color_values;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    }</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Image hasn&#39;t been loaded&quot;</span>);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>}</div>
+    <div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a
+            class="line"
+            href="classImage.html#ad6b3432d85ed1c34ff678e230a0c956f">   30</a></span><span
+            class="keywordtype">void</span> <a class="code hl_function"
+                                               href="classImage.html#ad6b3432d85ed1c34ff678e230a0c956f">Image::_set_color</a>(<a
+            class="code hl_enumeration"
+            href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448c">COLOR_SPACE</a>
+        col) { c_space = col; }
+    </div>
+    <div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a
+            class="line"
+            href="classImage.html#ae79eeeb5d0685f2cceba30bf152e68c7">   31</a></span><a
+            class="code hl_enumeration"
+            href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448c">COLOR_SPACE</a>
+        <a class="code hl_function"
+           href="classImage.html#ae79eeeb5d0685f2cceba30bf152e68c7">Image::_get_color</a>()
+        { <span class="keywordflow">return</span> c_space; }
+    </div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00032">
+        <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#a9f85a6f951cc1984a3db255fd999a4cb">   32</a></span><span
+                class="keywordtype">void</span> <a class="code hl_function"
+                                                   href="classImage.html#a9f85a6f951cc1984a3db255fd999a4cb">Image::_set_chroma</a>(<a
+                class="code hl_enumeration"
+                href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7b">CHROMA_SUBSAMPLING</a>
+            cs) {
+        </div>
+        <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>
+            <span class="keywordflow">if</span> (c_space == <a
+                    class="code hl_enumvalue"
+                    href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448caf726371acfea68d8e6506b9ab7d817f1">YUV</a>)
+        </div>
+        <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>
+            cs_ratio = cs;
+        </div>
+        <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>
+            <span class="keywordflow">else</span></div>
+        <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>
+            <span class="keywordflow">throw</span> runtime_error(
+        </div>
+        <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>
+            <span class="stringliteral">&quot;Chroma subsampling only makes sense in YUV color space&quot;</span>);
+        </div>
+        <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}
+        </div>
 </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classImage.html#ab419c592937dd7c9529fbd8561b565a3">   63</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classImage.html#ab419c592937dd7c9529fbd8561b565a3">Image::set_pixel</a>(<span class="keywordtype">int</span> row, <span class="keywordtype">int</span> col, <span class="keyword">const</span> Vec3b &amp;color_values) {</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">if</span> (row &lt; 0 || row &gt;= image_mat_.rows || col &lt; 0 || col &gt;= image_mat_.cols) {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Pixel out of bounds&quot;</span>);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    }</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    image_mat_.at&lt;Vec3b&gt;(row, col) = color_values;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
+    <div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a
+            class="line"
+            href="classImage.html#aa22ca893172b913f655a64da322159e6">   39</a></span><a
+            class="code hl_enumeration"
+            href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7b">CHROMA_SUBSAMPLING</a>
+        <a class="code hl_function"
+           href="classImage.html#aa22ca893172b913f655a64da322159e6">Image::_get_chroma</a>()
+        { <span class="keywordflow">return</span> cs_ratio; }
+    </div>
+    <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span
+            class="keywordtype">void</span> <a class="code hl_function"
+                                               href="classImage.html#a26ecdab6edc13b31fb9d0c5a9319bc9b">Image::load</a>(<span
+            class="keyword">const</span> <span class="keywordtype">char</span>
+        *filename, ImreadModes mode) {
+    </div>
+    <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>
+        Mat image, conv;
+    </div>
+    <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>
+        <span class="comment">// By default, cv:imread loads images in BGR format</span>
+    </div>
+    <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>
+        image = imread(filename, mode);
+    </div>
+    <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>
+        c_space = <a class="code hl_enumvalue"
+                     href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">BGR</a>;
+    </div>
+    <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>
+        <span class="keywordflow">if</span> (!image.empty()) {
+    </div>
+    <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>
+        image.convertTo(conv, CV_8UC3);
+    </div>
+    <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>
+        image_mat_ = conv;
+    </div>
+    <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>
+        } <span class="keywordflow">else</span> {
+    </div>
+    <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>
+        <span class="keywordflow">throw</span> std::runtime_error(<span
+                class="stringliteral">&quot;Image was not loaded&quot;</span>);
+    </div>
+    <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>
+        }
+    </div>
+    <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>}
+    </div>
+    <div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a
+            class="line"
+            href="classImage.html#a022d83404ed82ae23810760fc55b1cfb">   52</a></span>MatIterator_&lt;Vec3b&gt;
+        <a class="code hl_function"
+           href="classImage.html#a022d83404ed82ae23810760fc55b1cfb">Image::begin</a>()
+        { <span class="keywordflow">return</span> image_mat_.begin&lt;Vec3b&gt;();
+        }
+    </div>
+    <div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a
+            class="line"
+            href="classImage.html#ac35150c9107b42738964de24621e97dd">   53</a></span>MatIterator_&lt;Vec3b&gt;
+        <a class="code hl_function"
+           href="classImage.html#ac35150c9107b42738964de24621e97dd">Image::end</a>()
+        { <span class="keywordflow">return</span> image_mat_.end&lt;Vec3b&gt;();
+        }
+    </div>
+    <div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a
+            class="line"
+            href="classImage.html#ab6fc2eaee3d1d0c39fbf09f5b2b9b50e">   54</a></span>array&lt;int,
+        2&gt; <a class="code hl_function"
+                 href="classImage.html#ab6fc2eaee3d1d0c39fbf09f5b2b9b50e">Image::size</a>()<span
+                class="keyword"> const </span>{ <span
+                class="keywordflow">return</span> {image_mat_.rows,
+        image_mat_.cols}; }
+    </div>
+    <div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a
+            class="line"
+            href="classImage.html#aaa61e6770f704d81f2d39f034f7fe643">   55</a></span><span
+            class="keywordtype">int</span> <a class="code hl_function"
+                                              href="classImage.html#aaa61e6770f704d81f2d39f034f7fe643">Image::get_image_type</a>()<span
+            class="keyword"> const </span>{ <span
+            class="keywordflow">return</span> image_mat_.type(); }
+    </div>
+    <div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a
+            class="line"
+            href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">   56</a></span><span
+            class="keywordtype">bool</span> <a class="code hl_function"
+                                               href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">Image::loaded</a>()<span
+            class="keyword"> const </span>{ <span
+            class="keywordflow">return</span> !image_mat_.empty(); }
+    </div>
+    <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>
+    </div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00058">
+        <div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#a03342115d31595a7b0db828ee8e7e76e">   58</a></span><span
+                class="keywordtype">void</span> <a class="code hl_function"
+                                                   href="classImage.html#a03342115d31595a7b0db828ee8e7e76e">Image::save</a>(<span
+                class="keyword">const</span> <span
+                class="keywordtype">char</span> *filename, <span
+                class="keyword">const</span> vector&lt;int&gt; &amp;compression_params)
+            {
+        </div>
+        <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>
+            <span class="keywordflow">if</span> (<a class="code hl_function"
+                                                    href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">loaded</a>())
+            {
+        </div>
+        <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>
+            imwrite(filename, image_mat_, compression_params);
+        </div>
+        <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>
+            } <span class="keywordflow">else</span> {
+        </div>
+        <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>
+            <span class="keywordflow">throw</span> std::runtime_error(<span
+                    class="stringliteral">&quot;Image hasn&#39;t been loaded&quot;</span>);
+        </div>
+        <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>
+            }
+        </div>
+        <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}
+        </div>
 </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">   70</a></span><a class="code hl_class" href="classImage.html">Image</a> <a class="code hl_function" href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">Image::clone</a>() {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">loaded</a>()) {</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <a class="code hl_class" href="classImage.html">Image</a> <a class="code hl_function" href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">clone</a>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <a class="code hl_function" href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">clone</a>.image_mat_ = image_mat_.clone();</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">clone</a>;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    } <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Image hasn&#39;t been loaded&quot;</span>);</div>
+    <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>
+    </div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00066">
+        <div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#a7ebed07195740f92e2705e22315aec33">   66</a></span><span
+                class="keywordtype">void</span> <a class="code hl_function"
+                                                   href="classImage.html#a7ebed07195740f92e2705e22315aec33">Image::display_image</a>(<span
+                class="keywordtype">bool</span> vid_ctx) {
+        </div>
+        <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>
+            <span class="keywordflow">if</span> (<a class="code hl_function"
+                                                    href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">loaded</a>())
+            {
+        </div>
+        <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>
+            imshow(<span class="stringliteral">&quot;Image&quot;</span>,
+            image_mat_);
+        </div>
+        <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>
+            <span class="keywordflow">if</span> (!vid_ctx)
+        </div>
+        <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>
+            waitKey(0);
+        </div>
+        <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>
+            <span class="keywordflow">else</span> {
+        </div>
+        <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>
+            waitKey(25);
+        </div>
+        <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>
+            }
+        </div>
+        <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>
+            } <span class="keywordflow">else</span> {
+        </div>
+        <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>
+            <span class="keywordflow">throw</span> std::runtime_error(<span
+                    class="stringliteral">&quot;Image hasn&#39;t been loaded&quot;</span>);
+        </div>
+        <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>
+            }
+        </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>}</div>
 </div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classImage.html#ac5d951742cad8b816368d11c72999f3e">   79</a></span>vector&lt;Mat&gt; <a class="code hl_function" href="classImage.html#ac5d951742cad8b816368d11c72999f3e">Image::color_histograms</a>(<span class="keywordtype">int</span> bins, <span class="keywordtype">bool</span> fill_hist, <span class="keywordtype">int</span> width,</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                                    <span class="keywordtype">int</span> height) {</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">loaded</a>()) {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        vector&lt;Mat&gt; histograms;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        vector&lt;Mat&gt; channels;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="comment">// Array of colors for each channel</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        Scalar colors[] = {Scalar(255, 0, 0), Scalar(0, 255, 0), Scalar(0, 0, 255)};</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        split(image_mat_, channels);</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="comment">// If image is grayscale, set color to white</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keywordflow">if</span> (channels.size() == 1) {</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            colors[0] = Scalar(255, 255, 255);</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        }</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; channels.size(); i++) {</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            <a class="code hl_struct" href="structHistogram.html">Histogram</a> hist = <a class="code hl_struct" href="structHistogram.html">Histogram</a>(bins);</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            hist.<a class="code hl_variable" href="structHistogram.html#a89ab6b8951203e0bc9be58a73086f278">color</a> = colors[i];</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            Mat backMat = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">histogram&lt;uchar&gt;</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">channels</a>[<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">i</a>], <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">bins</a>);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">bin_w</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">cvRound</a>((<span class="keywordtype">double</span>) <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">width</a> / 256);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Vec3b</a> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">backColor</a> = (0, 0, 0);</div>
+<div class="foldopen" data-end="}" data-start="{" id="foldopen00079">
+    <div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a
+            class="line"
+            href="classImage.html#a7f884a307aedf84348f56913a6363fc4">   79</a></span>Vec3b
+        <a class="code hl_function"
+           href="classImage.html#a7f884a307aedf84348f56913a6363fc4">Image::get_pixel</a>(<span
+                class="keywordtype">int</span> row, <span class="keywordtype">int</span>
+        col)<span class="keyword"> const </span>{
+    </div>
+    <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>
+        <span class="keywordflow">if</span> (<a class="code hl_function"
+                                                href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">loaded</a>())
+        {
+    </div>
+    <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>
+        <span class="keywordflow">if</span> (row &lt; 0 || row &gt;=
+        image_mat_.rows || col &lt; 0 ||
+    </div>
+    <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>
+        col &gt;= image_mat_.cols) {
+    </div>
+    <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>
+        <span class="keywordflow">throw</span> std::runtime_error(<span
+                class="stringliteral">&quot;Pixel out of bounds&quot;</span>);
+    </div>
+    <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>
+        }
+    </div>
+    <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>
+        Vec3b color_values = image_mat_.at&lt;Vec3b&gt;(row, col);
+    </div>
+    <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>
+        <span class="keywordflow">return</span> color_values;
+    </div>
+    <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>
+        }
+    </div>
+    <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>
+        <span class="keywordflow">throw</span> std::runtime_error(<span
+                class="stringliteral">&quot;Image hasn&#39;t been loaded&quot;</span>);
+    </div>
+    <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}
+    </div>
+</div>
+    <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>
+    </div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00091">
+        <div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#af7a1d26a3d62a40ebe3b014c910568f4">   91</a></span><span
+                class="keywordtype">void</span> <a class="code hl_function"
+                                                   href="classImage.html#af7a1d26a3d62a40ebe3b014c910568f4">Image::set_pixel</a>(<span
+                class="keywordtype">int</span> row, <span class="keywordtype">int</span>
+            col, <span class="keyword">const</span> Vec3b &amp;color_values) {
+        </div>
+        <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>
+            <span class="keywordflow">if</span> (row &lt; 0 || row &gt;=
+            image_mat_.rows || col &lt; 0 || col &gt;= image_mat_.cols) {
+        </div>
+        <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>
+            <span class="keywordflow">throw</span> std::runtime_error(<span
+                    class="stringliteral">&quot;Pixel out of bounds&quot;</span>);
+        </div>
+        <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>
+            }
+        </div>
+        <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>
+            image_mat_.at&lt;Vec3b&gt;(row, col) = color_values;
+        </div>
+        <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}
+        </div>
+    </div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Mat</a> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">histImage</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">height</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">width</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">CV_8UC3</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">backColor</a>);</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">normalize</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">backMat</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">backMat</a>, 0, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">histImage</a>.rows, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">NORM_MINMAX</a>, -1, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Mat</a>());</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">j</a> = 1; <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">j</a> &lt; 256; <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">j</a>++) {</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">line</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">histImage</a>,</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                     <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Point</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">bin_w</a> * (<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">j</a> - 1), <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">height</a> - <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">cvRound</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">backMat</a>.at&lt;<span class="keywordtype">float</span>&gt;(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">j</a> - 1))),</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                     <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Point</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">bin_w</a> * (<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">j</a>), <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">height</a> - <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">cvRound</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">backMat</a>.at&lt;<span class="keywordtype">float</span>&gt;(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">j</a>))),</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                     <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">hist</a>.color, 2, 8, 0);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            }</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="keywordflow">if</span> (<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">fill_hist</a>) {</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">j</a> = 0; <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">j</a> &lt; <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">histImage</a>.cols; <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">j</a>++) {</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                    <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Mat</a> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">histImage</a>.col(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">j</a>);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">k</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a>.rows - 1; <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">k</a> &gt;= 0; <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">k</a>--) {</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                        <span class="comment">// Fill column with color until a non-&lt;backColor&gt; pixel is found</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                        <span class="keywordflow">if</span> (<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a>.at&lt;<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Vec3b</a>&gt;(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">k</a>) != <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">backColor</a>) {</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                        }</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>                        <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Vec3b</a> color = {(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">uchar</a>) <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">hist</a>.color[0], (<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">uchar</a>) <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">hist</a>.color[1],</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                                       (<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">uchar</a>) <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">hist</a>.color[2]};</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                        <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a>.at&lt;<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Vec3b</a>&gt;(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">k</a>) = color;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                        <span class="comment">// If we reach end of column without finding a non-&lt;backColor&gt; pixel</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                        <span class="comment">// zero the column</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                        <span class="keywordflow">if</span> (<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">k</a> == 0) {</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                            <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a> = Mat::zeros(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a>.rows, 1, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">CV_8UC3</a>);</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                        }</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                    }</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                }</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>            }</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">histograms</a>.push_back(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">histImage</a>);</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        }</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">histograms</a>;</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    } <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Image hasn&#39;t been loaded&quot;</span>);</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>}</div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00098">
+        <div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">   98</a></span><a
+                class="code hl_class" href="classImage.html">Image</a> <a
+                class="code hl_function"
+                href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">Image::clone</a>()
+            {
+        </div>
+        <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>
+            <span class="keywordflow">if</span> (<a class="code hl_function"
+                                                    href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">loaded</a>())
+            {
+        </div>
+        <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>
+            <a class="code hl_class" href="classImage.html">Image</a> <a
+                    class="code hl_function"
+                    href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">clone</a>;
+        </div>
+        <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>
+            <a class="code hl_function"
+               href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">clone</a>.image_mat_
+            = image_mat_.clone();
+        </div>
+        <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>
+            <span class="keywordflow">return</span> <a class="code hl_function"
+                                                       href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">clone</a>;
+        </div>
+        <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>
+            } <span class="keywordflow">else</span></div>
+        <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>
+            <span class="keywordflow">throw</span> std::runtime_error(<span
+                    class="stringliteral">&quot;Image hasn&#39;t been loaded&quot;</span>);
+        </div>
+        <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>}
+        </div>
 </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
-<div class="foldopen" id="foldopen00136" data-start="{" data-end="}">
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="classImage.html#ac7266242980d0ccf830b973940e1fe4d">  136</a></span><a class="code hl_class" href="classImage.html">Image</a> <a class="code hl_function" href="classImage.html#ac7266242980d0ccf830b973940e1fe4d">Image::gaussian_blur</a>(cv::Mat <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">blur</a>) {</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <a class="code hl_class" href="classImage.html">Image</a> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">im</a> = this-&gt;<a class="code hl_function" href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">clone</a>();</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Mat</a> *m = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">im</a>._get_image_mat();</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">totalBlur</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">int</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">sum</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">blur</a>)[0]);</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusR</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusC</a>;</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="comment">// Check if the blur matrix has proper dimensions</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">blur</a>.rows % 2 == 0 || <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">blur</a>.cols % 2 == 0) {</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;blur matrix must have odd rows and columns&quot;</span>);</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    }</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusR</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">blur</a>.rows / 2;</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusC</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">blur</a>.cols / 2;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="comment">// iterate every pixel to apply the filter</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    image_mat_.forEach&lt;<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Vec3b</a>&gt;([&amp;<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">blur</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusC</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusR</a>, m, <span class="keyword">this</span>,</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>                               <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">totalBlur</a>](<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Vec3b</a> &amp;<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">pixel</a>, <span class="keyword">const</span> <span class="keywordtype">int</span> *<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">position</a>) {</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">row</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">position</a>[0];</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">position</a>[1];</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Mat</a> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">blur_temp</a> = <a class="code hl_function" href="classImage.html#a17ff66d866dcd2639a8f8a50fda3c7f2">cut</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">blur</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">row</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a>);                 <span class="comment">// cut the blur filter as needed</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Mat</a> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">temp</a> = <a class="code hl_function" href="classImage.html#a38324c9c74264d0db260abb1838061a6">get_neighbors</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusR</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusC</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">row</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a>);<span class="comment">// get the neighbors</span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">temp</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">temp</a>.mul(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">blur_temp</a>);</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        cv::Scalar <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">sum</a> = cv::sum(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">temp</a>);</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        <span class="comment">// normalize</span></div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">a</a> = 0; <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">a</a> &lt; <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">sum</a>.rows; <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">a</a>++) {</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">pixel</a>[<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">a</a>] = (<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">int</a>) (<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">sum</a>[<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">a</a>] / <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">totalBlur</a>);</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        }</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        m-&gt;at&lt;<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Vec3b</a>&gt;(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">row</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a>) = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">pixel</a>;</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    });</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">im</a>;</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>}</div>
+    <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>
+    </div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00107">
+        <div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#ac5d951742cad8b816368d11c72999f3e">  107</a></span>vector&lt;Mat&gt;
+            <a class="code hl_function"
+               href="classImage.html#ac5d951742cad8b816368d11c72999f3e">Image::color_histograms</a>(<span
+                    class="keywordtype">int</span> bins, <span
+                    class="keywordtype">bool</span> fill_hist, <span
+                    class="keywordtype">int</span> width,
+        </div>
+        <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>
+            <span class="keywordtype">int</span> height) {
+        </div>
+        <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>
+            <span class="keywordflow">if</span> (<a class="code hl_function"
+                                                    href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">loaded</a>())
+            {
+        </div>
+        <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>
+            vector&lt;Mat&gt; histograms;
+        </div>
+        <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>
+            vector&lt;Mat&gt; channels;
+        </div>
+        <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>
+            <span class="comment">// Array of colors for each channel</span>
+        </div>
+        <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>
+            Scalar colors[] = {Scalar(255, 0, 0), Scalar(0, 255, 0), Scalar(0,
+            0, 255)};
+        </div>
+        <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>
+            split(image_mat_, channels);
+        </div>
+        <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>
+            <span class="comment">// If image is grayscale, set color to white</span>
+        </div>
+        <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>
+            <span class="keywordflow">if</span> (channels.size() == 1) {
+        </div>
+        <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>
+            colors[0] = Scalar(255, 255, 255);
+        </div>
+        <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>
+            }
+        </div>
+        <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>
+            <span class="keywordflow">for</span> (<span
+                    class="keywordtype">int</span> i = 0; i &lt;
+            channels.size(); i++) {
+        </div>
+        <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>
+            <a class="code hl_struct" href="structHistogram.html">Histogram</a>
+            hist = <a class="code hl_struct" href="structHistogram.html">Histogram</a>(bins);
+        </div>
+        <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>
+            hist.<a class="code hl_variable"
+                    href="structHistogram.html#a8e5a51a29dcb9ed430ee51b8b7a27bc7">color</a>
+            = colors[i];
+        </div>
+        <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>
+            Mat backMat = <a class="code hl_function"
+                             href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histogram&lt;uchar&gt;</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">channels</a>[<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">i</a>],
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">bins</a>);
+        </div>
+        <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">bin_w</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cvRound</a>((<span
+                    class="keywordtype">double</span>) <a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">width</a>
+            / 256);
+        </div>
+        <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Vec3b</a>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">backColor</a>
+            = (0, 0, 0);
+        </div>
+        <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>
+        </div>
+        <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Mat</a>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histImage</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">height</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">width</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">CV_8UC3</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">backColor</a>);
+        </div>
+        <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>
+        </div>
+        <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">normalize</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">backMat</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">backMat</a>,
+            0, <a class="code hl_function"
+                  href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histImage</a>.rows,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">NORM_MINMAX</a>,
+            -1, <a class="code hl_function"
+                   href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Mat</a>());
+        </div>
+        <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>
+        </div>
+        <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>
+            <span class="keywordflow">for</span> (<span
+                    class="keywordtype">int</span> <a class="code hl_function"
+                                                      href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">j</a>
+            = 1; <a class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">j</a>
+            &lt; 256; <a class="code hl_function"
+                         href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">j</a>++)
+            {
+        </div>
+        <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">line</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histImage</a>,
+        </div>
+        <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Point</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">bin_w</a>
+            * (<a class="code hl_function"
+                  href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">j</a>
+            - 1), <a class="code hl_function"
+                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">height</a>
+            - <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cvRound</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">backMat</a>.at&lt;<span
+                    class="keywordtype">float</span>&gt;(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">j</a>
+            - 1))),
+        </div>
+        <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Point</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">bin_w</a>
+            * (<a class="code hl_function"
+                  href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">j</a>),
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">height</a>
+            - <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cvRound</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">backMat</a>.at&lt;<span
+                    class="keywordtype">float</span>&gt;(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">j</a>))),
+        </div>
+        <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">hist</a>.color,
+            2, 8, 0);
+        </div>
+        <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>
+            }
+        </div>
+        <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>
+        </div>
+        <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>
+            <span class="keywordflow">if</span> (<a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">fill_hist</a>)
+            {
+        </div>
+        <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>
+            <span class="keywordflow">for</span> (<span
+                    class="keywordtype">int</span> <a class="code hl_function"
+                                                      href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">j</a>
+            = 0; <a class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">j</a>
+            &lt; <a class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histImage</a>.cols;
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">j</a>++)
+            {
+        </div>
+        <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Mat</a>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histImage</a>.col(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">j</a>);
+        </div>
+        <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>
+            <span class="keywordflow">for</span> (<span
+                    class="keywordtype">int</span> <a class="code hl_function"
+                                                      href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">k</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>.rows
+            - 1; <a class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">k</a>
+            &gt;= 0; <a class="code hl_function"
+                        href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">k</a>--)
+            {
+        </div>
+        <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>
+            <span class="comment">// Fill column with color until a non-&lt;backColor&gt; pixel is found</span>
+        </div>
+        <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>
+            <span class="keywordflow">if</span> (<a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>.at&lt;<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Vec3b</a>&gt;(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">k</a>)
+            != <a class="code hl_function"
+                  href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">backColor</a>)
+            {
+        </div>
+        <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>
+            <span class="keywordflow">break</span>;
+        </div>
+        <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>
+            }
+        </div>
+        <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Vec3b</a>
+            color = {(<a class="code hl_function"
+                         href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">uchar</a>)
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">hist</a>.color[0],
+            (<a class="code hl_function"
+                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">uchar</a>)
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">hist</a>.color[1],
+        </div>
+        <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>
+            (<a class="code hl_function"
+                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">uchar</a>)
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">hist</a>.color[2]};
+        </div>
+        <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>.at&lt;<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Vec3b</a>&gt;(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">k</a>)
+            = color;
+        </div>
+        <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>
+            <span class="comment">// If we reach end of column without finding a non-&lt;backColor&gt; pixel</span>
+        </div>
+        <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>
+            <span class="comment">// zero the column</span></div>
+        <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>
+            <span class="keywordflow">if</span> (<a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">k</a>
+            == 0) {
+        </div>
+        <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>
+            = Mat::zeros(<a class="code hl_function"
+                            href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>.rows,
+            1, <a class="code hl_function"
+                  href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">CV_8UC3</a>);
+        </div>
+        <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>
+            }
+        </div>
+        <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>
+            }
+        </div>
+        <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>
+            }
+        </div>
+        <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>
+            }
+        </div>
+        <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>
+        </div>
+        <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histograms</a>.push_back(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histImage</a>);
+        </div>
+        <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>
+            }
+        </div>
+        <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>
+            <span class="keywordflow">return</span> <a class="code hl_function"
+                                                       href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histograms</a>;
+        </div>
+        <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>
+            } <span class="keywordflow">else</span></div>
+        <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>
+            <span class="keywordflow">throw</span> std::runtime_error(<span
+                    class="stringliteral">&quot;Image hasn&#39;t been loaded&quot;</span>);
+        </div>
+        <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>}
+        </div>
 </div>
+    <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>
+    </div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00164">
+        <div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#a79d964992bf56a063ad9e5a4f2e0d3f4">  164</a></span><a
+                class="code hl_class" href="classImage.html">Image</a> <a
+                class="code hl_function"
+                href="classImage.html#a79d964992bf56a063ad9e5a4f2e0d3f4">Image::gaussian_blur</a>(cv::Mat
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">blur</a>)
+            {
+        </div>
+        <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>
+            <a class="code hl_class" href="classImage.html">Image</a> <a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">im</a>
+            = this-&gt;<a class="code hl_function"
+                          href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">clone</a>();
+        </div>
+        <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Mat</a>
+            *m = <a class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">im</a>._get_image_mat();
+        </div>
+        <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">totalBlur</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">int</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">sum</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">blur</a>)[0]);
+        </div>
+        <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusR</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusC</a>;
+        </div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
-<div class="foldopen" id="foldopen00170" data-start="{" data-end="}">
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="classImage.html#a38324c9c74264d0db260abb1838061a6">  170</a></span><a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Mat</a> <a class="code hl_function" href="classImage.html#a38324c9c74264d0db260abb1838061a6">Image::get_neighbors</a>(<span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusR</a>, <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusC</a>, <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">r</a>, <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">c</a>) {</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">r &lt; 0 || r &gt;</a>= image_mat_.rows || <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">c &lt; 0 || c &gt;</a>= image_mat_.cols) {</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;Pixel out of bounds&quot;</span>);</div>
+        <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>
+            <span class="comment">// Check if the blur matrix has proper dimensions</span>
+        </div>
+        <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>
+            <span class="keywordflow">if</span> (<a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">blur</a>.rows
+            % 2 == 0 || <a class="code hl_function"
+                           href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">blur</a>.cols
+            % 2 == 0) {
+        </div>
+        <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>
+            <span class="keywordflow">throw</span> std::invalid_argument(<span
+                    class="stringliteral">&quot;blur matrix must have odd rows and columns&quot;</span>);
+        </div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    }</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="comment">// get the min and max values, making sure to stay in bounds</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">rMin</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">max</a>(0, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">r</a> - <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusR</a>);</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">rMax</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">min</a>(image_mat_.rows - 1, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">r</a> + <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusR</a>);</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">cMin</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">max</a>(0, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">c</a> - <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusC</a>);</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">cMax</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">min</a>(image_mat_.cols - 1, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">c</a> + <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">radiusC</a>);</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordflow">return</span> image_mat_(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Range</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">rMin</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">rMax</a> + 1), <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Range</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">cMin</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">cMax</a> + 1));</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>}</div>
-</div>
+        <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusR</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">blur</a>.rows
+            / 2;
+        </div>
+        <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusC</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">blur</a>.cols
+            / 2;
+        </div>
+        <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>
+        </div>
+        <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>
+            <span class="comment">// iterate every pixel to apply the filter</span>
+        </div>
+        <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>
+            image_mat_.forEach&lt;<a class="code hl_function"
+                                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Vec3b</a>&gt;([&amp;<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">blur</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusC</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusR</a>,
+            m, <span class="keyword">this</span>,
+        </div>
+        <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">totalBlur</a>](<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Vec3b</a>
+            &amp;<a class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">pixel</a>,
+            <span class="keyword">const</span> <span
+                    class="keywordtype">int</span> *<a class="code hl_function"
+                                                       href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">position</a>)
+            {
+        </div>
+        <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">position</a>[0];
+        </div>
+        <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">position</a>[1];
+        </div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
-<div class="foldopen" id="foldopen00183" data-start="{" data-end="}">
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="classImage.html#a17ff66d866dcd2639a8f8a50fda3c7f2">  183</a></span><a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Mat</a> <a class="code hl_function" href="classImage.html#a17ff66d866dcd2639a8f8a50fda3c7f2">Image::cut</a>(<span class="keyword">const</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Mat</a> &amp;m, <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">row</a>, <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a>)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">centerRow</a> = m.rows / 2;</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">centerCol</a> = m.cols / 2;</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="comment">// check distance in image_mat from this pixel to the edge</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">distUp</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">row</a> - 0;</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">distDown</a> = (image_mat_.rows - 1) - <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">row</a>;</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">distLeft</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a> - 0;</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">distRight</a> = (image_mat_.cols - 1) - <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">col</a>;</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="comment">// check for need to cut</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">rMin</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">max</a>((<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">centerRow</a> - <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">distUp</a>), 0);</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">rMax</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">min</a>((<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">centerRow</a> + <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">distDown</a>), m.rows - 1);</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">cMin</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">max</a>((<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">centerCol</a> - <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">distLeft</a>), 0);</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">cMax</a> = <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">min</a>((<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">centerCol</a> + <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">distRight</a>), m.cols - 1);</div>
+        <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Mat</a>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">blur_temp</a>
+            = <a class="code hl_function"
+                 href="classImage.html#a19255946548f5b9595d770f1c6f4ea8c">cut</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">blur</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>);
+            <span class="comment">// cut the blur filter as needed</span></div>
+        <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Mat</a>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">temp</a>
+            = <a class="code hl_function"
+                 href="classImage.html#a0cc226b061d2cbdca789247c41af18b4">get_neighbors</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusR</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusC</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>);<span
+                    class="comment">// get the neighbors</span></div>
+        <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>
+        </div>
+        <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">temp</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">temp</a>.mul(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">blur_temp</a>);
+        </div>
+        <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>
+            cv::Scalar <a class="code hl_function"
+                          href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">sum</a>
+            = cv::sum(<a class="code hl_function"
+                         href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">temp</a>);
+        </div>
+        <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>
+        </div>
+        <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>
+            <span class="comment">// normalize</span></div>
+        <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>
+            <span class="keywordflow">for</span> (<span
+                    class="keywordtype">int</span> <a class="code hl_function"
+                                                      href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">a</a>
+            = 0; <a class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">a</a>
+            &lt; <a class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">sum</a>.rows;
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">a</a>++)
+            {
+        </div>
+        <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">pixel</a>[<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">a</a>]
+            = (<a class="code hl_function"
+                  href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">int</a>)
+            (<a class="code hl_function"
+                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">sum</a>[<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">a</a>]
+            / <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">totalBlur</a>);
+        </div>
+        <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>
+            }
+        </div>
+        <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>
+            m-&gt;at&lt;<a class="code hl_function"
+                           href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Vec3b</a>&gt;(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>)
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">pixel</a>;
+        </div>
+        <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>
+            });
+        </div>
+        <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>
+            <span class="keywordflow">return</span> <a class="code hl_function"
+                                                       href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">im</a>;
+        </div>
+        <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>}
+        </div>
+    </div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <span class="keywordflow">return</span> m(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Range</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">rMin</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">rMax</a> + 1), <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">Range</a>(<a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">cMin</a>, <a class="code hl_function" href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">cMax</a> + 1));</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>}</div>
+    <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>
+    </div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00199">
+        <div class="line"><a id="l00199" name="l00199"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#a0cc226b061d2cbdca789247c41af18b4">  199</a></span><a
+                class="code hl_function"
+                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Mat</a>
+            <a class="code hl_function"
+               href="classImage.html#a0cc226b061d2cbdca789247c41af18b4">Image::get_neighbors</a>(<span
+                    class="keywordtype">int</span> <a class="code hl_function"
+                                                      href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusR</a>,
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusC</a>,
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">r</a>,
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">c</a>)<span
+                    class="keyword"> const </span>{
+        </div>
+        <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>
+            <span class="keywordflow">if</span> (<a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">r
+                &lt; 0 || r &gt;</a>= image_mat_.rows || <a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">c
+                &lt; 0 || c &gt;</a>= image_mat_.cols) {
+        </div>
+        <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>
+            <span class="keywordflow">throw</span> std::out_of_range(<span
+                    class="stringliteral">&quot;Pixel out of bounds&quot;</span>);
+        </div>
+        <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>
+            }
+        </div>
+        <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>
+            <span class="comment">// get the min and max values, making sure to stay in bounds</span>
+        </div>
+        <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">rMin</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">max</a>(0,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">r</a> -
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusR</a>);
+        </div>
+        <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">rMax</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">min</a>(image_mat_.rows
+            - 1, <a class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">r</a>
+            + <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusR</a>);
+        </div>
+        <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cMin</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">max</a>(0,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">c</a> -
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusC</a>);
+        </div>
+        <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cMax</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">min</a>(image_mat_.cols
+            - 1, <a class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">c</a>
+            + <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">radiusC</a>);
+        </div>
+        <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>
+        </div>
+        <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>
+            <span class="keywordflow">return</span> image_mat_(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Range</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">rMin</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">rMax</a>
+            + 1), <a class="code hl_function"
+                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Range</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cMin</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cMax</a>
+            + 1)).clone();
+        </div>
+        <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>}
+        </div>
+    </div>
+    <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>
+    </div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00212">
+        <div class="line"><a id="l00212" name="l00212"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#a19255946548f5b9595d770f1c6f4ea8c">  212</a></span><a
+                class="code hl_function"
+                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Mat</a>
+            <a class="code hl_function"
+               href="classImage.html#a19255946548f5b9595d770f1c6f4ea8c">Image::cut</a>(<span
+                    class="keyword">const</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Mat</a>
+            &amp;m, <span class="keywordtype">int</span> <a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>,
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>)<span
+                    class="keyword"> const </span>{
+        </div>
+        <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">centerRow</a>
+            = m.rows / 2;
+        </div>
+        <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">centerCol</a>
+            = m.cols / 2;
+        </div>
+        <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>
+            <span class="comment">// check distance in image_mat from this pixel to the edge</span>
+        </div>
+        <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">distUp</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>;
+        </div>
+        <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">distDown</a>
+            = (image_mat_.rows - 1) - <a class="code hl_function"
+                                         href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>;
+        </div>
+        <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">distLeft</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>;
+        </div>
+        <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">distRight</a>
+            = (image_mat_.cols - 1) - <a class="code hl_function"
+                                         href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>;
+        </div>
+        <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>
+        </div>
+        <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>
+            <span class="comment">// check for need to cut</span></div>
+        <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">rMin</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">max</a>((<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">centerRow</a>
+            - <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">distUp</a>),
+            0);
+        </div>
+        <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">rMax</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">min</a>((<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">centerRow</a>
+            + <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">distDown</a>),
+            m.rows - 1);
+        </div>
+        <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cMin</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">max</a>((<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">centerCol</a>
+            - <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">distLeft</a>),
+            0);
+        </div>
+        <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cMax</a>
+            = <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">min</a>((<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">centerCol</a>
+            + <a class="code hl_function"
+                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">distRight</a>),
+            m.cols - 1);
+        </div>
+        <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>
+        </div>
+        <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>
+            <span class="keywordflow">return</span> m(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Range</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">rMin</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">rMax</a>
+            + 1), <a class="code hl_function"
+                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Range</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cMin</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cMax</a>
+            + 1));
+        </div>
+        <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>}
+        </div>
+    </div>
+    <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>
+    </div>
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00230">
+        <div class="line"><a id="l00230" name="l00230"></a><span class="lineno"><a
+                class="line"
+                href="classImage.html#a36da0f6901f286c95cbdd8da2558c1ad">  230</a></span><a
+                class="code hl_function"
+                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Mat</a>
+            <a class="code hl_function"
+               href="classImage.html#a36da0f6901f286c95cbdd8da2558c1ad">Image::get_slice</a>(<span
+                    class="keywordtype">int</span> <a class="code hl_function"
+                                                      href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>,
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>,
+            <span class="keywordtype">int</span> size)<span class="keyword"> const </span>{
+        </div>
+        <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>
+            <span class="keywordflow">if</span> (<a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row
+                &lt; 0 || row + size &gt;</a> image_mat_.rows || <a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col
+                &lt; 0 || col + size &gt;</a> image_mat_.cols) {
+        </div>
+        <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>
+            <span class="keywordflow">throw</span> std::out_of_range(<span
+                    class="stringliteral">&quot;Slice out of bounds&quot;</span>);
+        </div>
+        <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>
+            }
+        </div>
+        <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>
+            <span class="keywordflow">return</span> image_mat_(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Rect</a>(<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>,
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>,
+            <a class="code hl_function"
+               href="classImage.html#ab6fc2eaee3d1d0c39fbf09f5b2b9b50e">size</a>,
+            <a class="code hl_function"
+               href="classImage.html#ab6fc2eaee3d1d0c39fbf09f5b2b9b50e">size</a>));
+        </div>
+        <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>}
+        </div>
 </div>
 <div class="ttc" id="aImage_8hpp_html"><div class="ttname"><a href="Image_8hpp.html">Image.hpp</a></div></div>
-<div class="ttc" id="aImage_8hpp_html_a1b5745316d068338ce5da7e5a2d34437"><div class="ttname"><a href="Image_8hpp.html#a1b5745316d068338ce5da7e5a2d34437">histogram</a></div><div class="ttdeci">Mat histogram(const Mat &amp;matrix, int bins=256)</div><div class="ttdoc">Creates basic histogram of matrix .</div><div class="ttdef"><b>Definition</b> <a href="Image_8hpp_source.html#l00186">Image.hpp:186</a></div></div>
-<div class="ttc" id="aImage_8hpp_html_a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c"><div class="ttname"><a href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">BGR</a></div><div class="ttdeci">@ BGR</div><div class="ttdoc">Blue-Green-Red.</div><div class="ttdef"><b>Definition</b> <a href="Image_8hpp_source.html#l00026">Image.hpp:26</a></div></div>
-<div class="ttc" id="aclassImage_html"><div class="ttname"><a href="classImage.html">Image</a></div><div class="ttdoc">The Image class provides methods for manipulating digital images.</div><div class="ttdef"><b>Definition</b> <a href="Image_8hpp_source.html#l00041">Image.hpp:41</a></div></div>
-<div class="ttc" id="aclassImage_html_a09ae438cfa25247a5600ca89c9239c7e"><div class="ttname"><a href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">Image::clone</a></div><div class="ttdeci">Image clone()</div><div class="ttdef"><b>Definition</b> <a href="Image_8cpp_source.html#l00070">Image.cpp:70</a></div></div>
-<div class="ttc" id="aclassImage_html_a0dd7d32886e27f6e0288c274f345116c"><div class="ttname"><a href="classImage.html#a0dd7d32886e27f6e0288c274f345116c">Image::load</a></div><div class="ttdeci">Image * load(const Mat &amp;arr2d)</div><div class="ttdef"><b>Definition</b> <a href="Image_8cpp_source.html#l00013">Image.cpp:13</a></div></div>
-<div class="ttc" id="aclassImage_html_a17ff66d866dcd2639a8f8a50fda3c7f2"><div class="ttname"><a href="classImage.html#a17ff66d866dcd2639a8f8a50fda3c7f2">Image::cut</a></div><div class="ttdeci">Mat cut(const Mat &amp;m, int r, int c) const</div><div class="ttdef"><b>Definition</b> <a href="Image_8cpp_source.html#l00183">Image.cpp:183</a></div></div>
-<div class="ttc" id="aclassImage_html_a38324c9c74264d0db260abb1838061a6"><div class="ttname"><a href="classImage.html#a38324c9c74264d0db260abb1838061a6">Image::get_neighbors</a></div><div class="ttdeci">Mat get_neighbors(int radiusR, int radiusC, int r, int c)</div><div class="ttdef"><b>Definition</b> <a href="Image_8cpp_source.html#l00170">Image.cpp:170</a></div></div>
-<div class="ttc" id="aclassImage_html_a7ebed07195740f92e2705e22315aec33"><div class="ttname"><a href="classImage.html#a7ebed07195740f92e2705e22315aec33">Image::display_image</a></div><div class="ttdeci">void display_image(bool vid_ctx=false)</div><div class="ttdef"><b>Definition</b> <a href="Image_8cpp_source.html#l00039">Image.cpp:39</a></div></div>
-<div class="ttc" id="aclassImage_html_a7f884a307aedf84348f56913a6363fc4"><div class="ttname"><a href="classImage.html#a7f884a307aedf84348f56913a6363fc4">Image::get_pixel</a></div><div class="ttdeci">Vec3b get_pixel(int row, int col) const</div><div class="ttdef"><b>Definition</b> <a href="Image_8cpp_source.html#l00051">Image.cpp:51</a></div></div>
-<div class="ttc" id="aclassImage_html_ab419c592937dd7c9529fbd8561b565a3"><div class="ttname"><a href="classImage.html#ab419c592937dd7c9529fbd8561b565a3">Image::set_pixel</a></div><div class="ttdeci">void set_pixel(int row, int col, const Vec3b &amp;color_values)</div><div class="ttdef"><b>Definition</b> <a href="Image_8cpp_source.html#l00063">Image.cpp:63</a></div></div>
-<div class="ttc" id="aclassImage_html_abc0394f8cd550a94674cbaa1956ba51e"><div class="ttname"><a href="classImage.html#abc0394f8cd550a94674cbaa1956ba51e">Image::save</a></div><div class="ttdeci">void save(const char *filename, const vector&lt; int &gt; &amp;compression_params={})</div><div class="ttdef"><b>Definition</b> <a href="Image_8cpp_source.html#l00031">Image.cpp:31</a></div></div>
-<div class="ttc" id="aclassImage_html_ac5d951742cad8b816368d11c72999f3e"><div class="ttname"><a href="classImage.html#ac5d951742cad8b816368d11c72999f3e">Image::color_histograms</a></div><div class="ttdeci">vector&lt; Mat &gt; color_histograms(int bins=256, bool fill_hist=false, int width=512, int height=400)</div><div class="ttdef"><b>Definition</b> <a href="Image_8cpp_source.html#l00079">Image.cpp:79</a></div></div>
-<div class="ttc" id="aclassImage_html_ac7266242980d0ccf830b973940e1fe4d"><div class="ttname"><a href="classImage.html#ac7266242980d0ccf830b973940e1fe4d">Image::gaussian_blur</a></div><div class="ttdeci">Image gaussian_blur(Mat blur)</div><div class="ttdef"><b>Definition</b> <a href="Image_8cpp_source.html#l00136">Image.cpp:136</a></div></div>
-<div class="ttc" id="aclassImage_html_aef6f1334a708eec18d0372c48becf4f1"><div class="ttname"><a href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">Image::loaded</a></div><div class="ttdeci">bool loaded() const</div><div class="ttdef"><b>Definition</b> <a href="Image_8hpp_source.html#l00131">Image.hpp:131</a></div></div>
-<div class="ttc" id="astructHistogram_html"><div class="ttname"><a href="structHistogram.html">Histogram</a></div><div class="ttdoc">Histogram struct declaration.</div><div class="ttdef"><b>Definition</b> <a href="Image_8hpp_source.html#l00015">Image.hpp:15</a></div></div>
-<div class="ttc" id="astructHistogram_html_a89ab6b8951203e0bc9be58a73086f278"><div class="ttname"><a href="structHistogram.html#a89ab6b8951203e0bc9be58a73086f278">Histogram::color</a></div><div class="ttdeci">Scalar color</div><div class="ttdoc">Color to be used for drawing the histogram.</div><div class="ttdef"><b>Definition</b> <a href="Image_8hpp_source.html#l00016">Image.hpp:16</a></div></div>
+    <div class="ttc" id="aImage_8hpp_html_a4fb4f4156d045531af63bc48591d5eed">
+        <div class="ttname"><a
+                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histogram</a>
+        </div>
+        <div class="ttdeci">cv::Mat histogram(const cv::Mat &amp;matrix, int
+            bins=256)
+        </div>
+        <div class="ttdoc">Creates basic histogram of matrix .</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00177">Image.hpp:177</a></div>
+    </div>
+    <div class="ttc" id="aImage_8hpp_html_a99039de6017a1f64312480f3f4ea448c">
+        <div class="ttname"><a
+                href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448c">COLOR_SPACE</a>
+        </div>
+        <div class="ttdeci">COLOR_SPACE</div>
+        <div class="ttdoc">Declares the Image class, representing a digital
+            Image.
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00015">Image.hpp:15</a></div>
+    </div>
+    <div class="ttc"
+         id="aImage_8hpp_html_a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">
+        <div class="ttname"><a
+                href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">BGR</a>
+        </div>
+        <div class="ttdeci">@ BGR</div>
+        <div class="ttdoc">Blue-Green-Red.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00016">Image.hpp:16</a></div>
+    </div>
+    <div class="ttc"
+         id="aImage_8hpp_html_a99039de6017a1f64312480f3f4ea448caf726371acfea68d8e6506b9ab7d817f1">
+        <div class="ttname"><a
+                href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448caf726371acfea68d8e6506b9ab7d817f1">YUV</a>
+        </div>
+        <div class="ttdeci">@ YUV</div>
+        <div class="ttdoc">Luminance-Chrominance.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00017">Image.hpp:17</a></div>
+    </div>
+    <div class="ttc" id="aImage_8hpp_html_af3a6dcc9e5a5ede53c91491b5b79bb7b">
+        <div class="ttname"><a
+                href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7b">CHROMA_SUBSAMPLING</a>
+        </div>
+        <div class="ttdeci">CHROMA_SUBSAMPLING</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00021">Image.hpp:21</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html">
+        <div class="ttname"><a href="classImage.html">Image</a></div>
+        <div class="ttdoc">The Image class provides methods for manipulating
+            digital images.
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00039">Image.hpp:39</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a022d83404ed82ae23810760fc55b1cfb">
+        <div class="ttname"><a
+                href="classImage.html#a022d83404ed82ae23810760fc55b1cfb">Image::begin</a>
+        </div>
+        <div class="ttdeci">cv::MatIterator_&lt; cv::Vec3b &gt; begin()</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00052">Image.cpp:52</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a03342115d31595a7b0db828ee8e7e76e">
+        <div class="ttname"><a
+                href="classImage.html#a03342115d31595a7b0db828ee8e7e76e">Image::save</a>
+        </div>
+        <div class="ttdeci">void save(const char *filename, const std::vector&lt;
+            int &gt; &amp;compression_params={})
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00058">Image.cpp:58</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a09ae438cfa25247a5600ca89c9239c7e">
+        <div class="ttname"><a
+                href="classImage.html#a09ae438cfa25247a5600ca89c9239c7e">Image::clone</a>
+        </div>
+        <div class="ttdeci">Image clone()</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00098">Image.cpp:98</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a0cc226b061d2cbdca789247c41af18b4">
+        <div class="ttname"><a
+                href="classImage.html#a0cc226b061d2cbdca789247c41af18b4">Image::get_neighbors</a>
+        </div>
+        <div class="ttdeci">cv::Mat get_neighbors(int radiusR, int radiusC, int
+            r, int c) const
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00199">Image.cpp:199</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a19255946548f5b9595d770f1c6f4ea8c">
+        <div class="ttname"><a
+                href="classImage.html#a19255946548f5b9595d770f1c6f4ea8c">Image::cut</a>
+        </div>
+        <div class="ttdeci">cv::Mat cut(const cv::Mat &amp;m, int r, int c)
+            const
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00212">Image.cpp:212</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a26ecdab6edc13b31fb9d0c5a9319bc9b">
+        <div class="ttname"><a
+                href="classImage.html#a26ecdab6edc13b31fb9d0c5a9319bc9b">Image::load</a>
+        </div>
+        <div class="ttdeci">Image * load(const cv::Mat &amp;arr2d)</div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a36da0f6901f286c95cbdd8da2558c1ad">
+        <div class="ttname"><a
+                href="classImage.html#a36da0f6901f286c95cbdd8da2558c1ad">Image::get_slice</a>
+        </div>
+        <div class="ttdeci">cv::Mat get_slice(int row, int col, int size)
+            const
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00230">Image.cpp:230</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a3e66df2cac97a70aeb2aae34698c6d16">
+        <div class="ttname"><a
+                href="classImage.html#a3e66df2cac97a70aeb2aae34698c6d16">Image::_get_image_mat</a>
+        </div>
+        <div class="ttdeci">cv::Mat * _get_image_mat()</div>
+        <div class="ttdoc">Returns the underlying cv::Mat.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00027">Image.cpp:27</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a5502e928122744be1d3b89648298e162">
+        <div class="ttname"><a
+                href="classImage.html#a5502e928122744be1d3b89648298e162">Image::Image</a>
+        </div>
+        <div class="ttdeci">Image()=default</div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a79d964992bf56a063ad9e5a4f2e0d3f4">
+        <div class="ttname"><a
+                href="classImage.html#a79d964992bf56a063ad9e5a4f2e0d3f4">Image::gaussian_blur</a>
+        </div>
+        <div class="ttdeci">Image gaussian_blur(cv::Mat blur)</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00164">Image.cpp:164</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a7ebed07195740f92e2705e22315aec33">
+        <div class="ttname"><a
+                href="classImage.html#a7ebed07195740f92e2705e22315aec33">Image::display_image</a>
+        </div>
+        <div class="ttdeci">void display_image(bool vid_ctx=false)</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00066">Image.cpp:66</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a7f884a307aedf84348f56913a6363fc4">
+        <div class="ttname"><a
+                href="classImage.html#a7f884a307aedf84348f56913a6363fc4">Image::get_pixel</a>
+        </div>
+        <div class="ttdeci">cv::Vec3b get_pixel(int row, int col) const</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00079">Image.cpp:79</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a9f85a6f951cc1984a3db255fd999a4cb">
+        <div class="ttname"><a
+                href="classImage.html#a9f85a6f951cc1984a3db255fd999a4cb">Image::_set_chroma</a>
+        </div>
+        <div class="ttdeci">void _set_chroma(CHROMA_SUBSAMPLING cs)</div>
+        <div class="ttdoc">Sets the chroma subsampling rate of the Image.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00032">Image.cpp:32</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_aa22ca893172b913f655a64da322159e6">
+        <div class="ttname"><a
+                href="classImage.html#aa22ca893172b913f655a64da322159e6">Image::_get_chroma</a>
+        </div>
+        <div class="ttdeci">CHROMA_SUBSAMPLING _get_chroma()</div>
+        <div class="ttdoc">Returns the chroma subsampling rate of the Image.
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00039">Image.cpp:39</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_aa6537a9dab317694974d89cf8f5d3cd9">
+        <div class="ttname"><a
+                href="classImage.html#aa6537a9dab317694974d89cf8f5d3cd9">Image::_set_image_mat</a>
+        </div>
+        <div class="ttdeci">void _set_image_mat(cv::Mat mat)</div>
+        <div class="ttdoc">Sets the underlying cv::Mat.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00024">Image.cpp:24</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_aaa61e6770f704d81f2d39f034f7fe643">
+        <div class="ttname"><a
+                href="classImage.html#aaa61e6770f704d81f2d39f034f7fe643">Image::get_image_type</a>
+        </div>
+        <div class="ttdeci">int get_image_type() const</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00055">Image.cpp:55</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_ab6fc2eaee3d1d0c39fbf09f5b2b9b50e">
+        <div class="ttname"><a
+                href="classImage.html#ab6fc2eaee3d1d0c39fbf09f5b2b9b50e">Image::size</a>
+        </div>
+        <div class="ttdeci">std::array&lt; int, 2 &gt; size() const</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00054">Image.cpp:54</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_ac35150c9107b42738964de24621e97dd">
+        <div class="ttname"><a
+                href="classImage.html#ac35150c9107b42738964de24621e97dd">Image::end</a>
+        </div>
+        <div class="ttdeci">cv::MatIterator_&lt; cv::Vec3b &gt; end()</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00053">Image.cpp:53</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_ac5d951742cad8b816368d11c72999f3e">
+        <div class="ttname"><a
+                href="classImage.html#ac5d951742cad8b816368d11c72999f3e">Image::color_histograms</a>
+        </div>
+        <div class="ttdeci">std::vector&lt; cv::Mat &gt; color_histograms(int
+            bins=256, bool fill_hist=false, int width=512, int height=400)
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00107">Image.cpp:107</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_ad6b3432d85ed1c34ff678e230a0c956f">
+        <div class="ttname"><a
+                href="classImage.html#ad6b3432d85ed1c34ff678e230a0c956f">Image::_set_color</a>
+        </div>
+        <div class="ttdeci">void _set_color(COLOR_SPACE col)</div>
+        <div class="ttdoc">Sets the color space of the Image.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00030">Image.cpp:30</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_ae79eeeb5d0685f2cceba30bf152e68c7">
+        <div class="ttname"><a
+                href="classImage.html#ae79eeeb5d0685f2cceba30bf152e68c7">Image::_get_color</a>
+        </div>
+        <div class="ttdeci">COLOR_SPACE _get_color()</div>
+        <div class="ttdoc">Returns the color space of the Image.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00031">Image.cpp:31</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_aef6f1334a708eec18d0372c48becf4f1">
+        <div class="ttname"><a
+                href="classImage.html#aef6f1334a708eec18d0372c48becf4f1">Image::loaded</a>
+        </div>
+        <div class="ttdeci">bool loaded() const</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00056">Image.cpp:56</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_af7a1d26a3d62a40ebe3b014c910568f4">
+        <div class="ttname"><a
+                href="classImage.html#af7a1d26a3d62a40ebe3b014c910568f4">Image::set_pixel</a>
+        </div>
+        <div class="ttdeci">void set_pixel(int row, int col, const cv::Vec3b
+            &amp;color_values)
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00091">Image.cpp:91</a></div>
+    </div>
+    <div class="ttc" id="astructHistogram_html">
+        <div class="ttname"><a href="structHistogram.html">Histogram</a></div>
+        <div class="ttdoc">Histogram struct declaration.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00029">Image.hpp:29</a></div>
+    </div>
+    <div class="ttc"
+         id="astructHistogram_html_a35234282bbe987b249fab0f15a706e3e">
+        <div class="ttname"><a
+                href="structHistogram.html#a35234282bbe987b249fab0f15a706e3e">Histogram::Histogram</a>
+        </div>
+        <div class="ttdeci">Histogram(int bins)</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00006">Image.cpp:6</a></div>
+    </div>
+    <div class="ttc"
+         id="astructHistogram_html_a8e5a51a29dcb9ed430ee51b8b7a27bc7">
+        <div class="ttname"><a
+                href="structHistogram.html#a8e5a51a29dcb9ed430ee51b8b7a27bc7">Histogram::color</a>
+        </div>
+        <div class="ttdeci">cv::Scalar color</div>
+        <div class="ttdoc">Color to be used for drawing the histogram.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00030">Image.hpp:30</a></div>
+    </div>
+    <div class="ttc"
+         id="astructHistogram_html_ab7236b3a7232984dc97ff31770e2953d">
+        <div class="ttname"><a
+                href="structHistogram.html#ab7236b3a7232984dc97ff31770e2953d">Histogram::mat_</a>
+        </div>
+        <div class="ttdeci">cv::Mat mat_</div>
+        <div class="ttdoc">cv:Matrix containing the histogram data</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00032">Image.hpp:32</a></div>
+    </div>
+    <div class="ttc"
+         id="astructHistogram_html_aff3a490dcdc58eb44a50198590458739">
+        <div class="ttname"><a
+                href="structHistogram.html#aff3a490dcdc58eb44a50198590458739">Histogram::bins_</a>
+        </div>
+        <div class="ttdeci">int bins_</div>
+        <div class="ttdoc">Number of bins.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00031">Image.hpp:31</a></div>
+    </div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-    Generated on Thu Oct 19 2023 20:48:40 for CSLP_2023_2024 by&#160;<a href="https://www.doxygen.org/index.html"><img
-        alt="doxygen" class="footer" height="31" src="doxygen.svg" width="104"/></a> 1.9.8
+    Generated on Thu Oct 26 2023 02:43:34 for CSLP_2023_2024 by&#160;<a
+        href="https://www.doxygen.org/index.html"><img alt="doxygen"
+                                                       class="footer"
+                                                       height="31" src="doxygen.svg"
+                                                       width="104"/></a> 1.9.8
 </small></address>
 </body>
 </html>

@@ -7,7 +7,6 @@
 #include "BitStream.hpp"
 #include <string>
 
-using namespace std;
 /**
  * @brief The Golomb class provides methods to encode/decode int values using Golomb
  */
@@ -15,22 +14,14 @@ class Golomb {
 private:
     BitStream *bs;
     int m = -1;
-    string filepath;
+    std::string filepath;
 
 public:
-    Golomb(const std::string &filePath, std::ios_base::openmode mode) {
-        bs = new BitStream(filePath, std::ios::in | std::ios::out);
-        filepath = filePath;
-    }
-    ~Golomb() { delete bs; }
-
-    void reset() {
-        free(bs);
-        bs = new BitStream(filepath, std::ios::binary);
-    }
-
-    void _set_m(int m_) { m = m_; }
-    int _get_m() const { return m; }
+    Golomb(const std::string &filePath, std::ios_base::openmode mode);
+    ~Golomb();
+    void reset();
+    void _set_m(int m_);
+    int _get_m() const;
     //! Reads and decodes a single int from file
     //! @return the decoded int
     int decode();

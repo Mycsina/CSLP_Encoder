@@ -3,46 +3,42 @@
  * Declares the Video class, representing a digital video, composed of multiple
  * Image objects
  */
+#include "Image.hpp"
+#include <cstdio>
+#include <functional>
+#include <vector>
 #pragma once
 
-#include "Image.hpp"
-
-using namespace std;
-using namespace cv;
-
+class Image;
 /**
  * @brief The Video class provides methods for video reading/playing/processing
  */
 class Video {
-    vector<Image> im_reel;
-    float fps_;
+    std::vector<Image> im_reel;
+    float fps_{};
 
 public:
     Video() = default;
 
     ~Video() = default;
 
-    vector<Image> *_get_reel() { return &im_reel; };
+    const std::vector<Image> &get_reel();
 
-    void _set_reel(vector<Image> reel) { im_reel = std::move(reel); };
+    void set_reel(std::vector<Image> *reel);
 
-    float _get_fps() const { return fps_; };
+    float get_fps() const;
 
-    void _set_fps(float fps) { fps_ = fps; };
+    void set_fps(float fps);
 
     //TODO this should be a frame
     //! Returns frame at given position
     //! @param pos position of the frame
     //! @return Image object representing the frame
-    Image getFrame(int pos) { return Image(im_reel[pos]); }
+    Image getFrame(int pos);
 
     //! Applies a function to every frame in the video
     //! @param func function to be applied
-    void map(const function<void(Image &)> &func) {
-        for (auto &it: im_reel) {
-            func(it);
-        }
-    }
+    void map(const std::function<void(Image &)> &func);
 
     //! Loads Video from file
     //! @param filename path to the file
@@ -71,7 +67,7 @@ public:
 
     //! Signals whether the Video has been loaded
     //! @return true if the Video has been loaded, false otherwise
-    bool loaded() const { return !im_reel.empty(); };
+    bool loaded() const;
 
     //! Convert Video between color spaces
     //! @param f1 source color space

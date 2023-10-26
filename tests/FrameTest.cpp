@@ -1,22 +1,11 @@
-#include "../src/codec/Frame.cpp"
+#include "../src/codec/Frame.hpp"
 #include "../src/visual/Video.hpp"
 #include <gtest/gtest.h>
 
 using namespace std;
 
 auto frameTestVideo = "../../tests/resource/video.mp4";
-
-ostream &operator<<(ostream &os, const MotionVector &vector) {
-    os << "x: " << vector.x << " y: " << vector.y;
-    return os;
-}
-
-ostream &operator<<(ostream &os, const vector<MotionVector> &vectors) {
-    for (const auto &vector: vectors) {
-        os << vector << endl;
-    }
-    return os;
-}
+auto smallFrameTestVideo = "../../tests/resource/akiyo_qcif.y4m";
 
 class FrameTest : public ::testing::Test {
 protected:
@@ -34,7 +23,3 @@ protected:
         f2.setPrevious(&f1);
     }
 };
-
-TEST_F(FrameTest, FrameMotionVectorTest) {
-    cout << f2.match_all_blocks(16, 1, 7, false) << endl;
-}

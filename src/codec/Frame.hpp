@@ -1,24 +1,22 @@
+//! @file This file contains the implementation of the classes and structs used in motion encoding
 #pragma once
 
 #include "../visual/Image.hpp"
 #include <opencv2/core/mat.hpp>
 #include <ostream>
 
-using namespace std;
-using namespace cv;
-
 struct MotionVector {
     int x, y;
-    MotionVector() : x(0), y(0) {}
-    MotionVector(int x, int y) : x(x), y(y) {}
-    friend ostream &operator<<(ostream &os, const MotionVector &vector);
+    MotionVector();
+    MotionVector(int x, int y);
+    friend std::ostream &operator<<(std::ostream &os, const MotionVector &vector);
 };
 
 //! @brief The Block class represents a block of pixels.
 class Blocks {
 private:
     Image parent_;
-    Mat block_mat_;
+    cv::Mat block_mat_;
     int size_;
     int row_, col_;
 
@@ -31,10 +29,10 @@ public:
         block_mat_ = img.get_slice(row, col, size);
     }
 
-    const Mat &getBlockMat() const {
+    const cv::Mat &getBlockMat() const {
         return block_mat_;
     }
-    void setBlockMat(const Mat &blockMat) {
+    void setBlockMat(const cv::Mat &blockMat) {
         block_mat_ = blockMat;
     }
     int getSize() const {
@@ -67,9 +65,7 @@ public:
 //! @param size Size of the block
 //! @param row Row of the top-left pixelp
 //! @param col Column of the top-left pixel
-Blocks get_block(const Image &img, int size, int row, int col) {
-    return {img, size, row, col};
-}
+Blocks get_block(const Image &img, int size, int row, int col);
 
 /**
  * @brief The Frame class provides methods to manipulate an Image in the context of video encoding
@@ -77,52 +73,38 @@ Blocks get_block(const Image &img, int size, int row, int col) {
 class Frame {
 private:
     Image image_;
-    Mat frame_mat_;
-    Frame *previous_;
-    Frame *next_;// Allows for bidirectional traversal of the frames
+    cv::Mat frame_mat_;
+    Frame *previous_{};
+    Frame *next_{};// Allows for bidirectional traversal of the frames
 public:
     Frame() = default;
     ~Frame() = default;
-    explicit Frame(Image img) : image_(img), frame_mat_(img._get_image_mat()->clone()), previous_(this), next_(this) {}
-    Image getImage() const {
-        return image_;
-    }
-    Mat *getFrameMat() {
-        return &frame_mat_;
-    }
-    void setFrameMat(const Mat &frameMat) {
-        frame_mat_ = frameMat;
-    }
-    Frame *getPrevious() const {
-        return previous_;
-    }
-    void setPrevious(Frame *previous) {
-        previous_ = previous;
-        if (previous->getNext() != this)
-            previous->setNext(this);
-    }
-    Frame *getNext() const {
-        return next_;
-    }
-    void setNext(Frame *next) {
-        next_ = next;
-        if (next->getPrevious() != this)
-            next->setPrevious(this);
-    }
+    explicit Frame(Image img);
+    Image getImage() const;
+    cv::Mat *getFrameMat();
+    void setFrameMat(const cv::Mat &frameMat);
+    Frame *getPrevious() const;
+    void setPrevious(Frame *previous);
+    Frame *getNext() const;
+    void setNext(Frame *next);
+    void display_frame();
+    void display_frame_original();
+    cv::Mat get_difference();
 
     //! Returns the best motion vector between this frame and the nth previous frame
+    //! @details This function uses an optimized version of [Exhaustive Search](https://en.wikipedia.org/wiki/Block-matching_algorithm#Exhaustive_Search), checking the block at it's original position first.
     //! @param block Block to be compared
     //! @param n Number of frames to go back
     //! @param search_radius Radius of the search area (not including the block itself)
     //! @return Motion vector
-    MotionVector match_block_es(const Blocks &block, int n, int search_radius);
+    MotionVector match_block_es(const Blocks &block, Frame *reference, int search_radius);
 
     //! Returns the motion vector between this frame and the nth previous frame
     //! @param block Block to be compared
     //! @param n Number of frames to go back
     //! @param search_radius Radius of the search area (not including the block itself)
     //! @return Motion vector
-    MotionVector match_block_arps(Blocks block, int n, int search_radius);
+    MotionVector match_block_arps(const Blocks &block, Frame *reference, int search_radius);
 
     //! Returns all motion vectors between this frame and the nth previous frame
     //! @param block_size Size of the macroblocks to be compared
@@ -130,5 +112,11 @@ public:
     //! @param search_radius Radius of the search area (not including the block itself)
     //! @param fast Indicates whether the fast search algorithm should be used
     //! @return Vector of motion vectors
-    vector<MotionVector> match_all_blocks(int block_size = 16, int n = 1, int search_radius = 7, bool fast = true);
+    std::vector<MotionVector> match_all_blocks(int block_size = 16, int n = 1, int search_radius = 7, bool fast = true);
+
+    //! Reconstruct a frame using a reference frame and a vector of motion vectors
+    //! @param reference Reference frame
+    //! @param motion_vectors Vector of motion vectors
+    //! @return Reconstructed frame
+    Frame reconstruct_frame(Frame *reference, const std::vector<MotionVector> &motion_vectors);
 };

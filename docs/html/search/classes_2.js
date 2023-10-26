@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['histogram_0',['Histogram',['../structHistogram.html',1,'']]]
+    ['golomb_0', ['Golomb', ['../classGolomb.html', 1, '']]]
 ];

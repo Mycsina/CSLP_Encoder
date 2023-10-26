@@ -1,24 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta content="text/xhtml;charset=UTF-8" http-equiv="Content-Type"/>
+<meta content="IE=11" http-equiv="X-UA-Compatible"/>
+<meta content="Doxygen 1.9.8" name="generator"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>CSLP_2023_2024: Class List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="dynsections.js"></script>
+<script src="jquery.js" type="text/javascript"></script>
+<script src="dynsections.js" type="text/javascript"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="search/searchdata.js"></script>
-<script type="text/javascript" src="search/search.js"></script>
-<script type="text/javascript" src="darkmode_toggle.js"></script>
+<script src="search/searchdata.js" type="text/javascript"></script>
+<script src="search/search.js" type="text/javascript"></script>
+<script src="darkmode_toggle.js" type="text/javascript"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table cellpadding="0" cellspacing="0">
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
@@ -36,8 +36,8 @@
 var searchBox = new SearchBox("searchBox", "search/",'.html');
 /* @license-end */
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+<script src="menudata.js" type="text/javascript"></script>
+<script src="menu.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
@@ -50,9 +50,9 @@ $(function() {
 </div><!-- top -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
-     onmouseover="return searchBox.OnSearchSelectShow()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)"
      onmouseout="return searchBox.OnSearchSelectHide()"
-     onkeydown="return searchBox.OnSearchSelectKey(event)">
+     onmouseover="return searchBox.OnSearchSelectShow()">
 </div>
 
 <!-- iframe showing the search results (closed by default) -->
@@ -75,18 +75,90 @@ $(function() {
 <div class="contents">
 <div class="textblock">Here are the classes, structs, unions and interfaces with brief descriptions:</div><div class="directory">
 <table class="directory">
-<tr id="row_0_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classBitStream.html" target="_self">BitStream</a></td><td class="desc">Methods for reading and writing bits to a file </td></tr>
-<tr id="row_1_" class="odd"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classGolomb.html" target="_self">Golomb</a></td><td class="desc">Methods to encode/decode int values using <a class="el" href="classGolomb.html" title="The Golomb class provides methods to encode/decode int values using Golomb.">Golomb</a> </td></tr>
-<tr id="row_2_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structHistogram.html" target="_self">Histogram</a></td><td class="desc"><a class="el" href="structHistogram.html" title="Histogram struct declaration.">Histogram</a> struct declaration </td></tr>
-<tr id="row_3_" class="odd"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classImage.html" target="_self">Image</a></td><td class="desc">Methods for manipulating digital images </td></tr>
-<tr id="row_4_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classVideo.html" target="_self">Video</a></td><td class="desc">Methods for video reading/playing/processing </td></tr>
+<tr class="even" id="row_0_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classBitStream.html" target="_self">BitStream</a></td><td class="desc">Methods for reading and writing bits to a file </td></tr>
+    <tr class="odd" id="row_1_">
+        <td class="entry"><span
+                style="width:16px;display:inline-block;">&#160;</span><span
+                class="icona"><span class="icon">C</span></span><a class="el"
+                                                                   href="classBlocks.html"
+                                                                   target="_self">Blocks</a>
+        </td>
+        <td class="desc">The Block class represents a block of pixels</td>
+    </tr>
+    <tr class="even" id="row_2_">
+        <td class="entry"><span
+                style="width:16px;display:inline-block;">&#160;</span><span
+                class="icona"><span class="icon">C</span></span><a class="el"
+                                                                   href="classFrame.html"
+                                                                   target="_self">Frame</a>
+        </td>
+        <td class="desc">Methods to manipulate an <a class="el"
+                                                     href="classImage.html"
+                                                     title="The Image class provides methods for manipulating digital images.">Image</a>
+            in the context of video encoding
+        </td>
+    </tr>
+    <tr class="odd" id="row_3_">
+        <td class="entry"><span
+                style="width:16px;display:inline-block;">&#160;</span><span
+                class="icona"><span class="icon">C</span></span><a class="el"
+                                                                   href="classGolomb.html"
+                                                                   target="_self">Golomb</a>
+        </td>
+        <td class="desc">Methods to encode/decode int values using <a class="el"
+                                                                      href="classGolomb.html"
+                                                                      title="The Golomb class provides methods to encode/decode int values using Golomb.">Golomb</a>
+        </td>
+    </tr>
+    <tr class="even" id="row_4_">
+        <td class="entry"><span
+                style="width:16px;display:inline-block;">&#160;</span><span
+                class="icona"><span class="icon">C</span></span><a class="el"
+                                                                   href="structHistogram.html"
+                                                                   target="_self">Histogram</a>
+        </td>
+        <td class="desc"><a class="el" href="structHistogram.html"
+                            title="Histogram struct declaration.">Histogram</a>
+            struct declaration
+        </td>
+    </tr>
+    <tr class="odd" id="row_5_">
+        <td class="entry"><span
+                style="width:16px;display:inline-block;">&#160;</span><span
+                class="icona"><span class="icon">C</span></span><a class="el"
+                                                                   href="classImage.html"
+                                                                   target="_self">Image</a>
+        </td>
+        <td class="desc">Methods for manipulating digital images</td>
+    </tr>
+    <tr class="even" id="row_6_">
+        <td class="entry"><span
+                style="width:16px;display:inline-block;">&#160;</span><span
+                class="icona"><span class="icon">C</span></span><a class="el"
+                                                                   href="structMotionVector.html"
+                                                                   target="_self">MotionVector</a>
+        </td>
+        <td class="desc"></td>
+    </tr>
+    <tr class="odd" id="row_7_">
+        <td class="entry"><span
+                style="width:16px;display:inline-block;">&#160;</span><span
+                class="icona"><span class="icon">C</span></span><a class="el"
+                                                                   href="classVideo.html"
+                                                                   target="_self">Video</a>
+        </td>
+        <td class="desc">Methods for video reading/playing/processing</td>
+    </tr>
 </table>
 </div><!-- directory -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-    Generated on Thu Oct 19 2023 20:48:40 for CSLP_2023_2024 by&#160;<a href="https://www.doxygen.org/index.html"><img
-        alt="doxygen" class="footer" height="31" src="doxygen.svg" width="104"/></a> 1.9.8
+    Generated on Thu Oct 26 2023 02:43:34 for CSLP_2023_2024 by&#160;<a
+        href="https://www.doxygen.org/index.html"><img alt="doxygen"
+                                                       class="footer"
+                                                       height="31" src="doxygen.svg"
+                                                       width="104"/></a> 1.9.8
 </small></address>
 </body>
 </html>

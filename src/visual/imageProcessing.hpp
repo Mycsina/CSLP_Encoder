@@ -6,9 +6,6 @@
 #pragma once
 #include "Image.hpp"
 
-using namespace std;
-using namespace cv;
-
 /*!
  * Inserts a watermark into an Image
  * @param im The Image to be watermarked
@@ -17,7 +14,7 @@ using namespace cv;
  * @param coord2 The bottom right corner of the watermark
  * @param alpha The transparency of the watermark (1.0 = transparent, 0.0 = opaque)
  */
-void watermark(Image &im, Image mark, Point2i coord1, Point2i coord2,
+void watermark(Image &im, Image mark, cv::Point2i coord1, cv::Point2i coord2,
                double alpha);
 
 //! Converts Image from BGR to YUV 4:4:4

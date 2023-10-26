@@ -1,5 +1,5 @@
-#include "../src/io/BitStream.cpp"
-#include "../src/io/Golomb.cpp"
+#include "../src/io/BitStream.hpp"
+#include "../src/io/Golomb.hpp"
 #include <fstream>
 #include <gtest/gtest.h>
 #include <string>

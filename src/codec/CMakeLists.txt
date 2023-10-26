@@ -1,12 +1,9 @@
 cmake_minimum_required(VERSION 3.7)
-project(CSLP_io)
+project(CSLP_Project)
 
 # Targets
 
 ## Libraries
-add_library(codec
-        Frame.hpp
+add_library(Codec
         Frame.cpp
 )
-
-set_target_properties(codec PROPERTIES LINKER_LANGUAGE CXX)

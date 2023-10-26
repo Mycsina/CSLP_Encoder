@@ -1,9 +1,10 @@
-#include "../src/visual/Image.cpp"
-#include "../src/visual/imageProcessing.cpp"
+#include "../src/visual/Image.hpp"
+#include "../src/visual/imageProcessing.hpp"
 #include <gtest/gtest.h>
 #include <opencv2/highgui.hpp>
 
 using namespace std;
+using namespace cv;
 
 auto demos_img = "../../tests/resource/tulips.ppm";
 
@@ -81,7 +82,7 @@ TEST_F(ImageDemo, WatermarkDemo) {
     auto mark_file = "../../tests/resource/lena.ppm";
     Image mark(mark_file);
     watermark(im, mark, {0, 0},
-              {mark.get_image_size()[1], mark.get_image_size()[0]}, 0.5);
+              {mark.size()[1], mark.size()[0]}, 0.5);
     im.display_image();
 }
 

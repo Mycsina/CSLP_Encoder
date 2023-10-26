@@ -3,11 +3,40 @@
 using namespace std;
 using namespace cv;
 
+Histogram::Histogram(int bins) {
+    bins_ = bins;
+    mat_ = Mat::zeros(bins_, 1, CV_32SC1);
+}
+
+Image::Image(const Mat &arr2d) {
+    load(arr2d);
+    c_space = BGR;
+}
+Image::Image(const char *filename) {
+    load(filename);
+    c_space = BGR;
+}
+
 Image *Image::load(const Mat &arr) {
     image_mat_ = arr.clone();
     return this;
 }
-
+void Image::_set_image_mat(Mat mat) {
+    image_mat_ = std::move(mat);
+}
+Mat *Image::_get_image_mat() {
+    return &image_mat_;
+}
+void Image::_set_color(COLOR_SPACE col) { c_space = col; }
+COLOR_SPACE Image::_get_color() { return c_space; }
+void Image::_set_chroma(CHROMA_SUBSAMPLING cs) {
+    if (c_space == YUV)
+        cs_ratio = cs;
+    else
+        throw runtime_error(
+                "Chroma subsampling only makes sense in YUV color space");
+}
+CHROMA_SUBSAMPLING Image::_get_chroma() { return cs_ratio; }
 void Image::load(const char *filename, ImreadModes mode) {
     Mat image, conv;
     // By default, cv:imread loads images in BGR format
@@ -20,6 +49,11 @@ void Image::load(const char *filename, ImreadModes mode) {
         throw std::runtime_error("Image was not loaded");
     }
 }
+MatIterator_<Vec3b> Image::begin() { return image_mat_.begin<Vec3b>(); }
+MatIterator_<Vec3b> Image::end() { return image_mat_.end<Vec3b>(); }
+array<int, 2> Image::size() const { return {image_mat_.rows, image_mat_.cols}; }
+int Image::get_image_type() const { return image_mat_.type(); }
+bool Image::loaded() const { return !image_mat_.empty(); }
 
 void Image::save(const char *filename, const vector<int> &compression_params) {
     if (loaded()) {

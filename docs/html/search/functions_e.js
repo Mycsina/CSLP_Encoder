@@ -1,9 +1,12 @@
 var searchData=
 [
-  ['watermark_0',['watermark',['../imageProcessing_8cpp.html#a26ac3caf52198f4f1fa8403fd1bc92db',1,'watermark(Image &amp;im, Image mark, Point2i coord1, Point2i coord2, double alpha):&#160;imageProcessing.cpp'],['../imageProcessing_8hpp.html#a26ac3caf52198f4f1fa8403fd1bc92db',1,'watermark(Image &amp;im, Image mark, Point2i coord1, Point2i coord2, double alpha):&#160;imageProcessing.cpp']]],
-  ['writebinarytrunc_1',['writeBinaryTrunc',['../classGolomb.html#adb1782ffcd6bf7f8162cfceae74239a2',1,'Golomb']]],
-  ['writebit_2',['writeBit',['../classBitStream.html#aa86adee7779cf956e70348f392a1a985',1,'BitStream']]],
-  ['writebits_3',['writeBits',['../classBitStream.html#a40e52a70b9d30755a29e9337bfb6bcaf',1,'BitStream']]],
-  ['writestring_4',['writeString',['../classBitStream.html#aa230d20ee70d09c75592c456bcd6bf43',1,'BitStream']]],
-  ['writeunary_5',['writeUnary',['../classGolomb.html#ab0a079538679f3bfc317296510ebdf9b',1,'Golomb']]]
+    ['save_0', ['save', ['../classImage.html#a03342115d31595a7b0db828ee8e7e76e', 1, 'Image']]],
+    ['set_5ffps_1', ['set_fps', ['../classVideo.html#acb9e6c9de14a80f29ac150da925acb29', 1, 'Video']]],
+    ['set_5fpixel_2', ['set_pixel', ['../classImage.html#af7a1d26a3d62a40ebe3b014c910568f4', 1, 'Image']]],
+    ['setblockmat_3', ['setBlockMat', ['../classBlocks.html#af3afe15d3eb395bbd2d3c6ba4bb70d4d', 1, 'Blocks']]],
+    ['setframemat_4', ['setFrameMat', ['../classFrame.html#a5fef2725f736e1576d699c7ae5f08c0c', 1, 'Frame']]],
+    ['setnext_5', ['setNext', ['../classFrame.html#a323f4708e7310d867692b65aff585acb', 1, 'Frame']]],
+    ['setprevious_6', ['setPrevious', ['../classFrame.html#a9bd10e9d7b69b59c7ca68146f3b8d1a9', 1, 'Frame']]],
+    ['size_7', ['size', ['../classImage.html#ab6fc2eaee3d1d0c39fbf09f5b2b9b50e', 1, 'Image']]],
+    ['subsample_8', ['subsample', ['../imageProcessing_8cpp.html#a24fa2ec7a12e86a8083f31ad9b93ad73', 1, 'subsample(Image &amp;im, CHROMA_SUBSAMPLING cs):&#160;imageProcessing.cpp'], ['../imageProcessing_8hpp.html#a24fa2ec7a12e86a8083f31ad9b93ad73', 1, 'subsample(Image &amp;im, CHROMA_SUBSAMPLING cs):&#160;imageProcessing.cpp']]]
 ];

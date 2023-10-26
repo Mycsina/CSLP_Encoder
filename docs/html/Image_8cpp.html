@@ -1,24 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta content="text/xhtml;charset=UTF-8" http-equiv="Content-Type"/>
+<meta content="IE=11" http-equiv="X-UA-Compatible"/>
+<meta content="Doxygen 1.9.8" name="generator"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>CSLP_2023_2024: Image.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="dynsections.js"></script>
+<script src="jquery.js" type="text/javascript"></script>
+<script src="dynsections.js" type="text/javascript"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="search/searchdata.js"></script>
-<script type="text/javascript" src="search/search.js"></script>
-<script type="text/javascript" src="darkmode_toggle.js"></script>
+<script src="search/searchdata.js" type="text/javascript"></script>
+<script src="search/search.js" type="text/javascript"></script>
+<script src="darkmode_toggle.js" type="text/javascript"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table cellpadding="0" cellspacing="0">
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
@@ -36,8 +36,8 @@
 var searchBox = new SearchBox("searchBox", "search/",'.html');
 /* @license-end */
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+<script src="menudata.js" type="text/javascript"></script>
+<script src="menu.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
@@ -49,9 +49,9 @@ $(function() {
 <div id="main-nav"></div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
-     onmouseover="return searchBox.OnSearchSelectShow()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)"
      onmouseout="return searchBox.OnSearchSelectHide()"
-     onkeydown="return searchBox.OnSearchSelectKey(event)">
+     onmouseover="return searchBox.OnSearchSelectShow()">
 </div>
 
 <!-- iframe showing the search results (closed by default) -->
@@ -68,7 +68,7 @@ $(function() {
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
+<div class="navpath" id="nav-path">
   <ul>
 <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5594f77850edb42952de1f5e8c94226d.html">visual</a></li>  </ul>
 </div>
@@ -78,38 +78,36 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="Image_8hpp_source.html">Image.hpp</a>&quot;</code><br />
-<code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;opencv2/core/core.hpp&gt;</code><br />
-<code>#include &lt;opencv2/highgui.hpp&gt;</code><br />
-<code>#include &lt;opencv2/imgcodecs.hpp&gt;</code><br />
-<code>#include &lt;opencv2/imgproc.hpp&gt;</code><br />
-<code>#include &lt;opencv2/opencv.hpp&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Image.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="Image_8cpp__incl.png" border="0" usemap="#aImage_8cpp" alt=""/></div>
-<map name="aImage_8cpp" id="aImage_8cpp">
-<area shape="rect" title=" " alt="" coords="439,5,520,31"/>
-<area shape="rect" href="Image_8hpp.html" title=" " alt="" coords="287,79,368,105"/>
-<area shape="poly" title=" " alt="" coords="455,34,368,74,366,70,452,29"/>
-<area shape="rect" title=" " alt="" coords="5,153,167,178"/>
-<area shape="poly" title=" " alt="" coords="439,32,362,53,275,82,194,115,125,148,122,143,192,110,273,76,361,48,438,27"/>
-<area shape="rect" title=" " alt="" coords="439,153,584,178"/>
-<area shape="poly" title=" " alt="" coords="466,33,451,48,438,65,431,85,434,104,450,125,473,142,469,147,447,129,429,106,426,84,433,63,447,44,462,30"/>
-<area shape="rect" title=" " alt="" coords="444,79,515,105"/>
-<area shape="poly" title=" " alt="" coords="482,31,482,63,477,63,477,31"/>
-<area shape="rect" title=" " alt="" coords="539,79,692,105"/>
-<area shape="poly" title=" " alt="" coords="504,29,580,69,578,74,501,34"/>
-<area shape="rect" title=" " alt="" coords="715,79,854,105"/>
-<area shape="poly" title=" " alt="" coords="521,26,718,72,717,78,520,32"/>
-<area shape="rect" title=" " alt="" coords="879,79,1019,105"/>
-<area shape="poly" title=" " alt="" coords="521,23,863,75,862,80,520,28"/>
-<area shape="rect" title=" " alt="" coords="191,153,341,178"/>
-<area shape="poly" title=" " alt="" coords="319,107,288,142,284,139,315,103"/>
-<area shape="poly" title=" " alt="" coords="287,108,142,150,141,145,286,103"/>
-<area shape="poly" title=" " alt="" coords="360,103,467,144,465,149,358,108"/>
-<area shape="rect" title=" " alt="" coords="364,153,416,178"/>
-<area shape="poly" title=" " alt="" coords="340,103,371,139,367,142,336,107"/>
+<div class="center"><img alt="" border="0" src="Image_8cpp__incl.png" usemap="#aImage_8cpp"/></div>
+<map id="aImage_8cpp" name="aImage_8cpp">
+    <area alt="" coords="480,5,562,31" shape="rect" title=" "/>
+    <area alt="" coords="480,79,562,105" href="Image_8hpp.html" shape="rect"
+          title=" "/>
+    <area alt="" coords="524,31,524,63,518,63,518,31" shape="poly" title=" "/>
+    <area alt="" coords="5,153,77,178" shape="rect" title=" "/>
+    <area alt="" coords="480,100,315,120,92,155,92,150,314,115,479,95" shape="poly"
+          title=" "/>
+    <area alt="" coords="101,153,253,178" shape="rect" title=" "/>
+    <area alt="" coords="480,104,251,152,250,146,479,99" shape="poly"
+          title=" "/>
+    <area alt="" coords="277,153,416,178" shape="rect" title=" "/>
+    <area alt="" coords="492,108,391,149,389,144,490,103" shape="poly"
+          title=" "/>
+    <area alt="" coords="440,153,602,178" shape="rect" title=" "/>
+    <area alt="" coords="524,105,524,137,518,137,518,105" shape="poly"
+          title=" "/>
+    <area alt="" coords="626,153,771,178" shape="rect" title=" "/>
+    <area alt="" coords="552,103,655,144,653,149,550,108" shape="poly"
+          title=" "/>
+    <area alt="" coords="795,153,935,178" shape="rect" title=" "/>
+    <area alt="" coords="563,99,792,146,791,152,562,104" shape="poly"
+          title=" "/>
+    <area alt="" coords="959,153,1011,178" shape="rect" title=" "/>
+    <area alt="" coords="562,94,726,112,833,129,945,150,944,155,832,134,725,118,562,99" shape="poly"
+          title=" "/>
 </map>
 </div>
 </div>
@@ -117,8 +115,11 @@ Include dependency graph for Image.cpp:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-    Generated on Thu Oct 19 2023 20:48:40 for CSLP_2023_2024 by&#160;<a href="https://www.doxygen.org/index.html"><img
-        alt="doxygen" class="footer" height="31" src="doxygen.svg" width="104"/></a> 1.9.8
+    Generated on Thu Oct 26 2023 02:43:34 for CSLP_2023_2024 by&#160;<a
+        href="https://www.doxygen.org/index.html"><img alt="doxygen"
+                                                       class="footer"
+                                                       height="31" src="doxygen.svg"
+                                                       width="104"/></a> 1.9.8
 </small></address>
 </body>
 </html>

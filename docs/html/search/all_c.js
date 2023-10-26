@@ -1,10 +1,4 @@
 var searchData=
 [
-  ['readbinarytrunc_0',['readBinaryTrunc',['../classGolomb.html#ab3251a95cde138d5221da87040e77c80',1,'Golomb']]],
-  ['readbit_1',['readBit',['../classBitStream.html#a4bebf59fe9379dbdefb4647fdd2ddf01',1,'BitStream']]],
-  ['readbits_2',['readBits',['../classBitStream.html#a0b59b3a4e3e65fe62ea454a68790382d',1,'BitStream']]],
-  ['readframe_3',['readFrame',['../classVideo.html#a43131c14b460d0fb39a5cc7c3bb6e0c7',1,'Video']]],
-  ['readstring_4',['readString',['../classBitStream.html#ab32da07885f80c06d12598941e5df53a',1,'BitStream']]],
-  ['readunary_5',['readUnary',['../classGolomb.html#a1328c5920e1b6ed86dcaa10b5a885d30',1,'Golomb']]],
-  ['reset_6',['reset',['../classGolomb.html#aeddc69b7efdbeff6a5018d141d99cf19',1,'Golomb']]]
+    ['operator_3c_3c_0', ['operator&lt;&lt;', ['../structMotionVector.html#a08b092f4fd7338bbb9e48559f2d462e3', 1, 'MotionVector::operator&lt;&lt;'], ['../Frame_8cpp.html#a750a118fdfd232c86d12fe116d8652b9', 1, 'operator&lt;&lt;(ostream &amp;os, const MotionVector &amp;vector):&#160;Frame.cpp'], ['../Frame_8cpp.html#a5b86054d6698e32f32fdae244a53b7d8', 1, 'operator&lt;&lt;(ostream &amp;os, const vector&lt; MotionVector &gt; &amp;vectors):&#160;Frame.cpp']]]
 ];

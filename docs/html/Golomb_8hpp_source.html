@@ -1,24 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta content="text/xhtml;charset=UTF-8" http-equiv="Content-Type"/>
+<meta content="IE=11" http-equiv="X-UA-Compatible"/>
+<meta content="Doxygen 1.9.8" name="generator"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>CSLP_2023_2024: Golomb.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="dynsections.js"></script>
+<script src="jquery.js" type="text/javascript"></script>
+<script src="dynsections.js" type="text/javascript"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="search/searchdata.js"></script>
-<script type="text/javascript" src="search/search.js"></script>
-<script type="text/javascript" src="darkmode_toggle.js"></script>
+<script src="search/searchdata.js" type="text/javascript"></script>
+<script src="search/search.js" type="text/javascript"></script>
+<script src="darkmode_toggle.js" type="text/javascript"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table cellpadding="0" cellspacing="0">
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
@@ -36,8 +36,8 @@
 var searchBox = new SearchBox("searchBox", "search/",'.html');
 /* @license-end */
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+<script src="menudata.js" type="text/javascript"></script>
+<script src="menu.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
@@ -54,9 +54,9 @@ $(document).ready(function() { init_codefold(0); });
 </script>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
-     onmouseover="return searchBox.OnSearchSelectShow()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)"
      onmouseout="return searchBox.OnSearchSelectHide()"
-     onkeydown="return searchBox.OnSearchSelectKey(event)">
+     onmouseover="return searchBox.OnSearchSelectShow()">
 </div>
 
 <!-- iframe showing the search results (closed by default) -->
@@ -73,7 +73,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
+<div class="navpath" id="nav-path">
   <ul>
 <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_c184e51c84f2c3f0345bbc8a0d75d3e1.html">io</a></li>  </ul>
 </div>
@@ -85,120 +85,195 @@ $(document).ready(function() { init_codefold(0); });
 <a href="Golomb_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">using namespace </span>std;</div>
-<div class="foldopen" id="foldopen00013" data-start="{" data-end="};">
-    <div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="classGolomb.html">   13</a></span><span
-            class="keyword">class </span><a class="code hl_class" href="classGolomb.html">Golomb</a> {
+    <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span
+            class="preprocessor">#include &quot;<a class="code"
+                                                   href="BitStream_8hpp.html">BitStream.hpp</a>&quot;</span>
+    </div>
+    <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span
+            class="preprocessor">#include &lt;string&gt;</span></div>
+    <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>
+    </div>
+<div class="foldopen" data-end="};" data-start="{" id="foldopen00013">
+    <div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a
+            class="line" href="classGolomb.html">   13</a></span><span
+            class="keyword">class </span><a class="code hl_class"
+                                            href="classGolomb.html">Golomb</a> {
     </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">private</span>:</div>
-    <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> <a class="code hl_class"
-                                                                                            href="classBitStream.html">BitStream</a>
-        *bs;
+    <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>
+        <a class="code hl_class" href="classBitStream.html">BitStream</a> *bs;
     </div>
-    <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> <span
-            class="keywordtype">int</span> m = -1;
+    <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>
+        <span class="keywordtype">int</span> m = -1;
     </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordtype">string</span> filepath;</div>
+    <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>
+        std::string filepath;
+    </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
-    <div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line"
-                                                                               href="classGolomb.html#a0d200395f999fe8d60e5954f4fb8ed4a">   20</a></span>
-        <a class="code hl_function" href="classGolomb.html#a0d200395f999fe8d60e5954f4fb8ed4a">Golomb</a>(<span
-                class="keyword">const</span> std::string &amp;filePath, std::ios_base::openmode mode) {
+    <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>
+        <a class="code hl_class" href="classGolomb.html">Golomb</a>(<span
+                class="keyword">const</span> std::string &amp;filePath,
+        std::ios_base::openmode mode);
     </div>
-    <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> bs = <span
-            class="keyword">new</span> <a class="code hl_class" href="classBitStream.html">BitStream</a>(filePath,
-        std::ios::in | std::ios::out);
+    <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>
+        <a class="code hl_function"
+           href="classGolomb.html#a3695ea307f313060e2d2f7d32fc5fad9">~Golomb</a>();
     </div>
-    <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> filepath = filePath;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    }</div>
-</div>
-    <div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line"
-                                                                               href="classGolomb.html#a3695ea307f313060e2d2f7d32fc5fad9">   24</a></span>
-        <a class="code hl_function" href="classGolomb.html#a3695ea307f313060e2d2f7d32fc5fad9">~Golomb</a>() { <span
-                class="keyword">delete</span> bs; }
-    </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
-    <div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line"
-                                                                               href="classGolomb.html#aeddc69b7efdbeff6a5018d141d99cf19">   26</a></span>
+    <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>
         <span class="keywordtype">void</span> <a class="code hl_function"
-                                                 href="classGolomb.html#aeddc69b7efdbeff6a5018d141d99cf19">reset</a>() {
+                                                 href="classGolomb.html#aeddc69b7efdbeff6a5018d141d99cf19">reset</a>();
     </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        free(bs);</div>
-    <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> bs = <span
-            class="keyword">new</span> <a class="code hl_class" href="classBitStream.html">BitStream</a>(filepath,
-        std::ios::binary);
-    </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    }</div>
-</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-    <div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line"
-                                                                               href="classGolomb.html#a2df1ca1ed86f0ce1fdaad2bf0e418681">   31</a></span>
+    <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>
         <span class="keywordtype">void</span> <a class="code hl_function"
                                                  href="classGolomb.html#a2df1ca1ed86f0ce1fdaad2bf0e418681">_set_m</a>(<span
-                class="keywordtype">int</span> m_) { m = m_; }
+                class="keywordtype">int</span> m_);
     </div>
-    <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line"
-                                                                               href="classGolomb.html#a6102415d3f6ece65b0c67807d1b1ce28">   32</a></span>
+    <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>
         <span class="keywordtype">int</span> <a class="code hl_function"
-                                                href="classGolomb.html#a6102415d3f6ece65b0c67807d1b1ce28">_get_m</a>()<span
-                class="keyword"> const </span>{ <span class="keywordflow">return</span> m; }
+                                                href="classGolomb.html#a6102415d3f6ece65b0c67807d1b1ce28">_get_m</a>()
+        <span class="keyword">const</span>;
     </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classGolomb.html#abfc8d58261fc9bcc5d5e2559aed4a288">decode</a>();</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classGolomb.html#ac23190a357af7db62de1f4a213c6ce36">encode</a>(<span class="keywordtype">int</span> n);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classGolomb.html#ac23190a357af7db62de1f4a213c6ce36">encode</a>(<span class="keywordtype">int</span> n, <span class="keywordtype">int</span> m_);</div>
+    <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>
+        <span class="keywordtype">int</span> <a class="code hl_function"
+                                                href="classGolomb.html#abfc8d58261fc9bcc5d5e2559aed4a288">decode</a>();
+    </div>
+    <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>
+    </div>
+    <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>
+        <span class="keywordtype">void</span> <a class="code hl_function"
+                                                 href="classGolomb.html#ac23190a357af7db62de1f4a213c6ce36">encode</a>(<span
+                class="keywordtype">int</span> n);
+    </div>
+    <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>
+    </div>
+    <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>
+        <span class="keywordtype">void</span> <a class="code hl_function"
+                                                 href="classGolomb.html#ac23190a357af7db62de1f4a213c6ce36">encode</a>(<span
+                class="keywordtype">int</span> n, <span
+                class="keywordtype">int</span> m_);
+    </div>
+    <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>
+    </div>
+    <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>
+        <span class="keywordtype">int</span> <a class="code hl_function"
+                                                href="classGolomb.html#a1328c5920e1b6ed86dcaa10b5a885d30">readUnary</a>();
+    </div>
+    <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>
+    </div>
+    <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>
+        <span class="keywordtype">void</span> <a class="code hl_function"
+                                                 href="classGolomb.html#ab0a079538679f3bfc317296510ebdf9b">writeUnary</a>(<span
+                class="keywordtype">int</span> n);
+    </div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classGolomb.html#a1328c5920e1b6ed86dcaa10b5a885d30">readUnary</a>();</div>
+    <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>
+        <span class="keywordtype">int</span> <a class="code hl_function"
+                                                href="classGolomb.html#ab3251a95cde138d5221da87040e77c80">readBinaryTrunc</a>();
+    </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classGolomb.html#ab0a079538679f3bfc317296510ebdf9b">writeUnary</a>(<span class="keywordtype">int</span> n);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classGolomb.html#ab3251a95cde138d5221da87040e77c80">readBinaryTrunc</a>();</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classGolomb.html#adb1782ffcd6bf7f8162cfceae74239a2">writeBinaryTrunc</a>(<span class="keywordtype">int</span> n);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>};</div>
+    <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>
+        <span class="keywordtype">void</span> <a class="code hl_function"
+                                                 href="classGolomb.html#adb1782ffcd6bf7f8162cfceae74239a2">writeBinaryTrunc</a>(<span
+                class="keywordtype">int</span> n);
+    </div>
+    <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>};
+    </div>
 </div>
+    <div class="ttc" id="aBitStream_8hpp_html">
+        <div class="ttname"><a href="BitStream_8hpp.html">BitStream.hpp</a>
+        </div>
+    </div>
 <div class="ttc" id="aclassBitStream_html"><div class="ttname"><a href="classBitStream.html">BitStream</a></div><div class="ttdoc">The BitStream class provides methods for reading and writing bits to a file.</div><div class="ttdef"><b>Definition</b> <a href="BitStream_8hpp_source.html#l00012">BitStream.hpp:12</a></div></div>
 <div class="ttc" id="aclassGolomb_html"><div class="ttname"><a href="classGolomb.html">Golomb</a></div><div class="ttdoc">The Golomb class provides methods to encode/decode int values using Golomb.</div><div class="ttdef"><b>Definition</b> <a href="Golomb_8hpp_source.html#l00013">Golomb.hpp:13</a></div></div>
-<div class="ttc" id="aclassGolomb_html_a0d200395f999fe8d60e5954f4fb8ed4a"><div class="ttname"><a href="classGolomb.html#a0d200395f999fe8d60e5954f4fb8ed4a">Golomb::Golomb</a></div><div class="ttdeci">Golomb(const std::string &amp;filePath, std::ios_base::openmode mode)</div><div class="ttdef"><b>Definition</b> <a href="Golomb_8hpp_source.html#l00020">Golomb.hpp:20</a></div></div>
-<div class="ttc" id="aclassGolomb_html_a1328c5920e1b6ed86dcaa10b5a885d30"><div class="ttname"><a href="classGolomb.html#a1328c5920e1b6ed86dcaa10b5a885d30">Golomb::readUnary</a></div><div class="ttdeci">int readUnary()</div><div class="ttdef"><b>Definition</b> <a href="Golomb_8cpp_source.html#l00036">Golomb.cpp:36</a></div></div>
-<div class="ttc" id="aclassGolomb_html_a2df1ca1ed86f0ce1fdaad2bf0e418681"><div class="ttname"><a href="classGolomb.html#a2df1ca1ed86f0ce1fdaad2bf0e418681">Golomb::_set_m</a></div><div class="ttdeci">void _set_m(int m_)</div><div class="ttdef"><b>Definition</b> <a href="Golomb_8hpp_source.html#l00031">Golomb.hpp:31</a></div></div>
-<div class="ttc" id="aclassGolomb_html_a3695ea307f313060e2d2f7d32fc5fad9"><div class="ttname"><a href="classGolomb.html#a3695ea307f313060e2d2f7d32fc5fad9">Golomb::~Golomb</a></div><div class="ttdeci">~Golomb()</div><div class="ttdef"><b>Definition</b> <a href="Golomb_8hpp_source.html#l00024">Golomb.hpp:24</a></div></div>
+    <div class="ttc" id="aclassGolomb_html_a1328c5920e1b6ed86dcaa10b5a885d30">
+        <div class="ttname"><a
+                href="classGolomb.html#a1328c5920e1b6ed86dcaa10b5a885d30">Golomb::readUnary</a>
+        </div>
+        <div class="ttdeci">int readUnary()</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Golomb_8cpp_source.html#l00051">Golomb.cpp:51</a></div>
+    </div>
+    <div class="ttc" id="aclassGolomb_html_a2df1ca1ed86f0ce1fdaad2bf0e418681">
+        <div class="ttname"><a
+                href="classGolomb.html#a2df1ca1ed86f0ce1fdaad2bf0e418681">Golomb::_set_m</a>
+        </div>
+        <div class="ttdeci">void _set_m(int m_)</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Golomb_8cpp_source.html#l00016">Golomb.cpp:16</a></div>
+    </div>
+    <div class="ttc" id="aclassGolomb_html_a3695ea307f313060e2d2f7d32fc5fad9">
+        <div class="ttname"><a
+                href="classGolomb.html#a3695ea307f313060e2d2f7d32fc5fad9">Golomb::~Golomb</a>
+        </div>
+        <div class="ttdeci">~Golomb()</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Golomb_8cpp_source.html#l00014">Golomb.cpp:14</a></div>
+    </div>
     <div class="ttc" id="aclassGolomb_html_a6102415d3f6ece65b0c67807d1b1ce28">
-        <div class="ttname"><a href="classGolomb.html#a6102415d3f6ece65b0c67807d1b1ce28">Golomb::_get_m</a></div>
+        <div class="ttname"><a
+                href="classGolomb.html#a6102415d3f6ece65b0c67807d1b1ce28">Golomb::_get_m</a>
+        </div>
         <div class="ttdeci">int _get_m() const</div>
-        <div class="ttdef"><b>Definition</b> <a href="Golomb_8hpp_source.html#l00032">Golomb.hpp:32</a></div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Golomb_8cpp_source.html#l00017">Golomb.cpp:17</a></div>
     </div>
     <div class="ttc" id="aclassGolomb_html_ab0a079538679f3bfc317296510ebdf9b">
-        <div class="ttname"><a href="classGolomb.html#ab0a079538679f3bfc317296510ebdf9b">Golomb::writeUnary</a></div>
+        <div class="ttname"><a
+                href="classGolomb.html#ab0a079538679f3bfc317296510ebdf9b">Golomb::writeUnary</a>
+        </div>
         <div class="ttdeci">void writeUnary(int n)</div>
-        <div class="ttdef"><b>Definition</b> <a href="Golomb_8cpp_source.html#l00050">Golomb.cpp:50</a></div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Golomb_8cpp_source.html#l00063">Golomb.cpp:63</a></div>
     </div>
     <div class="ttc" id="aclassGolomb_html_ab3251a95cde138d5221da87040e77c80">
-        <div class="ttname"><a href="classGolomb.html#ab3251a95cde138d5221da87040e77c80">Golomb::readBinaryTrunc</a>
+        <div class="ttname"><a
+                href="classGolomb.html#ab3251a95cde138d5221da87040e77c80">Golomb::readBinaryTrunc</a>
         </div>
         <div class="ttdeci">int readBinaryTrunc()</div>
-        <div class="ttdef"><b>Definition</b> <a href="Golomb_8cpp_source.html#l00057">Golomb.cpp:57</a></div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Golomb_8cpp_source.html#l00070">Golomb.cpp:70</a></div>
     </div>
-<div class="ttc" id="aclassGolomb_html_abfc8d58261fc9bcc5d5e2559aed4a288"><div class="ttname"><a href="classGolomb.html#abfc8d58261fc9bcc5d5e2559aed4a288">Golomb::decode</a></div><div class="ttdeci">int decode()</div><div class="ttdef"><b>Definition</b> <a href="Golomb_8cpp_source.html#l00009">Golomb.cpp:9</a></div></div>
-<div class="ttc" id="aclassGolomb_html_ac23190a357af7db62de1f4a213c6ce36"><div class="ttname"><a href="classGolomb.html#ac23190a357af7db62de1f4a213c6ce36">Golomb::encode</a></div><div class="ttdeci">void encode(int n)</div><div class="ttdef"><b>Definition</b> <a href="Golomb_8cpp_source.html#l00018">Golomb.cpp:18</a></div></div>
+    <div class="ttc" id="aclassGolomb_html_abfc8d58261fc9bcc5d5e2559aed4a288">
+        <div class="ttname"><a
+                href="classGolomb.html#abfc8d58261fc9bcc5d5e2559aed4a288">Golomb::decode</a>
+        </div>
+        <div class="ttdeci">int decode()</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Golomb_8cpp_source.html#l00024">Golomb.cpp:24</a></div>
+    </div>
+    <div class="ttc" id="aclassGolomb_html_ac23190a357af7db62de1f4a213c6ce36">
+        <div class="ttname"><a
+                href="classGolomb.html#ac23190a357af7db62de1f4a213c6ce36">Golomb::encode</a>
+        </div>
+        <div class="ttdeci">void encode(int n)</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Golomb_8cpp_source.html#l00033">Golomb.cpp:33</a></div>
+    </div>
     <div class="ttc" id="aclassGolomb_html_adb1782ffcd6bf7f8162cfceae74239a2">
-        <div class="ttname"><a href="classGolomb.html#adb1782ffcd6bf7f8162cfceae74239a2">Golomb::writeBinaryTrunc</a>
+        <div class="ttname"><a
+                href="classGolomb.html#adb1782ffcd6bf7f8162cfceae74239a2">Golomb::writeBinaryTrunc</a>
         </div>
         <div class="ttdeci">void writeBinaryTrunc(int n)</div>
-        <div class="ttdef"><b>Definition</b> <a href="Golomb_8cpp_source.html#l00068">Golomb.cpp:68</a></div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Golomb_8cpp_source.html#l00081">Golomb.cpp:81</a></div>
     </div>
-<div class="ttc" id="aclassGolomb_html_aeddc69b7efdbeff6a5018d141d99cf19"><div class="ttname"><a href="classGolomb.html#aeddc69b7efdbeff6a5018d141d99cf19">Golomb::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdef"><b>Definition</b> <a href="Golomb_8hpp_source.html#l00026">Golomb.hpp:26</a></div></div>
+    <div class="ttc" id="aclassGolomb_html_aeddc69b7efdbeff6a5018d141d99cf19">
+        <div class="ttname"><a
+                href="classGolomb.html#aeddc69b7efdbeff6a5018d141d99cf19">Golomb::reset</a>
+        </div>
+        <div class="ttdeci">void reset()</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Golomb_8cpp_source.html#l00019">Golomb.cpp:19</a></div>
+    </div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-    Generated on Thu Oct 19 2023 20:48:40 for CSLP_2023_2024 by&#160;<a href="https://www.doxygen.org/index.html"><img
-        alt="doxygen" class="footer" height="31" src="doxygen.svg" width="104"/></a> 1.9.8
+    Generated on Thu Oct 26 2023 02:43:34 for CSLP_2023_2024 by&#160;<a
+        href="https://www.doxygen.org/index.html"><img alt="doxygen"
+                                                       class="footer"
+                                                       height="31" src="doxygen.svg"
+                                                       width="104"/></a> 1.9.8
 </small></address>
 </body>
 </html>

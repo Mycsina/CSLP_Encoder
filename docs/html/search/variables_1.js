@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['color_0',['color',['../structHistogram.html#a89ab6b8951203e0bc9be58a73086f278',1,'Histogram']]]
+    ['color_0', ['color', ['../structHistogram.html#a8e5a51a29dcb9ed430ee51b8b7a27bc7', 1, 'Histogram']]]
 ];

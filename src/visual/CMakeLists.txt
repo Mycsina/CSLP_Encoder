@@ -1,20 +1,13 @@
 cmake_minimum_required(VERSION 3.7)
-project(CSLP_visual)
+project(CSLP_Project)
 
 # Targets
 
 ## Libraries
 ### Image
-add_library(Image Image.hpp Image.cpp
-        imageProcessing.hpp
+add_library(Visual Image.cpp
         imageProcessing.cpp
+        Video.cpp
 )
 
-target_link_libraries(Image ${OpenCV_LIBS})
-set_target_properties(Image PROPERTIES LINKER_LANGUAGE CXX)
-
-### Video
-add_library(Video Video.cpp Video.hpp)
-
-target_link_libraries(Video ${OpenCV_LIBS})
-set_target_properties(Video PROPERTIES LINKER_LANGUAGE CXX)
+target_link_libraries(Visual ${OpenCV_LIBS})

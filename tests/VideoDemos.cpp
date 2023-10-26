@@ -1,4 +1,5 @@
-#include "../src/visual/Video.cpp"
+#include "../src/visual/Image.hpp"
+#include "../src/visual/Video.hpp"
 #include <gtest/gtest.h>
 
 using namespace std;
