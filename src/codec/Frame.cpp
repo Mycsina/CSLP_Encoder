@@ -18,7 +18,6 @@ ostream &operator<<(ostream &os, const vector<MotionVector> &vectors) {
 }
 
 Block::Block(const Image &img, int size, int row, int col) {
-    parent_ = img;
     size_ = size;
     row_ = row;
     col_ = col;
@@ -54,9 +53,6 @@ Block::MAD::MAD(int threshold) {
     best_match = {0, 0};
     threshold = threshold;
 }
-Block::BlockDiff* Block::MAD::reset(int threshold) {
-    return new MAD(threshold);
-}
 double Block::MAD::block_diff(const Block &a, const Block &b) {
     int diff = 0;
     for (int i = 0; i < a.size_; i++) {
@@ -68,21 +64,14 @@ double Block::MAD::block_diff(const Block &a, const Block &b) {
     }
     return floor(diff / (a.size_ * a.size_));
 }
-void Block::MAD::update(double score, const MotionVector &vector) {
-    if (score < best_score) {
-        previous_best = best_match;
-        best_score = score;
-        best_match = vector;
-    }
+bool Block::MAD::isBetter(double score) {
+    return score < best_score;
 }
 
 Block::MSE::MSE(int threshold) {
     best_score = INFINITY;
     best_match = {0, 0};
     threshold = threshold;
-}
-Block::BlockDiff* Block::MSE::reset(int threshold) {
-    return new MSE(0);
 }
 double Block::MSE::block_diff(const Block &a, const Block &b) {
     double diff = 0;
@@ -95,12 +84,8 @@ double Block::MSE::block_diff(const Block &a, const Block &b) {
     }
     return floor(diff / (a.size_ * a.size_));
 }
-void Block::MSE::update(double score, const MotionVector &vector) {
-    if (score < best_score) {
-        previous_best = best_match;
-        best_score = score;
-        best_match = vector;
-    }
+bool Block::MSE::isBetter(double score) {
+    return score < best_score;
 }
 
 Block::PSNR::PSNR(int threshold) {
@@ -108,28 +93,19 @@ Block::PSNR::PSNR(int threshold) {
     best_match = {0, 0};
     threshold = threshold;
 }
-Block::BlockDiff* Block::PSNR::reset(int threshold) {
-    return new PSNR(threshold);
-}
 double Block::PSNR::block_diff(const Block &a, const Block &b) {
     double mse_metric = MSE().block_diff(a, b);
     if (mse_metric == 0) return INFINITY;
     return 10 * log10(pow(255, 2) / mse_metric);
 }
-void Block::PSNR::update(double score, const MotionVector &vector) {
-    if (score > best_score) {
-        best_score = score;
-        best_match = vector;
-    }
+bool Block::PSNR::isBetter(double score) {
+    return score > best_score;
 }
 
 Block::SAD::SAD(int threshold) {
     best_score = INFINITY;
     best_match = {0, 0};
     threshold = threshold;
-}
-Block::BlockDiff* Block::SAD::reset(int threshold) {
-    return new SAD(threshold);
 }
 double Block::SAD::block_diff(const Block &a, const Block &b) {
     double diff = 0;
@@ -142,12 +118,8 @@ double Block::SAD::block_diff(const Block &a, const Block &b) {
     }
     return diff;
 }
-void Block::SAD::update(double score, const MotionVector &vector) {
-    if (score < best_score) {
-        previous_best = best_match;
-        best_score = score;
-        best_match = vector;
-    }
+bool Block::SAD::isBetter(double score) {
+    return score > best_score;
 }
 
 bool Block::isLeftEdge() const {
@@ -251,22 +223,33 @@ bool Block::BlockDiff::compare(const Block &block, Frame *reference, cv::Point c
     auto block_coords = block.getVertices();
     Block ref_block = get_block(reference->getImage(), block.getSize(), center.y, center.x);
     double diff_value = block_diff(block, ref_block);
-    MotionVector mv = {center.x - block_coords[0], center.y - block_coords[1]};
-    update(diff_value, mv);
-    cout << "Threshold: " << threshold << endl;
-    cout << "Best match: " << best_score << endl;
-    cout << "Best vector: " << best_match << endl;
+    if (isBetter(diff_value)) {
+        MotionVector mv = {center.x - block_coords[0], center.y - block_coords[1]};
+        mv.residual = block.getBlockMat() - ref_block.getBlockMat();
+        best_score = diff_value;
+        previous_best = best_match;
+        best_match = mv;
+    }
     if (diff_value <= threshold)
         return true;
     return false;
 }
 
+void Block::BlockDiff::reset() {
+    best_score = INFINITY;
+    best_match = {0, 0};
+}
+void Block::PSNR::reset() {
+    best_score = -(double) INFINITY;
+    best_match = {0, 0};
+}
+
 MotionVector Frame::match_block_es(const Block &block, Frame *reference, int search_radius) {
     bool finished;
-    block_diff_ = block_diff_->reset(block_diff_->threshold);
+    block_diff_->reset();
     finished = block_diff_->compare(block, reference, {block.getCol(), block.getRow()});
     if (finished)
-        return block_diff_->best_match;;
+        return block_diff_->best_match;
     auto block_coords = block.getVertices();
     auto search_bounds = get_search_window(block, search_radius);
     int left = search_bounds[0];
@@ -276,15 +259,17 @@ MotionVector Frame::match_block_es(const Block &block, Frame *reference, int sea
     for (int i = upper; i < down; i++) {
         for (int j = left; j < right; j++) {
             // TODO preprocessor macro for demo
+            /*
             Mat canvas = this->getImage()._get_image_mat()->clone();
             rectangle(canvas, Point(block_coords[0], block_coords[1]), Point(block_coords[2], block_coords[3]), Scalar(255, 255, 255));
             rectangle(canvas, Point(j, i), Point(j + block.getSize(), i + block.getSize()), Scalar(0, 0, 255));
             imshow("Canvas", canvas);
             waitKey(1);
+             */
             // TODO end
             finished = block_diff_->compare(block, reference, {j, i});
             if (finished)
-                break;
+                return block_diff_->best_match;
         }
     }
     return block_diff_->best_match;
@@ -293,7 +278,7 @@ MotionVector Frame::match_block_es(const Block &block, Frame *reference, int sea
 
 MotionVector Frame::match_block_arps(const Block &block, Frame *reference, int threshold) {
     bool finished;
-    block_diff_ = block_diff_->reset(block_diff_->threshold);
+    block_diff_->reset();
     double self_sad = block_diff_->compare(block, reference, {block.getCol(), block.getRow()});
     if (self_sad == block_diff_->threshold)
         return block_diff_->best_match;
@@ -357,6 +342,7 @@ void Frame::match_all_blocks(int block_size, int n, int search_radius, bool fast
     }
 }
 
-Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &motion_vectors) {
-    return Frame();
+
+Mat Frame::reconstruct_image(const vector<Block> &blocks) {
+    return Mat();
 }

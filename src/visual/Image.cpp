@@ -233,3 +233,10 @@ Mat Image::get_slice(int row, int col, int size) const {
     }
     return image_mat_(Rect(col, row, size, size));
 }
+
+void set_slice(const cv::Mat &mat, const cv::Mat &slice, int row, int col) {
+    if (row < 0 || row + slice.rows > mat.rows || col < 0 || col + slice.cols > mat.cols) {
+        throw std::out_of_range("Slice out of bounds");
+    }
+    slice.copyTo(mat(Rect(col, row, slice.cols, slice.rows)));
+}

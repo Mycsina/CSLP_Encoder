@@ -7,6 +7,7 @@
 
 struct MotionVector {
     int x, y;
+    cv::Mat residual;
     MotionVector();
     MotionVector(int x, int y);
     friend std::ostream &operator<<(std::ostream &os, const MotionVector &vector);
@@ -15,7 +16,6 @@ class Frame;
 //! @brief The Block class represents a block of pixels.
 class Block {
 private:
-    Image parent_;
     cv::Mat block_mat_;
     int size_;
     int row_, col_;
@@ -36,12 +36,12 @@ public:
     class BlockDiff {
     public:
         virtual double block_diff(const Block &a, const Block &b) = 0;
-        virtual void update(double score, const MotionVector &vector) = 0;
+        virtual bool isBetter(double score) = 0;
         double best_score;
         MotionVector best_match;
         MotionVector previous_best;
         int threshold;
-        virtual BlockDiff* reset(int threshold) = 0;
+        virtual void reset();
         bool compare(const Block &block, Frame *reference, cv::Point center);
     };
 
@@ -53,8 +53,7 @@ public:
         //! @return MAL value (lesser is better)
         explicit MAD(int threshold = 0);
         double block_diff(const Block &a, const Block &b) override;
-        void update(double score, const MotionVector &vector) override;
-        BlockDiff *reset(int threshold) override;
+        bool isBetter(double score) override;
     };
 
     class MSE : public BlockDiff {
@@ -65,8 +64,7 @@ public:
         //! @return MSE value (lesser is better)
         explicit MSE(int threshold = 0);
         double block_diff(const Block &a, const Block &b) override;
-        void update(double score, const MotionVector &vector) override;
-        BlockDiff *reset(int threshold) override;
+        bool isBetter(double score) override;
     };
 
     class PSNR : public BlockDiff {
@@ -77,8 +75,8 @@ public:
         //! @return PSNR value (greater is better)
         explicit PSNR(int threshold = 0);
         double block_diff(const Block &a, const Block &b) override;
-        void update(double score, const MotionVector &vector) override;
-        BlockDiff *reset(int threshold) override;
+        bool isBetter(double score) override;
+        void reset() override;
     };
 
     class SAD : public BlockDiff {
@@ -90,8 +88,7 @@ public:
         //! @return SAD value (lesser is better)
         explicit SAD(int threshold = 0);
         double block_diff(const Block &a, const Block &b) override;
-        void update(double score, const MotionVector &vector) override;
-        BlockDiff *reset(int threshold) override;
+        bool isBetter(double score) override;
     };
 };
 
@@ -112,6 +109,7 @@ private:
     Frame *next_{};// Allows for bidirectional traversal of the frames
     Block::BlockDiff *block_diff_{};
     std::vector<MotionVector> motion_vectors_;
+
 public:
     Frame() = default;
     ~Frame() = default;
@@ -167,9 +165,9 @@ public:
     //! @param motion_vectors Vector of motion vectors
     //! @return Reconstructed frame
     Frame reconstruct_frame(Frame *reference, const std::vector<MotionVector> &motion_vectors);
-};
 
-class Matcher {
-public:
-    virtual MotionVector match_block(const Block &block, Frame *reference, int search_radius) = 0;
+    //! Reconstruct an image from a vector of macroblocks
+    //! @param blocks Vector of macroblocks
+    //! @return Matrix containing the reconstructed image
+    cv::Mat reconstruct_image(const std::vector<Block> &blocks);
 };

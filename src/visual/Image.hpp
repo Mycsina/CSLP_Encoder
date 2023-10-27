@@ -165,6 +165,8 @@ public:
     cv::Mat cut(const cv::Mat &m, int r, int c) const;
 };
 
+void set_slice(const cv::Mat &mat, const cv::Mat &slice, int row, int col);
+
 //! @brief Creates basic histogram of matrix\n
 //! @details The functions needs to be called with the correct template type,
 //! according to the type of the matrix\n
