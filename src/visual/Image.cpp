@@ -250,9 +250,9 @@ void Image::encode_JPEG_LS(const std::string& path) {
 
     for(int r=0;r<image_mat_.rows;r++){
         for(int c=0;c<image_mat_.cols;c++){
-            for(int channel=1;channel<=image_mat_.channels();channel++){
+            for(int channel=0;channel<image_mat_.channels();channel++){
                 uchar real=image_mat_.at<uchar>(r,c,channel);
-                uchar predicted=image_mat_.at<uchar>(r,c,channel);
+                uchar predicted= predict_JPEG_LS(image_mat_,r,c,channel);
                 uchar diff=real-predicted;
                 g.encode((int)diff,m);
             }
@@ -275,24 +275,55 @@ Image Image::decode_JPEG_LS(const std::string& path) {
     //read header
     auto c_space=static_cast<COLOR_SPACE>(bs.readBits(3));
     auto cs_ratio=static_cast<CHROMA_SUBSAMPLING>(bs.readBits(3));
+    int cols=bs.readBits(8);
+    int rows=bs.readBits(8);
+    int m=bs.readBits(8);
+    Mat mat;
+
+    if(c_space==GRAY){
+        mat=Mat::zeros(rows,cols,CV_8UC1);
+    }else{
+        mat=Mat::zeros(rows,cols,CV_8UC3);
+    }
+
+    g._set_m(m);
+    for(int r=0;r<mat.rows;r++){
+        for(int c=0;c<mat.cols;c++){
+            for(int channel=0;channel<mat.channels();channel++){
+                uchar diff=g.decode();
+                uchar predicted= predict_JPEG_LS(mat,r,c,channel);
+                uchar real=diff+predicted;
+                if(mat.channels()>1){
+                    mat.at<Vec3b>(r,c)[channel]=real;
+                }else{
+                    mat.at<uchar>(r,c)=real;
+                }
+            }
+        }
+    }
+
+    Image im(mat);
+    im._set_color(c_space);
+    im._set_chroma(cs_ratio);
+    return im;
 }
 
-uchar Image::predict_JPEG_LS(int row, int col, int channel=1) {
-    if(row<0 || row>= image_mat_.rows || col<0 || col>=image_mat_.cols){
+uchar Image::predict_JPEG_LS(Mat mat, int row, int col, int channel=0) {
+    if(row<0 || row>= mat.rows || col<0 || col>=mat.cols){
         throw std::out_of_range("Pixel out of bounds");
     }
 
     uchar a,b,c;
     if(row-1>=0 && col>=1){
-        a=image_mat_.at<uchar>(row,col-1,channel);
-        b=image_mat_.at<uchar>(row-1,col,channel);
-        c=image_mat_.at<uchar>(row-1,col-1,channel);
+        a=mat.at<uchar>(row,col-1,channel);
+        b=mat.at<uchar>(row-1,col,channel);
+        c=mat.at<uchar>(row-1,col-1,channel);
     }else if(row-1>=0){
         a=0;
-        b=image_mat_.at<uchar>(row-1,col,channel);
+        b=mat.at<uchar>(row-1,col,channel);
         c=0;
     }else if(col-1>=0){
-        a=image_mat_.at<uchar>(row,col-1,channel);
+        a=mat.at<uchar>(row,col-1,channel);
         b=0;
         c=0;
     }else{

@@ -170,7 +170,7 @@ public:
 
     static Image decode_JPEG_LS(const std::string& path);
 
-    uchar predict_JPEG_LS(int row, int col, int channel);
+    static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel);
 };
 
 //! @brief Creates basic histogram of matrix\n
