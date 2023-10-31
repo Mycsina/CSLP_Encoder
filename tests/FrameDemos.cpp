@@ -43,8 +43,7 @@ TEST_F(FrameDemo, FrameMotionVectorDemo) {
     int i = 0;
     int j = 0;
     Mat res = Mat::zeros(f3.getImage().size()[0], f3.getImage().size()[1], CV_8UC3);
-    for (auto v: f3.getMotionVectors()) {
-        cout << v.x << " " << v.y << endl;
+    for (const auto &v: f3.getMotionVectors()) {
         set_slice(res, v.residual, j, i);
         arrowedLine(res, Point(i + block_size / 2, j + block_size / 2), Point(i + v.x + block_size / 2, j + v.y + block_size / 2), Scalar(0, 0, 255), 1, 8, 0);
         i += block_size;

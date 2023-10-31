@@ -258,15 +258,13 @@ MotionVector Frame::match_block_es(const Block &block, Frame *reference, int sea
     int down = search_bounds[3];
     for (int i = upper; i < down; i++) {
         for (int j = left; j < right; j++) {
-            // TODO preprocessor macro for demo
-            /*
+#ifdef _VISUALIZE
             Mat canvas = this->getImage()._get_image_mat()->clone();
             rectangle(canvas, Point(block_coords[0], block_coords[1]), Point(block_coords[2], block_coords[3]), Scalar(255, 255, 255));
             rectangle(canvas, Point(j, i), Point(j + block.getSize(), i + block.getSize()), Scalar(0, 0, 255));
             imshow("Canvas", canvas);
             waitKey(1);
-             */
-            // TODO end
+#endif
             finished = block_diff_->compare(block, reference, {j, i});
             if (finished)
                 return block_diff_->best_match;
@@ -277,6 +275,7 @@ MotionVector Frame::match_block_es(const Block &block, Frame *reference, int sea
 
 
 MotionVector Frame::match_block_arps(const Block &block, Frame *reference, int threshold) {
+    throw runtime_error("This function mustn't be used");
     bool finished;
     block_diff_->reset();
     double self_sad = block_diff_->compare(block, reference, {block.getCol(), block.getRow()});
@@ -293,13 +292,13 @@ MotionVector Frame::match_block_arps(const Block &block, Frame *reference, int t
         initial_points = {Point(block_coords[0], block_coords[1]), {0, 0}, {0, 0}, {0, 0}, {0, 0}};
     initial_points = get_rood_points({block_coords[0], block_coords[1]}, size, block.getSize());
     for (auto point: initial_points) {
-        // TODO preprocessor macro for demo
+#ifdef _VISUALIZE
         Mat canvas = this->getImage()._get_image_mat()->clone();
         rectangle(canvas, Point(block_coords[0], block_coords[1]), Point(block_coords[2], block_coords[3]), Scalar(255, 255, 255));
         rectangle(canvas, Point(point.x, point.y), Point(point.x + block.getSize(), point.y + block.getSize()), Scalar(0, 0, 255));
         imshow("Canvas", canvas);
         waitKey(1);
-        // TODO end
+#endif
         finished = block_diff_->compare(block, reference, point);
         if (finished)
             return block_diff_->best_match;
@@ -307,13 +306,13 @@ MotionVector Frame::match_block_arps(const Block &block, Frame *reference, int t
     do {
         auto new_points = get_rood_points({block_coords[0] + block_diff_->best_match.x, block_coords[1] + block_diff_->best_match.y}, size, block.getSize());
         for (auto point: new_points) {
-            // TODO preprocessor macro for demo
+#ifdef _VISUALIZE
             Mat canvas = this->getImage()._get_image_mat()->clone();
             rectangle(canvas, Point(block_coords[0], block_coords[1]), Point(block_coords[2], block_coords[3]), Scalar(255, 255, 255));
             rectangle(canvas, Point(point.x, point.y), Point(point.x + block.getSize(), point.y + block.getSize()), Scalar(0, 0, 255));
             imshow("Canvas", canvas);
             waitKey(1);
-            // TODO end
+#endif
             finished = block_diff_->compare(block, reference, point);
         }
     } while (!finished);
@@ -341,8 +340,6 @@ void Frame::match_all_blocks(int block_size, int n, int search_radius, bool fast
         }
     }
 }
-
-
-Mat Frame::reconstruct_image(const vector<Block> &blocks) {
-    return Mat();
+Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &motion_vectors) {
+    return Frame();
 }

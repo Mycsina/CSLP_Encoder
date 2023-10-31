@@ -160,14 +160,10 @@ public:
     //! @return Vector of motion vectors
     void match_all_blocks(int block_size = 16, int n = 1, int search_radius = 7, bool fast = true);
 
-    //! Reconstruct a frame using a reference frame and a vector of motion vectors
+    // TODO
+    //! Reconstruct a frame using a frame and a vector of motion vectors
     //! @param reference Reference frame
     //! @param motion_vectors Vector of motion vectors
     //! @return Reconstructed frame
     Frame reconstruct_frame(Frame *reference, const std::vector<MotionVector> &motion_vectors);
-
-    //! Reconstruct an image from a vector of macroblocks
-    //! @param blocks Vector of macroblocks
-    //! @return Matrix containing the reconstructed image
-    cv::Mat reconstruct_image(const std::vector<Block> &blocks);
 };
