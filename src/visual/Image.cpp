@@ -1,4 +1,5 @@
 ﻿#include "Image.hpp"
+#include <iostream>
 
 using namespace std;
 using namespace cv;
@@ -232,4 +233,79 @@ Mat Image::get_slice(int row, int col, int size) const {
         throw std::out_of_range("Slice out of bounds");
     }
     return image_mat_(Rect(col, row, size, size));
+}
+
+void Image::encode_JPEG_LS(const std::string& path) {
+    BitStream bs(path,std::ios::out);
+    Golomb g(&bs);
+    int m=10;
+
+    //TODO: document header structure
+    // 3 bits for color_space, 3 bits for chroma subsampling, 8 bits each for width and height, 8 bits for m (golomb)
+    bs.writeBits(static_cast<int>(c_space),3);
+    bs.writeBits(static_cast<int>(cs_ratio),3);
+    bs.writeBits(image_mat_.cols,8);
+    bs.writeBits(image_mat_.rows,8);
+    bs.writeBits(m,8);
+
+    for(int r=0;r<image_mat_.rows;r++){
+        for(int c=0;c<image_mat_.cols;c++){
+            for(int channel=1;channel<=image_mat_.channels();channel++){
+                uchar real=image_mat_.at<uchar>(r,c,channel);
+                uchar predicted=image_mat_.at<uchar>(r,c,channel);
+                uchar diff=real-predicted;
+                g.encode((int)diff,m);
+            }
+        }
+    }
+}
+
+Image Image::decode_JPEG_LS(const std::string& path) {
+    //TODO: check if there's a better way to confirm if file exists
+    ifstream file;
+    file.open(path);
+    if(!file){
+        file.close();
+        throw std::runtime_error("File does not exist");
+    }
+    file.close();
+
+    BitStream bs(path,std::ios::in);
+    Golomb g(&bs);
+    //read header
+    auto c_space=static_cast<COLOR_SPACE>(bs.readBits(3));
+    auto cs_ratio=static_cast<CHROMA_SUBSAMPLING>(bs.readBits(3));
+}
+
+uchar Image::predict_JPEG_LS(int row, int col, int channel=1) {
+    if(row<0 || row>= image_mat_.rows || col<0 || col>=image_mat_.cols){
+        throw std::out_of_range("Pixel out of bounds");
+    }
+
+    uchar a,b,c;
+    if(row-1>=0 && col>=1){
+        a=image_mat_.at<uchar>(row,col-1,channel);
+        b=image_mat_.at<uchar>(row-1,col,channel);
+        c=image_mat_.at<uchar>(row-1,col-1,channel);
+    }else if(row-1>=0){
+        a=0;
+        b=image_mat_.at<uchar>(row-1,col,channel);
+        c=0;
+    }else if(col-1>=0){
+        a=image_mat_.at<uchar>(row,col-1,channel);
+        b=0;
+        c=0;
+    }else{
+        a=0;
+        b=0;
+        c=0;
+    }
+
+    if(c>=std::max(a,b)){
+        return std::min(a,b);
+    }else if(c<=std::min(a,b)){
+        return std::max(a,b);
+    }else{
+        return a+b-c;
+    }
 }
