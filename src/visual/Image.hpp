@@ -83,8 +83,7 @@ public:
     cv::MatIterator_<cv::Vec3b> end();
 
     //! Return size of Image
-    //! @return Array of integers containing the size of the Image in the format
-    //! <rows, cols>
+    //! @return Array of integers containing the size of the Image in the format <rows, cols>
     std::array<int, 2> size() const;
 
     //! Loads an Image from a file
@@ -165,6 +164,8 @@ public:
     //! @return The cut submatrix
     cv::Mat cut(const cv::Mat &m, int r, int c) const;
 };
+
+void set_slice(const cv::Mat &mat, const cv::Mat &slice, int row, int col);
 
 //! @brief Creates basic histogram of matrix\n
 //! @details The functions needs to be called with the correct template type,
