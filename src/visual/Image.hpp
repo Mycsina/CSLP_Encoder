@@ -11,6 +11,7 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/opencv.hpp>
 #include <utility>
+#include "../io/Golomb.hpp"
 
 enum COLOR_SPACE {
     BGR,//!< Blue-Green-Red
@@ -48,7 +49,7 @@ public:
     //! Create an Image from an open BGR cv::Mat
     explicit Image(const cv::Mat &arr2d);
 
-    //! Create an Image from a given file pathn
+    //! Create an Image from a given file path
     explicit Image(const char *filename);
 
     //! Loads an Image from a cv::Mat
@@ -163,6 +164,12 @@ public:
     //! @param r,c the coordinates
     //! @return The cut submatrix
     cv::Mat cut(const cv::Mat &m, int r, int c) const;
+
+    void encode_JPEG_LS(const std::string& path);
+
+    static Image decode_JPEG_LS(const std::string& path);
+
+    static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel);
 };
 
 void set_slice(const cv::Mat &mat, const cv::Mat &slice, int row, int col);

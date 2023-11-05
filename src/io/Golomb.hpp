@@ -18,6 +18,7 @@ private:
 
 public:
     Golomb(const std::string &filePath, std::ios_base::openmode mode);
+    Golomb(BitStream *bs);
     ~Golomb();
     void reset();
     void _set_m(int m_);
