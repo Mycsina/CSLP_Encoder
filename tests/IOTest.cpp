@@ -19,7 +19,6 @@ TEST(IOTestSuite, BitStreamReadWriteTest) {
     delete bs;
 }
 
-//TODO: check wrong value
 TEST(IOTestSuite, GolombReadWriteTest) {
     int m = 10;
     auto *g = new Golomb(golomb_dst, std::ios::out);

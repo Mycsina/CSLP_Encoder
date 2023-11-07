@@ -164,6 +164,16 @@ public:
     //! @param r,c the coordinates
     //! @return The cut submatrix
     cv::Mat cut(const cv::Mat &m, int r, int c) const;
+
+    void encode_JPEG_LS(const std::string& path, int m);
+
+    void encode_JPEG_LS(Golomb *g);
+
+    static Image decode_JPEG_LS(const std::string& path);
+
+    static Image decode_JPEG_LS(Golomb *g,COLOR_SPACE c_space,CHROMA_SUBSAMPLING cs_ratio, int rows,int cols);
+
+    static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel);
 };
 
 void set_slice(const cv::Mat &mat, const cv::Mat &slice, int row, int col);

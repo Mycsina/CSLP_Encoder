@@ -31,11 +31,7 @@ Mat *Image::_get_image_mat() {
 void Image::_set_color(COLOR_SPACE col) { c_space = col; }
 COLOR_SPACE Image::_get_color() { return c_space; }
 void Image::_set_chroma(CHROMA_SUBSAMPLING cs) {
-    if (c_space == YUV)
-        cs_ratio = cs;
-    else
-        throw runtime_error(
-                "Chroma subsampling only makes sense in YUV color space");
+    cs_ratio=cs;
 }
 CHROMA_SUBSAMPLING Image::_get_chroma() { return cs_ratio; }
 void Image::load(const char *filename, ImreadModes mode) {
@@ -240,4 +236,136 @@ void set_slice(const cv::Mat &mat, const cv::Mat &slice, int row, int col) {
         throw std::out_of_range("Slice out of bounds");
     }
     slice.copyTo(mat(Rect(col, row, slice.cols, slice.rows)));
+void Image::encode_JPEG_LS(const std::string& path, int m=10) {
+    auto *bs = new BitStream(path, std::ios::out);
+
+    Golomb g(bs);
+
+    bs->writeBits(static_cast<int>(c_space),4);
+    bs->writeBits(static_cast<int>(cs_ratio),4);
+    bs->writeBits(image_mat_.cols,8*sizeof(int));
+    bs->writeBits(image_mat_.rows,8*sizeof(int));
+    bs->writeBits(m,8*sizeof(int));
+    g._set_m(m);
+
+    encode_JPEG_LS(&g);
+    delete bs;
+}
+
+void Image::encode_JPEG_LS(Golomb *g) {
+    for(int r=0;r<image_mat_.rows;r++){
+        for(int c=0;c<image_mat_.cols;c++){
+            for(int channel=0;channel<image_mat_.channels();channel++){
+                uchar real=image_mat_.at<uchar>(r,c,channel);
+                uchar predicted= predict_JPEG_LS(image_mat_,r,c,channel);
+                uchar diff=real-predicted;
+                g->encode((int)diff);
+            }
+        }
+    }
+}
+
+Image Image::decode_JPEG_LS(const std::string& path) {
+    ifstream file;
+    file.open(path);
+    if(!file){
+        file.close();
+        throw std::runtime_error("File does not exist");
+    }
+    file.close();
+
+    BitStream bs(path,std::ios::in);
+    Golomb g(&bs);
+
+    //read header
+    auto c_space=static_cast<COLOR_SPACE>(bs.readBits(4));
+    auto cs_ratio=static_cast<CHROMA_SUBSAMPLING>(bs.readBits(4));
+    int cols=bs.readBits(8*sizeof(int));
+    int rows=bs.readBits(8*sizeof(int));
+    int m=bs.readBits(8*sizeof(int));
+    g._set_m(m);
+
+    return decode_JPEG_LS(&g,c_space,cs_ratio,rows,cols);
+}
+
+Image Image::decode_JPEG_LS(Golomb *g,COLOR_SPACE c_space,CHROMA_SUBSAMPLING cs_ratio, int rows,int cols){
+    Mat mat;
+    if(c_space==GRAY){
+        mat=Mat::zeros(rows,cols,CV_8UC1);
+    }else{
+        mat=Mat::zeros(rows,cols,CV_8UC3);
+    }
+
+    for(int r=0;r<mat.rows;r++){
+        for(int c=0;c<mat.cols;c++){
+            for(int channel=0;channel<mat.channels();channel++){
+                uchar diff=g->decode();
+                uchar predicted=predict_JPEG_LS(mat,r,c,channel);
+                uchar real=diff+predicted;
+                if(mat.channels()>1){
+                    mat.at<Vec3b>(r,c)[channel]=real;
+                }else{
+                    mat.at<uchar>(r,c)=real;
+                }
+            }
+        }
+    }
+    Image im(mat);
+    im._set_color(c_space);
+    im._set_chroma(cs_ratio);
+    return im;
+}
+
+uchar Image::predict_JPEG_LS(Mat mat, int row, int col, int channel=0) {
+    if(row<0 || row>= mat.rows || col<0 || col>=mat.cols){
+        throw std::out_of_range("Pixel out of bounds");
+    }
+
+    uchar a,b,c;
+    if(mat.channels()>1){
+        if(row-1>=0 && col>=1){
+            a=mat.at<Vec3b>(row,col-1)[channel];
+            b=mat.at<Vec3b>(row-1,col)[channel];
+            c=mat.at<Vec3b>(row-1,col-1)[channel];
+        }else if(row-1>=0){
+            a=0;
+            b=mat.at<Vec3b>(row-1,col)[channel];
+            c=0;
+        }else if(col-1>=0){
+            a=mat.at<Vec3b>(row,col-1)[channel];
+            b=0;
+            c=0;
+        }else{
+            a=0;
+            b=0;
+            c=0;
+        }
+    }else{
+        if(row-1>=0 && col>=1){
+            a=mat.at<uchar>(row,col-1);
+            b=mat.at<uchar>(row-1,col);
+            c=mat.at<uchar>(row-1,col-1);
+        }else if(row-1>=0){
+            a=0;
+            b=mat.at<uchar>(row-1,col);
+            c=0;
+        }else if(col-1>=0){
+            a=mat.at<uchar>(row,col-1);
+            b=0;
+            c=0;
+        }else{
+            a=0;
+            b=0;
+            c=0;
+        }
+    }
+
+
+    if(c>=std::max(a,b)){
+        return std::min(a,b);
+    }else if(c<=std::min(a,b)){
+        return std::max(a,b);
+    }else{
+        return a+b-c;
+    }
 }

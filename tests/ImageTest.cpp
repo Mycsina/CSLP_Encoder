@@ -7,6 +7,7 @@ using namespace cv;
 // auto img_file = "../../tests/resource/img.png";
 auto img_file = "../../tests/resource/tulips.ppm";
 
+
 TEST(ImageTestSuite, ImageLoadTest) {
     Image image;
     Mat I = imread(img_file, IMREAD_COLOR);

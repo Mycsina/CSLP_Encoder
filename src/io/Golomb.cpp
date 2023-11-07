@@ -7,7 +7,7 @@
 using namespace std;
 
 Golomb::Golomb(const std::string &filePath, std::ios_base::openmode mode) {
-    bs = new BitStream(filePath, std::ios::in | std::ios::out);
+    bs = new BitStream(filePath, mode);
     filepath = filePath;
 }
 
@@ -15,7 +15,7 @@ Golomb::Golomb(BitStream *bitstream) {
     bs = bitstream;
 }
 
-Golomb::~Golomb() { delete bs; }
+Golomb::~Golomb() { delete bs;}
 
 void Golomb::_set_m(int m_) { m = m_; }
 int Golomb::_get_m() const { return m; }
@@ -27,7 +27,7 @@ void Golomb::reset() {
 
 int Golomb::decode() {
     if (m <= 0) {
-        m = bs->readBits(8);
+        m = bs->readBits(8*sizeof(int));
     }
     int q = readUnary();
     int r = readBinaryTrunc();
@@ -48,7 +48,7 @@ void Golomb::encode(int n) {
 void Golomb::encode(int n, int m_) {
     if (m <= 0) {
         m = m_;
-        bs->writeBits(m_, 8);
+        bs->writeBits(m_, 8*sizeof(int));
     }
     encode(n);
 }
@@ -58,7 +58,7 @@ int Golomb::readUnary() {
     int q = 0;
     int bit_ = -1;
     while (bit_ != 0) {
-        bit_ = bs->readBit();
+        bit_=bs->readBit();
         q++;
     }
     q--;//the last one (0) doesn't count
