@@ -81,7 +81,7 @@ Vec3b Image::get_pixel(int row, int col) const {
     if (loaded()) {
         if (row < 0 || row >= image_mat_.rows || col < 0 ||
             col >= image_mat_.cols) {
-            throw std::runtime_error("Pixel out of bounds");
+            throw std::out_of_range("Pixel out of bounds");
         }
         Vec3b color_values = image_mat_.at<Vec3b>(row, col);
         return color_values;

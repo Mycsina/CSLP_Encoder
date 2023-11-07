@@ -34,13 +34,20 @@ void LosslessIntraFrameEncoder::encode() {
     for (auto &frame: frames) {
         frame->encode_JPEG_LS();
         Mat mat = *frame->getFrameMat();
+        Mat channels[3];
+        split(mat, channels);
         for (int i = 0; i < mat.rows; i++) {
-            for (int j = 0; j < mat.cols * 3; j++) {
-                golomb->encode(mat.at<uchar>(i, j));
+            for (int j = 0; j < mat.cols; j++) {
+                for (int k = 0; k < mat.channels(); k++) {
+                    golomb->encode(channels[k].at<uchar>(i, j));
+                }
             }
         }
     }
 }
 
 void LosslessIntraFrameEncoder::decode() {
+    auto *bs = new BitStream(src, ios::in);
+    auto *golomb = new Golomb(bs);
+    golomb->_set_m(golomb_m);
 }

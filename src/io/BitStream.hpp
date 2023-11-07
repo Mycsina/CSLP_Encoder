@@ -15,10 +15,6 @@ private:
     unsigned char buffer;///< Buffer to store bits.
     int bufferSize;      ///< Current size of the buffer.
 
-    /**
-     * @brief Helper function to flush the buffer by writing its contents to the file.
-     */
-    void flushBuffer();
 
 public:
     /**
@@ -29,11 +25,9 @@ public:
     BitStream(const std::string &filePath, std::ios_base::openmode mode);
 
     /**
-     * @brief Alternate constructor for the BitStream class.
-     * @param file File handle to an already open file.
-     * @param mode The open mode for the file stream.
+     * @brief Helper function to flush the buffer by writing its contents to the file.
      */
-    BitStream(std::fstream &file, std::ios_base::openmode mode);
+    void flushBuffer();
 
     /**
      * @brief Destructor for the BitStream class.

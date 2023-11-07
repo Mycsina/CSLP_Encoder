@@ -183,12 +183,13 @@ void Frame::encode_JPEG_LS() {
             for (int channel = 0; channel < image_mat.channels(); channel++) {
                 Mat channel_mat = channels[channel];
                 uchar real = channel_mat.at<uchar>(r, c);
-                uchar predicted = predict_JPEG_LS(image_mat, r, c, channel);
+                uchar predicted = predict_JPEG_LS(channel_mat, r, c);
                 uchar diff = real - predicted;
-                frame_mat_.at<Vec3b>(r, c)[channel] = diff;
+                channel_mat.at<uchar>(r, c) = diff;
             }
         }
     }
+    merge(channels, 3, frame_mat_);
 }
 
 Image Frame::decode_JPEG_LS(const std::string &path) {
@@ -210,63 +211,56 @@ Image Frame::decode_JPEG_LS(const std::string &path) {
     int rows = bs.readBits(8);
     int m = bs.readBits(8);
     Mat mat;
-
     if (c_space == GRAY) {
         mat = Mat::zeros(rows, cols, CV_8UC1);
     } else {
         mat = Mat::zeros(rows, cols, CV_8UC3);
     }
-
+    Mat channels[3];
+    split(mat, channels);
     g._set_m(m);
     for (int r = 0; r < mat.rows; r++) {
         for (int c = 0; c < mat.cols; c++) {
             for (int channel = 0; channel < mat.channels(); channel++) {
+                Mat chann_mat = channels[channel];
                 uchar diff = g.decode();
-                uchar predicted = predict_JPEG_LS(mat, r, c, channel);
+                uchar predicted = predict_JPEG_LS(chann_mat, r, c);
                 uchar real = diff + predicted;
                 if (mat.channels() > 1) {
-                    mat.at<Vec3b>(r, c)[channel] = real;
-                } else {
-                    mat.at<uchar>(r, c) = real;
+                    chann_mat.at<Vec3b>(r, c) = real;
                 }
             }
         }
+        merge(channels, 3, mat);
+        Image im(mat);
+        im._set_color(c_space);
+        im._set_chroma(cs_ratio);
+        return im;
     }
-
-    Image im(mat);
-    im._set_color(c_space);
-    im._set_chroma(cs_ratio);
-    return im;
 }
 
-uchar Frame::predict_JPEG_LS(Mat mat, int row, int col, int channel = 0) {
+uchar Frame::predict_JPEG_LS(Mat mat, int row, int col) {
     if (row < 0 || row >= mat.rows || col < 0 || col >= mat.cols) {
         throw std::out_of_range("Pixel out of bounds");
     }
 
-    uchar a, b, c;
-    if (row - 1 >= 0 && col >= 1) {
-        a = mat.at<uchar>(row, col - 1, channel);
-        b = mat.at<uchar>(row - 1, col, channel);
-        c = mat.at<uchar>(row - 1, col - 1, channel);
-    } else if (row - 1 >= 0) {
-        a = 0;
-        b = mat.at<uchar>(row - 1, col, channel);
-        c = 0;
-    } else if (col - 1 >= 0) {
-        a = mat.at<uchar>(row, col - 1, channel);
-        b = 0;
-        c = 0;
-    } else {
-        a = 0;
-        b = 0;
-        c = 0;
+    uchar a, b, c, d = 0;
+    if (col - 1 >= 0) {
+        a = mat.at<uchar>(row, col - 1);
     }
-
-    if (c >= std::max(a, b)) {
-        return std::min(a, b);
-    } else if (c <= std::min(a, b)) {
-        return std::max(a, b);
+    if (row - 1 >= 0) {
+        b = mat.at<uchar>(row - 1, col);
+    }
+    if (row - 1 >= 0 && col - 1 >= 0) {
+        c = mat.at<uchar>(row - 1, col - 1);
+    }
+    if (row - 1 >= 0 && col + 1 < mat.cols) {
+        d = mat.at<uchar>(row - 1, col + 1);
+    }
+    if (c >= max(a, b)) {
+        return min(a, b);
+    } else if (c <= min(a, b)) {
+        return max(a, b);
     } else {
         return a + b - c;
     }

@@ -135,7 +135,7 @@ public:
 
     static Image decode_JPEG_LS(const std::string &path);
 
-    static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel);
+    static uchar predict_JPEG_LS(cv::Mat mat, int row, int col);
 
     //! Returns a valid search window
     //! @param block Block that is being compared (top-left corner)
