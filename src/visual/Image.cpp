@@ -236,6 +236,8 @@ void set_slice(const cv::Mat &mat, const cv::Mat &slice, int row, int col) {
         throw std::out_of_range("Slice out of bounds");
     }
     slice.copyTo(mat(Rect(col, row, slice.cols, slice.rows)));
+}
+
 void Image::encode_JPEG_LS(const std::string& path, int m=10) {
     auto *bs = new BitStream(path, std::ios::out);
 
