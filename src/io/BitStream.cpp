@@ -2,11 +2,13 @@
 #include <bitset>
 #include <iostream>
 
-BitStream::BitStream(const std::string &filePath,
-                     std::ios_base::openmode mode) {
+using namespace std;
+
+BitStream::BitStream(const string &filePath,
+                     ios_base::openmode mode) {
     file.open(filePath, mode | std::ios::binary);
     if (!file.is_open()) {
-        throw std::runtime_error("File does not exist or can't be opened");
+        throw runtime_error("File does not exist or can't be opened");
     }
     buffer = 0;
     bufferSize = 0;

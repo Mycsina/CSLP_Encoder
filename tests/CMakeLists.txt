@@ -7,7 +7,8 @@ add_executable(tests_run
         VideoTest.cpp
         ImageProcTest.cpp
         IOTest.cpp
-        FrameTest.cpp)
+        FrameTest.cpp
+        EncoderTest.cpp)
 add_executable(Demos
         VideoDemos.cpp
         ImageDemos.cpp

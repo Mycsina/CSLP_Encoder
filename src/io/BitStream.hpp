@@ -29,6 +29,13 @@ public:
     BitStream(const std::string &filePath, std::ios_base::openmode mode);
 
     /**
+     * @brief Alternate constructor for the BitStream class.
+     * @param file File handle to an already open file.
+     * @param mode The open mode for the file stream.
+     */
+    BitStream(std::fstream &file, std::ios_base::openmode mode);
+
+    /**
      * @brief Destructor for the BitStream class.
      * Flushes the buffer to ensure that any remaining bits are written to the file.
      */
