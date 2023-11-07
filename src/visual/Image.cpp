@@ -262,6 +262,7 @@ void Image::encode_JPEG_LS(Golomb *g) {
                 uchar predicted= predict_JPEG_LS(image_mat_,r,c,channel);
                 uchar diff=real-predicted;
                 g->encode((int)diff);
+                std::cout << (int)predicted << std::endl;
             }
         }
     }
