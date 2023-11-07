@@ -6,4 +6,5 @@ add_compile_options(-O2 -D_VISUALIZE)
 ## Libraries
 add_library(Codec
         Frame.cpp
+        Encoder.cpp
 )

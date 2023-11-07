@@ -11,8 +11,8 @@ Golomb::Golomb(const std::string &filePath, std::ios_base::openmode mode) {
     filepath = filePath;
 }
 
-Golomb::Golomb(BitStream *bitstream){
-    bs=bitstream;
+Golomb::Golomb(BitStream *bitstream) {
+    bs = bitstream;
 }
 
 Golomb::~Golomb() { delete bs; }

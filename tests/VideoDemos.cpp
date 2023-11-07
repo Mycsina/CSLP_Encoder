@@ -26,3 +26,10 @@ TEST(VideoTestSuite, Y4M2BGRVideoTest) {
     vid.convertTo(YUV, BGR);
     vid.play(27);
 }
+
+TEST(VideoTestSuite, NewConstructorTest) {
+    Video vid1(vid_file);
+    vid1.play(27);
+    Video vid2(vid_yuv_file);
+    vid2.play(27);
+}

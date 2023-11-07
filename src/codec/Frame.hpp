@@ -37,10 +37,10 @@ public:
     public:
         virtual double block_diff(const Block &a, const Block &b) = 0;
         virtual bool isBetter(double score) = 0;
-        double best_score;
+        double best_score{};
         MotionVector best_match;
         MotionVector previous_best;
-        int threshold;
+        int threshold{};
         virtual void reset();
         bool compare(const Block &block, Frame *reference, cv::Point center);
     };
@@ -98,15 +98,21 @@ public:
 //! @param col Column of the top-left pixel
 Block get_block(const Image &img, int size, int row, int col);
 
+
+enum FrameType {
+    I_FRAME,//!< Intra-frame
+    P_FRAME,//!< Predicted frame
+    B_FRAME //!< Bi-directionally predicted frame
+};
+
 /**
  * @brief The Frame class provides methods to manipulate an Image in the context of video encoding
  */
 class Frame {
 private:
-    Image image_;
-    cv::Mat frame_mat_;
-    Frame *previous_{};
-    Frame *next_{};// Allows for bidirectional traversal of the frames
+    Image image_;      //!< Contains original image
+    FrameType type_{}; //!< Indicates the type of frame
+    cv::Mat frame_mat_;//!< Contains transformed image matrix
     Block::BlockDiff *block_diff_{};
     std::vector<MotionVector> motion_vectors_;
 
@@ -120,13 +126,16 @@ public:
     bool isBlockDiff(Block::BlockDiff *blockDiff) const;
     void setBlockDiff(Block::BlockDiff *blockDiff);
     std::vector<MotionVector> getMotionVectors() const;
-    Frame *getPrevious() const;
-    void setPrevious(Frame *previous);
-    Frame *getNext() const;
-    void setNext(Frame *next);
+    FrameType getType() const;
+    void setType(FrameType type);
     void display_frame();
     void display_frame_original();
-    cv::Mat get_difference();
+
+    void encode_JPEG_LS();
+
+    static Image decode_JPEG_LS(const std::string &path);
+
+    static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel);
 
     //! Returns a valid search window
     //! @param block Block that is being compared (top-left corner)
@@ -152,13 +161,13 @@ public:
     //! @return Motion vector
     MotionVector match_block_arps(const Block &block, Frame *reference, int threshold = 512);
 
-    //! Calculates Frame motion vectors for all blocks in the frame
+    //! Calculate motion vectors for all blocks in the frame
     //! @param block_size Size of the macroblocks to be compared
     //! @param n Number of frames to go back
     //! @param search_radius Radius of the search area (not including the block itself)
     //! @param fast Indicates whether the fast search algorithm should be used
     //! @return Vector of motion vectors
-    void match_all_blocks(int block_size = 16, int n = 1, int search_radius = 7, bool fast = true);
+    void calculate_MV(int block_size, Frame *reference, int search_radius, bool fast);
 
     // TODO
     //! Reconstruct a frame using a frame and a vector of motion vectors

@@ -3,6 +3,7 @@
  * Declares the Video class, representing a digital video, composed of multiple
  * Image objects
  */
+#include "../codec/Frame.hpp"
 #include "Image.hpp"
 #include <cstdio>
 #include <functional>
@@ -19,22 +20,22 @@ class Video {
 
 public:
     Video() = default;
-
     ~Video() = default;
-
+    explicit Video(const char *filename);
     const std::vector<Image> &get_reel();
-
     void set_reel(std::vector<Image> *reel);
-
     float get_fps() const;
-
     void set_fps(float fps);
 
-    //TODO this should be a frame
+    //! Generates vector of frames from the video
+    //! @warning Must be deallocated after use
+    //! @return vector of frames
+    std::vector<Frame *> generateFrames();
+
     //! Returns frame at given position
     //! @param pos position of the frame
     //! @return Image object representing the frame
-    Image getFrame(int pos);
+    Frame getFrame(int pos);
 
     //! Applies a function to every frame in the video
     //! @param func function to be applied

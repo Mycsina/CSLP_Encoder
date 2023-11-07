@@ -15,13 +15,32 @@
 using namespace std;
 using namespace cv;
 
+Video::Video(const char *filename) {
+    try {
+        // TODO: add support for other chroma subsamplings
+        Video::loadY4M(filename, YUV420);
+    } catch (runtime_error &e) {
+        Video::load(filename);
+    }
+}
+
 const vector<Image> &Video::get_reel() { return im_reel; }
 void Video::set_reel(vector<Image> *reel) { im_reel = *reel; }
 float Video::get_fps() const { return fps_; }
 void Video::set_fps(float fps) { fps_ = fps; }
-Image Video::getFrame(int pos) {
-    return {im_reel[pos]};
+
+vector<Frame *> Video::generateFrames() {
+    vector<Frame *> frames;
+    for (auto &it: im_reel) {
+        frames.push_back(new Frame(it));
+    }
+    return frames;
 }
+
+Frame Video::getFrame(int pos) {
+    return Frame(im_reel[pos]);
+}
+
 bool Video::loaded() const { return !im_reel.empty(); }
 
 void Video::map(const function<void(Image &)> &func) {

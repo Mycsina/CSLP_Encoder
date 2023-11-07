@@ -13,13 +13,13 @@
 #include <utility>
 #include "../io/Golomb.hpp"
 
-enum COLOR_SPACE {
+enum COLOR_SPACE : std::uint8_t {
     BGR,//!< Blue-Green-Red
     YUV,//!< Luminance-Chrominance
     GRAY//!< Grayscale
 };
 
-enum CHROMA_SUBSAMPLING {
+enum CHROMA_SUBSAMPLING : std::uint8_t {
     NA,    //!< Not applicable
     YUV444,//!< 4:4:4
     YUV422,//!< 4:2:2
@@ -164,12 +164,6 @@ public:
     //! @param r,c the coordinates
     //! @return The cut submatrix
     cv::Mat cut(const cv::Mat &m, int r, int c) const;
-
-    void encode_JPEG_LS(const std::string& path);
-
-    static Image decode_JPEG_LS(const std::string& path);
-
-    static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel);
 };
 
 void set_slice(const cv::Mat &mat, const cv::Mat &slice, int row, int col);
