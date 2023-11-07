@@ -9,21 +9,18 @@ using namespace std;
 Golomb::Golomb(const std::string &filePath, std::ios_base::openmode mode) {
     bs = new BitStream(filePath, mode);
     filepath = filePath;
+    localStream=true;
 }
 
 Golomb::Golomb(BitStream *bitstream) {
     bs = bitstream;
 }
 
-Golomb::~Golomb() { delete bs;}
+Golomb::~Golomb() { if(localStream){delete bs;}}
 
 void Golomb::_set_m(int m_) { m = m_; }
 int Golomb::_get_m() const { return m; }
 
-void Golomb::reset() {
-    free(bs);
-    bs = new BitStream(filepath, std::ios::binary);
-}
 
 int Golomb::decode() {
     if (m <= 0) {
@@ -42,7 +39,6 @@ void Golomb::encode(int n) {
     int q = n / m;
     writeUnary(q);
     writeBinaryTrunc(r);
-    bs->flushBuffer();
 }
 
 void Golomb::encode(int n, int m_) {

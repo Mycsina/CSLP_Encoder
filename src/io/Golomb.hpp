@@ -15,12 +15,12 @@ private:
     BitStream *bs;
     int m = -1;
     std::string filepath;
+    bool localStream=false;
 
 public:
     Golomb(const std::string &filePath, std::ios_base::openmode mode);
     explicit Golomb(BitStream *bs);
     ~Golomb();
-    void reset();
     void _set_m(int m_);
     int _get_m() const;
     //! Reads and decodes a single int from file
