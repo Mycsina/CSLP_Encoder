@@ -42,6 +42,7 @@ void Golomb::encode(int n) {
     int q = n / m;
     writeUnary(q);
     writeBinaryTrunc(r);
+    bs->flushBuffer();
 }
 
 void Golomb::encode(int n, int m_) {

@@ -131,7 +131,7 @@ public:
     void display_frame();
     void display_frame_original();
 
-    void encode_JPEG_LS();
+    void encode_JPEG_LS(Golomb &g);
 
     static Image decode_JPEG_LS(const std::string &path);
 

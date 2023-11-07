@@ -174,7 +174,7 @@ void Frame::display_frame_original() {
     waitKey(0);
 }
 
-void Frame::encode_JPEG_LS() {
+void Frame::encode_JPEG_LS(Golomb &g) {
     Mat image_mat = *image_._get_image_mat();
     Mat channels[3];
     split(image_mat, channels);
@@ -185,11 +185,10 @@ void Frame::encode_JPEG_LS() {
                 uchar real = channel_mat.at<uchar>(r, c);
                 uchar predicted = predict_JPEG_LS(channel_mat, r, c);
                 uchar diff = real - predicted;
-                channel_mat.at<uchar>(r, c) = diff;
+                g.encode(diff);
             }
         }
     }
-    merge(channels, 3, frame_mat_);
 }
 
 Image Frame::decode_JPEG_LS(const std::string &path) {
