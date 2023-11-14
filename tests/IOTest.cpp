@@ -24,8 +24,12 @@ TEST(IOTestSuite, GolombReadWriteTest) {
     auto *g = new Golomb(golomb_dst, std::ios::out);
     g->encode(26, m);
     g->encode(69, m);
+    g->encode(-26, m);
+    g->encode(-1, m);
     delete g;
     g = new Golomb(golomb_dst, std::ios::in);
     ASSERT_EQ(g->decode(), 26);
     ASSERT_EQ(g->decode(), 69);
+    ASSERT_EQ(g->decode(), -26);
+    ASSERT_EQ(g->decode(), -1);
 }

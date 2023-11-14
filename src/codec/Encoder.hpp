@@ -13,6 +13,7 @@ struct IntraHeader {
     uint8_t width;
     uint8_t height;
     uint8_t golomb_m;
+    uint8_t length;
 };
 
 class LosslessIntraFrameEncoder : public Encoder {
