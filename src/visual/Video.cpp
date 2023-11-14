@@ -237,18 +237,17 @@ void Video::encode_hybrid(const std::string& path, int m, int period){
 
         Image sample_image;
 
-            /*
         bs->writeBits(im_reel.size(),8);
         bs->writeBits(period,8);
-        bs->writeBits(static_cast<int>(c_space),4);
-        bs->writeBits(static_cast<int>(cs_ratio),4);
-        bs->writeBits(image_mat_.cols,8*sizeof(int));
-        bs->writeBits(image_mat_.rows,8*sizeof(int));
+        bs->writeBits(static_cast<int>(sample_image._get_color()),4);
+        bs->writeBits(static_cast<int>(sample_image._get_chroma()),4);
+        bs->writeBits(sample_image._get_image_mat()->cols,8*sizeof(int));
+        bs->writeBits(sample_image._get_image_mat()->rows,8*sizeof(int));
         bs->writeBits(m,8*sizeof(int));
         g._set_m(m);
         encode_JPEG_LS(&g);
         delete bs;
-         */
+
     } else {
         throw std::runtime_error("Video hasn't been loaded");
     }

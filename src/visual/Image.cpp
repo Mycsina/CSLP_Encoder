@@ -254,7 +254,7 @@ void Image::encode_JPEG_LS(const std::string& path, int m=4) {
     delete bs;
 }
 
-void Image::encode_JPEG_LS(BitStream *bs,Golomb *g) {
+void Image::encode_JPEG_LS(Golomb *g) {
     for(int r=0;r<image_mat_.rows;r++){
         for(int c=0;c<image_mat_.cols;c++){
             for(int channel=0;channel<image_mat_.channels();channel++){
@@ -287,10 +287,10 @@ Image Image::decode_JPEG_LS(const std::string& path) {
     int m=bs.readBits(8*sizeof(int));
     g._set_m(m);
 
-    return decode_JPEG_LS(&bs, &g,c_space,cs_ratio,rows,cols);
+    return decode_JPEG_LS(&g,c_space,cs_ratio,rows,cols);
 }
 
-Image Image::decode_JPEG_LS(BitStream *bs, Golomb *g,COLOR_SPACE c_space,CHROMA_SUBSAMPLING cs_ratio, int rows,int cols){
+Image Image::decode_JPEG_LS(Golomb *g,COLOR_SPACE c_space,CHROMA_SUBSAMPLING cs_ratio, int rows,int cols){
     Mat mat;
     if(c_space==GRAY){
         mat=Mat::zeros(rows,cols,CV_8UC1);
