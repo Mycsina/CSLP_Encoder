@@ -58,7 +58,7 @@ TEST(ImageTestSuite,JPEG_LS){
     double diffs;
 
     im1.load(img_file);
-    im1.encode_JPEG_LS(jpegls_file,10);
+    im1.encode_JPEG_LS(jpegls_file,4);
     im2=Image::decode_JPEG_LS(jpegls_file);
 
     diffs=cv::norm(*im1._get_image_mat(),*im2._get_image_mat(),cv::NORM_L2);

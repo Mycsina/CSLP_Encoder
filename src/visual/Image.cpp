@@ -238,7 +238,7 @@ void set_slice(const cv::Mat &mat, const cv::Mat &slice, int row, int col) {
     slice.copyTo(mat(Rect(col, row, slice.cols, slice.rows)));
 }
 
-void Image::encode_JPEG_LS(const std::string& path, int m=10) {
+void Image::encode_JPEG_LS(const std::string& path, int m=4) {
     auto *bs = new BitStream(path, std::ios::out);
 
     Golomb g(bs);
@@ -250,18 +250,18 @@ void Image::encode_JPEG_LS(const std::string& path, int m=10) {
     bs->writeBits(m,8*sizeof(int));
     g._set_m(m);
 
-    encode_JPEG_LS(&g);
+    encode_JPEG_LS(bs,&g);
     delete bs;
 }
 
-void Image::encode_JPEG_LS(Golomb *g) {
+void Image::encode_JPEG_LS(BitStream *bs,Golomb *g) {
     for(int r=0;r<image_mat_.rows;r++){
         for(int c=0;c<image_mat_.cols;c++){
             for(int channel=0;channel<image_mat_.channels();channel++){
-                uchar real=image_mat_.at<Vec3b>(r,c)[channel];
-                uchar predicted= predict_JPEG_LS(image_mat_,r,c,channel);
-                uchar diff=real-predicted;
-                g->encode((int)diff);
+                int real=(int)image_mat_.at<Vec3b>(r,c)[channel];
+                int predicted=(int)predict_JPEG_LS(image_mat_,r,c,channel);
+                int diff=real-predicted;
+                g->encode(diff);
             }
         }
     }
@@ -287,10 +287,10 @@ Image Image::decode_JPEG_LS(const std::string& path) {
     int m=bs.readBits(8*sizeof(int));
     g._set_m(m);
 
-    return decode_JPEG_LS(&g,c_space,cs_ratio,rows,cols);
+    return decode_JPEG_LS(&bs, &g,c_space,cs_ratio,rows,cols);
 }
 
-Image Image::decode_JPEG_LS(Golomb *g,COLOR_SPACE c_space,CHROMA_SUBSAMPLING cs_ratio, int rows,int cols){
+Image Image::decode_JPEG_LS(BitStream *bs, Golomb *g,COLOR_SPACE c_space,CHROMA_SUBSAMPLING cs_ratio, int rows,int cols){
     Mat mat;
     if(c_space==GRAY){
         mat=Mat::zeros(rows,cols,CV_8UC1);
@@ -301,7 +301,7 @@ Image Image::decode_JPEG_LS(Golomb *g,COLOR_SPACE c_space,CHROMA_SUBSAMPLING cs_
     for(int r=0;r<mat.rows;r++){
         for(int c=0;c<mat.cols;c++){
             for(int channel=0;channel<mat.channels();channel++){
-                uchar diff=g->decode();
+                uchar diff=(uchar)g->decode();
                 uchar predicted=predict_JPEG_LS(mat,r,c,channel);
                 uchar real=diff+predicted;
                 if(mat.channels()>1){

@@ -26,15 +26,22 @@ int Golomb::decode() {
     if (m <= 0) {
         m = bs->readBits(8*sizeof(int));
     }
+    int sign=(bs->readBit()==0)?1:-1;
     int q = readUnary();
     int r = readBinaryTrunc();
-    return q * m + r;
+    return sign*(q * m + r);
 }
 
 void Golomb::encode(int n) {
     if (m <= 0) {
         throw std::invalid_argument("value of m unknown or invalid");
     }
+    if(n<0){
+        bs->writeBit(1);
+    }else{
+        bs->writeBit(0);
+    }
+    n=abs(n);
     int r = n % m;
     int q = n / m;
     writeUnary(q);

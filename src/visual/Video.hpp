@@ -74,4 +74,12 @@ public:
     //! @param f1 source color space
     //! @param f2 destination color space
     void convertTo(COLOR_SPACE f1, COLOR_SPACE f2);
+
+    //! Encode video using hybrid encoding and then saves using golomb encoding
+    //! @param path the path to the destination file
+    //! @param m the m value for Golomb encoding
+    //! @param period the number of frames between each key (intra) frame
+    void encode_hybrid(const std::string& path, int m=10, int period=3);
+
+    static Video decode_hybrid(const std::string& path);
 };
