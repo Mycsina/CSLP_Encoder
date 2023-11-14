@@ -245,7 +245,11 @@ void Video::encode_hybrid(const std::string& path, int m, int period){
         bs->writeBits(sample_image._get_image_mat()->rows,8*sizeof(int));
         bs->writeBits(m,8*sizeof(int));
         g._set_m(m);
-        encode_JPEG_LS(&g);
+
+        int cnt=period;
+        vector<vector<int>> intra_buffer;
+        vector<vector<int>> inter_buffer;
+
         delete bs;
 
     } else {
