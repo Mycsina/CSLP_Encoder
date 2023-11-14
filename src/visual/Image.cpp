@@ -250,7 +250,7 @@ void Image::encode_JPEG_LS(const std::string& path, int m=4) {
     bs->writeBits(m,8*sizeof(int));
     g._set_m(m);
 
-    encode_JPEG_LS(bs,&g);
+    encode_JPEG_LS(&g);
     delete bs;
 }
 
