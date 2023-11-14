@@ -6,6 +6,7 @@ using namespace cv;
 
 // auto img_file = "../../tests/resource/img.png";
 auto img_file = "../../tests/resource/tulips.ppm";
+auto jpegls_file = "../../tests/resource/jpegls_out.bin";
 
 
 TEST(ImageTestSuite, ImageLoadTest) {
@@ -50,4 +51,16 @@ TEST(ImageTestSuite, PixelWiseCloning) {
     ASSERT_EQ(im1.get_pixel(0, 39), im2.get_pixel(0, 39));
     ASSERT_EQ(im1.get_pixel(345, 256), im2.get_pixel(345, 256));
     remove("../../tests/resource/pbp.png");
+}
+
+TEST(ImageTestSuite,JPEG_LS){
+    Image im1,im2;
+    double diffs;
+
+    im1.load(img_file);
+    im1.encode_JPEG_LS(jpegls_file,10);
+    im2=Image::decode_JPEG_LS(jpegls_file);
+
+    diffs=cv::norm(*im1._get_image_mat(),*im2._get_image_mat(),cv::NORM_L2);
+    ASSERT_EQ(diffs,0);
 }

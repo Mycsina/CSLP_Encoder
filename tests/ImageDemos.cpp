@@ -7,7 +7,6 @@ using namespace std;
 using namespace cv;
 
 auto demos_img = "../../tests/resource/tulips.ppm";
-auto jpegls_file = "../../tests/resource/jpegls_out.bin";
 
 class ImageDemo : public ::testing::Test {
 protected:
@@ -133,11 +132,4 @@ TEST_F(ImageDemo, GaussianDemoDistanceBased1) {
     blur.at<Vec3b>(1, 2) = Vec3b(2, 2, 2);
     im.display_image();
     im.gaussian_blur(blur).display_image();
-}
-
-TEST_F(ImageDemo, JPEG_LS){
-    im.encode_JPEG_LS(jpegls_file,10);
-    im.display_image();
-    Image im_new=Image::decode_JPEG_LS(jpegls_file);
-    im_new.display_image();
 }
