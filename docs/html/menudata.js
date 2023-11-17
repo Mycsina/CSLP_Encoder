@@ -27,6 +27,7 @@ var menudata={children:[
 {text:"Classes",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},
 {text:"Class Index",url:"classes.html"},
+        {text: "Class Hierarchy", url: "inherits.html"},
 {text:"Class Members",url:"functions.html",children:[
 {text:"All",url:"functions.html",children:[
 {text:"_",url:"functions.html#index__5F"},
@@ -44,6 +45,7 @@ var menudata={children:[
 {text:"p",url:"functions.html#index_p"},
 {text:"r",url:"functions.html#index_r"},
 {text:"s",url:"functions.html#index_s"},
+        {text: "t", url: "functions.html#index_t"},
 {text:"v",url:"functions.html#index_v"},
 {text:"w",url:"functions.html#index_w"},
         {text: "x", url: "functions.html#index_x"},
@@ -61,6 +63,7 @@ var menudata={children:[
 {text:"i",url:"functions_func.html#index_i"},
 {text:"l",url:"functions_func.html#index_l"},
 {text:"m",url:"functions_func.html#index_m"},
+        {text: "o", url: "functions_func.html#index_o"},
 {text:"p",url:"functions_func.html#index_p"},
 {text:"r",url:"functions_func.html#index_r"},
 {text:"s",url:"functions_func.html#index_s"},
@@ -79,10 +82,14 @@ var menudata={children:[
                 {text: "b", url: "globals.html#index_b"},
                 {text: "c", url: "globals.html#index_c"},
                 {text: "e", url: "globals.html#index_e"},
+                {text: "f", url: "globals.html#index_f"},
                 {text: "g", url: "globals.html#index_g"},
                 {text: "h", url: "globals.html#index_h"},
+                {text: "i", url: "globals.html#index_i"},
                 {text: "n", url: "globals.html#index_n"},
                 {text: "o", url: "globals.html#index_o"},
+                {text: "p", url: "globals.html#index_p"},
+                {text: "r", url: "globals.html#index_r"},
                 {text: "s", url: "globals.html#index_s"},
                 {text: "w", url: "globals.html#index_w"},
                 {text: "y", url: "globals.html#index_y"}]

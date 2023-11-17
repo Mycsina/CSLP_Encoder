@@ -1,24 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/xhtml;charset=UTF-8" http-equiv="Content-Type"/>
-<meta content="IE=11" http-equiv="X-UA-Compatible"/>
-<meta content="Doxygen 1.9.8" name="generator"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="text/xhtml;charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="IE=11" http-equiv="X-UA-Compatible"/>
+    <meta content="Doxygen 1.9.8" name="generator"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>CSLP_2023_2024: Image.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
-<script src="jquery.js" type="text/javascript"></script>
-<script src="dynsections.js" type="text/javascript"></script>
+    <script src="jquery.js" type="text/javascript"></script>
+    <script src="dynsections.js" type="text/javascript"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
-<script src="search/searchdata.js" type="text/javascript"></script>
-<script src="search/search.js" type="text/javascript"></script>
-<script src="darkmode_toggle.js" type="text/javascript"></script>
+    <script src="search/searchdata.js" type="text/javascript"></script>
+    <script src="search/search.js" type="text/javascript"></script>
+    <script src="darkmode_toggle.js" type="text/javascript"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellpadding="0" cellspacing="0">
+    <table cellpadding="0" cellspacing="0">
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
@@ -36,8 +36,8 @@
 var searchBox = new SearchBox("searchBox", "search/",'.html');
 /* @license-end */
 </script>
-<script src="menudata.js" type="text/javascript"></script>
-<script src="menu.js" type="text/javascript"></script>
+    <script src="menudata.js" type="text/javascript"></script>
+    <script src="menu.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
@@ -73,7 +73,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 </div>
 
-<div class="navpath" id="nav-path">
+    <div class="navpath" id="nav-path">
   <ul>
 <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5594f77850edb42952de1f5e8c94226d.html">visual</a></li>  </ul>
 </div>
@@ -105,180 +105,183 @@ $(document).ready(function() { init_codefold(0); });
     </div>
     <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span
             class="preprocessor">#include &lt;utility&gt;</span></div>
-    <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>
+    <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span
+            class="preprocessor">#include &quot;../io/Golomb.hpp&quot;</span>
     </div>
-<div class="foldopen" data-end="};" data-start="{" id="foldopen00015">
-    <div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a
-            class="line"
-            href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448c">   15</a></span><span
-            class="keyword">enum</span> <a class="code hl_enumeration"
-                                           href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448c">COLOR_SPACE</a>
-        {
+    <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>
     </div>
-    <div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a
-            class="line"
-            href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">   16</a></span>
-        <a class="code hl_enumvalue"
-           href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">BGR</a>,
-    </div>
-    <div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a
-            class="line"
-            href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448caf726371acfea68d8e6506b9ab7d817f1">   17</a></span>
-        <a class="code hl_enumvalue"
-           href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448caf726371acfea68d8e6506b9ab7d817f1">YUV</a>,
-    </div>
-    <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>
-        <a class="code hl_enumvalue"
-           href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca3fb6c4ad00f4ad98553e01229d1803ac">GRAY</a>
-    </div>
-    <div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a
-            class="line"
-            href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca3fb6c4ad00f4ad98553e01229d1803ac">   19</a></span>};
-    </div>
-</div>
-    <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>
-    </div>
-    <div class="foldopen" data-end="};" data-start="{" id="foldopen00021">
-        <div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a
+    <div class="foldopen" data-end="};" data-start="{" id="foldopen00016">
+        <div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a
                 class="line"
-                href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7b">   21</a></span><span
+                href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888">   16</a></span><span
                 class="keyword">enum</span> <a class="code hl_enumeration"
-                                               href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7b">CHROMA_SUBSAMPLING</a>
-            {
+                                               href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888">COLOR_SPACE</a>
+            : std::uint8_t {
         </div>
+        <div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a
+                class="line"
+                href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888a4a19a93c929964c201e01c8352dc8b9c">   17</a></span>
+            <a class="code hl_enumvalue"
+               href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888a4a19a93c929964c201e01c8352dc8b9c">BGR</a>,
+        </div>
+        <div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a
+                class="line"
+                href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888af726371acfea68d8e6506b9ab7d817f1">   18</a></span>
+            <a class="code hl_enumvalue"
+               href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888af726371acfea68d8e6506b9ab7d817f1">YUV</a>,
+        </div>
+        <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>
+            <a class="code hl_enumvalue"
+               href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888a3fb6c4ad00f4ad98553e01229d1803ac">GRAY</a>
+        </div>
+        <div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a
+                class="line"
+                href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888a3fb6c4ad00f4ad98553e01229d1803ac">   20</a></span>};
+        </div>
+    </div>
+    <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>
+    </div>
+    <div class="foldopen" data-end="};" data-start="{" id="foldopen00022">
         <div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a
                 class="line"
-                href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7bac75245149c3f64d74430b8996b1e0558">   22</a></span>
-            <a class="code hl_enumvalue"
-               href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7bac75245149c3f64d74430b8996b1e0558">NA</a>,
+                href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791">   22</a></span><span
+                class="keyword">enum</span> <a class="code hl_enumeration"
+                                               href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791">CHROMA_SUBSAMPLING</a>
+            : std::uint8_t {
         </div>
         <div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a
                 class="line"
-                href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7ba523b094e008f914e9e01af828090df0c">   23</a></span>
+                href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791ac75245149c3f64d74430b8996b1e0558">   23</a></span>
             <a class="code hl_enumvalue"
-               href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7ba523b094e008f914e9e01af828090df0c">YUV444</a>,
+               href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791ac75245149c3f64d74430b8996b1e0558">NA</a>,
         </div>
         <div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a
                 class="line"
-                href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7baf95cc5446c6345daadf349ccd299a2f5">   24</a></span>
+                href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791a523b094e008f914e9e01af828090df0c">   24</a></span>
             <a class="code hl_enumvalue"
-               href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7baf95cc5446c6345daadf349ccd299a2f5">YUV422</a>,
+               href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791a523b094e008f914e9e01af828090df0c">YUV444</a>,
         </div>
-        <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>
-            <a class="code hl_enumvalue"
-               href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7bacb52b4d8e199d901af27ee1f2d6bcb04">YUV420</a>
-        </div>
-        <div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a
+        <div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a
                 class="line"
-                href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7bacb52b4d8e199d901af27ee1f2d6bcb04">   26</a></span>};
+                href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791af95cc5446c6345daadf349ccd299a2f5">   25</a></span>
+            <a class="code hl_enumvalue"
+               href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791af95cc5446c6345daadf349ccd299a2f5">YUV422</a>,
         </div>
-</div>
-    <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>
+        <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>
+            <a class="code hl_enumvalue"
+               href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791acb52b4d8e199d901af27ee1f2d6bcb04">YUV420</a>
+        </div>
+        <div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a
+                class="line"
+                href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791acb52b4d8e199d901af27ee1f2d6bcb04">   27</a></span>};
+        </div>
     </div>
-    <div class="foldopen" data-end="};" data-start="{" id="foldopen00029">
-        <div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a
-                class="line" href="structHistogram.html">   29</a></span><span
+    <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>
+    </div>
+    <div class="foldopen" data-end="};" data-start="{" id="foldopen00030">
+        <div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a
+                class="line" href="structHistogram.html">   30</a></span><span
                 class="keyword">struct </span><a class="code hl_struct"
                                                  href="structHistogram.html">Histogram</a>
             {
         </div>
-        <div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a
+        <div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a
                 class="line"
-                href="structHistogram.html#a8e5a51a29dcb9ed430ee51b8b7a27bc7">   30</a></span>
+                href="structHistogram.html#a8e5a51a29dcb9ed430ee51b8b7a27bc7">   31</a></span>
             cv::Scalar <a class="code hl_variable"
                           href="structHistogram.html#a8e5a51a29dcb9ed430ee51b8b7a27bc7">color</a>
             = cv::Scalar(255, 255, 255);
         </div>
-        <div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a
+        <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a
                 class="line"
-                href="structHistogram.html#aff3a490dcdc58eb44a50198590458739">   31</a></span>
+                href="structHistogram.html#aff3a490dcdc58eb44a50198590458739">   32</a></span>
             <span class="keywordtype">int</span> <a class="code hl_variable"
                                                     href="structHistogram.html#aff3a490dcdc58eb44a50198590458739">bins_</a>;
         </div>
-        <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a
+        <div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a
                 class="line"
-                href="structHistogram.html#ab7236b3a7232984dc97ff31770e2953d">   32</a></span>
+                href="structHistogram.html#ab7236b3a7232984dc97ff31770e2953d">   33</a></span>
             cv::Mat <a class="code hl_variable"
                        href="structHistogram.html#ab7236b3a7232984dc97ff31770e2953d">mat_</a>;
         </div>
-        <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>
+        <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>
             <span class="keyword">explicit</span> <a class="code hl_struct"
                                                      href="structHistogram.html">Histogram</a>(<span
                     class="keywordtype">int</span> <a class="code hl_function"
                                                       href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">bins</a>);
         </div>
-        <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>};
+        <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};
         </div>
-</div>
-    <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>
     </div>
-    <div class="foldopen" data-end="};" data-start="{" id="foldopen00039">
-        <div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a
-                class="line" href="classImage.html">   39</a></span><span
+    <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>
+    </div>
+    <div class="foldopen" data-end="};" data-start="{" id="foldopen00040">
+        <div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a
+                class="line" href="classImage.html">   40</a></span><span
                 class="keyword">class </span><a class="code hl_class"
                                                 href="classImage.html">Image</a>
             {
         </div>
-        <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span
+        <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span
                 class="keyword">private</span>:
         </div>
-        <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>
-            cv::Mat image_mat_;
-        </div>
         <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>
-            <a class="code hl_enumeration"
-               href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448c">COLOR_SPACE</a>
-            c_space = <a class="code hl_enumvalue"
-                         href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">BGR</a>;
+            cv::Mat image_mat_;
         </div>
         <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>
             <a class="code hl_enumeration"
-               href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7b">CHROMA_SUBSAMPLING</a>
-            cs_ratio = <a class="code hl_enumvalue"
-                          href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7bac75245149c3f64d74430b8996b1e0558">NA</a>;
+               href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888">COLOR_SPACE</a>
+            c_space = <a class="code hl_enumvalue"
+                         href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888a4a19a93c929964c201e01c8352dc8b9c">BGR</a>;
         </div>
         <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>
+            <a class="code hl_enumeration"
+               href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791">CHROMA_SUBSAMPLING</a>
+            cs_ratio = <a class="code hl_enumvalue"
+                          href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791ac75245149c3f64d74430b8996b1e0558">NA</a>;
         </div>
-        <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span
+        <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>
+        </div>
+        <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span
                 class="keyword">public</span>:
         </div>
-        <div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a
+        <div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a
                 class="line"
-                href="classImage.html#a5502e928122744be1d3b89648298e162">   46</a></span>
+                href="classImage.html#a5502e928122744be1d3b89648298e162">   47</a></span>
             <a class="code hl_function"
                href="classImage.html#a5502e928122744be1d3b89648298e162">Image</a>()
             = <span class="keywordflow">default</span>;
         </div>
-        <div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a
+        <div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a
                 class="line"
-                href="classImage.html#ad9a2b967d96a3ea6278c85a7b1223145">   47</a></span>
+                href="classImage.html#ad9a2b967d96a3ea6278c85a7b1223145">   48</a></span>
             <a class="code hl_function"
                href="classImage.html#ad9a2b967d96a3ea6278c85a7b1223145">~Image</a>()
             = <span class="keywordflow">default</span>;
         </div>
-        <div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a
+        <div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a
                 class="line"
-                href="classImage.html#a41eb20641164dda4d5ec8feab0157678">   49</a></span>
+                href="classImage.html#a41eb20641164dda4d5ec8feab0157678">   50</a></span>
             <span class="keyword">explicit</span> <a class="code hl_function"
                                                      href="classImage.html#a41eb20641164dda4d5ec8feab0157678">Image</a>(<span
                     class="keyword">const</span> cv::Mat &amp;<a
                     class="code hl_function"
                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">arr2d</a>);
         </div>
-        <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>
+        <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>
         </div>
-        <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>
+        <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>
             <span class="keyword">explicit</span> <a class="code hl_function"
                                                      href="classImage.html#a5502e928122744be1d3b89648298e162">Image</a>(<span
                     class="keyword">const</span> <span
                     class="keywordtype">char</span> *<a class="code hl_function"
                                                         href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">filename</a>);
         </div>
-        <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>
+        <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>
         </div>
-        <div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a
+        <div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a
                 class="line"
-                href="classImage.html#a26ecdab6edc13b31fb9d0c5a9319bc9b">   56</a></span>
+                href="classImage.html#a26ecdab6edc13b31fb9d0c5a9319bc9b">   57</a></span>
             <a class="code hl_class" href="classImage.html">Image</a> *<a
                     class="code hl_function"
                     href="classImage.html#a26ecdab6edc13b31fb9d0c5a9319bc9b">load</a>(<span
@@ -286,66 +289,67 @@ $(document).ready(function() { init_codefold(0); });
                     class="code hl_function"
                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">arr2d</a>);
         </div>
-        <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>
+        <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>
         </div>
-        <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>
+        <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>
             <span class="keywordtype">void</span> <a class="code hl_function"
-                                                     href="classImage.html#aa6537a9dab317694974d89cf8f5d3cd9">_set_image_mat</a>(cv::Mat
+                                                     href="classImage.html#ac697c43505eaf164d97273dcfff7c3b8">setImageMat</a>(cv::Mat
             <a class="code hl_function"
                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">mat</a>);
         </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-        <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>
-            cv::Mat *<a class="code hl_function"
-                        href="classImage.html#a3e66df2cac97a70aeb2aae34698c6d16">_get_image_mat</a>();
+        <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>
         </div>
         <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>
+            cv::Mat *<a class="code hl_function"
+                        href="classImage.html#ad99f466a4dbdb6c8398ea8ee0dbfc079">getImageMat</a>();
         </div>
-        <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>
+        <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>
+        </div>
+        <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>
             <span class="keywordtype">void</span> <a class="code hl_function"
-                                                     href="classImage.html#ad6b3432d85ed1c34ff678e230a0c956f">_set_color</a>(<a
+                                                     href="classImage.html#ae2b77cf60613f78b0b4aa71057d6079b">setColor</a>(<a
                     class="code hl_enumeration"
-                    href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448c">COLOR_SPACE</a>
+                    href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888">COLOR_SPACE</a>
             <a class="code hl_function"
                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>);
         </div>
-        <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>
-        </div>
-        <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>
-            <a class="code hl_enumeration"
-               href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448c">COLOR_SPACE</a>
-            <a class="code hl_function"
-               href="classImage.html#ae79eeeb5d0685f2cceba30bf152e68c7">_get_color</a>();
+        <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>
         </div>
         <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>
+            <a class="code hl_enumeration"
+               href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888">COLOR_SPACE</a>
+            <a class="code hl_function"
+               href="classImage.html#ac7eb5a61e0daf8ffb7c04121506b9358">getColor</a>();
         </div>
-        <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>
+        <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>
+        </div>
+        <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>
             <span class="keywordtype">void</span> <a class="code hl_function"
-                                                     href="classImage.html#a9f85a6f951cc1984a3db255fd999a4cb">_set_chroma</a>(<a
+                                                     href="classImage.html#adae6da40f9057d2d837f9451074bb0b1">setChroma</a>(<a
                     class="code hl_enumeration"
-                    href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7b">CHROMA_SUBSAMPLING</a>
+                    href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791">CHROMA_SUBSAMPLING</a>
             <a class="code hl_function"
                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cs</a>);
         </div>
-        <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>
-            <a class="code hl_enumeration"
-               href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7b">CHROMA_SUBSAMPLING</a>
-            <a class="code hl_function"
-               href="classImage.html#aa22ca893172b913f655a64da322159e6">_get_chroma</a>();
-        </div>
         <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>
+            <a class="code hl_enumeration"
+               href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791">CHROMA_SUBSAMPLING</a>
+            <a class="code hl_function"
+               href="classImage.html#a69357507098a3537d60bd5521001842e">getChroma</a>();
         </div>
-        <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>
+        <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>
+        </div>
+        <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>
             cv::MatIterator_&lt;cv::Vec3b&gt; <a class="code hl_function"
                                                  href="classImage.html#a022d83404ed82ae23810760fc55b1cfb">begin</a>();
         </div>
-        <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>
+        <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>
         </div>
-        <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>
+        <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>
             cv::MatIterator_&lt;cv::Vec3b&gt; <a class="code hl_function"
                                                  href="classImage.html#ac35150c9107b42738964de24621e97dd">end</a>();
         </div>
-        <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>
+        <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>
         </div>
         <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>
             std::array&lt;int, 2&gt; <a class="code hl_function"
@@ -383,14 +387,14 @@ $(document).ready(function() { init_codefold(0); });
         </div>
         <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>
             <span class="keywordtype">int</span> <a class="code hl_function"
-                                                    href="classImage.html#aaa61e6770f704d81f2d39f034f7fe643">get_image_type</a>()
+                                                    href="classImage.html#ac3bbda65759a56ff21186afd432b26be">getImageType</a>()
             <span class="keyword">const</span>;
         </div>
         <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>
         </div>
         <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>
             <span class="keywordtype">void</span> <a class="code hl_function"
-                                                     href="classImage.html#a7ebed07195740f92e2705e22315aec33">display_image</a>(<span
+                                                     href="classImage.html#ad17fb841e04f888d3152299d10b7124f">show</a>(<span
                     class="keywordtype">bool</span> <a class="code hl_function"
                                                        href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">vid_ctx</a>
             = <span class="keyword">false</span>);
@@ -406,7 +410,7 @@ $(document).ready(function() { init_codefold(0); });
         </div>
         <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>
             cv::Vec3b <a class="code hl_function"
-                         href="classImage.html#a7f884a307aedf84348f56913a6363fc4">get_pixel</a>(<span
+                         href="classImage.html#a068a9ba2f5a2a4ff251ea5810f342fe8">getPixel</a>(<span
                     class="keywordtype">int</span> <a class="code hl_function"
                                                       href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>,
             <span class="keywordtype">int</span> <a class="code hl_function"
@@ -417,13 +421,14 @@ $(document).ready(function() { init_codefold(0); });
         </div>
         <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>
             <span class="keywordtype">void</span> <a class="code hl_function"
-                                                     href="classImage.html#af7a1d26a3d62a40ebe3b014c910568f4">set_pixel</a>(<span
+                                                     href="classImage.html#a6baa7d33e82f9e2513c0ecd53d3d0016">setPixel</a>(<span
                     class="keywordtype">int</span> <a class="code hl_function"
                                                       href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>,
             <span class="keywordtype">int</span> <a class="code hl_function"
                                                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>,
-            <span class="keyword">const</span> cv::Vec3b &amp;<a
-                    class="code hl_function"
+            <span class="keyword">const</span> <a class="code hl_function"
+                                                  href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">Vec3b</a>
+            &amp;<a class="code hl_function"
                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">color_values</a>);
         </div>
         <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>
@@ -435,7 +440,17 @@ $(document).ready(function() { init_codefold(0); });
         </div>
         <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>
         </div>
-        <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>
+        <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>
+            <span class="keywordtype">bool</span> <a class="code hl_function"
+                                                     href="classImage.html#ae104f94751bfd569adaf9ae0d4ec1253">operator==</a>(<a
+                    class="code hl_class" href="classImage.html">Image</a> &amp;<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">other</a>)
+            <span class="keyword">const</span>;
+        </div>
+        <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>
+        </div>
+        <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>
             std::vector&lt;cv::Mat&gt; <a class="code hl_function"
                                           href="classImage.html#ac5d951742cad8b816368d11c72999f3e">color_histograms</a>(<span
                     class="keywordtype">int</span> <a class="code hl_function"
@@ -445,28 +460,24 @@ $(document).ready(function() { init_codefold(0); });
                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">fill_hist</a>
             = <span class="keyword">false</span>,
         </div>
-        <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>
-            <span class="keywordtype">int</span> <a class="code hl_function"
-                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">width</a>
-            = 512, <span class="keywordtype">int</span> <a
-                    class="code hl_function"
-                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">height</a>
-            = 400);
-        </div>
-        <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>
-        </div>
         <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>
+            <span class="keywordtype">int</span> width = 512, <span
+                    class="keywordtype">int</span> height = 400);
+        </div>
+        <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>
+        </div>
+        <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>
             <a class="code hl_class" href="classImage.html">Image</a> <a
                     class="code hl_function"
                     href="classImage.html#a79d964992bf56a063ad9e5a4f2e0d3f4">gaussian_blur</a>(cv::Mat
             <a class="code hl_function"
                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">blur</a>);
         </div>
-        <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>
+        <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>
         </div>
-        <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>
+        <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>
             cv::Mat <a class="code hl_function"
-                       href="classImage.html#a36da0f6901f286c95cbdd8da2558c1ad">get_slice</a>(<span
+                       href="classImage.html#a677c7fb9488e4d4a7e51cb26a37bc0f0">getSlice</a>(<span
                     class="keywordtype">int</span> <a class="code hl_function"
                                                       href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>,
             <span class="keywordtype">int</span> <a class="code hl_function"
@@ -475,9 +486,9 @@ $(document).ready(function() { init_codefold(0); });
                                                     href="classImage.html#ab6fc2eaee3d1d0c39fbf09f5b2b9b50e">size</a>)
             <span class="keyword">const</span>;
         </div>
-        <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>
+        <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>
         </div>
-        <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>
+        <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>
             cv::Mat <a class="code hl_function"
                        href="classImage.html#a0cc226b061d2cbdca789247c41af18b4">get_neighbors</a>(<span
                     class="keywordtype">int</span> <a class="code hl_function"
@@ -490,9 +501,9 @@ $(document).ready(function() { init_codefold(0); });
                                                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">c</a>)
             <span class="keyword">const</span>;
         </div>
-        <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>
-        </div>
         <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>
+        </div>
+        <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>
             cv::Mat <a class="code hl_function"
                        href="classImage.html#a19255946548f5b9595d770f1c6f4ea8c">cut</a>(<span
                     class="keyword">const</span> cv::Mat &amp;m, <span
@@ -502,19 +513,101 @@ $(document).ready(function() { init_codefold(0); });
                                                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">c</a>)
             <span class="keyword">const</span>;
         </div>
-        <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>};
+        <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>
         </div>
-</div>
-    <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>
+        <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>
+            <span class="keywordtype">void</span> <a class="code hl_function"
+                                                     href="classImage.html#a0f4232ff8efa1659d033946bf970da39">encode_JPEG_LS</a>(<span
+                    class="keyword">const</span> std::string&amp; <a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">path</a>,
+            <span class="keywordtype">int</span> m);
+        </div>
+        <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>
+        </div>
+        <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>
+            <span class="keywordtype">void</span> <a class="code hl_function"
+                                                     href="classImage.html#a0f4232ff8efa1659d033946bf970da39">encode_JPEG_LS</a>(<a
+                    class="code hl_class" href="classGolomb.html">Golomb</a> *<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">g</a>);
+        </div>
+        <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>
+        </div>
+        <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>
+            <span class="keyword">static</span> <a class="code hl_class"
+                                                   href="classImage.html">Image</a>
+            <a class="code hl_function"
+               href="classImage.html#a4a55390d7c66d376b1fe6f41a6cca4fc">decode_JPEG_LS</a>(<span
+                    class="keyword">const</span> std::string&amp; <a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">path</a>);
+        </div>
+        <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>
+        </div>
+        <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>
+            <span class="keyword">static</span> <a class="code hl_class"
+                                                   href="classImage.html">Image</a>
+            <a class="code hl_function"
+               href="classImage.html#a4a55390d7c66d376b1fe6f41a6cca4fc">decode_JPEG_LS</a>(<a
+                    class="code hl_class" href="classGolomb.html">Golomb</a> *<a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">g</a>,<a
+                    class="code hl_enumeration"
+                    href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888">COLOR_SPACE</a>
+            c_space,<a class="code hl_enumeration"
+                       href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791">CHROMA_SUBSAMPLING</a>
+            cs_ratio, <span class="keywordtype">int</span> <a
+                    class="code hl_function"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">rows</a>,<span
+                    class="keywordtype">int</span> <a class="code hl_function"
+                                                      href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cols</a>);
+        </div>
+        <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>
+        </div>
+        <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>
+            <span class="keyword">static</span> <a class="code hl_function"
+                                                   href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">uchar</a>
+            <a class="code hl_function"
+               href="classImage.html#a0167758327e07d0a02d7942514006b9e">predict_JPEG_LS</a>(cv::Mat
+            <a class="code hl_function"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">mat</a>,
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>,
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>,
+            <span class="keywordtype">int</span> <a class="code hl_function"
+                                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">channel</a>);
+        </div>
+        <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>};
+        </div>
     </div>
-    <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span
+    <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>
+    </div>
+    <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span
+            class="keywordtype">void</span> <a class="code hl_function"
+                                               href="Image_8hpp.html#a17b48308efaa8b199d71f668fb5cb862">setSlice</a>(<span
+            class="keyword">const</span> cv::Mat &amp;<a
+            class="code hl_function"
+            href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">mat</a>,
+        <span class="keyword">const</span> cv::Mat &amp;<a
+                class="code hl_function"
+                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">slice</a>,
+        <span class="keywordtype">int</span> <a class="code hl_function"
+                                                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>,
+        <span class="keywordtype">int</span> <a class="code hl_function"
+                                                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>);
+    </div>
+    <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>
+    </div>
+    <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span
             class="keyword">template</span>&lt;<span
             class="keyword">typename</span> T&gt;
     </div>
-    <div class="foldopen" data-end="}" data-start="{" id="foldopen00177">
-        <div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a
+    <div class="foldopen" data-end="}" data-start="{" id="foldopen00194">
+        <div class="line"><a id="l00194" name="l00194"></a><span class="lineno"><a
                 class="line"
-                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">  177</a></span>cv::Mat
+                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">  194</a></span>cv::Mat
             <a class="code hl_function"
                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histogram</a>(<span
                     class="keyword">const</span> cv::Mat &amp;<a
@@ -524,7 +617,7 @@ $(document).ready(function() { init_codefold(0); });
                                                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">bins</a>
             = 256) {
         </div>
-        <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>
+        <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>
             cv::Mat <a class="code hl_function"
                        href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histValues</a>
             = cv::Mat::zeros(1, <a class="code hl_function"
@@ -532,7 +625,7 @@ $(document).ready(function() { init_codefold(0); });
             <a class="code hl_function"
                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">CV_32F</a>);
         </div>
-        <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>
+        <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>
             <a class="code hl_function"
                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">matrix</a>.forEach&lt;<a
                     class="code hl_function"
@@ -546,7 +639,7 @@ $(document).ready(function() { init_codefold(0); });
                                                       href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">position</a>[])
             -&gt; <span class="keywordtype">void</span> {
         </div>
-        <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>
+        <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>
             <a class="code hl_function"
                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histValues</a>.at&lt;<span
                     class="keywordtype">float</span>&gt;(<a
@@ -554,16 +647,26 @@ $(document).ready(function() { init_codefold(0); });
                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">pixel</a>)
             += 1;
         </div>
-        <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>
+        <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>
             });
         </div>
-        <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>
+        <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>
             <span class="keywordflow">return</span> <a class="code hl_function"
                                                        href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histValues</a>;
         </div>
-        <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>}
+        <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>}
         </div>
-</div>
+    </div>
+    <div class="ttc" id="aImage_8hpp_html_a17b48308efaa8b199d71f668fb5cb862">
+        <div class="ttname"><a
+                href="Image_8hpp.html#a17b48308efaa8b199d71f668fb5cb862">setSlice</a>
+        </div>
+        <div class="ttdeci">void setSlice(const cv::Mat &amp;mat, const cv::Mat
+            &amp;slice, int row, int col)
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00236">Image.cpp:236</a></div>
+    </div>
     <div class="ttc" id="aImage_8hpp_html_a4fb4f4156d045531af63bc48591d5eed">
         <div class="ttname"><a
                 href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">histogram</a>
@@ -573,96 +676,104 @@ $(document).ready(function() { init_codefold(0); });
         </div>
         <div class="ttdoc">Creates basic histogram of matrix .</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00177">Image.hpp:177</a></div>
+                href="Image_8hpp_source.html#l00194">Image.hpp:194</a></div>
     </div>
-    <div class="ttc" id="aImage_8hpp_html_a99039de6017a1f64312480f3f4ea448c">
+    <div class="ttc" id="aImage_8hpp_html_a93f7ea8ca55fdf6ff9cd1d3592352791">
         <div class="ttname"><a
-                href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448c">COLOR_SPACE</a>
+                href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791">CHROMA_SUBSAMPLING</a>
+        </div>
+        <div class="ttdeci">CHROMA_SUBSAMPLING</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00022">Image.hpp:22</a></div>
+    </div>
+    <div class="ttc"
+         id="aImage_8hpp_html_a93f7ea8ca55fdf6ff9cd1d3592352791a523b094e008f914e9e01af828090df0c">
+        <div class="ttname"><a
+                href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791a523b094e008f914e9e01af828090df0c">YUV444</a>
+        </div>
+        <div class="ttdeci">@ YUV444</div>
+        <div class="ttdoc">4:4:4</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00024">Image.hpp:24</a></div>
+    </div>
+    <div class="ttc"
+         id="aImage_8hpp_html_a93f7ea8ca55fdf6ff9cd1d3592352791ac75245149c3f64d74430b8996b1e0558">
+        <div class="ttname"><a
+                href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791ac75245149c3f64d74430b8996b1e0558">NA</a>
+        </div>
+        <div class="ttdeci">@ NA</div>
+        <div class="ttdoc">Not applicable.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00023">Image.hpp:23</a></div>
+    </div>
+    <div class="ttc"
+         id="aImage_8hpp_html_a93f7ea8ca55fdf6ff9cd1d3592352791acb52b4d8e199d901af27ee1f2d6bcb04">
+        <div class="ttname"><a
+                href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791acb52b4d8e199d901af27ee1f2d6bcb04">YUV420</a>
+        </div>
+        <div class="ttdeci">@ YUV420</div>
+        <div class="ttdoc">4:2:0</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00027">Image.hpp:26</a></div>
+    </div>
+    <div class="ttc"
+         id="aImage_8hpp_html_a93f7ea8ca55fdf6ff9cd1d3592352791af95cc5446c6345daadf349ccd299a2f5">
+        <div class="ttname"><a
+                href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791af95cc5446c6345daadf349ccd299a2f5">YUV422</a>
+        </div>
+        <div class="ttdeci">@ YUV422</div>
+        <div class="ttdoc">4:2:2</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8hpp_source.html#l00025">Image.hpp:25</a></div>
+    </div>
+    <div class="ttc" id="aImage_8hpp_html_ae6d9a3670e9fd5cba093fdddebdae888">
+        <div class="ttname"><a
+                href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888">COLOR_SPACE</a>
         </div>
         <div class="ttdeci">COLOR_SPACE</div>
         <div class="ttdoc">Declares the Image class, representing a digital
             Image.
         </div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00015">Image.hpp:15</a></div>
+                href="Image_8hpp_source.html#l00016">Image.hpp:16</a></div>
     </div>
     <div class="ttc"
-         id="aImage_8hpp_html_a99039de6017a1f64312480f3f4ea448ca3fb6c4ad00f4ad98553e01229d1803ac">
+         id="aImage_8hpp_html_ae6d9a3670e9fd5cba093fdddebdae888a3fb6c4ad00f4ad98553e01229d1803ac">
         <div class="ttname"><a
-                href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca3fb6c4ad00f4ad98553e01229d1803ac">GRAY</a>
+                href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888a3fb6c4ad00f4ad98553e01229d1803ac">GRAY</a>
         </div>
         <div class="ttdeci">@ GRAY</div>
         <div class="ttdoc">Grayscale.</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00019">Image.hpp:18</a></div>
+                href="Image_8hpp_source.html#l00020">Image.hpp:19</a></div>
     </div>
     <div class="ttc"
-         id="aImage_8hpp_html_a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">
+         id="aImage_8hpp_html_ae6d9a3670e9fd5cba093fdddebdae888a4a19a93c929964c201e01c8352dc8b9c">
         <div class="ttname"><a
-                href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">BGR</a>
+                href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888a4a19a93c929964c201e01c8352dc8b9c">BGR</a>
         </div>
         <div class="ttdeci">@ BGR</div>
         <div class="ttdoc">Blue-Green-Red.</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00016">Image.hpp:16</a></div>
+                href="Image_8hpp_source.html#l00017">Image.hpp:17</a></div>
     </div>
     <div class="ttc"
-         id="aImage_8hpp_html_a99039de6017a1f64312480f3f4ea448caf726371acfea68d8e6506b9ab7d817f1">
+         id="aImage_8hpp_html_ae6d9a3670e9fd5cba093fdddebdae888af726371acfea68d8e6506b9ab7d817f1">
         <div class="ttname"><a
-                href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448caf726371acfea68d8e6506b9ab7d817f1">YUV</a>
+                href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888af726371acfea68d8e6506b9ab7d817f1">YUV</a>
         </div>
         <div class="ttdeci">@ YUV</div>
         <div class="ttdoc">Luminance-Chrominance.</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00017">Image.hpp:17</a></div>
+                href="Image_8hpp_source.html#l00018">Image.hpp:18</a></div>
     </div>
-    <div class="ttc" id="aImage_8hpp_html_af3a6dcc9e5a5ede53c91491b5b79bb7b">
-        <div class="ttname"><a
-                href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7b">CHROMA_SUBSAMPLING</a>
+    <div class="ttc" id="aclassGolomb_html">
+        <div class="ttname"><a href="classGolomb.html">Golomb</a></div>
+        <div class="ttdoc">The Golomb class provides methods to encode/decode
+            int values using Golomb.
         </div>
-        <div class="ttdeci">CHROMA_SUBSAMPLING</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00021">Image.hpp:21</a></div>
-    </div>
-    <div class="ttc"
-         id="aImage_8hpp_html_af3a6dcc9e5a5ede53c91491b5b79bb7ba523b094e008f914e9e01af828090df0c">
-        <div class="ttname"><a
-                href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7ba523b094e008f914e9e01af828090df0c">YUV444</a>
-        </div>
-        <div class="ttdeci">@ YUV444</div>
-        <div class="ttdoc">4:4:4</div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00023">Image.hpp:23</a></div>
-    </div>
-    <div class="ttc"
-         id="aImage_8hpp_html_af3a6dcc9e5a5ede53c91491b5b79bb7bac75245149c3f64d74430b8996b1e0558">
-        <div class="ttname"><a
-                href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7bac75245149c3f64d74430b8996b1e0558">NA</a>
-        </div>
-        <div class="ttdeci">@ NA</div>
-        <div class="ttdoc">Not applicable.</div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00022">Image.hpp:22</a></div>
-    </div>
-    <div class="ttc"
-         id="aImage_8hpp_html_af3a6dcc9e5a5ede53c91491b5b79bb7bacb52b4d8e199d901af27ee1f2d6bcb04">
-        <div class="ttname"><a
-                href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7bacb52b4d8e199d901af27ee1f2d6bcb04">YUV420</a>
-        </div>
-        <div class="ttdeci">@ YUV420</div>
-        <div class="ttdoc">4:2:0</div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00026">Image.hpp:25</a></div>
-    </div>
-    <div class="ttc"
-         id="aImage_8hpp_html_af3a6dcc9e5a5ede53c91491b5b79bb7baf95cc5446c6345daadf349ccd299a2f5">
-        <div class="ttname"><a
-                href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7baf95cc5446c6345daadf349ccd299a2f5">YUV422</a>
-        </div>
-        <div class="ttdeci">@ YUV422</div>
-        <div class="ttdoc">4:2:2</div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00024">Image.hpp:24</a></div>
+                href="Golomb_8hpp_source.html#l00013">Golomb.hpp:13</a></div>
     </div>
     <div class="ttc" id="aclassImage_html">
         <div class="ttname"><a href="classImage.html">Image</a></div>
@@ -670,7 +781,17 @@ $(document).ready(function() { init_codefold(0); });
             digital images.
         </div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00039">Image.hpp:39</a></div>
+                href="Image_8hpp_source.html#l00040">Image.hpp:40</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a0167758327e07d0a02d7942514006b9e">
+        <div class="ttname"><a
+                href="classImage.html#a0167758327e07d0a02d7942514006b9e">Image::predict_JPEG_LS</a>
+        </div>
+        <div class="ttdeci">static uchar predict_JPEG_LS(cv::Mat mat, int row,
+            int col, int channel)
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00323">Image.cpp:323</a></div>
     </div>
     <div class="ttc" id="aclassImage_html_a022d83404ed82ae23810760fc55b1cfb">
         <div class="ttname"><a
@@ -678,7 +799,7 @@ $(document).ready(function() { init_codefold(0); });
         </div>
         <div class="ttdeci">cv::MatIterator_&lt; cv::Vec3b &gt; begin()</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00052">Image.cpp:52</a></div>
+                href="Image_8cpp_source.html#l00047">Image.cpp:47</a></div>
     </div>
     <div class="ttc" id="aclassImage_html_a03342115d31595a7b0db828ee8e7e76e">
         <div class="ttname"><a
@@ -688,7 +809,15 @@ $(document).ready(function() { init_codefold(0); });
             int &gt; &amp;compression_params={})
         </div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00058">Image.cpp:58</a></div>
+                href="Image_8cpp_source.html#l00053">Image.cpp:53</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a068a9ba2f5a2a4ff251ea5810f342fe8">
+        <div class="ttname"><a
+                href="classImage.html#a068a9ba2f5a2a4ff251ea5810f342fe8">Image::getPixel</a>
+        </div>
+        <div class="ttdeci">cv::Vec3b getPixel(int row, int col) const</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00074">Image.cpp:74</a></div>
     </div>
     <div class="ttc" id="aclassImage_html_a09ae438cfa25247a5600ca89c9239c7e">
         <div class="ttname"><a
@@ -696,7 +825,7 @@ $(document).ready(function() { init_codefold(0); });
         </div>
         <div class="ttdeci">Image clone()</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00098">Image.cpp:98</a></div>
+                href="Image_8cpp_source.html#l00093">Image.cpp:93</a></div>
     </div>
     <div class="ttc" id="aclassImage_html_a0cc226b061d2cbdca789247c41af18b4">
         <div class="ttname"><a
@@ -706,7 +835,17 @@ $(document).ready(function() { init_codefold(0); });
             r, int c) const
         </div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00199">Image.cpp:199</a></div>
+                href="Image_8cpp_source.html#l00198">Image.cpp:198</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a0f4232ff8efa1659d033946bf970da39">
+        <div class="ttname"><a
+                href="classImage.html#a0f4232ff8efa1659d033946bf970da39">Image::encode_JPEG_LS</a>
+        </div>
+        <div class="ttdeci">void encode_JPEG_LS(const std::string &amp;path, int
+            m)
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00243">Image.cpp:243</a></div>
     </div>
     <div class="ttc" id="aclassImage_html_a19255946548f5b9595d770f1c6f4ea8c">
         <div class="ttname"><a
@@ -716,32 +855,13 @@ $(document).ready(function() { init_codefold(0); });
             const
         </div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00212">Image.cpp:212</a></div>
+                href="Image_8cpp_source.html#l00211">Image.cpp:211</a></div>
     </div>
     <div class="ttc" id="aclassImage_html_a26ecdab6edc13b31fb9d0c5a9319bc9b">
         <div class="ttname"><a
                 href="classImage.html#a26ecdab6edc13b31fb9d0c5a9319bc9b">Image::load</a>
         </div>
         <div class="ttdeci">Image * load(const cv::Mat &amp;arr2d)</div>
-    </div>
-    <div class="ttc" id="aclassImage_html_a36da0f6901f286c95cbdd8da2558c1ad">
-        <div class="ttname"><a
-                href="classImage.html#a36da0f6901f286c95cbdd8da2558c1ad">Image::get_slice</a>
-        </div>
-        <div class="ttdeci">cv::Mat get_slice(int row, int col, int size)
-            const
-        </div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00230">Image.cpp:230</a></div>
-    </div>
-    <div class="ttc" id="aclassImage_html_a3e66df2cac97a70aeb2aae34698c6d16">
-        <div class="ttname"><a
-                href="classImage.html#a3e66df2cac97a70aeb2aae34698c6d16">Image::_get_image_mat</a>
-        </div>
-        <div class="ttdeci">cv::Mat * _get_image_mat()</div>
-        <div class="ttdoc">Returns the underlying cv::Mat.</div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00027">Image.cpp:27</a></div>
     </div>
     <div class="ttc" id="aclassImage_html_a3e7f0be237f35f60e4dad8a1a17d3387">
         <div class="ttname"><a
@@ -758,66 +878,49 @@ $(document).ready(function() { init_codefold(0); });
         <div class="ttdeci">Image(const cv::Mat &amp;arr2d)</div>
         <div class="ttdoc">Create an Image from an open BGR cv::Mat.</div>
     </div>
+    <div class="ttc" id="aclassImage_html_a4a55390d7c66d376b1fe6f41a6cca4fc">
+        <div class="ttname"><a
+                href="classImage.html#a4a55390d7c66d376b1fe6f41a6cca4fc">Image::decode_JPEG_LS</a>
+        </div>
+        <div class="ttdeci">static Image decode_JPEG_LS(const std::string &amp;path)</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00272">Image.cpp:272</a></div>
+    </div>
 <div class="ttc" id="aclassImage_html_a5502e928122744be1d3b89648298e162"><div class="ttname"><a href="classImage.html#a5502e928122744be1d3b89648298e162">Image::Image</a></div><div class="ttdeci">Image()=default</div></div>
+    <div class="ttc" id="aclassImage_html_a677c7fb9488e4d4a7e51cb26a37bc0f0">
+        <div class="ttname"><a
+                href="classImage.html#a677c7fb9488e4d4a7e51cb26a37bc0f0">Image::getSlice</a>
+        </div>
+        <div class="ttdeci">cv::Mat getSlice(int row, int col, int size) const
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00229">Image.cpp:229</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a69357507098a3537d60bd5521001842e">
+        <div class="ttname"><a
+                href="classImage.html#a69357507098a3537d60bd5521001842e">Image::getChroma</a>
+        </div>
+        <div class="ttdeci">CHROMA_SUBSAMPLING getChroma()</div>
+        <div class="ttdoc">Returns the chroma subsampling rate of the Image.
+        </div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00034">Image.cpp:34</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_a6baa7d33e82f9e2513c0ecd53d3d0016">
+        <div class="ttname"><a
+                href="classImage.html#a6baa7d33e82f9e2513c0ecd53d3d0016">Image::setPixel</a>
+        </div>
+        <div class="ttdeci">void setPixel(int row, int col, const Vec3b &amp;color_values)</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00086">Image.cpp:86</a></div>
+    </div>
     <div class="ttc" id="aclassImage_html_a79d964992bf56a063ad9e5a4f2e0d3f4">
         <div class="ttname"><a
                 href="classImage.html#a79d964992bf56a063ad9e5a4f2e0d3f4">Image::gaussian_blur</a>
         </div>
         <div class="ttdeci">Image gaussian_blur(cv::Mat blur)</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00164">Image.cpp:164</a></div>
-    </div>
-    <div class="ttc" id="aclassImage_html_a7ebed07195740f92e2705e22315aec33">
-        <div class="ttname"><a
-                href="classImage.html#a7ebed07195740f92e2705e22315aec33">Image::display_image</a>
-        </div>
-        <div class="ttdeci">void display_image(bool vid_ctx=false)</div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00066">Image.cpp:66</a></div>
-    </div>
-    <div class="ttc" id="aclassImage_html_a7f884a307aedf84348f56913a6363fc4">
-        <div class="ttname"><a
-                href="classImage.html#a7f884a307aedf84348f56913a6363fc4">Image::get_pixel</a>
-        </div>
-        <div class="ttdeci">cv::Vec3b get_pixel(int row, int col) const</div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00079">Image.cpp:79</a></div>
-    </div>
-    <div class="ttc" id="aclassImage_html_a9f85a6f951cc1984a3db255fd999a4cb">
-        <div class="ttname"><a
-                href="classImage.html#a9f85a6f951cc1984a3db255fd999a4cb">Image::_set_chroma</a>
-        </div>
-        <div class="ttdeci">void _set_chroma(CHROMA_SUBSAMPLING cs)</div>
-        <div class="ttdoc">Sets the chroma subsampling rate of the Image.</div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00032">Image.cpp:32</a></div>
-    </div>
-    <div class="ttc" id="aclassImage_html_aa22ca893172b913f655a64da322159e6">
-        <div class="ttname"><a
-                href="classImage.html#aa22ca893172b913f655a64da322159e6">Image::_get_chroma</a>
-        </div>
-        <div class="ttdeci">CHROMA_SUBSAMPLING _get_chroma()</div>
-        <div class="ttdoc">Returns the chroma subsampling rate of the Image.
-        </div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00039">Image.cpp:39</a></div>
-    </div>
-    <div class="ttc" id="aclassImage_html_aa6537a9dab317694974d89cf8f5d3cd9">
-        <div class="ttname"><a
-                href="classImage.html#aa6537a9dab317694974d89cf8f5d3cd9">Image::_set_image_mat</a>
-        </div>
-        <div class="ttdeci">void _set_image_mat(cv::Mat mat)</div>
-        <div class="ttdoc">Sets the underlying cv::Mat.</div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00024">Image.cpp:24</a></div>
-    </div>
-    <div class="ttc" id="aclassImage_html_aaa61e6770f704d81f2d39f034f7fe643">
-        <div class="ttname"><a
-                href="classImage.html#aaa61e6770f704d81f2d39f034f7fe643">Image::get_image_type</a>
-        </div>
-        <div class="ttdeci">int get_image_type() const</div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00055">Image.cpp:55</a></div>
+                href="Image_8cpp_source.html#l00163">Image.cpp:163</a></div>
     </div>
     <div class="ttc" id="aclassImage_html_ab6fc2eaee3d1d0c39fbf09f5b2b9b50e">
         <div class="ttname"><a
@@ -825,7 +928,7 @@ $(document).ready(function() { init_codefold(0); });
         </div>
         <div class="ttdeci">std::array&lt; int, 2 &gt; size() const</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00054">Image.cpp:54</a></div>
+                href="Image_8cpp_source.html#l00049">Image.cpp:49</a></div>
     </div>
     <div class="ttc" id="aclassImage_html_ac35150c9107b42738964de24621e97dd">
         <div class="ttname"><a
@@ -833,7 +936,15 @@ $(document).ready(function() { init_codefold(0); });
         </div>
         <div class="ttdeci">cv::MatIterator_&lt; cv::Vec3b &gt; end()</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00053">Image.cpp:53</a></div>
+                href="Image_8cpp_source.html#l00048">Image.cpp:48</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_ac3bbda65759a56ff21186afd432b26be">
+        <div class="ttname"><a
+                href="classImage.html#ac3bbda65759a56ff21186afd432b26be">Image::getImageType</a>
+        </div>
+        <div class="ttdeci">int getImageType() const</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00050">Image.cpp:50</a></div>
     </div>
     <div class="ttc" id="aclassImage_html_ac5d951742cad8b816368d11c72999f3e">
         <div class="ttname"><a
@@ -843,24 +954,67 @@ $(document).ready(function() { init_codefold(0); });
             bins=256, bool fill_hist=false, int width=512, int height=400)
         </div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00107">Image.cpp:107</a></div>
+                href="Image_8cpp_source.html#l00106">Image.cpp:106</a></div>
     </div>
-    <div class="ttc" id="aclassImage_html_ad6b3432d85ed1c34ff678e230a0c956f">
+    <div class="ttc" id="aclassImage_html_ac697c43505eaf164d97273dcfff7c3b8">
         <div class="ttname"><a
-                href="classImage.html#ad6b3432d85ed1c34ff678e230a0c956f">Image::_set_color</a>
+                href="classImage.html#ac697c43505eaf164d97273dcfff7c3b8">Image::setImageMat</a>
         </div>
-        <div class="ttdeci">void _set_color(COLOR_SPACE col)</div>
-        <div class="ttdoc">Sets the color space of the Image.</div>
+        <div class="ttdeci">void setImageMat(cv::Mat mat)</div>
+        <div class="ttdoc">Sets the underlying cv::Mat.</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00030">Image.cpp:30</a></div>
+                href="Image_8cpp_source.html#l00025">Image.cpp:25</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_ac7eb5a61e0daf8ffb7c04121506b9358">
+        <div class="ttname"><a
+                href="classImage.html#ac7eb5a61e0daf8ffb7c04121506b9358">Image::getColor</a>
+        </div>
+        <div class="ttdeci">COLOR_SPACE getColor()</div>
+        <div class="ttdoc">Returns the color space of the Image.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00032">Image.cpp:32</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_ad17fb841e04f888d3152299d10b7124f">
+        <div class="ttname"><a
+                href="classImage.html#ad17fb841e04f888d3152299d10b7124f">Image::show</a>
+        </div>
+        <div class="ttdeci">void show(bool vid_ctx=false)</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00061">Image.cpp:61</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_ad99f466a4dbdb6c8398ea8ee0dbfc079">
+        <div class="ttname"><a
+                href="classImage.html#ad99f466a4dbdb6c8398ea8ee0dbfc079">Image::getImageMat</a>
+        </div>
+        <div class="ttdeci">cv::Mat * getImageMat()</div>
+        <div class="ttdoc">Returns the underlying cv::Mat.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00028">Image.cpp:28</a></div>
     </div>
 <div class="ttc" id="aclassImage_html_ad9a2b967d96a3ea6278c85a7b1223145"><div class="ttname"><a href="classImage.html#ad9a2b967d96a3ea6278c85a7b1223145">Image::~Image</a></div><div class="ttdeci">~Image()=default</div></div>
-    <div class="ttc" id="aclassImage_html_ae79eeeb5d0685f2cceba30bf152e68c7">
+    <div class="ttc" id="aclassImage_html_adae6da40f9057d2d837f9451074bb0b1">
         <div class="ttname"><a
-                href="classImage.html#ae79eeeb5d0685f2cceba30bf152e68c7">Image::_get_color</a>
+                href="classImage.html#adae6da40f9057d2d837f9451074bb0b1">Image::setChroma</a>
         </div>
-        <div class="ttdeci">COLOR_SPACE _get_color()</div>
-        <div class="ttdoc">Returns the color space of the Image.</div>
+        <div class="ttdeci">void setChroma(CHROMA_SUBSAMPLING cs)</div>
+        <div class="ttdoc">Sets the chroma subsampling rate of the Image.</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00033">Image.cpp:33</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_ae104f94751bfd569adaf9ae0d4ec1253">
+        <div class="ttname"><a
+                href="classImage.html#ae104f94751bfd569adaf9ae0d4ec1253">Image::operator==</a>
+        </div>
+        <div class="ttdeci">bool operator==(Image &amp;other) const</div>
+        <div class="ttdef"><b>Definition</b> <a
+                href="Image_8cpp_source.html#l00102">Image.cpp:102</a></div>
+    </div>
+    <div class="ttc" id="aclassImage_html_ae2b77cf60613f78b0b4aa71057d6079b">
+        <div class="ttname"><a
+                href="classImage.html#ae2b77cf60613f78b0b4aa71057d6079b">Image::setColor</a>
+        </div>
+        <div class="ttdeci">void setColor(COLOR_SPACE col)</div>
+        <div class="ttdoc">Sets the color space of the Image.</div>
         <div class="ttdef"><b>Definition</b> <a
                 href="Image_8cpp_source.html#l00031">Image.cpp:31</a></div>
     </div>
@@ -870,23 +1024,13 @@ $(document).ready(function() { init_codefold(0); });
         </div>
         <div class="ttdeci">bool loaded() const</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00056">Image.cpp:56</a></div>
-    </div>
-    <div class="ttc" id="aclassImage_html_af7a1d26a3d62a40ebe3b014c910568f4">
-        <div class="ttname"><a
-                href="classImage.html#af7a1d26a3d62a40ebe3b014c910568f4">Image::set_pixel</a>
-        </div>
-        <div class="ttdeci">void set_pixel(int row, int col, const cv::Vec3b
-            &amp;color_values)
-        </div>
-        <div class="ttdef"><b>Definition</b> <a
-                href="Image_8cpp_source.html#l00091">Image.cpp:91</a></div>
+                href="Image_8cpp_source.html#l00051">Image.cpp:51</a></div>
     </div>
     <div class="ttc" id="astructHistogram_html">
         <div class="ttname"><a href="structHistogram.html">Histogram</a></div>
         <div class="ttdoc">Histogram struct declaration.</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00029">Image.hpp:29</a></div>
+                href="Image_8hpp_source.html#l00030">Image.hpp:30</a></div>
     </div>
     <div class="ttc"
          id="astructHistogram_html_a8e5a51a29dcb9ed430ee51b8b7a27bc7">
@@ -896,7 +1040,7 @@ $(document).ready(function() { init_codefold(0); });
         <div class="ttdeci">cv::Scalar color</div>
         <div class="ttdoc">Color to be used for drawing the histogram.</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00030">Image.hpp:30</a></div>
+                href="Image_8hpp_source.html#l00031">Image.hpp:31</a></div>
     </div>
     <div class="ttc"
          id="astructHistogram_html_ab7236b3a7232984dc97ff31770e2953d">
@@ -906,7 +1050,7 @@ $(document).ready(function() { init_codefold(0); });
         <div class="ttdeci">cv::Mat mat_</div>
         <div class="ttdoc">cv:Matrix containing the histogram data</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00032">Image.hpp:32</a></div>
+                href="Image_8hpp_source.html#l00033">Image.hpp:33</a></div>
     </div>
     <div class="ttc"
          id="astructHistogram_html_aff3a490dcdc58eb44a50198590458739">
@@ -916,12 +1060,12 @@ $(document).ready(function() { init_codefold(0); });
         <div class="ttdeci">int bins_</div>
         <div class="ttdoc">Number of bins.</div>
         <div class="ttdef"><b>Definition</b> <a
-                href="Image_8hpp_source.html#l00031">Image.hpp:31</a></div>
+                href="Image_8hpp_source.html#l00032">Image.hpp:32</a></div>
     </div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-    Generated on Thu Oct 26 2023 02:43:34 for CSLP_2023_2024 by&#160;<a
+    Generated on Fri Nov 17 2023 01:40:09 for CSLP_2023_2024 by&#160;<a
         href="https://www.doxygen.org/index.html"><img alt="doxygen"
                                                        class="footer"
                                                        height="31" src="doxygen.svg"

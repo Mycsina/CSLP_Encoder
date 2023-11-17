@@ -110,8 +110,8 @@ enum FrameType {
  */
 class Frame {
 private:
-    Image image_;      //!< Contains original image
-    FrameType type_{}; //!< Indicates the type of frame
+    Image image_;     //!< Contains original image
+    FrameType type_{};//!< Indicates the type of frame
     Block::BlockDiff *block_diff_{};
     std::vector<MotionVector> motion_vectors_;
     std::vector<int> intra_encoding;
@@ -124,6 +124,7 @@ public:
     bool isBlockDiff(Block::BlockDiff *blockDiff) const;
     void setBlockDiff(Block::BlockDiff *blockDiff);
     std::vector<MotionVector> getMotionVectors() const;
+    const std::vector<int> &getIntraEncoding() const;
     FrameType getType() const;
     void setType(FrameType type);
     void show();
@@ -136,6 +137,8 @@ public:
     void write_JPEG_LS(Golomb *g);
 
     static Frame decode_JPEG_LS(Golomb *g, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows, int cols);
+
+    static Frame decode_JPEG_LS(std::vector<int> encodings, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows, int cols);
 
     static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel = 0);
 
@@ -169,12 +172,14 @@ public:
     //! @param search_radius Radius of the search area (not including the block itself)
     //! @param fast Indicates whether the fast search algorithm should be used
     //! @return Vector of motion vectors
-    void calculate_MV(int block_size, Frame *reference, int search_radius, bool fast);
+    void calculate_MV(Frame *reference, int block_size, int search_radius, bool fast);
 
-    // TODO
-    //! Reconstruct a frame using a frame and a vector of motion vectors
+    void visualize_MV(Frame *reference, int block_size);
+
+    //! Reconstruct a frame using a frame, a vector of motion vectors and a block size
     //! @param reference Reference frame
     //! @param motion_vectors Vector of motion vectors
+    //! @param block_size Size of the macroblocks to be compared
     //! @return Reconstructed frame
-    Frame reconstruct_frame(Frame *reference, const std::vector<MotionVector> &motion_vectors);
+    Frame static reconstruct_frame(Frame *reference, const std::vector<MotionVector> &motion_vectors, int block_size);
 };

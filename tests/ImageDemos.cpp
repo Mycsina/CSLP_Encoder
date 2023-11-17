@@ -19,23 +19,23 @@ protected:
 };
 
 TEST_F(ImageDemo, SubSampling_Demo) {
-    im.display_image();
+    im.show();
 
     im2 = convert_BGR_YUV444(im);
     im2 = convert_YUV_BGR(im2);
-    im2.display_image();
+    im2.show();
 
     im2 = convert_BGR_YUV422(im);
     im2 = convert_YUV_BGR(im2);
-    im2.display_image();
+    im2.show();
 
     im2 = convert_BGR_YUV420(im);
     im2 = convert_YUV_BGR(im2);
-    im2.display_image();
+    im2.show();
 }
 
 TEST_F(ImageDemo, ColorHist_Demo) {
-    im.display_image();
+    im.show();
     // im = convert_BGR_GRAY(im);
     vector<Mat> hists = im.color_histograms(256, true, 1024, 800);
     // NOTE I found that if you try to allocate a new array with same shape and
@@ -56,9 +56,9 @@ TEST_F(ImageDemo, ColorHist_Demo) {
 }
 
 TEST_F(ImageDemo, EqualizedColorHist_Demo) {
-    im.display_image();
+    im.show();
     equalize_hist(im);
-    im.display_image();
+    im.show();
     // im = convert_BGR_GRAY(im);
     vector<Mat> hists = im.color_histograms(256, true, 1024, 800);
     // NOTE I found that if you try to allocate a new array with same shape and
@@ -83,40 +83,40 @@ TEST_F(ImageDemo, WatermarkDemo) {
     Image mark(mark_file);
     watermark(im, mark, {0, 0},
               {mark.size()[1], mark.size()[0]}, 0.5);
-    im.display_image();
+    im.show();
 }
 
 TEST_F(ImageDemo, SubsamplingDemo) {
     im = convert_BGR_YUV444(im);
     im2 = convert_BGR_YUV444(im2);
-    im.display_image();
+    im.show();
     subsample(im, YUV422);
-    im.display_image();
+    im.show();
     subsample(im2, YUV420);
-    im2.display_image();
+    im2.show();
 }
 
 TEST_F(ImageDemo, ThresholdDemo) {
     Image img("../../tests/resource/otsu.jpg");
-    img.display_image();
+    img.show();
     binarize(img);
-    img.display_image();
+    img.show();
 }
 
 TEST_F(ImageDemo, GaussianDemoFlat1) {
     // 1  1  1
     // 1  1  1
     // 1  1  1
-    im.display_image();
+    im.show();
     Mat blur(3, 3, CV_8UC3, Scalar(1, 1, 1));
-    im.gaussian_blur(blur).display_image();
+    im.gaussian_blur(blur).show();
 }
 
 TEST_F(ImageDemo, GaussianDemoFlat2) {
     //[11x11]
-    im.display_image();
+    im.show();
     Mat blur(11, 11, CV_8UC3, Scalar(1, 1, 1));
-    im.gaussian_blur(blur).display_image();
+    im.gaussian_blur(blur).show();
 }
 
 TEST_F(ImageDemo, GaussianDemoDistanceBased1) {
@@ -130,6 +130,6 @@ TEST_F(ImageDemo, GaussianDemoDistanceBased1) {
     blur.at<Vec3b>(1, 0) = Vec3b(2, 2, 2);
     blur.at<Vec3b>(2, 1) = Vec3b(2, 2, 2);
     blur.at<Vec3b>(1, 2) = Vec3b(2, 2, 2);
-    im.display_image();
-    im.gaussian_blur(blur).display_image();
+    im.show();
+    im.gaussian_blur(blur).show();
 }

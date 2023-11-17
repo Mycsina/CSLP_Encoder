@@ -22,18 +22,16 @@ Image *Image::load(const Mat &arr) {
     image_mat_ = arr.clone();
     return this;
 }
-void Image::_set_image_mat(Mat mat) {
+void Image::setImageMat(Mat mat) {
     image_mat_ = std::move(mat);
 }
-Mat *Image::_get_image_mat() {
+Mat *Image::getImageMat() {
     return &image_mat_;
 }
-void Image::_set_color(COLOR_SPACE col) { c_space = col; }
-COLOR_SPACE Image::_get_color() { return c_space; }
-void Image::_set_chroma(CHROMA_SUBSAMPLING cs) {
-    cs_ratio = cs;
-}
-CHROMA_SUBSAMPLING Image::_get_chroma() { return cs_ratio; }
+void Image::setColor(COLOR_SPACE col) { c_space = col; }
+COLOR_SPACE Image::getColor() { return c_space; }
+void Image::setChroma(CHROMA_SUBSAMPLING cs) { cs_ratio = cs; }
+CHROMA_SUBSAMPLING Image::getChroma() { return cs_ratio; }
 void Image::load(const char *filename, ImreadModes mode) {
     Mat image, conv;
     // By default, cv:imread loads images in BGR format
@@ -49,7 +47,7 @@ void Image::load(const char *filename, ImreadModes mode) {
 MatIterator_<Vec3b> Image::begin() { return image_mat_.begin<Vec3b>(); }
 MatIterator_<Vec3b> Image::end() { return image_mat_.end<Vec3b>(); }
 array<int, 2> Image::size() const { return {image_mat_.rows, image_mat_.cols}; }
-int Image::get_image_type() const { return image_mat_.type(); }
+int Image::getImageType() const { return image_mat_.type(); }
 bool Image::loaded() const { return !image_mat_.empty(); }
 
 void Image::save(const char *filename, const vector<int> &compression_params) {
@@ -60,7 +58,7 @@ void Image::save(const char *filename, const vector<int> &compression_params) {
     }
 }
 
-void Image::display_image(bool vid_ctx) {
+void Image::show(bool vid_ctx) {
     if (loaded()) {
         imshow("Image", image_mat_);
         if (!vid_ctx)
@@ -73,7 +71,7 @@ void Image::display_image(bool vid_ctx) {
     }
 }
 
-Vec3b Image::get_pixel(int row, int col) const {
+Vec3b Image::getPixel(int row, int col) const {
     if (loaded()) {
         if (row < 0 || row >= image_mat_.rows || col < 0 ||
             col >= image_mat_.cols) {
@@ -85,7 +83,7 @@ Vec3b Image::get_pixel(int row, int col) const {
     throw std::runtime_error("Image hasn't been loaded");
 }
 
-void Image::set_pixel(int row, int col, const Vec3b &color_values) {
+void Image::setPixel(int row, int col, const Vec3b &color_values) {
     if (row < 0 || row >= image_mat_.rows || col < 0 || col >= image_mat_.cols) {
         throw std::runtime_error("Pixel out of bounds");
     }
@@ -99,6 +97,10 @@ Image Image::clone() {
         return clone;
     } else
         throw std::runtime_error("Image hasn't been loaded");
+}
+
+bool Image::operator==(Image &other) const {
+    return norm(image_mat_, *other.getImageMat(), cv::NORM_L2) == 0;
 }
 
 vector<Mat> Image::color_histograms(int bins, bool fill_hist, int width,
@@ -160,7 +162,7 @@ vector<Mat> Image::color_histograms(int bins, bool fill_hist, int width,
 
 Image Image::gaussian_blur(cv::Mat blur) {
     Image im = this->clone();
-    Mat *m = im._get_image_mat();
+    Mat *m = im.getImageMat();
     int totalBlur = int(sum(blur)[0]);
     int radiusR, radiusC;
 
@@ -224,14 +226,14 @@ Mat Image::cut(const Mat &m, int row, int col) const {
     return m(Range(rMin, rMax + 1), Range(cMin, cMax + 1));
 }
 
-Mat Image::get_slice(int row, int col, int size) const {
+Mat Image::getSlice(int row, int col, int size) const {
     if (row < 0 || row + size > image_mat_.rows || col < 0 || col + size > image_mat_.cols) {
         throw std::out_of_range("Slice out of bounds");
     }
     return image_mat_(Rect(col, row, size, size));
 }
 
-void set_slice(const cv::Mat &mat, const cv::Mat &slice, int row, int col) {
+void setSlice(const cv::Mat &mat, const cv::Mat &slice, int row, int col) {
     if (row < 0 || row + slice.rows > mat.rows || col < 0 || col + slice.cols > mat.cols) {
         throw std::out_of_range("Slice out of bounds");
     }
@@ -313,8 +315,8 @@ Image Image::decode_JPEG_LS(Golomb *g, COLOR_SPACE c_space, CHROMA_SUBSAMPLING c
         }
     }
     Image im(mat);
-    im._set_color(c_space);
-    im._set_chroma(cs_ratio);
+    im.setColor(c_space);
+    im.setChroma(cs_ratio);
     return im;
 }
 

@@ -58,7 +58,7 @@ void Video::load(const char *filename) {
         cap >> buf;
         if (buf.empty())
             break;
-        im._set_color(BGR);
+        im.setColor(BGR);
         im_reel.push_back(*im.load(buf));
     }
 }
@@ -104,8 +104,8 @@ void Video::readFrame(FILE *file, int width, int height, int uvWidth,
                       int uvHeight, CHROMA_SUBSAMPLING format) {
     Image im;
     char buffer[6];
-    im._set_color(YUV);
-    im._set_chroma(format);
+    im.setColor(YUV);
+    im.setChroma(format);
     Mat yPlane(height, width, CV_8UC1);
     Mat uPlane(uvHeight, uvWidth, CV_8UC1);
     Mat vPlane(uvHeight, uvWidth, CV_8UC1);
@@ -156,7 +156,7 @@ void Video::readFrame(FILE *file, int width, int height, int uvWidth,
     channels[2] = vPlane;
     merge(channels, frame);
 
-    im._set_image_mat(frame);
+    im.setImageMat(frame);
 
     im_reel.push_back(im);
 }
@@ -178,7 +178,7 @@ void Video::getHeaderData(FILE *file, int *width, int *height, float *fps) {
 void Video::play(int stop_key) {
     if (loaded()) {
         for (auto &it: im_reel) {
-            it.display_image(true);
+            it.show(true);
             if (pollKey() == stop_key) {
                 // Ensures that the scene with the same fps (some minor variation may
                 // happen due to computation costs)
@@ -236,10 +236,10 @@ void Video::encode_hybrid(const std::string& path, int m, int period){
 
         bs->writeBits(im_reel.size(),8);
         bs->writeBits(period,8);
-        bs->writeBits(static_cast<int>(sample_image._get_color()),4);
-        bs->writeBits(static_cast<int>(sample_image._get_chroma()),4);
-        bs->writeBits(sample_image._get_image_mat()->cols,8*sizeof(int));
-        bs->writeBits(sample_image._get_image_mat()->rows,8*sizeof(int));
+        bs->writeBits(static_cast<int>(sample_image.getColor()), 4);
+        bs->writeBits(static_cast<int>(sample_image.getChroma()), 4);
+        bs->writeBits(sample_image.getImageMat()->cols, 8 * sizeof(int));
+        bs->writeBits(sample_image.getImageMat()->rows, 8 * sizeof(int));
         bs->writeBits(m,8*sizeof(int));
         g._set_m(m);
 

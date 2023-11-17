@@ -1,24 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="text/xhtml;charset=UTF-8" http-equiv="Content-Type"/>
-<meta content="IE=11" http-equiv="X-UA-Compatible"/>
-<meta content="Doxygen 1.9.8" name="generator"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="text/xhtml;charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="IE=11" http-equiv="X-UA-Compatible"/>
+    <meta content="Doxygen 1.9.8" name="generator"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>CSLP_2023_2024: Image.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
-<script src="jquery.js" type="text/javascript"></script>
-<script src="dynsections.js" type="text/javascript"></script>
+    <script src="jquery.js" type="text/javascript"></script>
+    <script src="dynsections.js" type="text/javascript"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
-<script src="search/searchdata.js" type="text/javascript"></script>
-<script src="search/search.js" type="text/javascript"></script>
-<script src="darkmode_toggle.js" type="text/javascript"></script>
+    <script src="search/searchdata.js" type="text/javascript"></script>
+    <script src="search/search.js" type="text/javascript"></script>
+    <script src="darkmode_toggle.js" type="text/javascript"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellpadding="0" cellspacing="0">
+    <table cellpadding="0" cellspacing="0">
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
@@ -36,8 +36,8 @@
 var searchBox = new SearchBox("searchBox", "search/",'.html');
 /* @license-end */
 </script>
-<script src="menudata.js" type="text/javascript"></script>
-<script src="menu.js" type="text/javascript"></script>
+    <script src="menudata.js" type="text/javascript"></script>
+    <script src="menu.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
@@ -68,7 +68,7 @@ $(function() {
 </div>
 </div>
 
-<div class="navpath" id="nav-path">
+    <div class="navpath" id="nav-path">
   <ul>
 <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5594f77850edb42952de1f5e8c94226d.html">visual</a></li>  </ul>
 </div>
@@ -88,57 +88,110 @@ $(function() {
 <code>#include &lt;opencv2/imgproc.hpp&gt;</code><br />
         <code>#include &lt;opencv2/opencv.hpp&gt;</code><br/>
 <code>#include &lt;utility&gt;</code><br />
+        <code>#include &quot;<a class="el" href="Golomb_8hpp_source.html">../io/Golomb.hpp</a>&quot;</code><br/>
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Image.hpp:</div>
 <div class="dyncontent">
-<div class="center"><img alt="" border="0" src="Image_8hpp__incl.png" usemap="#aImage_8hpp"/></div>
-<map id="aImage_8hpp" name="aImage_8hpp">
-    <area alt="" coords="480,5,562,31" shape="rect" title=" "/>
-    <area alt="" coords="5,79,77,105" shape="rect" title=" "/>
-    <area alt="" coords="480,26,315,47,92,81,92,76,314,41,479,21" shape="poly"
-          title=" "/>
-    <area alt="" coords="101,79,253,105" shape="rect" title=" "/>
-    <area alt="" coords="480,31,251,78,250,73,479,25" shape="poly" title=" "/>
-    <area alt="" coords="277,79,416,105" shape="rect" title=" "/>
-    <area alt="" coords="492,34,391,75,389,70,490,29" shape="poly" title=" "/>
-    <area alt="" coords="440,79,602,105" shape="rect" title=" "/>
-    <area alt="" coords="524,31,524,63,518,63,518,31" shape="poly" title=" "/>
-    <area alt="" coords="626,79,771,105" shape="rect" title=" "/>
-    <area alt="" coords="552,29,655,70,653,75,550,34" shape="poly" title=" "/>
-    <area alt="" coords="795,79,935,105" shape="rect" title=" "/>
-    <area alt="" coords="563,25,792,73,791,78,562,31" shape="poly" title=" "/>
-    <area alt="" coords="959,79,1011,105" shape="rect" title=" "/>
-    <area alt="" coords="562,20,726,39,833,55,945,76,944,81,832,60,725,44,562,26" shape="poly"
-          title=" "/>
+    <div class="center"><img alt="" border="0"
+                             src="Image_8hpp__incl.png" usemap="#aImage_8hpp"/></div>
+    <map id="aImage_8hpp" name="aImage_8hpp">
+        <area alt="" coords="568,5,650,31" shape="rect" title=" "/>
+        <area alt="" coords="5,79,77,105" shape="rect" title=" "/>
+        <area alt="" coords="568,25,368,44,233,60,92,81,92,76,232,55,367,38,568,20" shape="poly"
+              title=" "/>
+        <area alt="" coords="101,79,253,105" shape="rect" title=" "/>
+        <area alt="" coords="568,29,266,79,265,73,568,24" shape="poly"
+              title=" "/>
+        <area alt="" coords="277,79,416,105" shape="rect" title=" "/>
+        <area alt="" coords="569,33,406,77,405,72,567,28" shape="poly"
+              title=" "/>
+        <area alt="" coords="440,79,602,105" shape="rect" title=" "/>
+        <area alt="" coords="596,34,549,71,546,67,592,29" shape="poly"
+              title=" "/>
+        <area alt="" coords="626,79,771,105" shape="rect" title=" "/>
+        <area alt="" coords="626,29,673,67,670,71,622,34" shape="poly"
+              title=" "/>
+        <area alt="" coords="795,79,935,105" shape="rect" title=" "/>
+        <area alt="" coords="651,28,808,72,807,77,649,33" shape="poly"
+              title=" "/>
+        <area alt="" coords="959,79,1011,105" shape="rect" title=" "/>
+        <area alt="" coords="650,22,778,42,945,76,944,81,777,48,650,28" shape="poly"
+              title=" "/>
+        <area alt="" coords="1035,79,1149,105" href="Golomb_8hpp.html" shape="rect"
+              title=" "/>
+        <area alt="" coords="650,22,1020,76,1019,81,650,28" shape="poly"
+              title=" "/>
+        <area alt="" coords="995,153,1098,178" href="BitStream_8hpp.html" shape="rect"
+              title=" "/>
+        <area alt="" coords="1086,106,1064,141,1060,138,1082,103" shape="poly"
+              title=" "/>
+        <area alt="" coords="1106,226,1160,252" shape="rect" title=" "/>
+        <area alt="" coords="1098,104,1113,152,1129,211,1124,212,1108,153,1093,106" shape="poly"
+              title=" "/>
+        <area alt="" coords="1014,226,1079,252" shape="rect" title=" "/>
+        <area alt="" coords="1049,179,1049,211,1044,211,1044,179" shape="poly"
+              title=" "/>
+        <area alt="" coords="1063,177,1109,214,1105,218,1059,181" shape="poly"
+              title=" "/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><img alt="" border="0" src="Image_8hpp__dep__incl.png" usemap="#aImage_8hppdep"/></div>
-<map id="aImage_8hppdep" name="aImage_8hppdep">
-    <area alt="" coords="150,5,231,31" shape="rect" title=" "/>
-    <area alt="" coords="5,79,88,105" href="Frame_8hpp.html" shape="rect"
-          title=" "/>
-    <area alt="" coords="154,41,72,81,70,76,151,36" shape="poly" title=" "/>
-    <area alt="" coords="111,79,193,105" href="Image_8cpp.html" shape="rect"
-          title=" "/>
-    <area alt="" coords="179,46,161,80,156,77,175,43" shape="poly" title=" "/>
-    <area alt="" coords="191,153,270,178" href="Video_8cpp.html" shape="rect"
-          title=" "/>
-    <area alt="" coords="200,45,230,151,225,153,195,46" shape="poly" title=" "/>
-    <area alt="" coords="269,79,414,105" href="imageProcessing_8hpp.html" shape="rect"
-          title=" "/>
-    <area alt="" coords="231,36,317,76,314,81,229,40" shape="poly" title=" "/>
-    <area alt="" coords="5,153,88,178" href="Frame_8cpp.html" shape="rect"
-          title=" "/>
-    <area alt="" coords="49,120,49,152,44,152,44,120" shape="poly" title=" "/>
-    <area alt="" coords="311,116,251,154,248,150,308,111" shape="poly"
-          title=" "/>
-    <area alt="" coords="294,153,439,178" href="imageProcessing_8cpp.html" shape="rect"
-          title=" "/>
-    <area alt="" coords="353,118,365,151,360,153,348,120" shape="poly"
-          title=" "/>
+    <div class="center"><img alt="" border="0"
+                             src="Image_8hpp__dep__incl.png" usemap="#aImage_8hppdep"/></div>
+    <map id="aImage_8hppdep" name="aImage_8hppdep">
+        <area alt="" coords="390,5,471,31" shape="rect" title=" "/>
+        <area alt="" coords="63,79,155,105" href="Encoder_8hpp.html" shape="rect"
+              title=" "/>
+        <area alt="" coords="375,34,156,83,155,78,374,29" shape="poly"
+              title=" "/>
+        <area alt="" coords="350,79,433,105" href="Frame_8hpp.html" shape="rect"
+              title=" "/>
+        <area alt="" coords="419,46,400,80,396,77,414,43" shape="poly"
+              title=" "/>
+        <area alt="" coords="431,153,509,178" href="Video_8hpp.html" shape="rect"
+              title=" "/>
+        <area alt="" coords="440,45,469,151,464,153,435,46" shape="poly"
+              title=" "/>
+        <area alt="" coords="431,226,509,252" href="Video_8cpp.html" shape="rect"
+              title=" "/>
+        <area alt="" coords="454,41,492,89,510,119,523,152,526,166,523,179,507,207,487,228,483,224,503,204,518,177,521,166,518,153,505,122,488,92,450,44" shape="poly"
+              title=" "/>
+        <area alt="" coords="584,79,666,105" href="Image_8cpp.html" shape="rect"
+              title=" "/>
+        <area alt="" coords="478,34,593,76,591,81,477,39" shape="poly"
+              title=" "/>
+        <area alt="" coords="154,153,301,178" href="ImageProcessing_8hpp.html" shape="rect"
+              title=" "/>
+        <area alt="" coords="399,42,340,81,244,154,241,150,337,77,396,37" shape="poly"
+              title=" "/>
+        <area alt="" coords="5,153,130,178" href="LosslessIntra_8hpp.html" shape="rect"
+              title=" "/>
+        <area alt="" coords="97,119,77,154,72,151,92,117" shape="poly"
+              title=" "/>
+        <area alt="" coords="224,226,348,252" href="LosslessIntra_8cpp.html" shape="rect"
+              title=" "/>
+        <area alt="" coords="120,181,250,223,248,228,118,186" shape="poly"
+              title=" "/>
+        <area alt="" coords="325,153,407,178" href="Frame_8cpp.html" shape="rect"
+              title=" "/>
+        <area alt="" coords="385,120,373,153,368,151,380,118" shape="poly"
+              title=" "/>
+        <area alt="" coords="418,113,459,150,455,154,414,117" shape="poly"
+              title=" "/>
+        <area alt="" coords="426,187,318,228,317,223,424,182" shape="poly"
+              title=" "/>
+        <area alt="" coords="473,194,473,226,468,226,468,194" shape="poly"
+              title=" "/>
+        <area alt="" coords="249,189,278,224,274,228,245,192" shape="poly"
+              title=" "/>
+        <area alt="" coords="284,181,431,224,430,229,282,186" shape="poly"
+              title=" "/>
+        <area alt="" coords="53,226,199,252" href="ImageProcessing_8cpp.html" shape="rect"
+              title=" "/>
+        <area alt="" coords="199,190,145,228,142,224,196,185" shape="poly"
+              title=" "/>
 </map>
 </div>
 </div>
@@ -146,38 +199,101 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td align="right" class="memItemLeft" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHistogram.html">Histogram</a></td></tr>
+    <tr class="memitem:">
+        <td align="right" class="memItemLeft" valign="top">struct &#160;</td>
+        <td class="memItemRight" valign="bottom"><a class="el"
+                                                    href="structHistogram.html">Histogram</a>
+        </td>
+    </tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structHistogram.html" title="Histogram struct declaration.">Histogram</a> struct declaration.  <a href="structHistogram.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td align="right" class="memItemLeft" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html">Image</a></td></tr>
+    <tr class="memitem:">
+        <td align="right" class="memItemLeft" valign="top">class &#160;</td>
+        <td class="memItemRight" valign="bottom"><a class="el"
+                                                    href="classImage.html">Image</a>
+        </td>
+    </tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classImage.html" title="The Image class provides methods for manipulating digital images.">Image</a> class provides methods for manipulating digital images.  <a href="classImage.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a99039de6017a1f64312480f3f4ea448c" id="r_a99039de6017a1f64312480f3f4ea448c"><td align="right" class="memItemLeft" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448c">COLOR_SPACE</a> { <a class="el" href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c">BGR</a>
-, <a class="el" href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448caf726371acfea68d8e6506b9ab7d817f1">YUV</a>
-, <a class="el" href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448ca3fb6c4ad00f4ad98553e01229d1803ac">GRAY</a>
+    <tr class="memitem:ae6d9a3670e9fd5cba093fdddebdae888"
+        id="r_ae6d9a3670e9fd5cba093fdddebdae888">
+        <td align="right" class="memItemLeft" valign="top">enum &#160;</td>
+        <td class="memItemRight" valign="bottom"><a class="el"
+                                                    href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888">COLOR_SPACE</a>
+            : std::uint8_t { <a class="el"
+                                href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888a4a19a93c929964c201e01c8352dc8b9c">BGR</a>
+            , <a class="el"
+                 href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888af726371acfea68d8e6506b9ab7d817f1">YUV</a>
+            , <a class="el"
+                 href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888a3fb6c4ad00f4ad98553e01229d1803ac">GRAY</a>
  }</td></tr>
-    <tr class="memdesc:a99039de6017a1f64312480f3f4ea448c">
+    <tr class="memdesc:ae6d9a3670e9fd5cba093fdddebdae888">
         <td class="mdescLeft">&#160;</td>
         <td class="mdescRight">Declares the <a class="el" href="classImage.html"
                                                title="The Image class provides methods for manipulating digital images.">Image</a>
             class, representing a digital <a class="el" href="classImage.html"
                                              title="The Image class provides methods for manipulating digital images.">Image</a>.
-            <a href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448c">More...</a><br/>
+            <a href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888">More...</a><br/>
         </td>
     </tr>
-<tr class="separator:a99039de6017a1f64312480f3f4ea448c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3a6dcc9e5a5ede53c91491b5b79bb7b" id="r_af3a6dcc9e5a5ede53c91491b5b79bb7b"><td align="right" class="memItemLeft" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7b">CHROMA_SUBSAMPLING</a> { <a class="el" href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7bac75245149c3f64d74430b8996b1e0558">NA</a>
-, <a class="el" href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7ba523b094e008f914e9e01af828090df0c">YUV444</a>
-, <a class="el" href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7baf95cc5446c6345daadf349ccd299a2f5">YUV422</a>
-, <a class="el" href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7bacb52b4d8e199d901af27ee1f2d6bcb04">YUV420</a>
+    <tr class="separator:ae6d9a3670e9fd5cba093fdddebdae888">
+        <td class="memSeparator" colspan="2">&#160;</td>
+    </tr>
+    <tr class="memitem:a93f7ea8ca55fdf6ff9cd1d3592352791"
+        id="r_a93f7ea8ca55fdf6ff9cd1d3592352791">
+        <td align="right" class="memItemLeft" valign="top">enum &#160;</td>
+        <td class="memItemRight" valign="bottom"><a class="el"
+                                                    href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791">CHROMA_SUBSAMPLING</a>
+            : std::uint8_t { <a class="el"
+                                href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791ac75245149c3f64d74430b8996b1e0558">NA</a>
+            , <a class="el"
+                 href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791a523b094e008f914e9e01af828090df0c">YUV444</a>
+            , <a class="el"
+                 href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791af95cc5446c6345daadf349ccd299a2f5">YUV422</a>
+            , <a class="el"
+                 href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791acb52b4d8e199d901af27ee1f2d6bcb04">YUV420</a>
  }</td></tr>
-<tr class="separator:af3a6dcc9e5a5ede53c91491b5b79bb7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+    <tr class="separator:a93f7ea8ca55fdf6ff9cd1d3592352791">
+        <td class="memSeparator" colspan="2">&#160;</td>
+    </tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+    <tr class="memitem:a17b48308efaa8b199d71f668fb5cb862"
+        id="r_a17b48308efaa8b199d71f668fb5cb862">
+        <td align="right" class="memItemLeft" valign="top"><a class="el"
+                                                              href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">void</a>&#160;
+        </td>
+        <td class="memItemRight" valign="bottom"><a class="el"
+                                                    href="Image_8hpp.html#a17b48308efaa8b199d71f668fb5cb862">setSlice</a>
+            (<a class="el"
+                href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">const</a>
+            <a class="el"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cv::Mat</a>
+            &amp;<a class="el"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">mat</a>,
+            <a class="el"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">const</a>
+            <a class="el"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cv::Mat</a>
+            &amp;<a class="el"
+                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">slice</a>,
+            <a class="el"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">int</a>
+            <a class="el"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">row</a>,
+            <a class="el"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">int</a>
+            <a class="el"
+               href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">col</a>)
+        </td>
+    </tr>
+    <tr class="separator:a17b48308efaa8b199d71f668fb5cb862">
+        <td class="memSeparator" colspan="2">&#160;</td>
+    </tr>
     <tr class="memitem:a4fb4f4156d045531af63bc48591d5eed"
         id="r_a4fb4f4156d045531af63bc48591d5eed">
         <td class="memTemplParams" colspan="2">template&lt;typename T &gt;</td>
@@ -199,8 +315,11 @@ Functions</h2></td></tr>
     </tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="af3a6dcc9e5a5ede53c91491b5b79bb7b" name="af3a6dcc9e5a5ede53c91491b5b79bb7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3a6dcc9e5a5ede53c91491b5b79bb7b">&#9670;&#160;</a></span>CHROMA_SUBSAMPLING</h2>
+    <a id="a93f7ea8ca55fdf6ff9cd1d3592352791"
+       name="a93f7ea8ca55fdf6ff9cd1d3592352791"></a>
+    <h2 class="memtitle"><span class="permalink"><a
+            href="#a93f7ea8ca55fdf6ff9cd1d3592352791">&#9670;&#160;</a></span>CHROMA_SUBSAMPLING
+    </h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -209,30 +328,58 @@ Functions</h2></td></tr>
             <td class="memname"><a class="el"
                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">enum</a>
                 <a class="el"
-                   href="Image_8hpp.html#af3a6dcc9e5a5ede53c91491b5b79bb7b">CHROMA_SUBSAMPLING</a>
+                   href="Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791">CHROMA_SUBSAMPLING</a>
+                : <a class="el"
+                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">std::uint8_t</a>
             </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af3a6dcc9e5a5ede53c91491b5b79bb7bac75245149c3f64d74430b8996b1e0558" name="af3a6dcc9e5a5ede53c91491b5b79bb7bac75245149c3f64d74430b8996b1e0558"></a>NA&#160;</td><td class="fielddoc"><p>Not applicable. </p>
+    <tr>
+        <th colspan="2">Enumerator</th>
+    </tr>
+    <tr>
+        <td class="fieldname"><a
+                id="a93f7ea8ca55fdf6ff9cd1d3592352791ac75245149c3f64d74430b8996b1e0558"
+                name="a93f7ea8ca55fdf6ff9cd1d3592352791ac75245149c3f64d74430b8996b1e0558"></a>NA&#160;
+        </td>
+        <td class="fielddoc"><p>Not applicable. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af3a6dcc9e5a5ede53c91491b5b79bb7ba523b094e008f914e9e01af828090df0c" name="af3a6dcc9e5a5ede53c91491b5b79bb7ba523b094e008f914e9e01af828090df0c"></a>YUV444&#160;</td><td class="fielddoc"><p>4:4:4 </p>
+    <tr>
+        <td class="fieldname"><a
+                id="a93f7ea8ca55fdf6ff9cd1d3592352791a523b094e008f914e9e01af828090df0c"
+                name="a93f7ea8ca55fdf6ff9cd1d3592352791a523b094e008f914e9e01af828090df0c"></a>YUV444&#160;
+        </td>
+        <td class="fielddoc"><p>4:4:4 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af3a6dcc9e5a5ede53c91491b5b79bb7baf95cc5446c6345daadf349ccd299a2f5" name="af3a6dcc9e5a5ede53c91491b5b79bb7baf95cc5446c6345daadf349ccd299a2f5"></a>YUV422&#160;</td><td class="fielddoc"><p>4:2:2 </p>
+    <tr>
+        <td class="fieldname"><a
+                id="a93f7ea8ca55fdf6ff9cd1d3592352791af95cc5446c6345daadf349ccd299a2f5"
+                name="a93f7ea8ca55fdf6ff9cd1d3592352791af95cc5446c6345daadf349ccd299a2f5"></a>YUV422&#160;
+        </td>
+        <td class="fielddoc"><p>4:2:2 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="af3a6dcc9e5a5ede53c91491b5b79bb7bacb52b4d8e199d901af27ee1f2d6bcb04" name="af3a6dcc9e5a5ede53c91491b5b79bb7bacb52b4d8e199d901af27ee1f2d6bcb04"></a>YUV420&#160;</td><td class="fielddoc"><p>4:2:0 </p>
+    <tr>
+        <td class="fieldname"><a
+                id="a93f7ea8ca55fdf6ff9cd1d3592352791acb52b4d8e199d901af27ee1f2d6bcb04"
+                name="a93f7ea8ca55fdf6ff9cd1d3592352791acb52b4d8e199d901af27ee1f2d6bcb04"></a>YUV420&#160;
+        </td>
+        <td class="fielddoc"><p>4:2:0 </p>
 </td></tr>
 </table>
 
     <p class="definition">Definition at line <a class="el"
-                                                href="Image_8hpp_source.html#l00021">21</a>
+                                                href="Image_8hpp_source.html#l00022">22</a>
         of file <a class="el" href="Image_8hpp_source.html">Image.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a99039de6017a1f64312480f3f4ea448c" name="a99039de6017a1f64312480f3f4ea448c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99039de6017a1f64312480f3f4ea448c">&#9670;&#160;</a></span>COLOR_SPACE</h2>
+    <a id="ae6d9a3670e9fd5cba093fdddebdae888"
+       name="ae6d9a3670e9fd5cba093fdddebdae888"></a>
+    <h2 class="memtitle"><span class="permalink"><a
+            href="#ae6d9a3670e9fd5cba093fdddebdae888">&#9670;&#160;</a></span>COLOR_SPACE
+    </h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -241,7 +388,9 @@ Functions</h2></td></tr>
             <td class="memname"><a class="el"
                                    href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">enum</a>
                 <a class="el"
-                   href="Image_8hpp.html#a99039de6017a1f64312480f3f4ea448c">COLOR_SPACE</a>
+                   href="Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888">COLOR_SPACE</a>
+                : <a class="el"
+                     href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">std::uint8_t</a>
             </td>
         </tr>
       </table>
@@ -253,16 +402,34 @@ Functions</h2></td></tr>
                                          title="The Image class provides methods for manipulating digital images.">Image</a>.
     </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c" name="a99039de6017a1f64312480f3f4ea448ca4a19a93c929964c201e01c8352dc8b9c"></a>BGR&#160;</td><td class="fielddoc"><p>Blue-Green-Red. </p>
+    <tr>
+        <th colspan="2">Enumerator</th>
+    </tr>
+    <tr>
+        <td class="fieldname"><a
+                id="ae6d9a3670e9fd5cba093fdddebdae888a4a19a93c929964c201e01c8352dc8b9c"
+                name="ae6d9a3670e9fd5cba093fdddebdae888a4a19a93c929964c201e01c8352dc8b9c"></a>BGR&#160;
+        </td>
+        <td class="fielddoc"><p>Blue-Green-Red. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a99039de6017a1f64312480f3f4ea448caf726371acfea68d8e6506b9ab7d817f1" name="a99039de6017a1f64312480f3f4ea448caf726371acfea68d8e6506b9ab7d817f1"></a>YUV&#160;</td><td class="fielddoc"><p>Luminance-Chrominance. </p>
+    <tr>
+        <td class="fieldname"><a
+                id="ae6d9a3670e9fd5cba093fdddebdae888af726371acfea68d8e6506b9ab7d817f1"
+                name="ae6d9a3670e9fd5cba093fdddebdae888af726371acfea68d8e6506b9ab7d817f1"></a>YUV&#160;
+        </td>
+        <td class="fielddoc"><p>Luminance-Chrominance. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a99039de6017a1f64312480f3f4ea448ca3fb6c4ad00f4ad98553e01229d1803ac" name="a99039de6017a1f64312480f3f4ea448ca3fb6c4ad00f4ad98553e01229d1803ac"></a>GRAY&#160;</td><td class="fielddoc"><p>Grayscale. </p>
+    <tr>
+        <td class="fieldname"><a
+                id="ae6d9a3670e9fd5cba093fdddebdae888a3fb6c4ad00f4ad98553e01229d1803ac"
+                name="ae6d9a3670e9fd5cba093fdddebdae888a3fb6c4ad00f4ad98553e01229d1803ac"></a>GRAY&#160;
+        </td>
+        <td class="fielddoc"><p>Grayscale. </p>
 </td></tr>
 </table>
 
     <p class="definition">Definition at line <a class="el"
-                                                href="Image_8hpp_source.html#l00015">15</a>
+                                                href="Image_8hpp_source.html#l00016">16</a>
         of file <a class="el" href="Image_8hpp_source.html">Image.hpp</a>.</p>
 
 </div>
@@ -312,15 +479,82 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structHistogram.html" title="Histogram struct declaration.">Histogram</a> of matrix </dd></dl>
 
     <p class="definition">Definition at line <a class="el"
-                                                href="Image_8hpp_source.html#l00177">177</a>
+                                                href="Image_8hpp_source.html#l00194">194</a>
         of file <a class="el" href="Image_8hpp_source.html">Image.hpp</a>.</p>
+
+</div>
+</div>
+    <a id="a17b48308efaa8b199d71f668fb5cb862"
+       name="a17b48308efaa8b199d71f668fb5cb862"></a>
+    <h2 class="memtitle"><span class="permalink"><a
+            href="#a17b48308efaa8b199d71f668fb5cb862">&#9670;&#160;</a></span>setSlice()
+    </h2>
+
+    <div class="memitem">
+        <div class="memproto">
+            <table class="memname">
+                <tr>
+                    <td class="memname"><a class="el"
+                                           href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">void</a>
+                        setSlice
+                    </td>
+                    <td>(</td>
+                    <td class="paramtype"><a class="el"
+                                             href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">const</a>
+                        <a class="el"
+                           href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cv::Mat</a>
+                        &amp;&#160;
+                    </td>
+                    <td class="paramname"><em>mat</em>,</td>
+                </tr>
+                <tr>
+                    <td class="paramkey"></td>
+                    <td></td>
+                    <td class="paramtype"><a class="el"
+                                             href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">const</a>
+                        <a class="el"
+                           href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">cv::Mat</a>
+                        &amp;&#160;
+                    </td>
+                    <td class="paramname"><em>slice</em>,</td>
+                </tr>
+                <tr>
+                    <td class="paramkey"></td>
+                    <td></td>
+                    <td class="paramtype"><a class="el"
+                                             href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">int</a>&#160;
+                    </td>
+                    <td class="paramname"><em>row</em>,</td>
+                </tr>
+                <tr>
+                    <td class="paramkey"></td>
+                    <td></td>
+                    <td class="paramtype"><a class="el"
+                                             href="Image_8hpp.html#a4fb4f4156d045531af63bc48591d5eed">int</a>&#160;
+                    </td>
+                    <td class="paramname"><em>col</em>&#160;</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>)</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div class="memdoc">
+
+            <p class="definition">Definition at line <a class="el"
+                                                        href="Image_8cpp_source.html#l00236">236</a>
+                of file <a class="el"
+                           href="Image_8cpp_source.html">Image.cpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-    Generated on Thu Oct 26 2023 02:43:34 for CSLP_2023_2024 by&#160;<a
+    Generated on Fri Nov 17 2023 01:40:09 for CSLP_2023_2024 by&#160;<a
         href="https://www.doxygen.org/index.html"><img alt="doxygen"
                                                        class="footer"
                                                        height="31" src="doxygen.svg"

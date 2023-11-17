@@ -1,4 +1,4 @@
 var searchData=
 [
-    ['image_0', ['Image', ['../classImage.html', 1, '']]]
+    ['histogram_0', ['Histogram', ['../structHistogram.html', 1, '']]]
 ];

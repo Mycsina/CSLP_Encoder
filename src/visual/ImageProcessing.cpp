@@ -7,8 +7,8 @@ using namespace cv;
 
 void watermark(Image &im, Image mark, Point2i coord1, Point2i coord2,
                double alpha) {
-    Mat imageMat = *im._get_image_mat();
-    Mat markMat = *mark._get_image_mat();
+    Mat imageMat = *im.getImageMat();
+    Mat markMat = *mark.getImageMat();
     int height = coord2.y - coord1.y;
     int width = coord2.x - coord1.x;
     // Resize the watermark to fit the desired area
@@ -25,7 +25,7 @@ void watermark(Image &im, Image mark, Point2i coord1, Point2i coord2,
 }
 
 Image convert_BGR_YUV444(Image &im) {
-    auto image_mat_ = *im._get_image_mat();
+    auto image_mat_ = *im.getImageMat();
     int rows = image_mat_.rows;
     int cols = image_mat_.cols;
 
@@ -48,14 +48,14 @@ Image convert_BGR_YUV444(Image &im) {
     });
 
     Image result;
-    result._set_image_mat(yuv);
-    result._set_color(YUV);
-    result._set_chroma(YUV444);
+    result.setImageMat(yuv);
+    result.setColor(YUV);
+    result.setChroma(YUV444);
     return result;
 }
 
 Image convert_BGR_YUV422(Image &im) {
-    auto image_mat_ = *im._get_image_mat();
+    auto image_mat_ = *im.getImageMat();
     int rows = image_mat_.rows;
     int cols = image_mat_.cols;
 
@@ -94,14 +94,14 @@ Image convert_BGR_YUV422(Image &im) {
 
     merge(channels, yuv);
     Image result;
-    result._set_image_mat(yuv);
-    result._set_color(YUV);
-    result._set_chroma(YUV422);
+    result.setImageMat(yuv);
+    result.setColor(YUV);
+    result.setChroma(YUV422);
     return result;
 }
 
 Image convert_BGR_YUV420(Image &im) {
-    auto mat = *im._get_image_mat();
+    auto mat = *im.getImageMat();
     int rows = mat.rows;
     int cols = mat.cols;
 
@@ -140,14 +140,14 @@ Image convert_BGR_YUV420(Image &im) {
 
     merge(channels, yuv);
     Image result;
-    result._set_image_mat(yuv);
-    result._set_color(YUV);
-    result._set_chroma(YUV420);
+    result.setImageMat(yuv);
+    result.setColor(YUV);
+    result.setChroma(YUV420);
     return result;
 }
 
 Image convert_YUV_BGR(Image &im) {
-    auto image_mat_ = *im._get_image_mat();
+    auto image_mat_ = *im.getImageMat();
     int rows = image_mat_.rows;
     int cols = image_mat_.cols;
     Mat bgr(rows, cols, CV_8UC3);
@@ -173,13 +173,13 @@ Image convert_YUV_BGR(Image &im) {
                 static_cast<uchar>(b), static_cast<uchar>(g), static_cast<uchar>(r));
     });
     Image result;
-    result._set_image_mat(bgr);
-    result._set_color(BGR);
+    result.setImageMat(bgr);
+    result.setColor(BGR);
     return result;
 }
 
 Image convert_BGR_GRAY(Image &im) {
-    Mat *matrix = im._get_image_mat();
+    Mat *matrix = im.getImageMat();
     Mat gray(matrix->rows, matrix->cols, CV_8UC1);
     if (matrix->channels() != 3) {
         throw runtime_error("Original matrix must have 3 channels");
@@ -197,13 +197,13 @@ Image convert_BGR_GRAY(Image &im) {
         }
     }
     Image result;
-    result._set_image_mat(gray);
-    result._set_color(GRAY);
+    result.setImageMat(gray);
+    result.setColor(GRAY);
     return result;
 }
 
 void subsample(Image &im, CHROMA_SUBSAMPLING cs) {
-    Mat *matrix = im._get_image_mat();
+    Mat *matrix = im.getImageMat();
     Mat channels[3];
     split(*matrix, channels);
     Size target_size = Size(channels[0].size[1], channels[0].size[0]);
@@ -236,7 +236,7 @@ void subsample(Image &im, CHROMA_SUBSAMPLING cs) {
 }
 
 void equalize_hist(Image &im) {
-    Mat *matrix = im._get_image_mat();
+    Mat *matrix = im.getImageMat();
     vector<Mat> channels;
     split(*matrix, channels);
     if (matrix->depth() != CV_8U) {
@@ -262,7 +262,7 @@ Mat ecdf(const Mat &histogram, int total) {
 }
 
 void binarize(Image &im) {
-    Mat matrix = *im._get_image_mat();
+    Mat matrix = *im.getImageMat();
     int pix_num = matrix.rows * matrix.cols;
     int bins = 256;
     if (matrix.depth() != CV_8U) {
@@ -272,7 +272,7 @@ void binarize(Image &im) {
     if (matrix.channels() == 3) {
         cout << "Converting to grayscale" << endl;
         auto gray = convert_BGR_GRAY(im);
-        matrix = *gray._get_image_mat();
+        matrix = *gray.getImageMat();
     }
     Mat hist = histogram<uchar>(matrix, bins);
     // Get empirical cumulative distribution function
@@ -316,5 +316,5 @@ void binarize(Image &im) {
                     pixel = 0;
                 }
             });
-    im._set_image_mat(matrix);
+    im.setImageMat(matrix);
 }

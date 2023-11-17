@@ -1,9 +1,7 @@
 var searchData=
 [
-    ['watermark_0', ['watermark', ['../imageProcessing_8cpp.html#a26ac3caf52198f4f1fa8403fd1bc92db', 1, 'watermark(Image &amp;im, Image mark, Point2i coord1, Point2i coord2, double alpha):&#160;imageProcessing.cpp'], ['../imageProcessing_8hpp.html#a3f442123b889e4847c418718253c8b6b', 1, 'watermark(Image &amp;im, Image mark, cv::Point2i coord1, cv::Point2i coord2, double alpha):&#160;imageProcessing.hpp']]],
-    ['writebinarytrunc_1', ['writeBinaryTrunc', ['../classGolomb.html#adb1782ffcd6bf7f8162cfceae74239a2', 1, 'Golomb']]],
-    ['writebit_2', ['writeBit', ['../classBitStream.html#aa86adee7779cf956e70348f392a1a985', 1, 'BitStream']]],
-    ['writebits_3', ['writeBits', ['../classBitStream.html#a40e52a70b9d30755a29e9337bfb6bcaf', 1, 'BitStream']]],
-    ['writestring_4', ['writeString', ['../classBitStream.html#aa230d20ee70d09c75592c456bcd6bf43', 1, 'BitStream']]],
-    ['writeunary_5', ['writeUnary', ['../classGolomb.html#ab0a079538679f3bfc317296510ebdf9b', 1, 'Golomb']]]
+    ['video_0', ['video', ['../classVideo.html', 1, 'Video'], ['../classVideo.html#ae4290e46919ff90812275a6db0cea996', 1, 'Video::Video()=default'], ['../classVideo.html#a23dceacdfe101902a70a254deb35a6ba', 1, 'Video::Video(const char *filename)']]],
+    ['video_2ecpp_1', ['Video.cpp', ['../Video_8cpp.html', 1, '']]],
+    ['video_2ehpp_2', ['Video.hpp', ['../Video_8hpp.html', 1, '']]],
+    ['visualize_5fmv_3', ['visualize_MV', ['../classFrame.html#a9626ac80b6de4ca961398849029cdad0', 1, 'Frame']]]
 ];

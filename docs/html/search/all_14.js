@@ -1,8 +1,8 @@
 var searchData =
     [
-        ['_7ebitstream_0', ['~BitStream', ['../classBitStream.html#a63cf0f27c7519417a7984c476a32c9c9', 1, 'BitStream']]],
-        ['_7eframe_1', ['~Frame', ['../classFrame.html#a8a8e507d79e82cb3c761216142a4d28d', 1, 'Frame']]],
-        ['_7egolomb_2', ['~Golomb', ['../classGolomb.html#a3695ea307f313060e2d2f7d32fc5fad9', 1, 'Golomb']]],
-        ['_7eimage_3', ['~Image', ['../classImage.html#ad9a2b967d96a3ea6278c85a7b1223145', 1, 'Image']]],
-        ['_7evideo_4', ['~Video', ['../classVideo.html#a4f3cd2a5a638ed077b86c7f9b090bf03', 1, 'Video']]]
+        ['y_0', ['y', ['../structMotionVector.html#aa4a1723ce70e1dd75f5e7061a90884f4', 1, 'MotionVector']]],
+        ['yuv_1', ['YUV', ['../Image_8hpp.html#ae6d9a3670e9fd5cba093fdddebdae888af726371acfea68d8e6506b9ab7d817f1', 1, 'Image.hpp']]],
+        ['yuv420_2', ['YUV420', ['../Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791acb52b4d8e199d901af27ee1f2d6bcb04', 1, 'Image.hpp']]],
+        ['yuv422_3', ['YUV422', ['../Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791af95cc5446c6345daadf349ccd299a2f5', 1, 'Image.hpp']]],
+        ['yuv444_4', ['YUV444', ['../Image_8hpp.html#a93f7ea8ca55fdf6ff9cd1d3592352791a523b094e008f914e9e01af828090df0c', 1, 'Image.hpp']]]
     ];

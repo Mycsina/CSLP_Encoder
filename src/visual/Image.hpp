@@ -57,21 +57,21 @@ public:
     Image *load(const cv::Mat &arr2d);
 
     //! @brief Sets the underlying cv::Mat
-    void _set_image_mat(cv::Mat mat);
+    void setImageMat(cv::Mat mat);
 
     //! @brief Returns the underlying cv::Mat
-    cv::Mat *_get_image_mat();
+    cv::Mat *getImageMat();
 
     //! @brief Sets the color space of the Image
-    void _set_color(COLOR_SPACE col);
+    void setColor(COLOR_SPACE col);
 
     //! @brief Returns the color space of the Image
-    COLOR_SPACE _get_color();
+    COLOR_SPACE getColor();
 
     //! @brief Sets the chroma subsampling rate of the Image
-    void _set_chroma(CHROMA_SUBSAMPLING cs);
+    void setChroma(CHROMA_SUBSAMPLING cs);
     //! @brief Returns the chroma subsampling rate of the Image
-    CHROMA_SUBSAMPLING _get_chroma();
+    CHROMA_SUBSAMPLING getChroma();
 
     //! Used to iterate over all pixels in the Image
     //! \warning Unless you need to iterate from first to last pixel in order, use cv:Mat::forEach instead
@@ -104,11 +104,11 @@ public:
 
     //! Get data type of Image
     //! @return Integer indicating the cv:Mat type of the underlying matrix
-    int get_image_type() const;
+    int getImageType() const;
 
     //! Displays the Image in a window
     //! @params vid_ctx Indicates whether it is to be used in displaying a video (
-    void display_image(bool vid_ctx = false);
+    void show(bool vid_ctx = false);
 
     //! Returns whether the Image has been loaded
     //! @return Boolean indicating whether the Image has been loaded
@@ -118,18 +118,23 @@ public:
     //! @param  row Row of pixel / y-coordinate
     //! @param  col Column of pixel / x-coordinate
     //! @return Array of integers containing the color values of the pixel in the
-    cv::Vec3b get_pixel(int row, int col) const;
+    cv::Vec3b getPixel(int row, int col) const;
 
     //! Set color values of a pixel (0-255 range)
     //! @param  row Row of pixel / y-coordinate
     //! @param  col Column of pixel / x-coordinate
     //! @param  color_values Array of integers containing the color values of the
     //! pixel
-    void set_pixel(int row, int col, const cv::Vec3b &color_values);
+    void setPixel(int row, int col, const Vec3b &color_values);
 
     //! Get a deep copy of the Image
     //! @return Image object containing a deep copy of the Image
     Image clone();
+
+    //! Compare two images
+    //! @param  other Image to be compared to
+    //! @return Boolean indicating whether the two images are equal
+    bool operator==(Image &other) const;
 
     //! Create color histograms of a BGR Image
     //! @param  hist Histogram to be displayed
@@ -150,7 +155,7 @@ public:
     //! @param  col Column of the first pixel
     //! @param  size Size of the square
     //! @return Matrix containing the slice
-    cv::Mat get_slice(int row, int col, int size) const;
+    cv::Mat getSlice(int row, int col, int size) const;
 
     //! Returns a copy of a portion of the image matrix (values out of range are excluded)
     //! @param radiusR vertical radius
@@ -176,7 +181,7 @@ public:
     static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel);
 };
 
-void set_slice(const cv::Mat &mat, const cv::Mat &slice, int row, int col);
+void setSlice(const cv::Mat &mat, const cv::Mat &slice, int row, int col);
 
 //! @brief Creates basic histogram of matrix\n
 //! @details The functions needs to be called with the correct template type,

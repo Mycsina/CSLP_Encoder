@@ -1,4 +1,4 @@
 var searchData=
 [
-    ['frame_0', ['Frame', ['../classFrame.html', 1, '']]]
+    ['encoder_0', ['Encoder', ['../classEncoder.html', 1, '']]]
 ];

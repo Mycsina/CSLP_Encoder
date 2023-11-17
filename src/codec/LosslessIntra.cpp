@@ -38,8 +38,8 @@ void LosslessIntraFrameEncoder::encode() {
     Video vid = Video(src);
     vector<Frame *> frames = vid.generateFrames();
     Frame sample = *frames[0];
-    header.color_space = sample.getImage()._get_color();
-    header.chroma_subsampling = sample.getImage()._get_chroma();
+    header.color_space = sample.getImage().getColor();
+    header.chroma_subsampling = sample.getImage().getChroma();
     header.width = sample.getImage().size()[1];
     header.height = sample.getImage().size()[0];
     header.golomb_m = golomb_m;

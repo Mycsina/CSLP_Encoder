@@ -1,5 +1,32 @@
 <map id="Golomb.hpp" name="Golomb.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,96,31"/>
-<area shape="rect" id="Node000002" href="$Golomb_8cpp.html" title=" " alt="" coords="5,79,96,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="53,46,53,79,48,79,48,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="330,5,421,31"/>
+<area shape="rect" id="Node000002" href="$Golomb_8cpp.html" title=" " alt="" coords="276,79,366,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="359,45,332,80,328,77,355,41"/>
+<area shape="rect" id="Node000003" href="$Image_8hpp.html" title=" " alt="" coords="390,79,471,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="396,41,423,77,419,80,392,45"/>
+<area shape="rect" id="Node000004" href="$Encoder_8hpp.html" title=" " alt="" coords="63,153,155,178"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="375,108,156,156,155,151,374,103"/>
+<area shape="rect" id="Node000007" href="$Frame_8hpp.html" title=" " alt="" coords="350,153,433,178"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="419,120,400,153,396,151,414,117"/>
+<area shape="rect" id="Node000009" href="$Video_8hpp.html" title=" " alt="" coords="431,226,509,252"/>
+<area shape="poly" id="edge17_Node000003_Node000009" title=" " alt="" coords="440,119,469,225,464,227,435,120"/>
+<area shape="rect" id="Node000010" href="$Video_8cpp.html" title=" " alt="" coords="431,300,509,326"/>
+<area shape="poly" id="edge16_Node000003_Node000010" title=" " alt="" coords="454,114,492,163,510,193,523,226,526,239,523,253,507,281,487,301,483,298,503,277,518,251,521,239,518,227,505,195,488,166,450,118"/>
+<area shape="rect" id="Node000011" href="$Image_8cpp.html" title=" " alt="" coords="584,153,666,178"/>
+<area shape="poly" id="edge11_Node000003_Node000011" title=" " alt="" coords="478,108,593,150,591,155,477,113"/>
+<area shape="rect" id="Node000012" href="$ImageProcessing_8hpp.html" title=" " alt="" coords="154,226,301,252"/>
+<area shape="poly" id="edge12_Node000003_Node000012" title=" " alt="" coords="399,115,340,155,244,228,241,224,337,150,396,111"/>
+<area shape="rect" id="Node000005" href="$LosslessIntra_8hpp.html" title=" " alt="" coords="5,226,130,252"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="97,193,77,227,72,225,92,190"/>
+<area shape="rect" id="Node000006" href="$LosslessIntra_8cpp.html" title=" " alt="" coords="224,300,348,326"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="120,255,250,297,248,302,118,260"/>
+<area shape="rect" id="Node000008" href="$Frame_8cpp.html" title=" " alt="" coords="325,226,407,252"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="385,194,373,227,368,225,380,192"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="418,187,459,224,455,228,414,191"/>
+<area shape="poly" id="edge9_Node000009_Node000006" title=" " alt="" coords="426,260,318,302,317,297,424,255"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="473,267,473,300,468,300,468,267"/>
+<area shape="poly" id="edge14_Node000012_Node000006" title=" " alt="" coords="249,262,278,298,274,301,245,266"/>
+<area shape="poly" id="edge15_Node000012_Node000010" title=" " alt="" coords="284,254,431,297,430,302,282,259"/>
+<area shape="rect" id="Node000013" href="$ImageProcessing_8cpp.html" title=" " alt="" coords="53,300,199,326"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="199,264,145,302,142,297,196,259"/>
 </map>

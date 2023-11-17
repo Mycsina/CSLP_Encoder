@@ -1,0 +1,11 @@
+<map id="Block::BlockDiff" name="Block::BlockDiff">
+<area shape="rect" id="Node000001" title=" " alt="" coords="166,5,278,31"/>
+<area shape="rect" id="Node000002" href="$classBlock_1_1MAD.html" title=" " alt="" coords="5,79,95,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="180,40,80,81,78,76,178,35"/>
+<area shape="rect" id="Node000003" href="$classBlock_1_1MSE.html" title=" " alt="" coords="119,79,208,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="205,45,175,80,171,77,200,41"/>
+<area shape="rect" id="Node000004" href="$classBlock_1_1PSNR.html" title=" " alt="" coords="232,79,329,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="244,41,273,77,269,80,239,45"/>
+<area shape="rect" id="Node000005" href="$classBlock_1_1SAD.html" title=" " alt="" coords="353,79,440,105"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="267,35,368,76,366,81,265,40"/>
+</map>

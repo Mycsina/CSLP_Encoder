@@ -21,7 +21,7 @@ Block::Block(const Image &img, int size, int row, int col) {
     size_ = size;
     row_ = row;
     col_ = col;
-    block_mat_ = img.get_slice(row, col, size);
+    block_mat_ = img.getSlice(row, col, size);
 }
 
 const cv::Mat &Block::getBlockMat() const {
@@ -153,6 +153,10 @@ std::vector<MotionVector> Frame::getMotionVectors() const {
     return motion_vectors_;
 }
 
+const vector<int> &Frame::getIntraEncoding() const {
+    return intra_encoding;
+}
+
 FrameType Frame::getType() const {
     return type_;
 }
@@ -162,13 +166,13 @@ void Frame::setType(FrameType type) {
 }
 
 void Frame::show() {
-    imshow("Frame", *image_._get_image_mat());
+    imshow("Frame", *image_.getImageMat());
     waitKey(0);
 }
 
 void Frame::encode_JPEG_LS() {
     type_ = I_FRAME;
-    Mat image_mat_ = *image_._get_image_mat();
+    Mat image_mat_ = *image_.getImageMat();
     for (int r = 0; r < image_mat_.rows; r++) {
         for (int c = 0; c < image_mat_.cols; c++) {
             for (int channel = 0; channel < image_mat_.channels(); channel++) {
@@ -183,7 +187,7 @@ void Frame::encode_JPEG_LS() {
 
 void Frame::encode_JPEG_LS(Golomb *g) {
     type_ = I_FRAME;
-    Mat image_mat_ = *image_._get_image_mat();
+    Mat image_mat_ = *image_.getImageMat();
     for (int r = 0; r < image_mat_.rows; r++) {
         for (int c = 0; c < image_mat_.cols; c++) {
             for (int channel = 0; channel < image_mat_.channels(); channel++) {
@@ -213,7 +217,7 @@ Frame Frame::decode_JPEG_LS(Golomb *g, COLOR_SPACE c_space, CHROMA_SUBSAMPLING c
     for (int r = 0; r < mat.rows; r++) {
         for (int c = 0; c < mat.cols; c++) {
             for (int channel = 0; channel < mat.channels(); channel++) {
-                auto diff = (uchar) g->decode();
+                auto diff = g->decode();
                 uchar predicted = Image::predict_JPEG_LS(mat, r, c, channel);
                 uchar real = diff + predicted;
                 if (mat.channels() > 1) {
@@ -225,8 +229,36 @@ Frame Frame::decode_JPEG_LS(Golomb *g, COLOR_SPACE c_space, CHROMA_SUBSAMPLING c
         }
     }
     Image im(mat);
-    im._set_color(c_space);
-    im._set_chroma(cs_ratio);
+    im.setColor(c_space);
+    im.setChroma(cs_ratio);
+    return Frame(im);
+}
+
+Frame Frame::decode_JPEG_LS(vector<int> encodings, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows, int cols) {
+    Mat mat;
+    if (c_space == GRAY) {
+        mat = Mat::zeros(rows, cols, CV_8UC1);
+    } else {
+        mat = Mat::zeros(rows, cols, CV_8UC3);
+    }
+    int i = 0;
+    for (int r = 0; r < mat.rows; r++) {
+        for (int c = 0; c < mat.cols; c++) {
+            for (int channel = 0; channel < mat.channels(); channel++) {
+                uchar diff = encodings[i++];
+                uchar predicted = Image::predict_JPEG_LS(mat, r, c, channel);
+                uchar real = diff + predicted;
+                if (mat.channels() > 1) {
+                    mat.at<Vec3b>(r, c)[channel] = real;
+                } else {
+                    mat.at<uchar>(r, c) = real;
+                }
+            }
+        }
+    }
+    Image im(mat);
+    im.setColor(c_space);
+    im.setChroma(cs_ratio);
     return Frame(im);
 }
 
@@ -351,7 +383,7 @@ MotionVector Frame::match_block_es(const Block &block, Frame *reference, int sea
     for (int i = upper; i < down; i++) {
         for (int j = left; j < right; j++) {
 #ifdef _VISUALIZE
-            Mat canvas = this->getImage()._get_image_mat()->clone();
+            Mat canvas = this->getImage().getImageMat()->clone();
             rectangle(canvas, Point(block_coords[0], block_coords[1]), Point(block_coords[2], block_coords[3]), Scalar(255, 255, 255));
             rectangle(canvas, Point(j, i), Point(j + block.getSize(), i + block.getSize()), Scalar(0, 0, 255));
             imshow("Canvas", canvas);
@@ -385,7 +417,7 @@ MotionVector Frame::match_block_arps(const Block &block, Frame *reference, int t
     initial_points = get_rood_points({block_coords[0], block_coords[1]}, size, block.getSize());
     for (auto point: initial_points) {
 #ifdef _VISUALIZE
-        Mat canvas = this->getImage()._get_image_mat()->clone();
+        Mat canvas = this->getImage().getImageMat()->clone();
         rectangle(canvas, Point(block_coords[0], block_coords[1]), Point(block_coords[2], block_coords[3]), Scalar(255, 255, 255));
         rectangle(canvas, Point(point.x, point.y), Point(point.x + block.getSize(), point.y + block.getSize()), Scalar(0, 0, 255));
         imshow("Canvas", canvas);
@@ -399,7 +431,7 @@ MotionVector Frame::match_block_arps(const Block &block, Frame *reference, int t
         auto new_points = get_rood_points({block_coords[0] + block_diff_->best_match.x, block_coords[1] + block_diff_->best_match.y}, size, block.getSize());
         for (auto point: new_points) {
 #ifdef _VISUALIZE
-            Mat canvas = this->getImage()._get_image_mat()->clone();
+            Mat canvas = this->getImage().getImageMat()->clone();
             rectangle(canvas, Point(block_coords[0], block_coords[1]), Point(block_coords[2], block_coords[3]), Scalar(255, 255, 255));
             rectangle(canvas, Point(point.x, point.y), Point(point.x + block.getSize(), point.y + block.getSize()), Scalar(0, 0, 255));
             imshow("Canvas", canvas);
@@ -411,7 +443,8 @@ MotionVector Frame::match_block_arps(const Block &block, Frame *reference, int t
     return block_diff_->best_match;
 }
 
-void Frame::calculate_MV(int block_size, Frame *reference, int search_radius, bool fast) {
+void Frame::calculate_MV(Frame *reference, int block_size, int search_radius, bool fast) {
+    type_ = P_FRAME;
     setBlockDiff(new Block::MSE());
     vector<MotionVector> motion_vectors;
     for (int i = 0; i + block_size <= image_.size()[0]; i += block_size) {
@@ -429,6 +462,35 @@ void Frame::calculate_MV(int block_size, Frame *reference, int search_radius, bo
     }
 }
 
-Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &motion_vectors) {
-    return Frame();
+Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &motion_vectors, int block_size) {
+    Mat reconstructed = Mat::zeros(reference->getImage().size()[0], reference->getImage().size()[1], CV_8UC3);
+    for (int i = 0; i + block_size <= reference->getImage().size()[0]; i += block_size) {
+        for (int j = 0; j + block_size <= reference->getImage().size()[1]; j += block_size) {
+            MotionVector mv = motion_vectors[i / block_size * (reference->getImage().size()[1] / block_size) + j / block_size];
+            Block block = get_block(reference->getImage(), block_size, i + mv.y, j + mv.x);
+            block.setBlockMat(block.getBlockMat() + mv.residual);
+            setSlice(reconstructed, block.getBlockMat(), i, j);
+        }
+    }
+    Image im(reconstructed);
+    Frame frame(im);
+    frame.setType(P_FRAME);
+    return frame;
+}
+
+void Frame::visualize_MV(Frame *reference, int block_size) {
+    int i = 0;
+    int j = 0;
+    Mat res = Mat::zeros(reference->getImage().size()[0], reference->getImage().size()[1], CV_8UC3);
+    for (const auto &v: motion_vectors_) {
+        setSlice(res, v.residual, j, i);
+        arrowedLine(res, Point(i + block_size / 2, j + block_size / 2), Point(i + v.x + block_size / 2, j + v.y + block_size / 2), Scalar(0, 0, 255), 1, 8, 0);
+        i += block_size;
+        if (i >= res.cols) {
+            i = 0;
+            j += block_size;
+        }
+    };
+    imshow("res", res);
+    waitKey(0);
 }

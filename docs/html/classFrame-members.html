@@ -1,25 +1,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
-    <meta content="text/xhtml;charset=UTF-8" http-equiv="Content-Type"/>
-    <meta content="IE=11" http-equiv="X-UA-Compatible"/>
-    <meta content="Doxygen 1.9.8" name="generator"/>
-    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=11"/>
+    <meta name="generator" content="Doxygen 1.9.8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>CSLP_2023_2024: Member List</title>
     <link href="tabs.css" rel="stylesheet" type="text/css"/>
-    <script src="jquery.js" type="text/javascript"></script>
-    <script src="dynsections.js" type="text/javascript"></script>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="dynsections.js"></script>
     <link href="search/search.css" rel="stylesheet" type="text/css"/>
-    <script src="search/searchdata.js" type="text/javascript"></script>
-    <script src="search/search.js" type="text/javascript"></script>
-    <script src="darkmode_toggle.js" type="text/javascript"></script>
+    <script type="text/javascript" src="search/searchdata.js"></script>
+    <script type="text/javascript" src="search/search.js"></script>
+    <script type="text/javascript" src="darkmode_toggle.js"></script>
     <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
     <div id="titlearea">
-        <table cellpadding="0" cellspacing="0">
+        <table cellspacing="0" cellpadding="0">
             <tbody>
             <tr id="projectrow">
                 <td id="projectalign">
@@ -37,8 +37,8 @@
         var searchBox = new SearchBox("searchBox", "search/", '.html');
         /* @license-end */
     </script>
-    <script src="menudata.js" type="text/javascript"></script>
-    <script src="menu.js" type="text/javascript"></script>
+    <script type="text/javascript" src="menudata.js"></script>
+    <script type="text/javascript" src="menu.js"></script>
     <script type="text/javascript">
         /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
         $(function () {
@@ -52,9 +52,9 @@
     <div id="main-nav"></div>
     <!-- window showing the filter options -->
     <div id="MSearchSelectWindow"
-         onkeydown="return searchBox.OnSearchSelectKey(event)"
+         onmouseover="return searchBox.OnSearchSelectShow()"
          onmouseout="return searchBox.OnSearchSelectHide()"
-         onmouseover="return searchBox.OnSearchSelectShow()">
+         onkeydown="return searchBox.OnSearchSelectKey(event)">
     </div>
 
     <!-- iframe showing the search results (closed by default) -->
@@ -85,7 +85,8 @@
     <table class="directory">
         <tr class="even">
             <td class="entry"><a class="el"
-                                 href="classFrame.html#a12aec820659967f138b70987a7efec6f">display_frame</a>()
+                                 href="classFrame.html#a1572b0bb89e6316fe467bcf8987dce43">calculate_MV</a>(Frame
+                *reference, int block_size, int search_radius, bool fast)
             </td>
             <td class="entry"><a class="el" href="classFrame.html">Frame</a>
             </td>
@@ -93,13 +94,42 @@
         </tr>
         <tr class="odd">
             <td class="entry"><a class="el"
-                                 href="classFrame.html#ad6bfabe7c3b9fe19ee2fed4f795b8cae">display_frame_original</a>()
+                                 href="classFrame.html#a30c89c5ed7a189bb2b698b82e7c16071">decode_JPEG_LS</a>(Golomb
+                *g, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows,
+                int cols)
+            </td>
+            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
+            </td>
+            <td class="entry"><span class="mlabel">static</span></td>
+        </tr>
+        <tr class="even">
+            <td class="entry"><a class="el"
+                                 href="classFrame.html#a19f4879eb6c755b6bf4f87b84d9fd76e">decode_JPEG_LS</a>(std::vector&lt;
+                int &gt; encodings, COLOR_SPACE c_space, CHROMA_SUBSAMPLING
+                cs_ratio, int rows, int cols)
+            </td>
+            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
+            </td>
+            <td class="entry"><span class="mlabel">static</span></td>
+        </tr>
+        <tr class="odd">
+            <td class="entry"><a class="el"
+                                 href="classFrame.html#a351820f6332104cf49e2eed9fab3457b">encode_JPEG_LS</a>()
             </td>
             <td class="entry"><a class="el" href="classFrame.html">Frame</a>
             </td>
             <td class="entry"></td>
         </tr>
         <tr class="even">
+            <td class="entry"><a class="el"
+                                 href="classFrame.html#a74205c42a3878829767fb44a3100367b">encode_JPEG_LS</a>(Golomb
+                *g)
+            </td>
+            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
+            </td>
+            <td class="entry"></td>
+        </tr>
+        <tr class="odd">
             <td class="entry"><a class="el"
                                  href="classFrame.html#af859480e7bdedf343c1ad7d941106f26">Frame</a>()=default
             </td>
@@ -107,32 +137,34 @@
             </td>
             <td class="entry"></td>
         </tr>
-        <tr class="odd">
+        <tr class="even">
             <td class="entry"><a class="el"
-                                 href="classFrame.html#acd49b450783ab185e5c23b53c4666687">Frame</a>(Image
-                img)
+                                 href="classFrame.html#a840dc97954f4f2591ca108c24065857f">Frame</a>(const
+                Image &amp;img)
             </td>
             <td class="entry"><a class="el" href="classFrame.html">Frame</a>
             </td>
             <td class="entry"><span class="mlabel">explicit</span></td>
         </tr>
+        <tr class="odd">
+            <td class="entry"><a class="el"
+                                 href="classFrame.html#a71c8a24d29ecbde399ef0b94e1a76166">get_rood_points</a>(cv::Point
+                center, int arm_size, int block_size) const
+            </td>
+            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
+            </td>
+            <td class="entry"></td>
+        </tr>
         <tr class="even">
             <td class="entry"><a class="el"
-                                 href="classFrame.html#a57f8a268050c7002fa1d8eb0eb2712ed">get_difference</a>()
+                                 href="classFrame.html#ac77cb3d276ee7e698c5ebd75670d6520">get_search_window</a>(const
+                Block &amp;block, int search_radius) const
             </td>
             <td class="entry"><a class="el" href="classFrame.html">Frame</a>
             </td>
             <td class="entry"></td>
         </tr>
         <tr class="odd">
-            <td class="entry"><a class="el"
-                                 href="classFrame.html#a4b0d86a360431798707670f280be7d3a">getFrameMat</a>()
-            </td>
-            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
-            </td>
-            <td class="entry"></td>
-        </tr>
-        <tr class="even">
             <td class="entry"><a class="el"
                                  href="classFrame.html#aa915ee2abecacb5f61db25634795223f">getImage</a>()
                 const
@@ -141,18 +173,9 @@
             </td>
             <td class="entry"></td>
         </tr>
-        <tr class="odd">
-            <td class="entry"><a class="el"
-                                 href="classFrame.html#aa2217befd63b0fcade17a329f7e6908c">getNext</a>()
-                const
-            </td>
-            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
-            </td>
-            <td class="entry"></td>
-        </tr>
         <tr class="even">
             <td class="entry"><a class="el"
-                                 href="classFrame.html#a83f7aec06f2c3664d80d4d761d6d1e03">getPrevious</a>()
+                                 href="classFrame.html#a6fb049596438b0fae9b85c0f2e5b619b">getIntraEncoding</a>()
                 const
             </td>
             <td class="entry"><a class="el" href="classFrame.html">Frame</a>
@@ -161,8 +184,8 @@
         </tr>
         <tr class="odd">
             <td class="entry"><a class="el"
-                                 href="classFrame.html#a74c30e35a1f56f3c1a56bc531156707f">match_all_blocks</a>(int
-                block_size=16, int n=1, int search_radius=7, bool fast=true)
+                                 href="classFrame.html#a27ede8c7c4ac015e6ab40cdc5e209417">getMotionVectors</a>()
+                const
             </td>
             <td class="entry"><a class="el" href="classFrame.html">Frame</a>
             </td>
@@ -170,44 +193,63 @@
         </tr>
         <tr class="even">
             <td class="entry"><a class="el"
-                                 href="classFrame.html#ae94d06cbea859b4e7d2a79a4dae4ad8a">match_block_arps</a>(const
+                                 href="classFrame.html#afb1bcd16a5096f78d997e5504b6b3580">getType</a>()
+                const
+            </td>
+            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
+            </td>
+            <td class="entry"></td>
+        </tr>
+        <tr class="odd">
+            <td class="entry"><a class="el"
+                                 href="classFrame.html#ad113d4ebfe45924ddc6c17687706e244">isBlockDiff</a>(Block::BlockDiff
+                *blockDiff) const
+            </td>
+            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
+            </td>
+            <td class="entry"></td>
+        </tr>
+        <tr class="even">
+            <td class="entry"><a class="el"
+                                 href="classFrame.html#a676734641efc616a9aa11a0c60a3b242">match_block_arps</a>(const
+                Block &amp;block, Frame *reference, int threshold=512)
+            </td>
+            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
+            </td>
+            <td class="entry"></td>
+        </tr>
+        <tr class="odd">
+            <td class="entry"><a class="el"
+                                 href="classFrame.html#a04ea10bac9640a2a4e7ef5d5aee5cf15">match_block_es</a>(const
                 Block &amp;block, Frame *reference, int search_radius)
             </td>
             <td class="entry"><a class="el" href="classFrame.html">Frame</a>
             </td>
             <td class="entry"></td>
         </tr>
-        <tr class="odd">
-            <td class="entry"><a class="el"
-                                 href="classFrame.html#ae09609057449daf307f769144bd1c788">match_block_es</a>(const
-                Block &amp;block, Frame *reference, int search_radius)
-            </td>
-            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
-            </td>
-            <td class="entry"></td>
-        </tr>
         <tr class="even">
             <td class="entry"><a class="el"
-                                 href="classFrame.html#a4aa666e6f1a5f045140723d75c7163a3">reconstruct_frame</a>(Frame
-                *reference, const std::vector&lt; MotionVector &gt; &amp;motion_vectors)
+                                 href="classFrame.html#a35a94cc23d582ead18e5b62b90da1553">predict_JPEG_LS</a>(cv::Mat
+                mat, int row, int col, int channel=0)
             </td>
             <td class="entry"><a class="el" href="classFrame.html">Frame</a>
             </td>
-            <td class="entry"></td>
+            <td class="entry"><span class="mlabel">static</span></td>
         </tr>
         <tr class="odd">
             <td class="entry"><a class="el"
-                                 href="classFrame.html#a5fef2725f736e1576d699c7ae5f08c0c">setFrameMat</a>(const
-                cv::Mat &amp;frameMat)
+                                 href="classFrame.html#a77a249efea5c4d46b4cf57976f8a1a94">reconstruct_frame</a>(Frame
+                *reference, const std::vector&lt; MotionVector &gt; &amp;motion_vectors,
+                int block_size)
             </td>
             <td class="entry"><a class="el" href="classFrame.html">Frame</a>
             </td>
-            <td class="entry"></td>
+            <td class="entry"><span class="mlabel">static</span></td>
         </tr>
         <tr class="even">
             <td class="entry"><a class="el"
-                                 href="classFrame.html#a323f4708e7310d867692b65aff585acb">setNext</a>(Frame
-                *next)
+                                 href="classFrame.html#a807df6076b629f3050145db4d8f50434">setBlockDiff</a>(Block::BlockDiff
+                *blockDiff)
             </td>
             <td class="entry"><a class="el" href="classFrame.html">Frame</a>
             </td>
@@ -215,14 +257,40 @@
         </tr>
         <tr class="odd">
             <td class="entry"><a class="el"
-                                 href="classFrame.html#a9bd10e9d7b69b59c7ca68146f3b8d1a9">setPrevious</a>(Frame
-                *previous)
+                                 href="classFrame.html#afde75ea4a2be06ca390654091a6d5d4b">setType</a>(FrameType
+                type)
             </td>
             <td class="entry"><a class="el" href="classFrame.html">Frame</a>
             </td>
             <td class="entry"></td>
         </tr>
         <tr class="even">
+            <td class="entry"><a class="el"
+                                 href="classFrame.html#a2258fcc4ea259e0af4c8440d2c574ff2">show</a>()
+            </td>
+            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
+            </td>
+            <td class="entry"></td>
+        </tr>
+        <tr class="odd">
+            <td class="entry"><a class="el"
+                                 href="classFrame.html#a9626ac80b6de4ca961398849029cdad0">visualize_MV</a>(Frame
+                *reference, int block_size)
+            </td>
+            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
+            </td>
+            <td class="entry"></td>
+        </tr>
+        <tr class="even">
+            <td class="entry"><a class="el"
+                                 href="classFrame.html#accca8605eacd1c93b55ada479da0abb6">write_JPEG_LS</a>(Golomb
+                *g)
+            </td>
+            <td class="entry"><a class="el" href="classFrame.html">Frame</a>
+            </td>
+            <td class="entry"></td>
+        </tr>
+        <tr class="odd">
             <td class="entry"><a class="el"
                                  href="classFrame.html#a8a8e507d79e82cb3c761216142a4d28d">~Frame</a>()=default
             </td>
@@ -235,11 +303,11 @@
 <!-- start footer part -->
 <hr class="footer"/>
 <address class="footer"><small>
-    Generated on Thu Oct 26 2023 02:43:34 for CSLP_2023_2024 by&#160;<a
-        href="https://www.doxygen.org/index.html"><img alt="doxygen"
-                                                       class="footer"
-                                                       height="31" src="doxygen.svg"
-                                                       width="104"/></a> 1.9.8
+    Generated on Fri Nov 17 2023 01:40:09 for CSLP_2023_2024 by&#160;<a
+        href="https://www.doxygen.org/index.html"><img class="footer"
+                                                       src="doxygen.svg"
+                                                       width="104" height="31"
+                                                       alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>

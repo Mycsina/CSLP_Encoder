@@ -1,4 +1,5 @@
 var searchData =
     [
-        ['y_0', ['y', ['../structMotionVector.html#aa4a1723ce70e1dd75f5e7061a90884f4', 1, 'MotionVector']]]
+        ['header_0', ['header', ['../classLosslessIntraFrameEncoder.html#a43d50ea31cb2ee1a50b8cf184c5839cd', 1, 'LosslessIntraFrameEncoder']]],
+        ['height_1', ['height', ['../structIntraHeader.html#a74bcb465ede7b74237929bf285d6a7af', 1, 'IntraHeader']]]
     ];

@@ -1,4 +1,4 @@
 var searchData =
     [
-        ['video_0', ['Video', ['../classVideo.html', 1, '']]]
+        ['losslessintraframeencoder_0', ['LosslessIntraFrameEncoder', ['../classLosslessIntraFrameEncoder.html', 1, '']]]
     ];
