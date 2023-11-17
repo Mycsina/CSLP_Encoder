@@ -1,4 +1,4 @@
-#include "imageProcessing.hpp"
+#include "ImageProcessing.hpp"
 #include <iostream>
 #include <opencv2/highgui.hpp>
 

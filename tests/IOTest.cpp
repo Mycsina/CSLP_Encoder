@@ -28,4 +28,5 @@ TEST(IOTestSuite, GolombReadWriteTest) {
     g = new Golomb(golomb_dst, std::ios::in);
     ASSERT_EQ(g->decode(), 26);
     ASSERT_EQ(g->decode(), -240);
+    remove(golomb_dst);
 }

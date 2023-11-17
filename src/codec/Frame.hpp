@@ -112,30 +112,32 @@ class Frame {
 private:
     Image image_;      //!< Contains original image
     FrameType type_{}; //!< Indicates the type of frame
-    cv::Mat frame_mat_;//!< Contains transformed image matrix
     Block::BlockDiff *block_diff_{};
     std::vector<MotionVector> motion_vectors_;
+    std::vector<int> intra_encoding;
 
 public:
     Frame() = default;
     ~Frame() = default;
-    explicit Frame(Image img);
+    explicit Frame(const Image &img);
     Image getImage() const;
-    cv::Mat *getFrameMat();
-    void setFrameMat(const cv::Mat &frameMat);
     bool isBlockDiff(Block::BlockDiff *blockDiff) const;
     void setBlockDiff(Block::BlockDiff *blockDiff);
     std::vector<MotionVector> getMotionVectors() const;
     FrameType getType() const;
     void setType(FrameType type);
-    void display_frame();
-    void display_frame_original();
+    void show();
 
-    void encode_JPEG_LS(Golomb &g);
 
-    static Image decode_JPEG_LS(const std::string &path);
+    void encode_JPEG_LS();
 
-    static uchar predict_JPEG_LS(cv::Mat mat, int row, int col);
+    void encode_JPEG_LS(Golomb *g);
+
+    void write_JPEG_LS(Golomb *g);
+
+    static Frame decode_JPEG_LS(Golomb *g, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows, int cols);
+
+    static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel = 0);
 
     //! Returns a valid search window
     //! @param block Block that is being compared (top-left corner)

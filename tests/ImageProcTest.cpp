@@ -1,4 +1,4 @@
-#include "../src/visual/imageProcessing.hpp"
+#include "../src/visual/ImageProcessing.hpp"
 #include <gtest/gtest.h>
 #include <opencv2/highgui.hpp>
 

@@ -53,14 +53,14 @@ TEST(ImageTestSuite, PixelWiseCloning) {
     remove("../../tests/resource/pbp.png");
 }
 
-TEST(ImageTestSuite,JPEG_LS){
-    Image im1,im2;
+TEST(ImageTestSuite, JPEG_LS) {
+    Image im1, im2;
     double diffs;
 
     im1.load(img_file);
-    im1.encode_JPEG_LS(jpegls_file,4);
-    im2=Image::decode_JPEG_LS(jpegls_file);
-
-    diffs=cv::norm(*im1._get_image_mat(),*im2._get_image_mat(),cv::NORM_L2);
-    ASSERT_EQ(diffs,0);
+    im1.encode_JPEG_LS(jpegls_file, 4);
+    im2 = Image::decode_JPEG_LS(jpegls_file);
+    diffs = cv::norm(*im1._get_image_mat(), *im2._get_image_mat(), cv::NORM_L2);
+    ASSERT_EQ(diffs, 0);
+    remove(jpegls_file);
 }

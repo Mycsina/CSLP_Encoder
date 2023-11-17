@@ -1,6 +1,6 @@
 #include "Video.hpp"
 #include "Image.hpp"
-#include "imageProcessing.hpp"
+#include "ImageProcessing.hpp"
 
 #include <cstdio>
 #include <iostream>
@@ -64,7 +64,7 @@ void Video::load(const char *filename) {
 }
 
 void Video::loadY4M(const char *filename, CHROMA_SUBSAMPLING format) {
-    int width, height, frameSize, uvWidth, uvHeight;
+    int width, height, uvWidth, uvHeight;
     float fps;
 
     FILE *file = fopen(filename, "rb");
@@ -80,17 +80,14 @@ void Video::loadY4M(const char *filename, CHROMA_SUBSAMPLING format) {
     // use yuv format to get size of frame
     switch (format) {
         case YUV444:
-            frameSize = width * height * 3;
             uvWidth = width;
             uvHeight = height;
             break;
         case YUV422:
-            frameSize = width * height * 2;
             uvWidth = width / 2;
             uvHeight = height;
             break;
         case YUV420:
-            frameSize = width * height * 3 / 2;
             uvWidth = width / 2;
             uvHeight = height / 2;
             break;

@@ -130,14 +130,12 @@ Block get_block(const Image &img, int size, int row, int col) {
     return {img, size, row, col};
 }
 
-Frame::Frame(Image img) {
+Frame::Frame(const Image &img) {
     image_ = img;
-    frame_mat_ = Mat::zeros(Size(image_.size()[0], image_.size()[1]), CV_8UC3);
     block_diff_ = new Block::SAD();
     motion_vectors_ = vector<MotionVector>();
 }
 Image Frame::getImage() const { return image_; }
-Mat *Frame::getFrameMat() { return &frame_mat_; }
 
 bool Frame::isBlockDiff(Block::BlockDiff *blockDiff) const {
     if (block_diff_ == nullptr)
@@ -150,7 +148,6 @@ void Frame::setBlockDiff(Block::BlockDiff *blockDiff) {
         block_diff_ = blockDiff;
 }
 
-void Frame::setFrameMat(const Mat &frameMat) { frame_mat_ = frameMat; }
 
 std::vector<MotionVector> Frame::getMotionVectors() const {
     return motion_vectors_;
@@ -164,102 +161,124 @@ void Frame::setType(FrameType type) {
     type_ = type;
 }
 
-void Frame::display_frame() {
-    imshow("Frame", frame_mat_);
-    waitKey(0);
-}
-
-void Frame::display_frame_original() {
+void Frame::show() {
     imshow("Frame", *image_._get_image_mat());
     waitKey(0);
 }
 
-void Frame::encode_JPEG_LS(Golomb &g) {
-    Mat image_mat = *image_._get_image_mat();
-    Mat channels[3];
-    split(image_mat, channels);
-    for (int r = 0; r < image_mat.rows; r++) {
-        for (int c = 0; c < image_mat.cols; c++) {
-            for (int channel = 0; channel < image_mat.channels(); channel++) {
-                Mat channel_mat = channels[channel];
-                uchar real = channel_mat.at<uchar>(r, c);
-                uchar predicted = predict_JPEG_LS(channel_mat, r, c);
-                uchar diff = real - predicted;
-                g.encode(diff);
+void Frame::encode_JPEG_LS() {
+    type_ = I_FRAME;
+    Mat image_mat_ = *image_._get_image_mat();
+    for (int r = 0; r < image_mat_.rows; r++) {
+        for (int c = 0; c < image_mat_.cols; c++) {
+            for (int channel = 0; channel < image_mat_.channels(); channel++) {
+                int real = (int) image_mat_.at<Vec3b>(r, c)[channel];
+                int predicted = (int) predict_JPEG_LS(image_mat_, r, c, channel);
+                int diff = real - predicted;
+                intra_encoding.push_back(diff);
             }
         }
     }
 }
 
-Image Frame::decode_JPEG_LS(const std::string &path) {
-    //TODO: check if there's a better way to confirm if file exists
-    ifstream file;
-    file.open(path);
-    if (!file) {
-        file.close();
-        throw std::runtime_error("File does not exist");
+void Frame::encode_JPEG_LS(Golomb *g) {
+    type_ = I_FRAME;
+    Mat image_mat_ = *image_._get_image_mat();
+    for (int r = 0; r < image_mat_.rows; r++) {
+        for (int c = 0; c < image_mat_.cols; c++) {
+            for (int channel = 0; channel < image_mat_.channels(); channel++) {
+                int real = (int) image_mat_.at<Vec3b>(r, c)[channel];
+                int predicted = (int) predict_JPEG_LS(image_mat_, r, c, channel);
+                int diff = real - predicted;
+                g->encode(diff);
+            }
+        }
     }
-    file.close();
+}
 
-    BitStream bs(path, std::ios::in);
-    Golomb g(&bs);
-    //read header
-    auto c_space = static_cast<COLOR_SPACE>(bs.readBits(3));
-    auto cs_ratio = static_cast<CHROMA_SUBSAMPLING>(bs.readBits(3));
-    int cols = bs.readBits(8);
-    int rows = bs.readBits(8);
-    int m = bs.readBits(8);
+void Frame::write_JPEG_LS(Golomb *g) {
+    for (auto diff: intra_encoding) {
+        g->encode(diff);
+    }
+}
+
+Frame Frame::decode_JPEG_LS(Golomb *g, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows, int cols) {
     Mat mat;
     if (c_space == GRAY) {
         mat = Mat::zeros(rows, cols, CV_8UC1);
     } else {
         mat = Mat::zeros(rows, cols, CV_8UC3);
     }
-    Mat channels[3];
-    split(mat, channels);
-    g._set_m(m);
+
     for (int r = 0; r < mat.rows; r++) {
         for (int c = 0; c < mat.cols; c++) {
             for (int channel = 0; channel < mat.channels(); channel++) {
-                Mat chann_mat = channels[channel];
-                uchar diff = g.decode();
-                uchar predicted = predict_JPEG_LS(chann_mat, r, c);
+                auto diff = (uchar) g->decode();
+                uchar predicted = Image::predict_JPEG_LS(mat, r, c, channel);
                 uchar real = diff + predicted;
                 if (mat.channels() > 1) {
-                    chann_mat.at<Vec3b>(r, c) = real;
+                    mat.at<Vec3b>(r, c)[channel] = real;
+                } else {
+                    mat.at<uchar>(r, c) = real;
                 }
             }
         }
-        merge(channels, 3, mat);
-        Image im(mat);
-        im._set_color(c_space);
-        im._set_chroma(cs_ratio);
-        return im;
     }
+    Image im(mat);
+    im._set_color(c_space);
+    im._set_chroma(cs_ratio);
+    return Frame(im);
 }
 
-uchar Frame::predict_JPEG_LS(Mat mat, int row, int col) {
+uchar Frame::predict_JPEG_LS(Mat mat, int row, int col, int channel) {
     if (row < 0 || row >= mat.rows || col < 0 || col >= mat.cols) {
         throw std::out_of_range("Pixel out of bounds");
     }
 
-    uchar a, b, c, d = 0;
-    if (col - 1 >= 0) {
-        a = mat.at<uchar>(row, col - 1);
+    uchar a, b, c;
+    if (mat.channels() > 1) {
+        if (row - 1 >= 0 && col >= 1) {
+            a = mat.at<Vec3b>(row, col - 1)[channel];
+            b = mat.at<Vec3b>(row - 1, col)[channel];
+            c = mat.at<Vec3b>(row - 1, col - 1)[channel];
+        } else if (row - 1 >= 0) {
+            a = 0;
+            b = mat.at<Vec3b>(row - 1, col)[channel];
+            c = 0;
+        } else if (col - 1 >= 0) {
+            a = mat.at<Vec3b>(row, col - 1)[channel];
+            b = 0;
+            c = 0;
+        } else {
+            a = 0;
+            b = 0;
+            c = 0;
+        }
+    } else {
+        if (row - 1 >= 0 && col >= 1) {
+            a = mat.at<uchar>(row, col - 1);
+            b = mat.at<uchar>(row - 1, col);
+            c = mat.at<uchar>(row - 1, col - 1);
+        } else if (row - 1 >= 0) {
+            a = 0;
+            b = mat.at<uchar>(row - 1, col);
+            c = 0;
+        } else if (col - 1 >= 0) {
+            a = mat.at<uchar>(row, col - 1);
+            b = 0;
+            c = 0;
+        } else {
+            a = 0;
+            b = 0;
+            c = 0;
+        }
     }
-    if (row - 1 >= 0) {
-        b = mat.at<uchar>(row - 1, col);
-    }
-    if (row - 1 >= 0 && col - 1 >= 0) {
-        c = mat.at<uchar>(row - 1, col - 1);
-    }
-    if (row - 1 >= 0 && col + 1 < mat.cols) {
-        d = mat.at<uchar>(row - 1, col + 1);
-    }
-    if (c >= max(a, b)) {
-        return min(a, b);
-    } else if (c <= min(a, b)) {
-        return max(a, b);
+
+
+    if (c >= std::max(a, b)) {
+        return std::min(a, b);
+    } else if (c <= std::min(a, b)) {
+        return std::max(a, b);
     } else {
         return a + b - c;
     }

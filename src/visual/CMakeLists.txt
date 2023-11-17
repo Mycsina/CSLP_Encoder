@@ -6,7 +6,7 @@ project(CSLP_Project)
 ## Libraries
 ### Image
 add_library(Visual Image.cpp
-        imageProcessing.cpp
+        ImageProcessing.cpp
         Video.cpp
 )
 
