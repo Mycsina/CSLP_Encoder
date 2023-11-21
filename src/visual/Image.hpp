@@ -125,7 +125,7 @@ public:
     //! @param  col Column of pixel / x-coordinate
     //! @param  color_values Array of integers containing the color values of the
     //! pixel
-    void setPixel(int row, int col, const Vec3b &color_values);
+    void setPixel(int row, int col, const cv::Vec3b &color_values);
 
     //! Get a deep copy of the Image
     //! @return Image object containing a deep copy of the Image

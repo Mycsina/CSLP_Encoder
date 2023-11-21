@@ -349,7 +349,13 @@ bool Block::BlockDiff::compare(const Block &block, Frame *reference, cv::Point c
     double diff_value = block_diff(block, ref_block);
     if (isBetter(diff_value)) {
         MotionVector mv = {center.x - block_coords[0], center.y - block_coords[1]};
-        mv.residual = block.getBlockMat() - ref_block.getBlockMat();
+        mv.residual = Mat::zeros(block.getBlockMat().size(), CV_16SC3);
+        for (int i = 0; i < mv.residual.rows; i++)
+            for (int j = 0; j < mv.residual.cols; j++) {
+                mv.residual.at<Vec3s>(i, j)[0] = block.getBlockMat().at<Vec3b>(i, j)[0] - ref_block.getBlockMat().at<Vec3b>(i, j)[0];
+                mv.residual.at<Vec3s>(i, j)[1] = block.getBlockMat().at<Vec3b>(i, j)[1] - ref_block.getBlockMat().at<Vec3b>(i, j)[1];
+                mv.residual.at<Vec3s>(i, j)[2] = block.getBlockMat().at<Vec3b>(i, j)[2] - ref_block.getBlockMat().at<Vec3b>(i, j)[2];
+            }
         best_score = diff_value;
         previous_best = best_match;
         best_match = mv;
@@ -468,7 +474,14 @@ Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &mot
         for (int j = 0; j + block_size <= reference->getImage().size()[1]; j += block_size) {
             MotionVector mv = motion_vectors[i / block_size * (reference->getImage().size()[1] / block_size) + j / block_size];
             Block block = get_block(reference->getImage(), block_size, i + mv.y, j + mv.x);
-            block.setBlockMat(block.getBlockMat() + mv.residual);
+            Mat reconstructed_block = Mat::zeros(block.getBlockMat().size(), CV_8UC3);
+            for (int k = 0; k < block.getBlockMat().rows; k++)
+                for (int l = 0; l < block.getBlockMat().cols; l++) {
+                    reconstructed_block.at<Vec3b>(k, l)[0] = block.getBlockMat().at<Vec3b>(k, l)[0] + mv.residual.at<Vec3s>(k, l)[0];
+                    reconstructed_block.at<Vec3b>(k, l)[1] = block.getBlockMat().at<Vec3b>(k, l)[1] + mv.residual.at<Vec3s>(k, l)[1];
+                    reconstructed_block.at<Vec3b>(k, l)[2] = block.getBlockMat().at<Vec3b>(k, l)[2] + mv.residual.at<Vec3s>(k, l)[2];
+                }
+            block.setBlockMat(reconstructed_block);
             setSlice(reconstructed, block.getBlockMat(), i, j);
         }
     }
