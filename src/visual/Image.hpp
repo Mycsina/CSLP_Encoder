@@ -125,7 +125,7 @@ public:
     //! @param  col Column of pixel / x-coordinate
     //! @param  color_values Array of integers containing the color values of the
     //! pixel
-    void setPixel(int row, int col, const Vec3b &color_values);
+    void setPixel(int row, int col, const cv::Vec3b &color_values);
 
     //! Get a deep copy of the Image
     //! @return Image object containing a deep copy of the Image
@@ -177,6 +177,7 @@ public:
     static Image decode_JPEG_LS(const std::string& path);
 
     static Image decode_JPEG_LS(Golomb *g,COLOR_SPACE c_space,CHROMA_SUBSAMPLING cs_ratio, int rows,int cols);
+
 
     static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel);
 };

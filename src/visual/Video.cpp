@@ -226,16 +226,19 @@ void Video::convertTo(COLOR_SPACE f1, COLOR_SPACE f2) {
     im_reel = temp;
 }
 
-void Video::encode_hybrid(const std::string& path, int m, int period){
+void Video::encode_hybrid(const std::string& path, int m, int period, int search_radius, int block_size){
     if (loaded()) {
         auto *bs = new BitStream(path, std::ios::out);
-        std::vector<int> intraBuffer,interBuffer;
         Golomb g(bs);
 
-        Image sample_image;
+        Image sample_image=im_reel.front();
 
+        //write header
         bs->writeBits(im_reel.size(),8);
         bs->writeBits(period,8);
+        bs->writeBits(search_radius,8);
+        bs->writeBits(block_size,8);
+        bs->writeBits((int)fps_,8)
         bs->writeBits(static_cast<int>(sample_image.getColor()), 4);
         bs->writeBits(static_cast<int>(sample_image.getChroma()), 4);
         bs->writeBits(sample_image.getImageMat()->cols, 8 * sizeof(int));
@@ -243,13 +246,56 @@ void Video::encode_hybrid(const std::string& path, int m, int period){
         bs->writeBits(m,8*sizeof(int));
         g._set_m(m);
 
+        //encode in bulk into the buffers
         int cnt=period;
-        vector<vector<int>> intra_buffer;
-        vector<vector<int>> inter_buffer;
-
+        int last_intra=0;
+        for(int index=0; index<im_reel.size();index++){
+            Frame frame(im_reel[index]);
+            if(cnt==period){
+                frame.encode_JPEG_LS();
+                last_intra=index;
+                cnt=0;
+            }else{
+                Frame frame_intra(im_reel[last_intra]);
+                frame.encode_inter(&g,frame_intra,search_radius,block_size);
+                cnt++;
+            }
+        }
         delete bs;
-
     } else {
         throw std::runtime_error("Video hasn't been loaded");
     }
+}
+
+Video Video::decode_hybrid(const std::string &path) {
+    auto *bs = new BitStream(path, std::ios::out);
+    vector<Image> im_reel;
+    Golomb g(bs);
+    Video v;
+
+    //read header
+    int size=bs->readBits(8);
+    int period=bs->readBits(8);
+    int search_radius=bs->readBits(8);
+    int block_size=bs->readBits(8);
+    auto c_space=static_cast<COLOR_SPACE>(bs->readBits(4));
+    auto cs_ratio=static_cast<CHROMA_SUBSAMPLING>(bs->readBits(4));
+    int cols=bs->readBits(8 * sizeof(int));
+    int rows=bs->readBits(8 * sizeof(int));
+    int m=bs->readBits(8 * sizeof(int));
+    g._set_m(m);
+
+    int cnt=period;
+    int last_intra=0;
+    for(int index=0;index<size;index++){
+        if(cnt==period){
+            im_reel.push_back(Frame::decode_JPEG_LS(&g,c_space,cs_ratio,rows,cols).getImage());
+            last_intra=index;
+            cnt=0;
+        }else{
+            Frame frame_intra(im_reel[last_intra]);
+            im_reel.push_back(Frame::decode_inter(&g,frame_intra,c_space,cs_ratio,rows,cols,search_radius,block_size).getImage());
+        }
+    }
+
 }
