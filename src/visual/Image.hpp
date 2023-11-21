@@ -178,6 +178,7 @@ public:
 
     static Image decode_JPEG_LS(Golomb *g,COLOR_SPACE c_space,CHROMA_SUBSAMPLING cs_ratio, int rows,int cols);
 
+
     static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel);
 };
 
