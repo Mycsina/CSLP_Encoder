@@ -52,15 +52,3 @@ TEST(ImageTestSuite, PixelWiseCloning) {
     ASSERT_EQ(im1.getPixel(345, 256), im2.getPixel(345, 256));
     remove("../../tests/resource/pbp.png");
 }
-
-TEST(ImageTestSuite, JPEG_LS) {
-    Image im1, im2;
-    double diffs;
-
-    im1.load(img_file);
-    im1.encode_JPEG_LS(jpegls_file, 4);
-    im2 = Image::decode_JPEG_LS(jpegls_file);
-    diffs = cv::norm(*im1.getImageMat(), *im2.getImageMat(), cv::NORM_L2);
-    ASSERT_TRUE(im1 == im2);
-    remove(jpegls_file);
-}

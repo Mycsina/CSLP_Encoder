@@ -50,11 +50,6 @@ void BitStream::writeBits(int value, int n) {
     for (int i = n - 1; i >= 0; i--) {
         writeBit(value >> i & 1);//get the nth byte and write it
     }
-    /*
-  buffer |= value << (8 - n);
-  bufferSize += n;
-  flushBuffer(); // Write the buffer to the file if it's full
-     */
 }
 
 int BitStream::readBits(int n) {

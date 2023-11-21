@@ -6,6 +6,7 @@ using namespace std;
 
 auto vid_file = "../../tests/resource/video.mp4";
 auto vid_yuv_file = "../../tests/resource/akiyo_qcif.y4m";
+auto interframe_dst = "../../tests/resource/interframe_test.bin";
 
 TEST(VideoTestSuite, VideoPlay) {
     Video vid;
@@ -32,4 +33,11 @@ TEST(VideoTestSuite, NewConstructorTest) {
     vid1.play(27);
     Video vid2(vid_yuv_file);
     vid2.play(27);
+}
+
+TEST(VideoTestSuite, InterframeDemoSlow) {
+    Video vid1(vid_file);
+    //vid1.encode_hybrid(interframe_dst,4,3,5,8);
+    Video vid2=Video::decode_hybrid(interframe_dst);
+    //vid2.play(27);
 }

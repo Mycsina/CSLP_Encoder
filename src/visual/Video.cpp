@@ -226,15 +226,16 @@ void Video::convertTo(COLOR_SPACE f1, COLOR_SPACE f2) {
     im_reel = temp;
 }
 
-void Video::encode_hybrid(const std::string& path, int m, int period, int search_radius, int block_size, int threshold=255){
+void Video::encode_hybrid(const std::string& path, int m, int period, int search_radius, int block_size, int threshold){
     if (loaded()) {
         auto *bs = new BitStream(path, std::ios::out);
         Golomb g(bs);
 
         Image sample_image=im_reel.front();
 
+        int temp=(int)im_reel.size();
         //write header
-        bs->writeBits(im_reel.size(),8);
+        bs->writeBits((int)im_reel.size(),8*sizeof(int));
         bs->writeBits(period,8);
         bs->writeBits(search_radius,8);
         bs->writeBits(block_size,8);
@@ -246,7 +247,7 @@ void Video::encode_hybrid(const std::string& path, int m, int period, int search
         bs->writeBits(sample_image.getImageMat()->rows, 8 * sizeof(int));
         bs->writeBits(m,8*sizeof(int));
         g._set_m(m);
-
+        /*
         //encode in bulk into the buffers
         int cnt=period;
         int last_intra=0;
@@ -262,6 +263,7 @@ void Video::encode_hybrid(const std::string& path, int m, int period, int search
                 cnt++;
             }
         }
+         */
         delete bs;
     } else {
         throw std::runtime_error("Video hasn't been loaded");
@@ -275,7 +277,7 @@ Video Video::decode_hybrid(const std::string &path) {
     Video v;
 
     //read header
-    int size=bs->readBits(8);
+    int size=bs->readBits(8*sizeof(int));
     int period=bs->readBits(8);
     int search_radius=bs->readBits(8 );
     int block_size=bs->readBits(8);
@@ -292,15 +294,16 @@ Video Video::decode_hybrid(const std::string &path) {
     int last_intra=0;
     for(int index=0;index<size;index++){
         if(cnt==period){
-            im_reel.push_back(Frame::decode_JPEG_LS(&g,c_space,cs_ratio,rows,cols).getImage());
+            im_reel->push_back(Frame::decode_JPEG_LS(&g,c_space,cs_ratio,rows,cols).getImage());
             last_intra=index;
             cnt=0;
         }else{
-            Frame frame_intra(im_reel[last_intra]);
-            im_reel.push_back(Frame::decode_inter(&g, &frame_intra, c_space, cs_ratio, rows, cols, search_radius, block_size,threshold).getImage());
+            Frame frame_intra((*im_reel)[last_intra]);
+            im_reel->push_back(Frame::decode_inter(&g, &frame_intra, c_space, cs_ratio, rows, cols, search_radius, block_size).getImage());
         }
     }
-
     v.set_fps(fps_);
     v.set_reel(im_reel);
+    v.play();
+    return v;
 }
