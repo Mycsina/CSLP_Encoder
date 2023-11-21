@@ -247,14 +247,13 @@ void Video::encode_hybrid(const std::string& path, int m, int period, int search
         bs->writeBits(sample_image.getImageMat()->rows, 8 * sizeof(int));
         bs->writeBits(m,8*sizeof(int));
         g._set_m(m);
-        /*
         //encode in bulk into the buffers
         int cnt=period;
         int last_intra=0;
         for(int index=0; index<im_reel.size();index++){
             Frame frame(im_reel[index]);
             if(cnt==period){
-                frame.encode_JPEG_LS();
+                frame.encode_JPEG_LS(&g);
                 last_intra=index;
                 cnt=0;
             }else{
@@ -263,7 +262,6 @@ void Video::encode_hybrid(const std::string& path, int m, int period, int search
                 cnt++;
             }
         }
-         */
         delete bs;
     } else {
         throw std::runtime_error("Video hasn't been loaded");
@@ -304,6 +302,5 @@ Video Video::decode_hybrid(const std::string &path) {
     }
     v.set_fps(fps_);
     v.set_reel(im_reel);
-    v.play();
     return v;
 }
