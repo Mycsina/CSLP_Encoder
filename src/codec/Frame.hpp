@@ -182,4 +182,8 @@ public:
     //! @param block_size Size of the macroblocks to be compared
     //! @return Reconstructed frame
     Frame static reconstruct_frame(Frame *reference, const std::vector<MotionVector> &motion_vectors, int block_size);
+
+    void encode_inter(Golomb *g, Frame *reference, int search_radius,int block_size);
+
+    static Frame decode_inter(Golomb *g, Frame *reference, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows, int cols, int search_radius, int block_size);
 };

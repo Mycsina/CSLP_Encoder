@@ -507,3 +507,42 @@ void Frame::visualize_MV(Frame *reference, int block_size) {
     imshow("res", res);
     waitKey(0);
 }
+
+void Frame::encode_inter(Golomb *g, Frame *reference, int search_radius,int block_size){
+    calculate_MV(reference,block_size,search_radius,false);
+    for(const auto& mv: getMotionVectors()){
+        g->encode(mv.x);
+        g->encode(mv.y);
+        Mat residual=mv.residual;
+        for(int row=0;row<residual.rows;row++){
+            for(int col=0;col<residual.cols;col++){
+                for(int channel=0;channel<residual.channels();channel++){
+                    g->encode((int)residual.at<Vec3s>(row,col)[channel]);
+                }
+            }
+        }
+    }
+}
+
+Frame Frame::decode_inter(Golomb *g, Frame *reference, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows,int cols, int search_radius, int block_size) {
+    vector<MotionVector> mvs;
+    for(int block_num=0;block_num<=(rows/block_size)*(cols/block_size);block_num++){
+        MotionVector mv;
+        Mat residual;
+        if(c_space==GRAY){
+            residual=Mat::zeros(block_size,block_size,CV_16SC1);
+        }
+        mv.x=g->decode();
+        mv.y=g->decode();
+        for(int row=0;row<block_size;row++){
+            for(int col=0;col<block_size;col++){
+                for(int channel=0;channel<residual.channels();channel++){
+                    residual.at<Vec3s>(row,col)[channel]=(short)g->decode();
+                }
+            }
+        }
+        mv.residual=residual;
+        mvs.push_back(mv);
+    }
+    return Frame::reconstruct_frame(reference,mvs,block_size);
+}

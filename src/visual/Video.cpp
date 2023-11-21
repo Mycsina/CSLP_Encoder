@@ -226,7 +226,7 @@ void Video::convertTo(COLOR_SPACE f1, COLOR_SPACE f2) {
     im_reel = temp;
 }
 
-void Video::encode_hybrid(const std::string& path, int m, int period, int search_radius, int block_size){
+void Video::encode_hybrid(const std::string& path, int m, int period, int search_radius, int block_size, int threshold=255){
     if (loaded()) {
         auto *bs = new BitStream(path, std::ios::out);
         Golomb g(bs);
@@ -238,7 +238,8 @@ void Video::encode_hybrid(const std::string& path, int m, int period, int search
         bs->writeBits(period,8);
         bs->writeBits(search_radius,8);
         bs->writeBits(block_size,8);
-        bs->writeBits((int)fps_,8)
+        bs->writeBits((int)fps_,8 * sizeof(int));
+        bs->writeBits((int)threshold,8 * sizeof(int));
         bs->writeBits(static_cast<int>(sample_image.getColor()), 4);
         bs->writeBits(static_cast<int>(sample_image.getChroma()), 4);
         bs->writeBits(sample_image.getImageMat()->cols, 8 * sizeof(int));
@@ -257,7 +258,7 @@ void Video::encode_hybrid(const std::string& path, int m, int period, int search
                 cnt=0;
             }else{
                 Frame frame_intra(im_reel[last_intra]);
-                frame.encode_inter(&g,frame_intra,search_radius,block_size);
+                frame.encode_inter(&g,&frame_intra,search_radius,block_size);
                 cnt++;
             }
         }
@@ -269,15 +270,17 @@ void Video::encode_hybrid(const std::string& path, int m, int period, int search
 
 Video Video::decode_hybrid(const std::string &path) {
     auto *bs = new BitStream(path, std::ios::out);
-    vector<Image> im_reel;
+    auto *im_reel=new vector<Image>();
     Golomb g(bs);
     Video v;
 
     //read header
     int size=bs->readBits(8);
     int period=bs->readBits(8);
-    int search_radius=bs->readBits(8);
+    int search_radius=bs->readBits(8 );
     int block_size=bs->readBits(8);
+    int fps_=bs->readBits(8*sizeof(int));
+    int threshold=bs->readBits(8*sizeof(int));
     auto c_space=static_cast<COLOR_SPACE>(bs->readBits(4));
     auto cs_ratio=static_cast<CHROMA_SUBSAMPLING>(bs->readBits(4));
     int cols=bs->readBits(8 * sizeof(int));
@@ -294,8 +297,10 @@ Video Video::decode_hybrid(const std::string &path) {
             cnt=0;
         }else{
             Frame frame_intra(im_reel[last_intra]);
-            im_reel.push_back(Frame::decode_inter(&g,frame_intra,c_space,cs_ratio,rows,cols,search_radius,block_size).getImage());
+            im_reel.push_back(Frame::decode_inter(&g, &frame_intra, c_space, cs_ratio, rows, cols, search_radius, block_size,threshold).getImage());
         }
     }
 
+    v.set_fps(fps_);
+    v.set_reel(im_reel);
 }
