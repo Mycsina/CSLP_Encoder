@@ -91,8 +91,9 @@ int Golomb::readBinaryTrunc() {
 void Golomb::writeBinaryTrunc(int n) {
     int k = floor(log2(m));
     int u = (int) pow(k + 1, 2) - m;
-    if (n < u)
+    if (n < u) {
         bs->writeBits(n, k);
-    else
+    }else {
         bs->writeBits(n + u, k + 1);
+    }
 }

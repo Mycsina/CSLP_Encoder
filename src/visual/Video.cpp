@@ -262,6 +262,7 @@ void Video::encode_hybrid(const std::string& path, int m, int period, int search
                 cnt++;
             }
         }
+
         delete bs;
     } else {
         throw std::runtime_error("Video hasn't been loaded");
@@ -269,7 +270,7 @@ void Video::encode_hybrid(const std::string& path, int m, int period, int search
 }
 
 Video Video::decode_hybrid(const std::string &path) {
-    auto *bs = new BitStream(path, std::ios::out);
+    auto *bs = new BitStream(path, std::ios::in);
     auto *im_reel=new vector<Image>();
     Golomb g(bs);
     Video v;
