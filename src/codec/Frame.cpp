@@ -531,6 +531,8 @@ Frame Frame::decode_inter(Golomb *g, Frame *reference, COLOR_SPACE c_space, CHRO
         Mat residual;
         if(c_space==GRAY){
             residual=Mat::zeros(block_size,block_size,CV_16SC1);
+        }else{
+            residual=Mat::zeros(block_size,block_size,CV_16SC3);
         }
         mv.x=g->decode();
         mv.y=g->decode();
