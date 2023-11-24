@@ -452,7 +452,6 @@ MotionVector Frame::match_block_arps(const Block &block, Frame *reference, int t
 void Frame::calculate_MV(Frame *reference, int block_size, int search_radius, bool fast) {
     type_ = P_FRAME;
     setBlockDiff(new Block::MSE());
-    vector<MotionVector> motion_vectors;
     for (int i = 0; i + block_size <= image_.size()[0]; i += block_size) {
         for (int j = 0; j + block_size <= image_.size()[1]; j += block_size) {
             Block block = get_block(image_, block_size, i, j);
@@ -473,7 +472,7 @@ Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &mot
     for (int i = 0; i + block_size <= reference->getImage().size()[0]; i += block_size) {
         for (int j = 0; j + block_size <= reference->getImage().size()[1]; j += block_size) {
             MotionVector mv = motion_vectors[i / block_size * (reference->getImage().size()[1] / block_size) + j / block_size];
-            Block block = get_block(reference->getImage(), block_size, i + mv.y, j + mv.x);
+            Block block = get_block(reference->getImage(), block_size, i, j);
             Mat reconstructed_block = Mat::zeros(block.getBlockMat().size(), CV_8UC3);
             for (int k = 0; k < block.getBlockMat().rows; k++)
                 for (int l = 0; l < block.getBlockMat().cols; l++) {
@@ -526,7 +525,7 @@ void Frame::encode_inter(Golomb *g, Frame *reference, int search_radius,int bloc
 
 Frame Frame::decode_inter(Golomb *g, Frame *reference, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows,int cols, int search_radius, int block_size) {
     vector<MotionVector> mvs;
-    for(int block_num=0;block_num<=(rows/block_size)*(cols/block_size);block_num++){
+    for(int block_num=0;block_num<(rows/block_size)*(cols/block_size);block_num++){
         MotionVector mv;
         Mat residual;
         if(c_space==GRAY){
