@@ -510,7 +510,6 @@ void Frame::visualize_MV(Frame *reference, int block_size) {
 }
 
 void Frame::encode_inter(Golomb *g, Frame *reference, int search_radius,int block_size){
-    int num_writes=0;
     calculate_MV(reference,block_size,search_radius,false);
     for(const auto& mv: getMotionVectors()){
         g->encode(mv.x);
@@ -519,13 +518,11 @@ void Frame::encode_inter(Golomb *g, Frame *reference, int search_radius,int bloc
         for(int row=0;row<residual.rows;row++){
             for(int col=0;col<residual.cols;col++){
                 for(int channel=0;channel<residual.channels();channel++){
-                    num_writes++;
                     g->encode((int)residual.at<Vec3s>(row,col)[channel]);
                 }
             }
         }
     }
-    std::cout<<num_writes << std::endl;
 }
 
 Frame Frame::decode_inter(Golomb *g, Frame *reference, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows,int cols, int search_radius, int block_size) {
