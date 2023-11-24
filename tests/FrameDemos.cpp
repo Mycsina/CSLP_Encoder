@@ -16,11 +16,15 @@ protected:
         auto vid = Video();
         vid.loadY4M(smallMoving, YUV420);
         vid.convertTo(YUV, BGR);
-        f1 = vid.getFrame(0);
-        f2 = vid.getFrame(3);
-        f3 = vid.getFrame(6);
+        f1 = vid.get_frame(0);
+        f2 = vid.get_frame(3);
+        f3 = vid.get_frame(6);
     }
 };
+
+TEST_F(FrameDemo, BestGolombIntra) {
+    int i = 0;
+}
 
 TEST_F(FrameDemo, FrameMotionVectorDemo) {
     f1.show();

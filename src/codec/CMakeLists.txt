@@ -7,6 +7,7 @@ add_compile_options(-O3)
 add_library(Codec
         Frame.cpp
         LosslessIntra.cpp
+        LosslessInter.cpp
 )
 if (OpenMP_CXX_FOUND)
     target_link_libraries(Codec PUBLIC OpenMP::OpenMP_CXX)

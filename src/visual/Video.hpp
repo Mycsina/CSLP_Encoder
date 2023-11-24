@@ -30,12 +30,12 @@ public:
     //! Generates vector of frames from the video
     //! @warning Must be deallocated after use
     //! @return vector of frames
-    std::vector<Frame *> generateFrames();
+    std::vector<Frame *> generateFrames() const;
 
     //! Returns frame at given position
     //! @param pos position of the frame
     //! @return Image object representing the frame
-    Frame getFrame(int pos);
+    Frame get_frame(int pos) const;
 
     //! Applies a function to every frame in the video
     //! @param func function to be applied
@@ -79,7 +79,7 @@ public:
     //! @param path the path to the destination file
     //! @param m the m value for Golomb encoding
     //! @param period the number of frames between each key (intra) frame
-    void encode_hybrid(const std::string& path, int m=10, int period=3, int search_radius=5, int block_size=8, int threshold=255);
+    void encode_hybrid(const std::string& path, int m=10, int period=3, int search_radius=5, int block_size=8, int threshold=255) const;
 
     static Video decode_hybrid(const std::string& path);
 };

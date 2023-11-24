@@ -2,8 +2,11 @@
 #pragma once
 
 #include "../visual/Image.hpp"
+#include "LosslessInter.hpp"
+#include "LosslessIntra.hpp"
+
 #include <opencv2/core/mat.hpp>
-#include <ostream>
+
 
 struct MotionVector {
     int x, y;
@@ -35,6 +38,7 @@ public:
 
     class BlockDiff {
     public:
+        virtual ~BlockDiff() = default;
         virtual double block_diff(const Block &a, const Block &b) = 0;
         virtual bool isBetter(double score) = 0;
         double best_score{};
@@ -42,60 +46,66 @@ public:
         MotionVector previous_best;
         int threshold{};
         virtual void reset();
-        bool compare(const Block &block, Frame *reference, cv::Point center);
+        bool compare(const Block &block, const Frame *reference, cv::Point center);
     };
 
-    class MAD : public BlockDiff {
+    class MAD final : public BlockDiff {
     public:
-        //! Returns the [MAD](https://en.wikipedia.org/wiki/Mean_absolute_difference) between this block and another block
-        //! @details Higher MAD values indicate a greater difference between the blocks
-        //! @param other Block to be compared
-        //! @return MAL value (lesser is better)
         explicit MAD(int threshold = 0);
+        //! Returns the [MAD](https://en.wikipedia.org/wiki/Mean_absolute_difference) between a block and another block
+        //! @details Higher MAD values indicate a greater difference between the blocks
+        //! @param a Block to be compared
+        //! @param b Block to be compared
+        //! @return MAL value (lesser is better)
         double block_diff(const Block &a, const Block &b) override;
         bool isBetter(double score) override;
     };
 
-    class MSE : public BlockDiff {
+    class MSE final : public BlockDiff {
     public:
+        explicit MSE(int threshold = 0);
         //! Returns the [MSE](https://en.wikipedia.org/wiki/Mean_squared_error) between this block and another block
         //! @details Higher MSE values indicate a greater difference between the blocks
-        //! @param other Block to be compared
+        //! @param a Block to be compared
+        //! @param b Block to be compared
         //! @return MSE value (lesser is better)
-        explicit MSE(int threshold = 0);
         double block_diff(const Block &a, const Block &b) override;
         bool isBetter(double score) override;
     };
 
-    class PSNR : public BlockDiff {
+    class PSNR final : public BlockDiff {
     public:
+        explicit PSNR(int threshold = 0);
         //! Returns the [PSNR](https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio) between this block and another block
         //! @details Lower PSNR values indicate a greater difference between the blocks (logarithmic scale)
-        //! @param other Block to be compared
+        //! @param a Block to be compared
+        //! @param b Block to be compared
         //! @return PSNR value (greater is better)
-        explicit PSNR(int threshold = 0);
         double block_diff(const Block &a, const Block &b) override;
         bool isBetter(double score) override;
         void reset() override;
     };
 
-    class SAD : public BlockDiff {
+    class SAD final : public BlockDiff {
     public:
+        explicit SAD(int threshold = 0);
         //! Returns the [SAD](https://en.wikipedia.org/wiki/Sum_of_absolute_differences) between this block and another block
         //! @details Higher SAD values indicate a greater difference between the blocks
         //! @note This is the default block_diff method and is the fastest
-        //! @param other Block to be compared
+        //! @param a Block to be compared
+        //! @param b Block to be compared
         //! @return SAD value (lesser is better)
-        explicit SAD(int threshold = 0);
         double block_diff(const Block &a, const Block &b) override;
         bool isBetter(double score) override;
     };
 };
 
 //! Return a Block object representing a block of pixels
+//! @param img Image to be used
 //! @param size Size of the block
 //! @param row Row of the top-left pixelp
 //! @param col Column of the top-left pixel
+//! @return Block object
 Block get_block(const Image &img, int size, int row, int col);
 
 
@@ -109,7 +119,6 @@ enum FrameType {
  * @brief The Frame class provides methods to manipulate an Image in the context of video encoding
  */
 class Frame {
-private:
     Image image_;     //!< Contains original image
     FrameType type_{};//!< Indicates the type of frame
     Block::BlockDiff *block_diff_{};
@@ -121,7 +130,7 @@ public:
     ~Frame() = default;
     explicit Frame(const Image &img);
     Image getImage() const;
-    bool isBlockDiff(Block::BlockDiff *blockDiff) const;
+    bool isBlockDiff(const Block::BlockDiff *blockDiff) const;
     void setBlockDiff(Block::BlockDiff *blockDiff);
     std::vector<MotionVector> getMotionVectors() const;
     const std::vector<int> &getIntraEncoding() const;
@@ -134,11 +143,11 @@ public:
 
     void encode_JPEG_LS(Golomb *g);
 
-    void write_JPEG_LS(Golomb *g);
+    void write_JPEG_LS(Golomb *g) const;
 
-    static Frame decode_JPEG_LS(Golomb *g, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows, int cols);
+    static Frame decode_JPEG_LS(Golomb *g, IntraHeader header);
 
-    static Frame decode_JPEG_LS(std::vector<int> encodings, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows, int cols);
+    static Frame decode_JPEG_LS(const std::vector<int> &encodings, COLOR_SPACE color, CHROMA_SUBSAMPLING chroma, int rows, int cols);
 
     static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel = 0);
 
@@ -150,31 +159,31 @@ public:
 
     std::array<cv::Point, 5> get_rood_points(cv::Point center, int arm_size, int block_size) const;
 
-
     //! Returns the best motion vector between this frame and the nth previous frame
     //! @details This function uses an optimized version of [Exhaustive Search](https://en.wikipedia.org/wiki/Block-matching_algorithm#Exhaustive_Search), checking the block at it's original position first.
     //! @param block Block to be compared
-    //! @param n Number of frames to go back
+    //! @param reference Reference frame
     //! @param search_radius Radius of the search area (not including the block itself)
     //! @return Motion vector
-    MotionVector match_block_es(const Block &block, Frame *reference, int search_radius);
+    MotionVector match_block_es(const Block &block, const Frame *reference, int search_radius) const;
 
     //! Returns the motion vector between this frame and the nth previous frame
+    //! @details This function uses the [Adaptive Rood Pattern Search](https://ieeexplore.ieee.org/document/1176932) algorithm
     //! @param block Block to be compared
-    //! @param n Number of frames to go back
-    //! @param search_radius Radius of the search area (not including the block itself)
+    //! @param reference Reference frame
+    //! @param threshold Threshold for the search
     //! @return Motion vector
-    MotionVector match_block_arps(const Block &block, Frame *reference, int threshold = 512);
+    MotionVector match_block_arps(const Block &block, Frame *reference, int threshold = 512) const;
 
     //! Calculate motion vectors for all blocks in the frame
     //! @param block_size Size of the macroblocks to be compared
-    //! @param n Number of frames to go back
+    //! @param reference Reference frame
     //! @param search_radius Radius of the search area (not including the block itself)
     //! @param fast Indicates whether the fast search algorithm should be used
     //! @return Vector of motion vectors
     void calculate_MV(Frame *reference, int block_size, int search_radius, bool fast);
 
-    void visualize_MV(Frame *reference, int block_size);
+    void visualize_MV(const Frame *reference, int block_size) const;
 
     //! Reconstruct a frame using a frame, a vector of motion vectors and a block size
     //! @param reference Reference frame
@@ -183,7 +192,7 @@ public:
     //! @return Reconstructed frame
     Frame static reconstruct_frame(Frame *reference, const std::vector<MotionVector> &motion_vectors, int block_size);
 
-    void encode_inter(Golomb *g, Frame *reference, int search_radius,int block_size);
+    void write(Golomb *g) const;
 
-    static Frame decode_inter(Golomb *g, Frame *reference, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows, int cols, int search_radius, int block_size);
+    static Frame decode_inter(Golomb *g, Frame *reference, InterHeader header);
 };

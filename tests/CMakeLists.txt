@@ -12,7 +12,8 @@ add_executable(tests_run
 add_executable(Demos
         VideoDemos.cpp
         ImageDemos.cpp
-        FrameDemos.cpp)
+        FrameDemos.cpp
+        EncoderDemos.cpp)
 
 
 message(STATUS "OpenCV library status:")

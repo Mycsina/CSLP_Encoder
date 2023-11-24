@@ -29,7 +29,7 @@ void Video::set_reel(vector<Image> *reel) { im_reel = *reel; }
 float Video::get_fps() const { return fps_; }
 void Video::set_fps(float fps) { fps_ = fps; }
 
-vector<Frame *> Video::generateFrames() {
+vector<Frame *> Video::generateFrames() const {
     vector<Frame *> frames;
     for (auto &it: im_reel) {
         frames.push_back(new Frame(it));
@@ -37,7 +37,7 @@ vector<Frame *> Video::generateFrames() {
     return frames;
 }
 
-Frame Video::getFrame(int pos) {
+Frame Video::get_frame(const int pos) const {
     return Frame(im_reel[pos]);
 }
 
@@ -50,7 +50,7 @@ void Video::map(const function<void(Image &)> &func) {
 }
 
 void Video::load(const char *filename) {
-    string ext = filename;
+    const string ext = filename;
     VideoCapture cap = VideoCapture(ext);
     while (cap.isOpened()) {
         Mat buf;
@@ -63,7 +63,7 @@ void Video::load(const char *filename) {
     }
 }
 
-void Video::loadY4M(const char *filename, CHROMA_SUBSAMPLING format) {
+void Video::loadY4M(const char *filename, const CHROMA_SUBSAMPLING format) {
     int width, height, uvWidth, uvHeight;
     float fps;
 
@@ -100,13 +100,13 @@ void Video::loadY4M(const char *filename, CHROMA_SUBSAMPLING format) {
     }
 }
 
-void Video::readFrame(FILE *file, int width, int height, int uvWidth,
-                      int uvHeight, CHROMA_SUBSAMPLING format) {
+void Video::readFrame(FILE *file, const int width, const int height, const int uvWidth,
+                      const int uvHeight, const CHROMA_SUBSAMPLING format) {
     Image im;
     char buffer[6];
     im.setColor(YUV);
     im.setChroma(format);
-    Mat yPlane(height, width, CV_8UC1);
+    const Mat yPlane(height, width, CV_8UC1);
     Mat uPlane(uvHeight, uvWidth, CV_8UC1);
     Mat vPlane(uvHeight, uvWidth, CV_8UC1);
     Mat frame(height, width, CV_8UC3);
@@ -126,19 +126,19 @@ void Video::readFrame(FILE *file, int width, int height, int uvWidth,
     }
 
     // read yPlane
-    if (fread(reinterpret_cast<char *>(yPlane.data), sizeof(uint8_t),
+    if (fread(yPlane.data, sizeof(uint8_t),
               width * height, file) != width * height) {
         throw runtime_error("yPlane reading not completed");
     }
 
     // read uPlane
-    if (fread(reinterpret_cast<char *>(uPlane.data), sizeof(uint8_t),
+    if (fread(uPlane.data, sizeof(uint8_t),
               uvWidth * uvHeight, file) != uvWidth * uvHeight) {
         throw runtime_error("uPlane reading not completed");
     }
 
     // read vPlane
-    if (fread(reinterpret_cast<char *>(vPlane.data), sizeof(uint8_t),
+    if (fread(vPlane.data, sizeof(uint8_t),
               uvWidth * uvHeight, file) != uvWidth * uvHeight) {
         throw runtime_error("vPlane reading not completed");
     }
@@ -172,7 +172,7 @@ void Video::getHeaderData(FILE *file, int *width, int *height, float *fps) {
                &frame_rate_num, &frame_rate_den, discard) != 5) {
         throw std::runtime_error("Error parsing header");
     }
-    *fps = (float) frame_rate_num / (float) frame_rate_den;
+    *fps = static_cast<float>(frame_rate_num) / static_cast<float>(frame_rate_den);
 }
 
 void Video::play(int stop_key) {
@@ -190,7 +190,7 @@ void Video::play(int stop_key) {
     }
 }
 
-void Video::convertTo(COLOR_SPACE f1, COLOR_SPACE f2) {
+void Video::convertTo(const COLOR_SPACE f1, const COLOR_SPACE f2) {
     function<Image(Image &)> func = [](Image &im) { return im; };
     switch (f1) {
         case BGR:
@@ -226,82 +226,82 @@ void Video::convertTo(COLOR_SPACE f1, COLOR_SPACE f2) {
     im_reel = temp;
 }
 
-void Video::encode_hybrid(const std::string& path, int m, int period, int search_radius, int block_size, int threshold){
-    if (loaded()) {
-        auto *bs = new BitStream(path, std::ios::out);
-        Golomb g(bs);
-
-        Image sample_image=im_reel.front();
-
-        int temp=(int)im_reel.size();
-        //write header
-        bs->writeBits((int)im_reel.size(),8*sizeof(int));
-        bs->writeBits(period,8);
-        bs->writeBits(search_radius,8);
-        bs->writeBits(block_size,8);
-        bs->writeBits((int)fps_,8 * sizeof(int));
-        bs->writeBits((int)threshold,8 * sizeof(int));
-        bs->writeBits(static_cast<int>(sample_image.getColor()), 4);
-        bs->writeBits(static_cast<int>(sample_image.getChroma()), 4);
-        bs->writeBits(sample_image.getImageMat()->cols, 8 * sizeof(int));
-        bs->writeBits(sample_image.getImageMat()->rows, 8 * sizeof(int));
-        bs->writeBits(m,8*sizeof(int));
-        g._set_m(m);
-        //encode in bulk into the buffers
-        int cnt=period;
-        int last_intra=0;
-        for(int index=0; index<im_reel.size();index++){
-            Frame frame(im_reel[index]);
-            if(cnt==period){
-                frame.encode_JPEG_LS(&g);
-                last_intra=index;
-                cnt=0;
-            }else{
-                Frame frame_intra(im_reel[last_intra]);
-                frame.encode_inter(&g,&frame_intra,search_radius,block_size);
-                cnt++;
-            }
-        }
-
-        delete bs;
-    } else {
-        throw std::runtime_error("Video hasn't been loaded");
-    }
-}
-
-Video Video::decode_hybrid(const std::string &path) {
-    auto *bs = new BitStream(path, std::ios::in);
-    auto *im_reel=new vector<Image>();
-    Golomb g(bs);
-    Video v;
-
-    //read header
-    int size=bs->readBits(8*sizeof(int));
-    int period=bs->readBits(8);
-    int search_radius=bs->readBits(8 );
-    int block_size=bs->readBits(8);
-    int fps_=bs->readBits(8*sizeof(int));
-    int threshold=bs->readBits(8*sizeof(int));
-    auto c_space=static_cast<COLOR_SPACE>(bs->readBits(4));
-    auto cs_ratio=static_cast<CHROMA_SUBSAMPLING>(bs->readBits(4));
-    int cols=bs->readBits(8 * sizeof(int));
-    int rows=bs->readBits(8 * sizeof(int));
-    int m=bs->readBits(8 * sizeof(int));
-    g._set_m(m);
-
-    int cnt=period;
-    int last_intra=0;
-    for(int index=0;index<size;index++){
-        if(cnt==period){
-            im_reel->push_back(Frame::decode_JPEG_LS(&g,c_space,cs_ratio,rows,cols).getImage());
-            last_intra=index;
-            cnt=0;
-        }else{
-            Frame frame_intra((*im_reel)[last_intra]);
-            im_reel->push_back(Frame::decode_inter(&g, &frame_intra, c_space, cs_ratio, rows, cols, search_radius, block_size).getImage());
-        }
-    }
-    v.set_fps(fps_);
-    v.set_reel(im_reel);
-    return v;
-}
+// void Video::encode_hybrid(const std::string &path, int m, int period, int search_radius, int block_size, int threshold) const {
+//     if (loaded()) {
+//         auto *bs = new BitStream(path, std::ios::out);
+//         Golomb g(bs);
+//
+//         Image sample_image = im_reel.front();
+//
+//         int temp = (int) im_reel.size();
+//         //write header
+//         bs->writeBits((int) im_reel.size(), 8 * sizeof(int));
+//         bs->writeBits(period, 8);
+//         bs->writeBits(search_radius, 8);
+//         bs->writeBits(block_size, 8);
+//         bs->writeBits((int) fps_, 8 * sizeof(int));
+//         bs->writeBits((int) threshold, 8 * sizeof(int));
+//         bs->writeBits(static_cast<int>(sample_image.getColor()), 4);
+//         bs->writeBits(static_cast<int>(sample_image.getChroma()), 4);
+//         bs->writeBits(sample_image.getImageMat()->cols, 8 * sizeof(int));
+//         bs->writeBits(sample_image.getImageMat()->rows, 8 * sizeof(int));
+//         bs->writeBits(m, 8 * sizeof(int));
+//         g._set_m(m);
+//         //encode in bulk into the buffers
+//         int cnt = period;
+//         int last_intra = 0;
+//         for (int index = 0; index < im_reel.size(); index++) {
+//             Frame frame(im_reel[index]);
+//             if (cnt == period) {
+//                 frame.encode_JPEG_LS(&g);
+//                 last_intra = index;
+//                 cnt = 0;
+//             } else {
+//                 Frame frame_intra(im_reel[last_intra]);
+//                 frame.encode_inter(&g, &frame_intra, search_radius, block_size);
+//                 cnt++;
+//             }
+//         }
+//
+//         delete bs;
+//     } else {
+//         throw std::runtime_error("Video hasn't been loaded");
+//     }
+// }
+//
+// Video Video::decode_hybrid(const std::string &path) {
+//     auto *bs = new BitStream(path, std::ios::in);
+//     auto *im_reel = new vector<Image>();
+//     Golomb g(bs);
+//     Video v;
+//
+//     //read header
+//     int size = bs->readBits(8 * sizeof(int));
+//     int period = bs->readBits(8);
+//     int search_radius = bs->readBits(8);
+//     int block_size = bs->readBits(8);
+//     int fps_ = bs->readBits(8 * sizeof(int));
+//     int threshold = bs->readBits(8 * sizeof(int));
+//     auto c_space = static_cast<COLOR_SPACE>(bs->readBits(4));
+//     auto cs_ratio = static_cast<CHROMA_SUBSAMPLING>(bs->readBits(4));
+//     int cols = bs->readBits(8 * sizeof(int));
+//     int rows = bs->readBits(8 * sizeof(int));
+//     int m = bs->readBits(8 * sizeof(int));
+//     g._set_m(m);
+//
+//     int cnt = period;
+//     int last_intra = 0;
+//     for (int index = 0; index < size; index++) {
+//         if (cnt == period) {
+//             im_reel->push_back(Frame::decode_JPEG_LS(&g, c_space, cs_ratio, rows, cols).getImage());
+//             last_intra = index;
+//             cnt = 0;
+//         } else {
+//             Frame frame_intra((*im_reel)[last_intra]);
+//             im_reel->push_back(Frame::decode_inter(&g, &frame_intra, c_space, cs_ratio, rows, cols, search_radius, block_size).getImage());
+//         }
+//     }
+//     v.set_fps(fps_);
+//     v.set_reel(im_reel);
+//     return v;
+// }

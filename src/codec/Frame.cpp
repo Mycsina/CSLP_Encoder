@@ -1,10 +1,14 @@
 #include "Frame.hpp"
 
+
+#include "LosslessInter.hpp"
+#include "LosslessIntra.hpp"
+
 using namespace std;
 using namespace cv;
 
 MotionVector::MotionVector() : x(0), y(0) {}
-MotionVector::MotionVector(int x, int y) : x(x), y(y) {}
+MotionVector::MotionVector(const int x, const int y) : x(x), y(y) {}
 ostream &operator<<(ostream &os, const MotionVector &vector) {
     os << "x: " << vector.x << " y: " << vector.y;
     return os;
@@ -17,7 +21,7 @@ ostream &operator<<(ostream &os, const vector<MotionVector> &vectors) {
     return os;
 }
 
-Block::Block(const Image &img, int size, int row, int col) {
+Block::Block(const Image &img, const int size, const int row, const int col) {
     size_ = size;
     row_ = row;
     col_ = col;
@@ -64,7 +68,7 @@ double Block::MAD::block_diff(const Block &a, const Block &b) {
     }
     return floor(diff / (a.size_ * a.size_));
 }
-bool Block::MAD::isBetter(double score) {
+bool Block::MAD::isBetter(const double score) {
     return score < best_score;
 }
 
@@ -84,7 +88,7 @@ double Block::MSE::block_diff(const Block &a, const Block &b) {
     }
     return floor(diff / (a.size_ * a.size_));
 }
-bool Block::MSE::isBetter(double score) {
+bool Block::MSE::isBetter(const double score) {
     return score < best_score;
 }
 
@@ -94,11 +98,11 @@ Block::PSNR::PSNR(int threshold) {
     threshold = threshold;
 }
 double Block::PSNR::block_diff(const Block &a, const Block &b) {
-    double mse_metric = MSE().block_diff(a, b);
+    const double mse_metric = MSE().block_diff(a, b);
     if (mse_metric == 0) return INFINITY;
     return 10 * log10(pow(255, 2) / mse_metric);
 }
-bool Block::PSNR::isBetter(double score) {
+bool Block::PSNR::isBetter(const double score) {
     return score > best_score;
 }
 
@@ -118,7 +122,7 @@ double Block::SAD::block_diff(const Block &a, const Block &b) {
     }
     return diff;
 }
-bool Block::SAD::isBetter(double score) {
+bool Block::SAD::isBetter(const double score) {
     return score > best_score;
 }
 
@@ -137,7 +141,7 @@ Frame::Frame(const Image &img) {
 }
 Image Frame::getImage() const { return image_; }
 
-bool Frame::isBlockDiff(Block::BlockDiff *blockDiff) const {
+bool Frame::isBlockDiff(const Block::BlockDiff *blockDiff) const {
     if (block_diff_ == nullptr)
         return false;
     return block_diff_ == blockDiff;
@@ -161,7 +165,7 @@ FrameType Frame::getType() const {
     return type_;
 }
 
-void Frame::setType(FrameType type) {
+void Frame::setType(const FrameType type) {
     type_ = type;
 }
 
@@ -176,8 +180,8 @@ void Frame::encode_JPEG_LS() {
     for (int r = 0; r < image_mat_.rows; r++) {
         for (int c = 0; c < image_mat_.cols; c++) {
             for (int channel = 0; channel < image_mat_.channels(); channel++) {
-                int real = (int) image_mat_.at<Vec3b>(r, c)[channel];
-                int predicted = (int) predict_JPEG_LS(image_mat_, r, c, channel);
+                const int real = (int) image_mat_.at<Vec3b>(r, c)[channel];
+                const int predicted = (int) predict_JPEG_LS(image_mat_, r, c, channel);
                 int diff = real - predicted;
                 intra_encoding.push_back(diff);
             }
@@ -191,35 +195,34 @@ void Frame::encode_JPEG_LS(Golomb *g) {
     for (int r = 0; r < image_mat_.rows; r++) {
         for (int c = 0; c < image_mat_.cols; c++) {
             for (int channel = 0; channel < image_mat_.channels(); channel++) {
-                int real = (int) image_mat_.at<Vec3b>(r, c)[channel];
-                int predicted = (int) predict_JPEG_LS(image_mat_, r, c, channel);
-                int diff = real - predicted;
+                const int real = (int) image_mat_.at<Vec3b>(r, c)[channel];
+                const int predicted = (int) predict_JPEG_LS(image_mat_, r, c, channel);
+                const int diff = real - predicted;
                 g->encode(diff);
             }
         }
     }
 }
 
-void Frame::write_JPEG_LS(Golomb *g) {
-    for (auto diff: intra_encoding) {
+void Frame::write_JPEG_LS(Golomb *g) const {
+    for (const auto diff: intra_encoding) {
         g->encode(diff);
     }
 }
 
-Frame Frame::decode_JPEG_LS(Golomb *g, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows, int cols) {
+Frame Frame::decode_JPEG_LS(Golomb *g, const IntraHeader header) {
     Mat mat;
-    if (c_space == GRAY) {
-        mat = Mat::zeros(rows, cols, CV_8UC1);
+    if (header.color_space == GRAY) {
+        mat = Mat::zeros(header.height, header.width, CV_8UC1);
     } else {
-        mat = Mat::zeros(rows, cols, CV_8UC3);
+        mat = Mat::zeros(header.height, header.width, CV_8UC3);
     }
-
     for (int r = 0; r < mat.rows; r++) {
         for (int c = 0; c < mat.cols; c++) {
             for (int channel = 0; channel < mat.channels(); channel++) {
-                auto diff = g->decode();
-                uchar predicted = Image::predict_JPEG_LS(mat, r, c, channel);
-                uchar real = diff + predicted;
+                const auto diff = g->decode();
+                const uchar predicted = Image::predict_JPEG_LS(mat, r, c, channel);
+                const uchar real = diff + predicted;
                 if (mat.channels() > 1) {
                     mat.at<Vec3b>(r, c)[channel] = real;
                 } else {
@@ -229,12 +232,12 @@ Frame Frame::decode_JPEG_LS(Golomb *g, COLOR_SPACE c_space, CHROMA_SUBSAMPLING c
         }
     }
     Image im(mat);
-    im.setColor(c_space);
-    im.setChroma(cs_ratio);
+    im.setColor(header.color_space);
+    im.setChroma(header.chroma_subsampling);
     return Frame(im);
 }
 
-Frame Frame::decode_JPEG_LS(vector<int> encodings, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows, int cols) {
+Frame Frame::decode_JPEG_LS(const vector<int> &encodings, const COLOR_SPACE c_space, const CHROMA_SUBSAMPLING cs_ratio, const int rows, const int cols) {
     Mat mat;
     if (c_space == GRAY) {
         mat = Mat::zeros(rows, cols, CV_8UC1);
@@ -245,9 +248,9 @@ Frame Frame::decode_JPEG_LS(vector<int> encodings, COLOR_SPACE c_space, CHROMA_S
     for (int r = 0; r < mat.rows; r++) {
         for (int c = 0; c < mat.cols; c++) {
             for (int channel = 0; channel < mat.channels(); channel++) {
-                uchar diff = encodings[i++];
-                uchar predicted = Image::predict_JPEG_LS(mat, r, c, channel);
-                uchar real = diff + predicted;
+                const uchar diff = encodings[i++];
+                const uchar predicted = Image::predict_JPEG_LS(mat, r, c, channel);
+                const uchar real = diff + predicted;
                 if (mat.channels() > 1) {
                     mat.at<Vec3b>(r, c)[channel] = real;
                 } else {
@@ -262,7 +265,7 @@ Frame Frame::decode_JPEG_LS(vector<int> encodings, COLOR_SPACE c_space, CHROMA_S
     return Frame(im);
 }
 
-uchar Frame::predict_JPEG_LS(Mat mat, int row, int col, int channel) {
+uchar Frame::predict_JPEG_LS(Mat mat, const int row, const int col, const int channel) {
     if (row < 0 || row >= mat.rows || col < 0 || col >= mat.cols) {
         throw std::out_of_range("Pixel out of bounds");
     }
@@ -316,22 +319,22 @@ uchar Frame::predict_JPEG_LS(Mat mat, int row, int col, int channel) {
     }
 }
 
-std::array<int, 4> Frame::get_search_window(const Block &block, int search_radius) const {
+std::array<int, 4> Frame::get_search_window(const Block &block, const int search_radius) const {
     // block reference is top-left corner, so we need to account for that when calculating the search window
-    array<int, 4> block_coords = block.getVertices();
-    int x1 = max(block_coords[0] - search_radius, 0);
-    int y1 = max(block_coords[1] - search_radius, 0);
-    int x2 = min(block_coords[0] + search_radius, image_.size()[1] - block.getSize());
-    int y2 = min(block_coords[1] + search_radius, image_.size()[0] - block.getSize());
+    const array<int, 4> block_coords = block.getVertices();
+    const int x1 = max(block_coords[0] - search_radius, 0);
+    const int y1 = max(block_coords[1] - search_radius, 0);
+    const int x2 = min(block_coords[0] + search_radius, image_.size()[1] - block.getSize());
+    const int y2 = min(block_coords[1] + search_radius, image_.size()[0] - block.getSize());
     return {x1, y1, x2, y2};
 }
 
-std::array<Point, 5> Frame::get_rood_points(Point center, int arm_size, int block_size) const {
+std::array<Point, 5> Frame::get_rood_points(const Point center, const int arm_size, const int block_size) const {
     // center is top left corner of block
-    Point up = {center.x, max(center.y - arm_size, 0)};
-    Point down = {center.x, min(center.y + arm_size, image_.size()[0] - block_size)};
-    Point right = {min(center.x + arm_size, image_.size()[1] - block_size), center.y};
-    Point left = {max(center.x - arm_size, 0), center.y};
+    const Point up = {center.x, max(center.y - arm_size, 0)};
+    const Point down = {center.x, min(center.y + arm_size, image_.size()[0] - block_size)};
+    const Point right = {min(center.x + arm_size, image_.size()[1] - block_size), center.y};
+    const Point left = {max(center.x - arm_size, 0), center.y};
     cout << "For point " << center << " the rood points are: " << endl;
     cout << up << endl;
     cout << left << endl;
@@ -339,14 +342,14 @@ std::array<Point, 5> Frame::get_rood_points(Point center, int arm_size, int bloc
     cout << right << endl;
     if (motion_vectors_.empty())
         return {up, right, down, left, center};
-    Point MV_prediction = {center.x + motion_vectors_.back().x, center.y + motion_vectors_.back().y};
+    const Point MV_prediction = {center.x + motion_vectors_.back().x, center.y + motion_vectors_.back().y};
     return {up, right, down, left, MV_prediction};
 }
 
-bool Block::BlockDiff::compare(const Block &block, Frame *reference, cv::Point center) {
-    auto block_coords = block.getVertices();
-    Block ref_block = get_block(reference->getImage(), block.getSize(), center.y, center.x);
-    double diff_value = block_diff(block, ref_block);
+bool Block::BlockDiff::compare(const Block &block, const Frame *reference, const Point center) {
+    const auto block_coords = block.getVertices();
+    const Block ref_block = get_block(reference->getImage(), block.getSize(), center.y, center.x);
+    const double diff_value = block_diff(block, ref_block);
     if (isBetter(diff_value)) {
         MotionVector mv = {center.x - block_coords[0], center.y - block_coords[1]};
         mv.residual = Mat::zeros(block.getBlockMat().size(), CV_16SC3);
@@ -370,22 +373,21 @@ void Block::BlockDiff::reset() {
     best_match = {0, 0};
 }
 void Block::PSNR::reset() {
-    best_score = -(double) INFINITY;
+    best_score = -static_cast<double>(INFINITY);
     best_match = {0, 0};
 }
 
-MotionVector Frame::match_block_es(const Block &block, Frame *reference, int search_radius) {
-    bool finished;
+MotionVector Frame::match_block_es(const Block &block, const Frame *reference, const int search_radius) const {
     block_diff_->reset();
-    finished = block_diff_->compare(block, reference, {block.getCol(), block.getRow()});
+    bool finished = block_diff_->compare(block, reference, {block.getCol(), block.getRow()});
     if (finished)
         return block_diff_->best_match;
     auto block_coords = block.getVertices();
-    auto search_bounds = get_search_window(block, search_radius);
-    int left = search_bounds[0];
-    int upper = search_bounds[1];
-    int right = search_bounds[2];
-    int down = search_bounds[3];
+    const auto search_bounds = get_search_window(block, search_radius);
+    const int left = search_bounds[0];
+    const int upper = search_bounds[1];
+    const int right = search_bounds[2];
+    const int down = search_bounds[3];
     for (int i = upper; i < down; i++) {
         for (int j = left; j < right; j++) {
 #ifdef _VISUALIZE
@@ -404,7 +406,7 @@ MotionVector Frame::match_block_es(const Block &block, Frame *reference, int sea
 }
 
 
-MotionVector Frame::match_block_arps(const Block &block, Frame *reference, int threshold) {
+MotionVector Frame::match_block_arps(const Block &block, Frame *reference, int threshold) const {
     throw runtime_error("This function mustn't be used");
     bool finished;
     block_diff_->reset();
@@ -449,9 +451,10 @@ MotionVector Frame::match_block_arps(const Block &block, Frame *reference, int t
     return block_diff_->best_match;
 }
 
-void Frame::calculate_MV(Frame *reference, int block_size, int search_radius, bool fast) {
+void Frame::calculate_MV(Frame *reference, const int block_size, const int search_radius, const bool fast) {
     type_ = P_FRAME;
     setBlockDiff(new Block::MSE());
+    vector<MotionVector> motion_vectors;
     for (int i = 0; i + block_size <= image_.size()[0]; i += block_size) {
         for (int j = 0; j + block_size <= image_.size()[1]; j += block_size) {
             Block block = get_block(image_, block_size, i, j);
@@ -462,8 +465,6 @@ void Frame::calculate_MV(Frame *reference, int block_size, int search_radius, bo
                 block_diff_->threshold = 0;
                 mv = match_block_es(block, reference, search_radius);
             }
-            mv.y=i;
-            mv.x=j;
             motion_vectors_.push_back(mv);
         }
     }
@@ -474,7 +475,7 @@ Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &mot
     for (int i = 0; i + block_size <= reference->getImage().size()[0]; i += block_size) {
         for (int j = 0; j + block_size <= reference->getImage().size()[1]; j += block_size) {
             MotionVector mv = motion_vectors[i / block_size * (reference->getImage().size()[1] / block_size) + j / block_size];
-            Block block = get_block(reference->getImage(), block_size, i, j);
+            Block block = get_block(reference->getImage(), block_size, i + mv.y, j + mv.x);
             Mat reconstructed_block = Mat::zeros(block.getBlockMat().size(), CV_8UC3);
             for (int k = 0; k < block.getBlockMat().rows; k++)
                 for (int l = 0; l < block.getBlockMat().cols; l++) {
@@ -492,7 +493,7 @@ Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &mot
     return frame;
 }
 
-void Frame::visualize_MV(Frame *reference, int block_size) {
+auto Frame::visualize_MV(const Frame *reference, const int block_size) const -> void {
     int i = 0;
     int j = 0;
     Mat res = Mat::zeros(reference->getImage().size()[0], reference->getImage().size()[1], CV_8UC3);
@@ -509,43 +510,45 @@ void Frame::visualize_MV(Frame *reference, int block_size) {
     waitKey(0);
 }
 
-void Frame::encode_inter(Golomb *g, Frame *reference, int search_radius,int block_size){
-    calculate_MV(reference,block_size,search_radius,false);
-    for(const auto& mv: getMotionVectors()){
+void Frame::write(Golomb *g) const {
+    for (const auto &mv: getMotionVectors()) {
         g->encode(mv.x);
         g->encode(mv.y);
-        Mat residual=mv.residual;
-        for(int row=0;row<residual.rows;row++){
-            for(int col=0;col<residual.cols;col++){
-                for(int channel=0;channel<residual.channels();channel++){
-                    g->encode((int)residual.at<Vec3s>(row,col)[channel]);
+        Mat residual = mv.residual;
+        for (int row = 0; row < residual.rows; row++) {
+            for (int col = 0; col < residual.cols; col++) {
+                for (int channel = 0; channel < residual.channels(); channel++) {
+                    g->encode(residual.at<Vec3s>(row, col)[channel]);
                 }
             }
         }
     }
 }
 
-Frame Frame::decode_inter(Golomb *g, Frame *reference, COLOR_SPACE c_space, CHROMA_SUBSAMPLING cs_ratio, int rows,int cols, int search_radius, int block_size) {
+Frame Frame::decode_inter(Golomb *g, Frame *reference, InterHeader header) {
     vector<MotionVector> mvs;
-    for(int block_num=0;block_num<(rows/block_size)*(cols/block_size);block_num++){
+    const int block_size = header.block_size;
+    const int rows = header.height;
+    const int cols = header.width;
+    for (int block_num = 0; block_num < (rows / block_size) * (cols / block_size); block_num++) {
         MotionVector mv;
         Mat residual;
-        if(c_space==GRAY){
-            residual=Mat::zeros(block_size,block_size,CV_16SC1);
-        }else{
-            residual=Mat::zeros(block_size,block_size,CV_16SC3);
+        if (header.color_space == GRAY) {
+            residual = Mat::zeros(block_size, block_size, CV_16SC1);
+        } else {
+            residual = Mat::zeros(block_size, block_size, CV_16SC3);
         }
-        mv.x=g->decode();
-        mv.y=g->decode();
-        for(int row=0;row<block_size;row++){
-            for(int col=0;col<block_size;col++){
-                for(int channel=0;channel<residual.channels();channel++){
-                    residual.at<Vec3s>(row,col)[channel]=(short)g->decode();
+        mv.x = g->decode();
+        mv.y = g->decode();
+        for (int row = 0; row < block_size; row++) {
+            for (int col = 0; col < block_size; col++) {
+                for (int channel = 0; channel < residual.channels(); channel++) {
+                    residual.at<Vec3s>(row, col)[channel] = static_cast<short>(g->decode());
                 }
             }
         }
-        mv.residual=residual;
+        mv.residual = residual;
         mvs.push_back(mv);
     }
-    return Frame::reconstruct_frame(reference,mvs,block_size);
+    return Frame::reconstruct_frame(reference, mvs, block_size);
 }

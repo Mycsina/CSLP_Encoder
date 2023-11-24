@@ -14,9 +14,9 @@ protected:
     void SetUp() override {
         auto video = Video();
         video.load(frameTestVideo);
-        f1 = video.getFrame(0);
-        f2 = video.getFrame(3);
-        f3 = video.getFrame(6);
+        f1 = video.get_frame(0);
+        f2 = video.get_frame(3);
+        f3 = video.get_frame(6);
     }
 };
 

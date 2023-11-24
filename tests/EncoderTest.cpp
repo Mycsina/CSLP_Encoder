@@ -1,5 +1,6 @@
 #include "../src/codec/LosslessIntra.hpp"
 #include <gtest/gtest.h>
+#include <iostream>
 
 using namespace std;
 using namespace cv;
@@ -14,10 +15,14 @@ protected:
 };
 
 TEST_F(EncoderTest, lessIntraFrameEncoderTest) {
-    auto *encoder = new LosslessIntraFrameEncoder(small_still.c_str(), "../../tests/resource/akiyo_encoded.y4m", 4);
+    string file = small_still;
+    string encoded = file + "_encoded";
+    string decoded = file + "_decoded";
+    int golomb_m = 2;
+    auto *encoder = new LosslessIntraFrameEncoder(file.c_str(), encoded.c_str(), golomb_m);
     encoder->encode();
     delete encoder;
-    auto *decoder = new LosslessIntraFrameEncoder("../../tests/resource/akiyo_encoded.y4m", "../../tests/resource/akiyo_decoded.y4m", 4);
+    auto *decoder = new LosslessIntraFrameEncoder(encoded.c_str(), decoded.c_str(), golomb_m);
     decoder->decode();
     delete decoder;
 }
