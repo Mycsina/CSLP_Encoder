@@ -2,9 +2,7 @@
 #pragma once
 
 #include "../visual/Image.hpp"
-#include "LosslessInter.hpp"
-#include "LosslessIntra.hpp"
-
+#include "Header.hpp"
 #include <opencv2/core/mat.hpp>
 
 
@@ -145,7 +143,7 @@ public:
 
     void write_JPEG_LS(Golomb *g) const;
 
-    static Frame decode_JPEG_LS(Golomb *g, IntraHeader header);
+    static Frame decode_JPEG_LS(Golomb *g, Header header);
 
     static Frame decode_JPEG_LS(const std::vector<int> &encodings, COLOR_SPACE color, CHROMA_SUBSAMPLING chroma, int rows, int cols);
 

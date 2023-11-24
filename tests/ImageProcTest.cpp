@@ -21,12 +21,12 @@ TEST_F(ImageTest, YUVEquivalenceTest) {
     Image im(imageProcImg);
     Image img = convert_BGR_YUV444(im);
     // img.show();
-    cvtColor(*im2.getImageMat(), *im2.getImageMat(), COLOR_BGR2YUV);
+    cvtColor(*im2.get_image_mat(), *im2.get_image_mat(), COLOR_BGR2YUV);
     // im2.show();
     int rand_row = rand() % img.size()[0];
     int rand_col = rand() % img.size()[1];
-    Vec3b color = img.getImageMat()->at<Vec3b>(rand_row, rand_col);
-    Vec3b color2 = im2.getImageMat()->at<Vec3b>(rand_row, rand_col);
+    Vec3b color = img.get_image_mat()->at<Vec3b>(rand_row, rand_col);
+    Vec3b color2 = im2.get_image_mat()->at<Vec3b>(rand_row, rand_col);
     // Absolute difference between the two colors should be less than 3
     int diff = abs((color[0] + color[1] + color[2]) -
                    (color2[0] + color2[1] + color2[2]));
@@ -34,18 +34,18 @@ TEST_F(ImageTest, YUVEquivalenceTest) {
 }
 
 TEST_F(ImageTest, BGREquivalenceTest) {
-    cvtColor(*img.getImageMat(), *img.getImageMat(), COLOR_BGR2YUV);
+    cvtColor(*img.get_image_mat(), *img.get_image_mat(), COLOR_BGR2YUV);
     // img.show();
-    cvtColor(*im2.getImageMat(), *im2.getImageMat(), COLOR_BGR2YUV);
+    cvtColor(*im2.get_image_mat(), *im2.get_image_mat(), COLOR_BGR2YUV);
     // im2.show();
-    cvtColor(*im2.getImageMat(), *im2.getImageMat(), COLOR_YUV2BGR);
+    cvtColor(*im2.get_image_mat(), *im2.get_image_mat(), COLOR_YUV2BGR);
     // img.show();
     img = convert_YUV_BGR(img);
     // img.show();
     int rand_row = rand() % img.size()[0];
     int rand_col = rand() % img.size()[1];
-    Vec3b color = img.getImageMat()->at<Vec3b>(rand_row, rand_col);
-    Vec3b color2 = im2.getImageMat()->at<Vec3b>(rand_row, rand_col);
+    Vec3b color = img.get_image_mat()->at<Vec3b>(rand_row, rand_col);
+    Vec3b color2 = im2.get_image_mat()->at<Vec3b>(rand_row, rand_col);
     // Absolute difference between the two colors should be less than 3
     int diff = abs((color[0] + color[1] + color[2]) -
                    (color2[0] + color2[1] + color2[2]));
@@ -53,14 +53,14 @@ TEST_F(ImageTest, BGREquivalenceTest) {
 }
 
 TEST_F(ImageTest, GRAYEquivalenceTest) {
-    cvtColor(*img.getImageMat(), *img.getImageMat(), COLOR_BGR2GRAY);
+    cvtColor(*img.get_image_mat(), *img.get_image_mat(), COLOR_BGR2GRAY);
     // img.show();
     im2 = convert_BGR_GRAY(im2);
     // im2.show();
     int rand_row = rand() % img.size()[0];
     int rand_col = rand() % img.size()[1];
-    uchar color = img.getImageMat()->at<uchar>(rand_row, rand_col);
-    uchar color2 = im2.getImageMat()->at<uchar>(rand_row, rand_col);
+    uchar color = img.get_image_mat()->at<uchar>(rand_row, rand_col);
+    uchar color2 = im2.get_image_mat()->at<uchar>(rand_row, rand_col);
     // Absolute difference between the two colors should be less than 3
     int diff = abs(color - color2);
     EXPECT_TRUE(diff < 3);
@@ -68,18 +68,18 @@ TEST_F(ImageTest, GRAYEquivalenceTest) {
 
 TEST_F(ImageTest, ConversionIdempotenceTest) {
     // BGR->YUV->BGR
-    cvtColor(*img.getImageMat(), *img.getImageMat(), COLOR_BGR2YUV);
+    cvtColor(*img.get_image_mat(), *img.get_image_mat(), COLOR_BGR2YUV);
     im2 = convert_BGR_YUV444(im2);
     // img.show();
     // im2.show();
-    cvtColor(*img.getImageMat(), *img.getImageMat(), COLOR_YUV2BGR);
+    cvtColor(*img.get_image_mat(), *img.get_image_mat(), COLOR_YUV2BGR);
     im2 = convert_YUV_BGR(im2);
     // img.show();
     // im2.show();
     int rand_row = rand() % img.size()[0];
     int rand_col = rand() % img.size()[1];
-    Vec3b color = img.getImageMat()->at<Vec3b>(rand_row, rand_col);
-    Vec3b color2 = im2.getImageMat()->at<Vec3b>(rand_row, rand_col);
+    Vec3b color = img.get_image_mat()->at<Vec3b>(rand_row, rand_col);
+    Vec3b color2 = im2.get_image_mat()->at<Vec3b>(rand_row, rand_col);
     // Absolute difference between the two colors should be less than 3
     int diff = abs((color[0] + color[1] + color[2]) -
                    (color2[0] + color2[1] + color2[2]));
@@ -93,11 +93,11 @@ TEST_F(ImageTest, HistogramEqualiz) {
     im2 = convert_YUV_BGR(im2);
     im2 = convert_BGR_GRAY(im2);
     equalize_hist(img);
-    equalizeHist(*im2.getImageMat(), *im2.getImageMat());
+    equalizeHist(*im2.get_image_mat(), *im2.get_image_mat());
     int rand_row = rand() % img.size()[0];
     int rand_col = rand() % img.size()[1];
-    Vec3b color = img.getImageMat()->at<Vec3b>(rand_row, rand_col);
-    Vec3b color2 = im2.getImageMat()->at<Vec3b>(rand_row, rand_col);
+    Vec3b color = img.get_image_mat()->at<Vec3b>(rand_row, rand_col);
+    Vec3b color2 = im2.get_image_mat()->at<Vec3b>(rand_row, rand_col);
     // Absolute difference between the two colors should be less than 3
     int diff = abs((color[0] + color[1] + color[2]) -
                    (color2[0] + color2[1] + color2[2]));

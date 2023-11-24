@@ -41,7 +41,7 @@ TEST(ImageTestSuite, PixelWiseCloning) {
     Image im1;
     im1.load(img_file);
     Image im2;
-    im2.setImageMat(Mat::zeros(im1.size()[0],
+    im2.set_image_mat(Mat::zeros(im1.size()[0],
                                im1.size()[1], im1.getImageType()));
     for (auto it = im1.begin(); it != im1.end(); ++it) {
         im2.setPixel(it.pos().y, it.pos().x, *it);

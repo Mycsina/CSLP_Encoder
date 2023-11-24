@@ -35,7 +35,7 @@ void BitStream::writeBit(int bit) {
 int BitStream::readBit() {
     if (bufferSize == 0) {
         if (!file) {
-            return -1;// End of file
+            throw runtime_error("End of file reached");
         }
         file.read(reinterpret_cast<char *>(&buffer), 1);
         bufferSize = 8;
@@ -100,3 +100,8 @@ void BitStream::flushBuffer() {
         bufferSize = 0;
     }
 }
+
+int BitStream::getPosition() {
+    return file.tellg();
+}
+

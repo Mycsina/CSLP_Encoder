@@ -1,9 +1,5 @@
 #include "Frame.hpp"
 
-
-#include "LosslessInter.hpp"
-#include "LosslessIntra.hpp"
-
 using namespace std;
 using namespace cv;
 
@@ -170,13 +166,13 @@ void Frame::setType(const FrameType type) {
 }
 
 void Frame::show() {
-    imshow("Frame", *image_.getImageMat());
+    imshow("Frame", *image_.get_image_mat());
     waitKey(0);
 }
 
 void Frame::encode_JPEG_LS() {
     type_ = I_FRAME;
-    Mat image_mat_ = *image_.getImageMat();
+    Mat image_mat_ = *image_.get_image_mat();
     for (int r = 0; r < image_mat_.rows; r++) {
         for (int c = 0; c < image_mat_.cols; c++) {
             for (int channel = 0; channel < image_mat_.channels(); channel++) {
@@ -191,7 +187,7 @@ void Frame::encode_JPEG_LS() {
 
 void Frame::encode_JPEG_LS(Golomb *g) {
     type_ = I_FRAME;
-    Mat image_mat_ = *image_.getImageMat();
+    Mat image_mat_ = *image_.get_image_mat();
     for (int r = 0; r < image_mat_.rows; r++) {
         for (int c = 0; c < image_mat_.cols; c++) {
             for (int channel = 0; channel < image_mat_.channels(); channel++) {
@@ -210,7 +206,7 @@ void Frame::write_JPEG_LS(Golomb *g) const {
     }
 }
 
-Frame Frame::decode_JPEG_LS(Golomb *g, const IntraHeader header) {
+Frame Frame::decode_JPEG_LS(Golomb *g, const Header header) {
     Mat mat;
     if (header.color_space == GRAY) {
         mat = Mat::zeros(header.height, header.width, CV_8UC1);
@@ -232,8 +228,8 @@ Frame Frame::decode_JPEG_LS(Golomb *g, const IntraHeader header) {
         }
     }
     Image im(mat);
-    im.setColor(header.color_space);
-    im.setChroma(header.chroma_subsampling);
+    im.set_color(header.color_space);
+    im.set_chroma(header.chroma_subsampling);
     return Frame(im);
 }
 
@@ -260,8 +256,8 @@ Frame Frame::decode_JPEG_LS(const vector<int> &encodings, const COLOR_SPACE c_sp
         }
     }
     Image im(mat);
-    im.setColor(c_space);
-    im.setChroma(cs_ratio);
+    im.set_color(c_space);
+    im.set_chroma(cs_ratio);
     return Frame(im);
 }
 
@@ -550,5 +546,5 @@ Frame Frame::decode_inter(Golomb *g, Frame *reference, InterHeader header) {
         mv.residual = residual;
         mvs.push_back(mv);
     }
-    return Frame::reconstruct_frame(reference, mvs, block_size);
+    return reconstruct_frame(reference, mvs, block_size);
 }

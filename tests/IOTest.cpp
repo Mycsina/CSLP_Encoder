@@ -20,7 +20,7 @@ TEST(IOTestSuite, BitStreamReadWriteTest) {
 }
 
 TEST(IOTestSuite, GolombReadWriteTest) {
-    int m = 10;
+    int m = 4;
     auto *g = new Golomb(golomb_dst, std::ios::out);
     g->encode(26, m);
     g->encode(-240, m);

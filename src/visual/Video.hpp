@@ -79,7 +79,7 @@ public:
     //! @param path the path to the destination file
     //! @param m the m value for Golomb encoding
     //! @param period the number of frames between each key (intra) frame
-    void encode_hybrid(const std::string& path, int m=10, int period=3, int search_radius=5, int block_size=8, int threshold=255) const;
+    void encode_hybrid(const std::string &path, int m = 10, int period = 3, int search_radius = 5, int block_size = 8, int threshold = 255) const;
 
-    static Video decode_hybrid(const std::string& path);
+    static Video decode_hybrid(const std::string &path);
 };

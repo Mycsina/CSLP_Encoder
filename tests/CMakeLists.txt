@@ -9,6 +9,7 @@ add_executable(tests_run
         IOTest.cpp
         FrameTest.cpp
         EncoderTest.cpp)
+
 add_executable(Demos
         VideoDemos.cpp
         ImageDemos.cpp

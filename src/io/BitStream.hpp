@@ -10,11 +10,9 @@
  * @brief The BitStream class provides methods for reading and writing bits to a file.
  */
 class BitStream {
-private:
     std::fstream file;   ///< Output file stream.
     unsigned char buffer;///< Buffer to store bits.
     int bufferSize;      ///< Current size of the buffer.
-
 
 public:
     /**
@@ -74,4 +72,6 @@ public:
      * Reads the length of the string and then reads the binary representation of each character.
      */
     std::string readString();
+
+    int getPosition();
 };

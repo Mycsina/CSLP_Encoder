@@ -57,21 +57,21 @@ public:
     Image *load(const cv::Mat &arr2d);
 
     //! @brief Sets the underlying cv::Mat
-    void setImageMat(cv::Mat mat);
+    void set_image_mat(cv::Mat mat);
 
     //! @brief Returns the underlying cv::Mat
-    cv::Mat *getImageMat();
+    cv::Mat *get_image_mat();
 
     //! @brief Sets the color space of the Image
-    void setColor(COLOR_SPACE col);
+    void set_color(COLOR_SPACE col);
 
     //! @brief Returns the color space of the Image
-    COLOR_SPACE getColor();
+    COLOR_SPACE get_color() const;
 
     //! @brief Sets the chroma subsampling rate of the Image
-    void setChroma(CHROMA_SUBSAMPLING cs);
+    void set_chroma(CHROMA_SUBSAMPLING cs);
     //! @brief Returns the chroma subsampling rate of the Image
-    CHROMA_SUBSAMPLING getChroma();
+    CHROMA_SUBSAMPLING get_chroma() const;
 
     //! Used to iterate over all pixels in the Image
     //! \warning Unless you need to iterate from first to last pixel in order, use cv:Mat::forEach instead
@@ -100,7 +100,7 @@ public:
     //! @param  compression_params Vector of integers specifying the compression
     //! parameters with format <paramID, paramValue> (see cv:ImwriteFlags for
     //! available parameters)
-    void save(const char *filename, const std::vector<int> &compression_params = {});
+    void save(const char *filename, const std::vector<int> &compression_params = {}) const;
 
     //! Get data type of Image
     //! @return Integer indicating the cv:Mat type of the underlying matrix
@@ -108,7 +108,7 @@ public:
 
     //! Displays the Image in a window
     //! @params vid_ctx Indicates whether it is to be used in displaying a video (
-    void show(bool vid_ctx = false);
+    void show(bool vid_ctx = false) const;
 
     //! Returns whether the Image has been loaded
     //! @return Boolean indicating whether the Image has been loaded
@@ -129,7 +129,7 @@ public:
 
     //! Get a deep copy of the Image
     //! @return Image object containing a deep copy of the Image
-    Image clone();
+    Image clone() const;
 
     //! Compare two images
     //! @param  other Image to be compared to
@@ -143,7 +143,7 @@ public:
     //! @param  height Height in pixels of the histogram
     //! @return Vector with resulting Histograms
     std::vector<cv::Mat> color_histograms(int bins = 256, bool fill_hist = false,
-                                          int width = 512, int height = 400);
+                                          int width = 512, int height = 400) const;
 
     //! Apply the gaussian blur filter to this image
     //! @param blur Blur coefficient matrix (values are int)
@@ -166,9 +166,9 @@ public:
 
     //! Cuts the given matrix so that, if the center of that matrix were to be placed at the given coordinates in image_mat_, it would not overflow
     //! @param m the given matrix
-    //! @param r,c the coordinates
+    //! @param row,col the coordinates
     //! @return The cut submatrix
-    cv::Mat cut(const cv::Mat &m, int r, int c) const;
+    cv::Mat cut(const cv::Mat &m, int row, int col) const;
 
     void encode_JPEG_LS(const std::string& path, int m);
 

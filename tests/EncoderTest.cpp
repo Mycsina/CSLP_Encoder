@@ -1,9 +1,9 @@
-#include "../src/codec/LosslessIntra.hpp"
+#include "../src/codec/encoders/LosslessInter.hpp"
+#include "../src/codec/encoders/LosslessIntra.hpp"
+#include "../src/visual/Video.hpp"
 #include <gtest/gtest.h>
-#include <iostream>
 
 using namespace std;
-using namespace cv;
 
 class EncoderTest : public ::testing::Test {
 protected:
@@ -14,15 +14,35 @@ protected:
     }
 };
 
-TEST_F(EncoderTest, lessIntraFrameEncoderTest) {
-    string file = small_still;
-    string encoded = file + "_encoded";
-    string decoded = file + "_decoded";
-    int golomb_m = 2;
-    auto *encoder = new LosslessIntraFrameEncoder(file.c_str(), encoded.c_str(), golomb_m);
+TEST_F(EncoderTest, Intra) {
+    const int m = 2;
+    const char *file = small_still.c_str();
+    auto *encoder = new LosslessIntraEncoder(file, "../../tests/resource/encoded", m);
     encoder->encode();
     delete encoder;
-    auto *decoder = new LosslessIntraFrameEncoder(encoded.c_str(), decoded.c_str(), golomb_m);
+    auto *decoder = new LosslessIntraEncoder("../../tests/resource/encoded", "decoded", m);
     decoder->decode();
-    delete decoder;
+    const auto video_frames = Video(file).generateFrames();
+    for (int i = 0; i < video_frames.size(); i++) {
+        Image im1 = video_frames[i]->getImage();
+        Image im2 = decoder->frames[i].getImage();
+        // if this SIGSEVs it's because last frame is not decoded correctly
+        ASSERT_TRUE(im1 == im2);
+    }
+}
+
+TEST_F(EncoderTest, Inter) {
+    const int m = 2;
+    const char *file = small_still.c_str();
+    auto *encoder = new LosslessInterFrameEncoder(file, "encoded", m, 16);
+    encoder->encode();
+    delete encoder;
+    auto *decoder = new LosslessInterFrameEncoder("encoded", "decoded", m, 16);
+    decoder->decode();
+    const auto video_frames = Video(file).generateFrames();
+    for (int i = 0; i < video_frames.size(); i++) {
+        Image im1 = video_frames[i]->getImage();
+        Image im2 = decoder->frames[i].getImage();
+        ASSERT_TRUE(im1 == im2);
+    }
 }
