@@ -1,8 +1,9 @@
-//! @file Video class declaration
-/*!
- * Declares the Video class, representing a digital video, composed of multiple
- * Image objects
+/**
+ * @file Video.hpp
+ * @brief Video class
+ * @ingroup Visual
  */
+
 #pragma once
 #include "../codec/Frame.hpp"
 #include "Image.hpp"
@@ -61,12 +62,18 @@ public:
     static void get_header_data(FILE *file, int *width, int *height, float *fps);
 
     //! Read a frame from an opened Y4M file
+    //! @param file pointer to FILE object
+    //! @param width width of the frame
+    //! @param height height of the frame
+    //! @param uvWidth width of the chroma subsampled frame
+    //! @param uvHeight height of the chroma subsampled frame
+    //! @param format chroma subsampling format
     void read_frame(FILE *file, int width, int height, int uvWidth, int uvHeight,
                     CHROMA_SUBSAMPLING format);
 
     //! Plays the Video
     //! @param stop_key value of the key that stops the video
-    void play(int stop_key = 27);
+    void play(int stop_key = 27) const;
 
     //! Signals whether the Video has been loaded
     //! @return true if the Video has been loaded, false otherwise
@@ -76,12 +83,4 @@ public:
     //! @param f1 source color space
     //! @param f2 destination color space
     void convert_to(COLOR_SPACE f1, COLOR_SPACE f2);
-
-    //! Encode video using hybrid encoding and then saves using golomb encoding
-    //! @param path the path to the destination file
-    //! @param m the m value for Golomb encoding
-    //! @param period the number of frames between each key (intra) frame
-    void encode_hybrid(const std::string &path, int m = 10, int period = 3, int search_radius = 5, int block_size = 8, int threshold = 255) const;
-
-    static Video decode_hybrid(const std::string &path);
 };

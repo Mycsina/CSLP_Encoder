@@ -176,8 +176,8 @@ void Frame::encode_JPEG_LS() {
     for (int r = 0; r < image_mat_.rows; r++) {
         for (int c = 0; c < image_mat_.cols; c++) {
             for (int channel = 0; channel < image_mat_.channels(); channel++) {
-                const int real = (int) image_mat_.at<Vec3b>(r, c)[channel];
-                const int predicted = (int) predict_JPEG_LS(image_mat_, r, c, channel);
+                const int real = image_mat_.at<Vec3b>(r, c)[channel];
+                const int predicted = predict_JPEG_LS(image_mat_, r, c, channel);
                 int diff = real - predicted;
                 intra_encoding.push_back(diff);
             }
@@ -191,8 +191,8 @@ void Frame::encode_JPEG_LS(Golomb *g) {
     for (int r = 0; r < image_mat_.rows; r++) {
         for (int c = 0; c < image_mat_.cols; c++) {
             for (int channel = 0; channel < image_mat_.channels(); channel++) {
-                const int real = (int) image_mat_.at<Vec3b>(r, c)[channel];
-                const int predicted = (int) predict_JPEG_LS(image_mat_, r, c, channel);
+                const int real = image_mat_.at<Vec3b>(r, c)[channel];
+                const int predicted = predict_JPEG_LS(image_mat_, r, c, channel);
                 const int diff = real - predicted;
                 g->encode(diff);
             }
@@ -217,7 +217,7 @@ Frame Frame::decode_JPEG_LS(Golomb *g, const Header header) {
         for (int c = 0; c < mat.cols; c++) {
             for (int channel = 0; channel < mat.channels(); channel++) {
                 const auto diff = g->decode();
-                const uchar predicted = Image::predict_JPEG_LS(mat, r, c, channel);
+                const uchar predicted = predict_JPEG_LS(mat, r, c, channel);
                 const uchar real = diff + predicted;
                 if (mat.channels() > 1) {
                     mat.at<Vec3b>(r, c)[channel] = real;
@@ -245,7 +245,7 @@ Frame Frame::decode_JPEG_LS(const vector<int> &encodings, const COLOR_SPACE c_sp
         for (int c = 0; c < mat.cols; c++) {
             for (int channel = 0; channel < mat.channels(); channel++) {
                 const uchar diff = encodings[i++];
-                const uchar predicted = Image::predict_JPEG_LS(mat, r, c, channel);
+                const uchar predicted = predict_JPEG_LS(mat, r, c, channel);
                 const uchar real = diff + predicted;
                 if (mat.channels() > 1) {
                     mat.at<Vec3b>(r, c)[channel] = real;
@@ -320,16 +320,16 @@ std::array<int, 4> Frame::get_search_window(const Block &block, const int search
     const array<int, 4> block_coords = block.getVertices();
     const int x1 = max(block_coords[0] - search_radius, 0);
     const int y1 = max(block_coords[1] - search_radius, 0);
-    const int x2 = min(block_coords[0] + search_radius, image_.size()[1] - block.getSize());
-    const int y2 = min(block_coords[1] + search_radius, image_.size()[0] - block.getSize());
+    const int x2 = min(block_coords[0] + search_radius, image_.size().width - block.getSize());
+    const int y2 = min(block_coords[1] + search_radius, image_.size().height - block.getSize());
     return {x1, y1, x2, y2};
 }
 
 std::array<Point, 5> Frame::get_rood_points(const Point center, const int arm_size, const int block_size) const {
     // center is top left corner of block
     const Point up = {center.x, max(center.y - arm_size, 0)};
-    const Point down = {center.x, min(center.y + arm_size, image_.size()[0] - block_size)};
-    const Point right = {min(center.x + arm_size, image_.size()[1] - block_size), center.y};
+    const Point down = {center.x, min(center.y + arm_size, image_.size().height - block_size)};
+    const Point right = {min(center.x + arm_size, image_.size().width - block_size), center.y};
     const Point left = {max(center.x - arm_size, 0), center.y};
     cout << "For point " << center << " the rood points are: " << endl;
     cout << up << endl;
@@ -451,8 +451,8 @@ void Frame::calculate_MV(Frame *reference, const int block_size, const int searc
     type_ = P_FRAME;
     setBlockDiff(new Block::MSE());
     vector<MotionVector> motion_vectors;
-    for (int i = 0; i + block_size <= image_.size()[0]; i += block_size) {
-        for (int j = 0; j + block_size <= image_.size()[1]; j += block_size) {
+    for (int i = 0; i + block_size <= image_.size().height; i += block_size) {
+        for (int j = 0; j + block_size <= image_.size().width; j += block_size) {
             Block block = get_block(image_, block_size, i, j);
             MotionVector mv;
             if (fast) {
@@ -467,10 +467,10 @@ void Frame::calculate_MV(Frame *reference, const int block_size, const int searc
 }
 
 Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &motion_vectors, int block_size) {
-    Mat reconstructed = Mat::zeros(reference->getImage().size()[0], reference->getImage().size()[1], CV_8UC3);
-    for (int i = 0; i + block_size <= reference->getImage().size()[0]; i += block_size) {
-        for (int j = 0; j + block_size <= reference->getImage().size()[1]; j += block_size) {
-            MotionVector mv = motion_vectors[i / block_size * (reference->getImage().size()[1] / block_size) + j / block_size];
+    Mat reconstructed = Mat::zeros(reference->getImage().size(), CV_8UC3);
+    for (int i = 0; i + block_size <= reference->getImage().size().height; i += block_size) {
+        for (int j = 0; j + block_size <= reference->getImage().size().width; j += block_size) {
+            MotionVector mv = motion_vectors[i / block_size * (reference->getImage().size().width / block_size) + j / block_size];
             Block block = get_block(reference->getImage(), block_size, i + mv.y, j + mv.x);
             Mat reconstructed_block = Mat::zeros(block.getBlockMat().size(), CV_8UC3);
             for (int k = 0; k < block.getBlockMat().rows; k++)
@@ -489,10 +489,10 @@ Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &mot
     return frame;
 }
 
-auto Frame::visualize_MV(const Frame *reference, const int block_size) const -> void {
+void Frame::visualize_MV(const Frame *reference, const int block_size) const {
     int i = 0;
     int j = 0;
-    Mat res = Mat::zeros(reference->getImage().size()[0], reference->getImage().size()[1], CV_8UC3);
+    Mat res = Mat::zeros(reference->getImage().size(), CV_8UC3);
     for (const auto &v: motion_vectors_) {
         setSlice(res, v.residual, j, i);
         arrowedLine(res, Point(i + block_size / 2, j + block_size / 2), Point(i + v.x + block_size / 2, j + v.y + block_size / 2), Scalar(0, 0, 255), 1, 8, 0);

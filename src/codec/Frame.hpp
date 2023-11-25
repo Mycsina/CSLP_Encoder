@@ -1,10 +1,13 @@
-//! @file This file contains the implementation of the classes and structs used in motion encoding
+/** @file Frame.hpp
+ * @brief The Frame class provides methods to manipulate an Image in the context of video encoding
+ * @ingroup codec
+ */
+
 #pragma once
 
 #include "../visual/Image.hpp"
 #include "Header.hpp"
 #include <opencv2/core/mat.hpp>
-
 
 struct MotionVector {
     int x, y;
@@ -16,40 +19,96 @@ struct MotionVector {
 class Frame;
 //! @brief The Block class represents a block of pixels.
 class Block {
-private:
-    cv::Mat block_mat_;
-    int size_;
-    int row_, col_;
+    cv::Mat block_mat_;//!< Contains the block's pixels
+    int size_;         //!< Size of the block
+    int row_, col_;    //!< Position of the block's top-left corner
 
 public:
+    /**
+     * \brief Constructor from Image
+     * \param img Image to copy from
+     * \param size Size of the block
+     * \param row Row of the top-left pixel
+     * \param col Column of the top-left pixel
+     */
     Block(const Image &img, int size, int row, int col);
 
+    /**
+     * \brief Gets the block's matrix
+     * \return Const reference to the block's matrix
+     */
     const cv::Mat &getBlockMat() const;
+    /**
+     * \brief Sets the block's matrix
+     * \param blockMat Block matrix to set
+     */
     void setBlockMat(const cv::Mat &blockMat);
+    /**
+     * \brief Gets the block's size
+     * \return Block's size
+     */
     int getSize() const;
+    /**
+     * \brief Gets the block's top-left corner's row
+     * \return Block's row
+     */
     int getRow() const;
+    /**
+     * \brief Gets the block's top-left corner's column
+     * \return Block's column
+     */
     int getCol() const;
+    /**
+     * \brief Checks if block is in first column
+     * \return Boolean indicating whether the block is in the first column
+     */
     bool isLeftEdge() const;
-    //! Returns the the block's vertices
+
+    //! \brief Returns the block's vertices
     //! @return Array of integers representing the block's vertices in the format [x1, y1, x2, y2]
     std::array<int, 4> getVertices() const;
 
+    /**
+     * \brief Block difference abstract class
+     */
     class BlockDiff {
     public:
+        /**
+         * \brief Destructor
+         */
         virtual ~BlockDiff() = default;
+        /**
+         * \brief Returns the difference between a block and another block
+         * \param a Block to be compared
+         * \param b Other block to compare
+         * \return Double representing the difference between the blocks
+         */
         virtual double block_diff(const Block &a, const Block &b) = 0;
+        /**
+         * \brief Checks if a score is better than the best score
+         * \param score Score to be compared
+         * \return Boolean indicating whether the score is better than the best score
+         */
         virtual bool isBetter(double score) = 0;
-        double best_score{};
-        MotionVector best_match;
-        MotionVector previous_best;
-        int threshold{};
-        virtual void reset();
+        double best_score{};       //!< Best score
+        MotionVector best_match;   //!< Best motion vector
+        MotionVector previous_best;//!< Previous best motion vector
+        int threshold{};           //!< Threshold for the block difference
+        virtual void reset();      //!< Resets the best score and best motion vector
+        /**
+         * \brief Compares a block to a reference frame
+         * \param block Block to be compared
+         * \param reference Reference frame/search space
+         * \param center Where the block will be placed to be compared
+         * \return Boolean indicating whether search is finished (score is below threshold)
+         */
         bool compare(const Block &block, const Frame *reference, cv::Point center);
     };
 
     class MAD final : public BlockDiff {
     public:
         explicit MAD(int threshold = 0);
+
         //! Returns the [MAD](https://en.wikipedia.org/wiki/Mean_absolute_difference) between a block and another block
         //! @details Higher MAD values indicate a greater difference between the blocks
         //! @param a Block to be compared
@@ -62,6 +121,7 @@ public:
     class MSE final : public BlockDiff {
     public:
         explicit MSE(int threshold = 0);
+
         //! Returns the [MSE](https://en.wikipedia.org/wiki/Mean_squared_error) between this block and another block
         //! @details Higher MSE values indicate a greater difference between the blocks
         //! @param a Block to be compared
@@ -74,6 +134,7 @@ public:
     class PSNR final : public BlockDiff {
     public:
         explicit PSNR(int threshold = 0);
+
         //! Returns the [PSNR](https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio) between this block and another block
         //! @details Lower PSNR values indicate a greater difference between the blocks (logarithmic scale)
         //! @param a Block to be compared
@@ -87,6 +148,7 @@ public:
     class SAD final : public BlockDiff {
     public:
         explicit SAD(int threshold = 0);
+
         //! Returns the [SAD](https://en.wikipedia.org/wiki/Sum_of_absolute_differences) between this block and another block
         //! @details Higher SAD values indicate a greater difference between the blocks
         //! @note This is the default block_diff method and is the fastest
@@ -98,7 +160,7 @@ public:
     };
 };
 
-//! Return a Block object representing a block of pixels
+//! Returns a Block object representing a block of pixels
 //! @param img Image to be used
 //! @param size Size of the block
 //! @param row Row of the top-left pixelp
@@ -107,6 +169,9 @@ public:
 Block get_block(const Image &img, int size, int row, int col);
 
 
+/**
+ * \brief Frame type enum
+ */
 enum FrameType {
     I_FRAME,//!< Intra-frame
     P_FRAME,//!< Predicted frame
@@ -117,25 +182,62 @@ enum FrameType {
  * @brief The Frame class provides methods to manipulate an Image in the context of video encoding
  */
 class Frame {
-    Image image_;     //!< Contains original image
-    FrameType type_{};//!< Indicates the type of frame
-    Block::BlockDiff *block_diff_{};
-    std::vector<MotionVector> motion_vectors_;
-    std::vector<int> intra_encoding;
+    Image image_;                             //!< Contains original image
+    FrameType type_{};                        //!< Indicates the type of frame
+    Block::BlockDiff *block_diff_{};          //!< Block difference method
+    std::vector<MotionVector> motion_vectors_;//!< Vector of motion vectors
+    std::vector<int> intra_encoding;          //!< Vector of intra encoding values
 
 public:
+    /**
+     * \brief Default constructor
+     */
     Frame() = default;
+    /**
+     * \brief Default destructor
+     */
     ~Frame() = default;
+    /**
+     * \brief Constructor from Image
+     * \param img Image to copy from
+     */
     explicit Frame(const Image &img);
+    /**
+     * \brief Returns the Image object
+     * \return Image object
+     */
     Image getImage() const;
+    /**
+     * \brief Checks if blockDiff method has been set
+     * \param blockDiff Block difference method
+     * \return Boolean indicating whether given blockDiff method has been set
+     */
     bool isBlockDiff(const Block::BlockDiff *blockDiff) const;
+    /**
+     * \brief Sets the blockDiff method
+     * \param blockDiff Block difference method
+     */
     void setBlockDiff(Block::BlockDiff *blockDiff);
+    /**
+     * \brief Returns the calculated motion vectors
+     */
     std::vector<MotionVector> getMotionVectors() const;
+    /**
+     * \brief Returns the calculated intra encoding values
+     */
     const std::vector<int> &getIntraEncoding() const;
+    /**
+     * \brief Gets the type of frame
+     */
     FrameType getType() const;
+    /**
+     * \brief Sets the type of frame
+     */
     void setType(FrameType type);
+    /**
+     * \brief Displays the frame in a window
+     */
     void show();
-
 
     void encode_JPEG_LS();
 

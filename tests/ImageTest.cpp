@@ -14,8 +14,8 @@ TEST(ImageTestSuite, ImageLoadTest) {
     Mat I = imread(img_file, IMREAD_COLOR);
     ASSERT_NO_THROW(image.load(img_file));
     image.show();
-    ASSERT_EQ(image.size()[0], I.rows);
-    ASSERT_EQ(image.size()[1], I.cols);
+    ASSERT_EQ(image.size().height, I.rows);
+    ASSERT_EQ(image.size().width, I.cols);
 }
 
 TEST(ImageTestSuite, ImageLoadFailTest) {
@@ -41,8 +41,7 @@ TEST(ImageTestSuite, PixelWiseCloning) {
     Image im1;
     im1.load(img_file);
     Image im2;
-    im2.set_image_mat(Mat::zeros(im1.size()[0],
-                               im1.size()[1], im1.getImageType()));
+    im2.set_image_mat(Mat::zeros(im1.size(), im1.getImageType()));
     for (auto it = im1.begin(); it != im1.end(); ++it) {
         im2.setPixel(it.pos().y, it.pos().x, *it);
     }

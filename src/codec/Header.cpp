@@ -18,8 +18,8 @@ void Header::writeHeader(BitStream *bs) const {
 void Header::extractInfo(const Frame &frame) {
     color_space = frame.getImage().get_color();
     chroma_subsampling = frame.getImage().get_chroma();
-    width = frame.getImage().size()[1];
-    height = frame.getImage().size()[0];
+    width = frame.getImage().size().width;
+    height = frame.getImage().size().height;
 }
 Header Header::readHeader(BitStream *bs) {
     Header header{};

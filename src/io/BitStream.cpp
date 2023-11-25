@@ -48,7 +48,7 @@ int BitStream::readBit() {
 
 void BitStream::writeBits(int value, int n) {
     for (int i = n - 1; i >= 0; i--) {
-        writeBit(value >> i & 1);//get the nth byte and write it
+        writeBit(value >> i & 1); //get the nth bit and write it
     }
 }
 
@@ -56,9 +56,6 @@ int BitStream::readBits(int n) {
     int result = 0;
     for (int i = 0; i < n; i++) {
         int bit = readBit();
-        if (bit == -1) {
-            return -1;
-        }
         result = (result << 1) | bit;
     }
     return result;

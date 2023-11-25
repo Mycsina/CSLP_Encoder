@@ -7,7 +7,6 @@
 
 #include <opencv2/core/mat.hpp>
 #include <opencv2/highgui.hpp>
-#include <opencv2/imgcodecs.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
 
@@ -18,9 +17,9 @@ using namespace cv;
 Video::Video(const char *filename) {
     try {
         // TODO: add support for other chroma subsamplings
-        Video::load_y4m(filename, YUV420);
+        load_y4m(filename, YUV420);
     } catch (runtime_error &e) {
-        Video::load(filename);
+        load(filename);
     }
 }
 Video::Video(const std::vector<Image> &reel) {
@@ -54,7 +53,9 @@ Frame Video::get_frame(const int pos) const {
 
 bool Video::loaded() const { return !im_reel.empty(); }
 
+// ReSharper disable CppMemberFunctionMayBeConst
 void Video::map(const function<void(Image &)> &func) {
+    // ReSharper restore CppMemberFunctionMayBeConst
     for (auto &it: im_reel) {
         func(it);
     }
@@ -107,7 +108,7 @@ void Video::load_y4m(const char *filename, const CHROMA_SUBSAMPLING format) {
     }
 
     while (!feof(file)) {// read all frames one-by-one and add them
-        Video::read_frame(file, width, height, uvWidth, uvHeight, format);
+        read_frame(file, width, height, uvWidth, uvHeight, format);
     }
 }
 
@@ -126,7 +127,8 @@ void Video::read_frame(FILE *file, const int width, const int height, const int 
     // remove the "FRAME", if exists
     if (fread(buffer, sizeof(char), 6, file) != 6 && !feof(file)) {
         throw runtime_error("incomplete reading");
-    } else if (string(buffer) != "FRAME\n") {
+    }
+    if (string(buffer) != "FRAME\n") {
         // we're already past the frame (or this frame doesn't specify that a frame has started
         fseek(file, -6, SEEK_CUR);
         std::cout << buffer << " went back" << std::endl;
@@ -186,13 +188,11 @@ void Video::get_header_data(FILE *file, int *width, int *height, float *fps) {
     *fps = static_cast<float>(frame_rate_num) / static_cast<float>(frame_rate_den);
 }
 
-void Video::play(int stop_key) {
+void Video::play(int stop_key) const {
     if (loaded()) {
         for (auto &it: im_reel) {
             it.show(true);
             if (pollKey() == stop_key) {
-                // Ensures that the scene with the same fps (some minor variation may
-                // happen due to computation costs)
                 break;
             }
         }
@@ -235,86 +235,4 @@ void Video::convert_to(const COLOR_SPACE f1, const COLOR_SPACE f2) {
         temp.push_back(func(im));
     }
     im_reel = temp;
-}
-
-void Video::encode_hybrid(const std::string &path, int m, int period, int search_radius, int block_size, int threshold) const {
-    if (loaded()) {
-        BitStream bs(path, std::ios::out);
-        Golomb g(&bs);
-
-        Image sample_image = im_reel.front();
-
-        //write header
-        bs.writeBits(static_cast<int>(im_reel.size()), 8 * sizeof(int));
-        bs.writeBits(period, 8);
-        bs.writeBits(search_radius, 8);
-        bs.writeBits(block_size, 8);
-        bs.writeBits(static_cast<int>(fps_), 8 * sizeof(int));
-        bs.writeBits(threshold, 8 * sizeof(int));
-        bs.writeBits(sample_image.get_color(), 4);
-        bs.writeBits(sample_image.get_chroma(), 4);
-        bs.writeBits(sample_image.get_image_mat()->cols, 8 * sizeof(int));
-        bs.writeBits(sample_image.get_image_mat()->rows, 8 * sizeof(int));
-        bs.writeBits(m, 8 * sizeof(int));
-        g.set_m(m);
-        //encode in bulk into the buffers
-        int cnt = period;
-        int last_intra = 0;
-        for (int index = 0; index < im_reel.size(); index++) {
-            Frame frame(im_reel[index]);
-            if (cnt == period) {
-                frame.encode_JPEG_LS(&g);
-                last_intra = index;
-                cnt = 0;
-            } else {
-                Frame frame_intra(im_reel[last_intra]);
-                frame.calculate_MV(&frame_intra, block_size, search_radius, false);
-                frame.write(&g);
-                cnt++;
-            }
-        }
-    } else {
-        throw std::runtime_error("Video hasn't been loaded");
-    }
-}
-
-Video Video::decode_hybrid(const std::string &path) {
-    auto *bs = new BitStream(path, std::ios::in);
-    auto *im_reel = new vector<Image>();
-    Golomb g(bs);
-    Video v;
-
-    //read header
-    int size = bs->readBits(8 * sizeof(int));
-    int period = bs->readBits(8);
-    int search_radius = bs->readBits(8);
-    int block_size = bs->readBits(8);
-    int fps_ = bs->readBits(8 * sizeof(int));
-    int threshold = bs->readBits(8 * sizeof(int));
-    auto c_space = static_cast<COLOR_SPACE>(bs->readBits(4));
-    auto cs_ratio = static_cast<CHROMA_SUBSAMPLING>(bs->readBits(4));
-    int cols = bs->readBits(8 * sizeof(int));
-    int rows = bs->readBits(8 * sizeof(int));
-    int m = bs->readBits(8 * sizeof(int));
-    Header header = Header(c_space, cs_ratio, cols, rows);
-    g.set_m(m);
-
-    int cnt = period;
-    int last_intra = 0;
-    for (int index = 0; index < size; index++) {
-        if (cnt == period) {
-            im_reel->push_back(Frame::decode_JPEG_LS(&g, header).getImage());
-            last_intra = index;
-            cnt = 0;
-        } else {
-            Frame frame_intra((*im_reel)[last_intra]);
-            auto hd = InterHeader(header);
-            hd.block_size = block_size;
-            im_reel->push_back(Frame::decode_inter(&g, &frame_intra, hd).getImage());
-            cnt++;
-        }
-    }
-    v.set_fps(fps_);
-    v.set_reel(im_reel);
-    return v;
 }

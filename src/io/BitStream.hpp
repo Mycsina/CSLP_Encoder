@@ -1,5 +1,7 @@
-//! @file BitStream class declaration
-/*!
+/**
+ * @file BitStream.hpp
+ * @brief BitStream class
+ * @ingroup io
  * Declares the BitStream class, which defines methods to access individual bits of a file
  */
 #pragma once
@@ -29,7 +31,7 @@ public:
 
     /**
      * @brief Destructor for the BitStream class.
-     * Flushes the buffer to ensure that any remaining bits are written to the file.
+     * @details Flushes the buffer to ensure that any remaining bits are written to the file.
      */
     ~BitStream();
 
@@ -41,12 +43,14 @@ public:
 
     /**
      * @brief Reads a single bit from the file.
-     * @return The read bit (0 or 1), or -1 if the end of the file is reached.
+     * @return The read bit (0 or 1)
+     * @throws runtime_error EOF is reached.
      */
     int readBit();
 
     /**
      * @brief Writes multiple bits to the file.
+     * @details The bits are written from the MSB to the LSB.
      * @param value The value containing the bits to be written.
      * @param n The number of bits to write.
      */
@@ -55,6 +59,7 @@ public:
     /**
      * @brief Reads multiple bits from the file.
      * @param n The number of bits to read.
+     * @throws runtime_error EOF is reached.
      * @return The read value containing the bits, or -1 if the end of the file is reached.
      */
     int readBits(int n);
@@ -73,5 +78,9 @@ public:
      */
     std::string readString();
 
+    /**
+     * \brief Returns the current position of the file pointer
+     * \return Position of the file pointer
+     */
     int getPosition();
 };

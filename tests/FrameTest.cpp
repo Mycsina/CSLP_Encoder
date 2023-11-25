@@ -22,8 +22,8 @@ protected:
 
 TEST_F(FrameTest, IntraFrameTest) {
     f1.encode_JPEG_LS();
-    int rows = f1.getImage().size()[0];
-    int cols = f1.getImage().size()[1];
+    int rows = f1.getImage().size().height;
+    int cols = f1.getImage().size().width;
     Frame decoded = Frame::decode_JPEG_LS(f1.getIntraEncoding(), f1.getImage().get_color(), f1.getImage().get_chroma(), rows, cols);
     Image im1 = f1.getImage();
     Image im2 = decoded.getImage();

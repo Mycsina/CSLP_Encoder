@@ -82,9 +82,8 @@ int Golomb::readBinaryTrunc() const {
     const int k_bits = bs->readBits(k);
     if (k_bits < u) {
         return k_bits;
-    } else {
-        return ((k_bits << 1) + bs->readBit()) - u;
     }
+    return ((k_bits << 1) + bs->readBit()) - u;
 }
 
 void Golomb::writeBinaryTrunc(const int n) const {

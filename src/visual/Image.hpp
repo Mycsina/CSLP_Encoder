@@ -1,17 +1,17 @@
-﻿//! @file Image class declaration
-/*!
- @brief Declares the Image class, representing a digital Image.
-*/
+﻿/**
+ * @file Image.hpp
+ * @brief Image class
+ * @ingroup Visual
+ */
+
 #pragma once
 
+#include "../io/Golomb.hpp"
 #include <iostream>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
 #include <opencv2/opencv.hpp>
-#include <utility>
-#include "../io/Golomb.hpp"
 
 enum COLOR_SPACE : std::uint8_t {
     BGR,//!< Blue-Green-Red
@@ -38,7 +38,6 @@ struct Histogram {
  * @brief The Image class provides methods for manipulating digital images.
  */
 class Image {
-private:
     cv::Mat image_mat_;
     COLOR_SPACE c_space = BGR;
     CHROMA_SUBSAMPLING cs_ratio = NA;
@@ -84,8 +83,8 @@ public:
     cv::MatIterator_<cv::Vec3b> end();
 
     //! Return size of Image
-    //! @return Array of integers containing the size of the Image in the format <rows, cols>
-    std::array<int, 2> size() const;
+    //! @return Size of Image as a cv::Size object
+    cv::Size size() const;
 
     //! Loads an Image from a file
     //! \details The Image is stored in a 8-bit unsigned integer matrix with 3
@@ -131,13 +130,13 @@ public:
     //! @return Image object containing a deep copy of the Image
     Image clone() const;
 
-    //! Compare two images
+    //! Equality operator
     //! @param  other Image to be compared to
     //! @return Boolean indicating whether the two images are equal
     bool operator==(Image &other) const;
 
     //! Create color histograms of a BGR Image
-    //! @param  hist Histogram to be displayed
+    //! @param  bins Number of bins in the histogram
     //! @param  fill_hist Indicates whether the histogram should be filled
     //! @param  width Width in pixels of the histogram
     //! @param  height Height in pixels of the histogram
@@ -166,33 +165,31 @@ public:
 
     //! Cuts the given matrix so that, if the center of that matrix were to be placed at the given coordinates in image_mat_, it would not overflow
     //! @param m the given matrix
-    //! @param row,col the coordinates
+    //! @param row row of the coordinates
+    //! @param col column of the coordinates
     //! @return The cut submatrix
     cv::Mat cut(const cv::Mat &m, int row, int col) const;
-
-    void encode_JPEG_LS(const std::string& path, int m);
-
-    void encode_JPEG_LS(Golomb *g);
-
-    static Image decode_JPEG_LS(const std::string& path);
-
-    static Image decode_JPEG_LS(Golomb *g,COLOR_SPACE c_space,CHROMA_SUBSAMPLING cs_ratio, int rows,int cols);
-
-
-    static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel);
 };
 
+/**
+ * \brief Inserts a matrix into another matrix
+ * \details The function alters the mat matrix, inserting the slice matrix using the row and col parameters as the top left corner of the insertion
+ * \param mat Matrix to alter
+ * \param slice Matrix to insert
+ * \param row Row of insertion
+ * \param col Column of insertion
+ */
 void setSlice(const cv::Mat &mat, const cv::Mat &slice, int row, int col);
 
-//! @brief Creates basic histogram of matrix\n
+//! @brief Creates basic histogram of matrix
 //! @details The functions needs to be called with the correct template type,
-//! according to the type of the matrix\n
+//! according to the type of the matrix
 //! @param  matrix Matrix with data
 //! @param  bins Number of bins (probably use the same number as the number of
 //! possible values in the matrix)
 //! @return Histogram of matrix
 template<typename T>
-cv::Mat histogram(const cv::Mat &matrix, int bins = 256) {
+cv::Mat histogram(const cv::Mat &matrix, const int bins = 256) {
     cv::Mat histValues = cv::Mat::zeros(1, bins, CV_32F);
     matrix.forEach<T>([&](T &pixel, const int position[]) -> void {
         histValues.at<float>(pixel) += 1;

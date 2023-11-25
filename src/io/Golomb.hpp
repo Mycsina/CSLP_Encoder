@@ -1,7 +1,9 @@
-//! @file Golomb encoder/decoder
-/*!
- * Declares the Golomb class, a class responsible for Golomb decoding/encoding
- */
+/** @file Golomb.hpp
+ * @brief Header file for Golomb class
+ * @ingroup io
+ * Declares the Golomb class, which provides methods to encode/decode int values using Golomb coding
+*/
+
 #pragma once
 
 #include "BitStream.hpp"
@@ -11,18 +13,43 @@
  * @brief The Golomb class provides methods to encode/decode int values using Golomb
  */
 class Golomb {
-private:
-    BitStream *bs;
-    int m = -1;
-    std::string filepath;
-    bool localStream = false;
+    BitStream *bs;           ///< BitStream object
+    int m = -1;              ///< m parameter of golomb code
+    std::string filepath;    ///< path to file
+    bool localStream = false;///< whether the BitStream object was created locally
 
 public:
+    /**
+     * \brief Constructor for the Golomb class
+     * \param filePath path to file
+     * \param mode open mode for file stream
+     */
     Golomb(const std::string &filePath, std::ios_base::openmode mode);
+    /**
+     * \brief Constructor for the Golomb class
+     * \param bis BitStream object to use
+     */
     explicit Golomb(BitStream *bis);
+    /**
+     * \brief Destructor for the Golomb class
+     * \details Destroys the BitStream object if it was created locally
+     */
     ~Golomb();
+    /**
+     * \brief Sets the m parameter of golomb code
+     * \details Must be called before encode/decode
+     * \param m_ the m parameter of golomb code
+     */
     void set_m(int m_);
+    /**
+     * \brief Gets the m parameter of golomb code
+     * \return the m parameter of golomb code
+     */
     int get_m() const;
+    /**
+     * \brief Gets the BitStream object
+     * \return BitStream object
+     */
     BitStream *get_bs() const;
     //! Reads and decodes a single int from file
     //! @return the decoded int

@@ -20,21 +20,22 @@ TEST_F(EncoderDemo, losslessPredictive) {
     string encoded = file + "_encoded";
     string decoded = file + "_decoded";
     int golomb_m = 2;
-    auto *encoder = new intra_frame_encoder(file.c_str(), encoded.c_str(), golomb_m);
-    encoder->encode();
-    delete encoder;
-    auto *decoder = new intra_frame_encoder(encoded.c_str(), decoded.c_str(), golomb_m);
-    decoder->decode();
-    delete decoder;
+    LosslessIntraEncoder encoder(file.c_str(), encoded.c_str(), golomb_m);
+    encoder.encode();
+    LosslessIntraEncoder decoder(encoded.c_str(), decoded.c_str(), golomb_m);
+    decoder.decode();
+    const auto video_frames = Video(file.c_str()).generate_frames();
+    for (Frame *frame: video_frames) {
+        frame->show();
+    }
 }
 
 TEST_F(EncoderDemo, losslessIntraBestM) {
     int best_size = INFINITY;
     for (int m = 2; m < 8; m++) {
         const char *file = normal_video;
-        auto *encoder = new intra_frame_encoder(file, "encoded", m);
-        encoder->encode();
-        delete encoder;
+        LosslessIntraEncoder encoder(file, "encoded", m);
+        encoder.encode();
         ifstream testFile("encoded", ios::binary);
         auto begin = testFile.tellg();
         testFile.seekg(0, ios::end);

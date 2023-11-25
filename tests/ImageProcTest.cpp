@@ -23,8 +23,8 @@ TEST_F(ImageTest, YUVEquivalenceTest) {
     // img.show();
     cvtColor(*im2.get_image_mat(), *im2.get_image_mat(), COLOR_BGR2YUV);
     // im2.show();
-    int rand_row = rand() % img.size()[0];
-    int rand_col = rand() % img.size()[1];
+    int rand_row = rand() % img.size().height;
+    int rand_col = rand() % img.size().width;
     Vec3b color = img.get_image_mat()->at<Vec3b>(rand_row, rand_col);
     Vec3b color2 = im2.get_image_mat()->at<Vec3b>(rand_row, rand_col);
     // Absolute difference between the two colors should be less than 3
@@ -42,8 +42,8 @@ TEST_F(ImageTest, BGREquivalenceTest) {
     // img.show();
     img = convert_YUV_BGR(img);
     // img.show();
-    int rand_row = rand() % img.size()[0];
-    int rand_col = rand() % img.size()[1];
+    int rand_row = rand() % img.size().height;
+    int rand_col = rand() % img.size().width;
     Vec3b color = img.get_image_mat()->at<Vec3b>(rand_row, rand_col);
     Vec3b color2 = im2.get_image_mat()->at<Vec3b>(rand_row, rand_col);
     // Absolute difference between the two colors should be less than 3
@@ -57,8 +57,8 @@ TEST_F(ImageTest, GRAYEquivalenceTest) {
     // img.show();
     im2 = convert_BGR_GRAY(im2);
     // im2.show();
-    int rand_row = rand() % img.size()[0];
-    int rand_col = rand() % img.size()[1];
+    int rand_row = rand() % img.size().height;
+    int rand_col = rand() % img.size().width;
     uchar color = img.get_image_mat()->at<uchar>(rand_row, rand_col);
     uchar color2 = im2.get_image_mat()->at<uchar>(rand_row, rand_col);
     // Absolute difference between the two colors should be less than 3
@@ -76,8 +76,8 @@ TEST_F(ImageTest, ConversionIdempotenceTest) {
     im2 = convert_YUV_BGR(im2);
     // img.show();
     // im2.show();
-    int rand_row = rand() % img.size()[0];
-    int rand_col = rand() % img.size()[1];
+    int rand_row = rand() % img.size().height;
+    int rand_col = rand() % img.size().width;
     Vec3b color = img.get_image_mat()->at<Vec3b>(rand_row, rand_col);
     Vec3b color2 = im2.get_image_mat()->at<Vec3b>(rand_row, rand_col);
     // Absolute difference between the two colors should be less than 3
@@ -94,8 +94,8 @@ TEST_F(ImageTest, HistogramEqualiz) {
     im2 = convert_BGR_GRAY(im2);
     equalize_hist(img);
     equalizeHist(*im2.get_image_mat(), *im2.get_image_mat());
-    int rand_row = rand() % img.size()[0];
-    int rand_col = rand() % img.size()[1];
+    int rand_row = rand() % img.size().height;
+    int rand_col = rand() % img.size().width;
     Vec3b color = img.get_image_mat()->at<Vec3b>(rand_row, rand_col);
     Vec3b color2 = im2.get_image_mat()->at<Vec3b>(rand_row, rand_col);
     // Absolute difference between the two colors should be less than 3

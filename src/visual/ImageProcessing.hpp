@@ -1,6 +1,9 @@
-//!  @file Declares functions that change the data of an Image
-/*!
- * @brief Declares functions that change the data of an Image
+/**
+ * @file ImageProcessing.hpp
+ * @brief Image processing functions
+ * @ingroup Visual
+ * Contains functions for image processing, such as watermarking, color space
+ * conversion, and histogram equalization.
  */
 
 #pragma once

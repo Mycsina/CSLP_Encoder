@@ -7,7 +7,7 @@ using namespace cv;
 
 void watermark(Image &im, Image mark, Point2i coord1, Point2i coord2,
                double alpha) {
-    Mat imageMat = *im.get_image_mat();
+    Mat image_mat = *im.get_image_mat();
     Mat markMat = *mark.get_image_mat();
     int height = coord2.y - coord1.y;
     int width = coord2.x - coord1.x;
@@ -20,7 +20,7 @@ void watermark(Image &im, Image mark, Point2i coord1, Point2i coord2,
     }
     resize(markMat, markMat, Size(width, height), 0, 0, flag);
     // Blend the watermark with the Image
-    Mat roi = imageMat(Rect(coord1.x, coord1.y, width, height));
+    Mat roi = image_mat(Rect(coord1.x, coord1.y, width, height));
     addWeighted(roi, alpha, markMat, 1.0 - alpha, 0.0, roi);
 }
 
@@ -29,7 +29,7 @@ Image convert_BGR_YUV444(Image &im) {
     int rows = image_mat_.rows;
     int cols = image_mat_.cols;
 
-    cv::Mat yuv(rows, cols, CV_8UC3);
+    Mat yuv(rows, cols, CV_8UC3);
 
     image_mat_.forEach<Vec3b>([&yuv](Vec3b &pixel, const int *position) {
         int row = position[0];
@@ -43,7 +43,7 @@ Image convert_BGR_YUV444(Image &im) {
         double u = 0.492 * (b - y) + 128.0;
         double v = 0.877 * (r - y) + 128.0;
 
-        yuv.at<cv::Vec3b>(row, col) = cv::Vec3b(
+        yuv.at<Vec3b>(row, col) = Vec3b(
                 static_cast<uchar>(y), static_cast<uchar>(u), static_cast<uchar>(v));
     });
 
@@ -169,7 +169,7 @@ Image convert_YUV_BGR(Image &im) {
         b = std::min(255.0, std::max(0.0, b));
 
         // Set the BGR pixel values
-        bgr.at<cv::Vec3b>(row, col) = cv::Vec3b(
+        bgr.at<Vec3b>(row, col) = Vec3b(
                 static_cast<uchar>(b), static_cast<uchar>(g), static_cast<uchar>(r));
     });
     Image result;
@@ -192,7 +192,7 @@ Image convert_BGR_GRAY(Image &im) {
         for (int j = 0; j < matrix->cols; j++) {
             Vec3b color = matrix->at<Vec3b>(i, j);
             int R = color[2], G = color[1], B = color[0];
-            auto Y = (uchar) (0.299 * R + 0.587 * G + 0.114 * B);
+            auto Y = static_cast<uchar>(0.299 * R + 0.587 * G + 0.114 * B);
             gray.at<uchar>(i, j) = Y;
         }
     }
@@ -255,7 +255,7 @@ Mat ecdf(const Mat &histogram, int total) {
     float cumsum = 0;
     for (int j = 0; j < histogram.cols; j++) {
         cumsum += histogram.at<float>(j);
-        float val = cumsum / (float) total;
+        float val = cumsum / static_cast<float>(total);
         res.at<float>(j) = val;
     }
     return res;
@@ -293,10 +293,10 @@ void binarize(Image &im) {
         double fg_mean = 0;// μ0
         double bg_mean = 0;// μ1
         for (int i = 0; i < thresh; i++) {
-            fg_mean += i * (double) hist.at<float>(i);
+            fg_mean += i * static_cast<double>(hist.at<float>(i));
         }
         for (int i = thresh; i < bins; i++) {
-            bg_mean += i * (double) hist.at<float>(i);
+            bg_mean += i * static_cast<double>(hist.at<float>(i));
         }
         fg_mean /= fg_prob;
         bg_mean /= bg_prob;
@@ -309,7 +309,7 @@ void binarize(Image &im) {
     }
     // Binarize image
     matrix.forEach<uchar>(
-            [&best_threshold](uchar &pixel, const int *position) -> void {
+            [&best_threshold](uchar &pixel, const int *) -> void {
                 if (pixel > best_threshold) {
                     pixel = 255;
                 } else {
