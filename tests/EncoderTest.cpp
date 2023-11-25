@@ -22,7 +22,7 @@ TEST_F(EncoderTest, Intra) {
     delete encoder;
     auto *decoder = new LosslessIntraEncoder("../../tests/resource/encoded", "decoded", m);
     decoder->decode();
-    const auto video_frames = Video(file).generateFrames();
+    const auto video_frames = Video(file).generate_frames();
     for (int i = 0; i < video_frames.size(); i++) {
         Image im1 = video_frames[i]->getImage();
         Image im2 = decoder->frames[i].getImage();
@@ -39,7 +39,7 @@ TEST_F(EncoderTest, Inter) {
     delete encoder;
     auto *decoder = new LosslessInterFrameEncoder("encoded", "decoded", m, 16);
     decoder->decode();
-    const auto video_frames = Video(file).generateFrames();
+    const auto video_frames = Video(file).generate_frames();
     for (int i = 0; i < video_frames.size(); i++) {
         Image im1 = video_frames[i]->getImage();
         Image im2 = decoder->frames[i].getImage();

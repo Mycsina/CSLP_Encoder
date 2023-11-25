@@ -10,39 +10,53 @@ LosslessHybridEncoder::LosslessHybridEncoder(const char *src, const char *dst) :
 
 
 void LosslessHybridEncoder::encode() {
-    auto *bs = new BitStream(dst, ios::out);
-    auto *golomb = new Golomb(bs);
-    golomb->set_m(golomb_m);
-    const Video vid = Video(src);
-    const vector<Frame *> frames = vid.generateFrames();
+    BitStream bs(dst, ios::out);
+    Golomb g(&bs);
+    const Video vid(src);
+    const vector<Frame *> frames = vid.generate_frames();
     const Frame sample = *frames[0];
     header.extractInfo(sample);
     header.golomb_m = golomb_m;
     header.length = frames.size();
     header.block_size = block_size;
-    header.writeHeader(bs);
+    header.writeHeader(&bs);
     Frame *last = frames[0];
-    last->encode_JPEG_LS(golomb);
-#pragma omp parallel for default(none) shared(frames, last)
-    for (int i = 1; i < frames.size(); i++) {
-        Frame *current = frames[i];
-        current->calculate_MV(last, block_size, 7, false);
-        last = current;
+    g.set_m(golomb_m);
+    int cnt = period;
+    int last_intra = 0;
+    for (int index = 0; index < frames.size(); index++) {
+        Frame *frame = frames[index];
+        if (cnt == period) {
+            frame->encode_JPEG_LS(&g);
+            last_intra = index;
+            cnt = 0;
+        } else {
+            Frame *frame_intra = frames[last_intra];
+            frame->calculate_MV(frame_intra, block_size, header.search_radius, false);
+            frame->write(&g);
+            cnt++;
+        }
     }
-    for (auto &frame: frames) {
-        frame->write(golomb);
-    }
-    delete golomb;
 }
 
 void LosslessHybridEncoder::decode() {
-    auto *bs = new BitStream(src, ios::in);
-    auto *golomb = new Golomb(bs);
-    header = InterHeader::readHeader(bs);
-    golomb->set_m(header.golomb_m);
-    frames.push_back(Frame::decode_JPEG_LS(golomb, static_cast<Header>(header)));
-    for (int i = 1; i < header.length - 1; i++) {
-        Frame img = Frame::decode_inter(golomb, &frames[i - 1], header);
-        frames.push_back(img);
+    BitStream bs(src, ios::in);
+    Golomb g(&bs);
+    header = HybridHeader::readHeader(&bs);
+    g.set_m(header.golomb_m);
+    int cnt = period;
+    int last_intra = 0;
+    for (int index = 0; index < header.length; index++) {
+        if (cnt == period) {
+            frames.push_back(Frame::decode_JPEG_LS(&g, static_cast<Header>(header)));
+            last_intra = index;
+            cnt = 0;
+        } else {
+            Frame frame_intra = frames[last_intra];
+            auto hd = InterHeader(static_cast<Header>(header));
+            hd.block_size = block_size;
+            frames.push_back(Frame::decode_inter(&g, &frame_intra, hd));
+            cnt++;
+        }
     }
 }

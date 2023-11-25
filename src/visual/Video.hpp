@@ -3,12 +3,12 @@
  * Declares the Video class, representing a digital video, composed of multiple
  * Image objects
  */
+#pragma once
 #include "../codec/Frame.hpp"
 #include "Image.hpp"
 #include <cstdio>
 #include <functional>
 #include <vector>
-#pragma once
 
 class Image;
 /**
@@ -22,6 +22,8 @@ public:
     Video() = default;
     ~Video() = default;
     explicit Video(const char *filename);
+    explicit Video(const std::vector<Image> &reel);
+    explicit Video(const std::vector<Frame> &frames);
     const std::vector<Image> &get_reel();
     void set_reel(std::vector<Image> *reel);
     float get_fps() const;
@@ -30,7 +32,7 @@ public:
     //! Generates vector of frames from the video
     //! @warning Must be deallocated after use
     //! @return vector of frames
-    std::vector<Frame *> generateFrames() const;
+    std::vector<Frame *> generate_frames() const;
 
     //! Returns frame at given position
     //! @param pos position of the frame
@@ -48,7 +50,7 @@ public:
     //! Loads Video from Y4M file
     //! @param filename path to the file
     //! @param format chroma subsampling format
-    void loadY4M(const char *filename, CHROMA_SUBSAMPLING format);
+    void load_y4m(const char *filename, CHROMA_SUBSAMPLING format);
 
     //! Parses header data into given pointers (the read pointer is advanced to
     //! the byte after the header)
@@ -56,11 +58,11 @@ public:
     //! @param width pointer to the width variable
     //! @param height pointer to the height variable
     //! @param fps pointer to the fps variable
-    static void getHeaderData(FILE *file, int *width, int *height, float *fps);
+    static void get_header_data(FILE *file, int *width, int *height, float *fps);
 
     //! Read a frame from an opened Y4M file
-    void readFrame(FILE *file, int width, int height, int uvWidth, int uvHeight,
-                   CHROMA_SUBSAMPLING format);
+    void read_frame(FILE *file, int width, int height, int uvWidth, int uvHeight,
+                    CHROMA_SUBSAMPLING format);
 
     //! Plays the Video
     //! @param stop_key value of the key that stops the video
@@ -73,7 +75,7 @@ public:
     //! Convert Video between color spaces
     //! @param f1 source color space
     //! @param f2 destination color space
-    void convertTo(COLOR_SPACE f1, COLOR_SPACE f2);
+    void convert_to(COLOR_SPACE f1, COLOR_SPACE f2);
 
     //! Encode video using hybrid encoding and then saves using golomb encoding
     //! @param path the path to the destination file

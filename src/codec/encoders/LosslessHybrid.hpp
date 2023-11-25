@@ -8,10 +8,11 @@ public:
     LosslessHybridEncoder(const char *src, const char *dst);
     const char *src{};
     const char *dst{};
-    InterHeader header{};
+    HybridHeader header{};
     uint8_t golomb_m;
     uint8_t block_size;
     uint8_t period{};
+    uint8_t fps;
     void encode() override;
     void decode() override;
 };

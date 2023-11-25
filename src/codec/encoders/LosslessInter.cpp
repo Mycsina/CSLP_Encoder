@@ -14,7 +14,7 @@ void LosslessInterFrameEncoder::encode() {
     auto *golomb = new Golomb(bs);
     golomb->set_m(golomb_m);
     const Video vid = Video(src);
-    const vector<Frame *> frames = vid.generateFrames();
+    const vector<Frame *> frames = vid.generate_frames();
     const Frame sample = *frames[0];
     header.extractInfo(sample);
     header.golomb_m = golomb_m;
@@ -36,13 +36,13 @@ void LosslessInterFrameEncoder::encode() {
 }
 
 void LosslessInterFrameEncoder::decode() {
-    auto *bs = new BitStream(src, ios::in);
-    auto *golomb = new Golomb(bs);
-    header = InterHeader::readHeader(bs);
-    golomb->set_m(header.golomb_m);
-    frames.push_back(Frame::decode_JPEG_LS(golomb, static_cast<Header>(header)));
+    BitStream bs(src, ios::in);
+    Golomb golomb(&bs);
+    header = InterHeader::readHeader(&bs);
+    golomb.set_m(header.golomb_m);
+    frames.push_back(Frame::decode_JPEG_LS(&golomb, static_cast<Header>(header)));
     for (int i = 1; i < header.length - 1; i++) {
-        Frame img = Frame::decode_inter(golomb, &frames[i - 1], header);
+        Frame img = Frame::decode_inter(&golomb, &frames[i - 1], header);
         frames.push_back(img);
     }
 }

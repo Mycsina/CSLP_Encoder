@@ -21,7 +21,18 @@ class InterHeader : public Header {
 public:
     uint8_t block_size;
     InterHeader() = default;
-    InterHeader(Header header);
+    explicit InterHeader(Header header);
     void writeHeader(BitStream *bs) const;
     static InterHeader readHeader(BitStream *bs);
+};
+
+class HybridHeader : public InterHeader {
+public:
+    uint8_t period;
+    uint8_t search_radius;
+    uint8_t fps;
+    HybridHeader() = default;
+    explicit HybridHeader(InterHeader header);
+    void writeHeader(BitStream *bs) const;
+    static HybridHeader readHeader(BitStream *bs);
 };

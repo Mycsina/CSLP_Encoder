@@ -1,5 +1,6 @@
 #pragma once
 #include "../visual/Image.hpp"
+#include "../visual/Video.hpp"
 #include "Frame.hpp"
 
 class Encoder {

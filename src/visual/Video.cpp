@@ -18,10 +18,21 @@ using namespace cv;
 Video::Video(const char *filename) {
     try {
         // TODO: add support for other chroma subsamplings
-        Video::loadY4M(filename, YUV420);
+        Video::load_y4m(filename, YUV420);
     } catch (runtime_error &e) {
         Video::load(filename);
     }
+}
+Video::Video(const std::vector<Image> &reel) {
+    im_reel = reel;
+}
+
+Video::Video(const std::vector<Frame> &frames) {
+    vector<Image> reel;
+    for (auto &it: frames) {
+        reel.push_back(it.getImage());
+    }
+    im_reel = reel;
 }
 
 const vector<Image> &Video::get_reel() { return im_reel; }
@@ -29,7 +40,7 @@ void Video::set_reel(vector<Image> *reel) { im_reel = *reel; }
 float Video::get_fps() const { return fps_; }
 void Video::set_fps(float fps) { fps_ = fps; }
 
-vector<Frame *> Video::generateFrames() const {
+vector<Frame *> Video::generate_frames() const {
     vector<Frame *> frames;
     for (auto &it: im_reel) {
         frames.push_back(new Frame(it));
@@ -63,7 +74,7 @@ void Video::load(const char *filename) {
     }
 }
 
-void Video::loadY4M(const char *filename, const CHROMA_SUBSAMPLING format) {
+void Video::load_y4m(const char *filename, const CHROMA_SUBSAMPLING format) {
     int width, height, uvWidth, uvHeight;
     float fps;
 
@@ -74,7 +85,7 @@ void Video::loadY4M(const char *filename, const CHROMA_SUBSAMPLING format) {
     }
 
     // get header
-    Video::getHeaderData(file, &width, &height, &fps);
+    Video::get_header_data(file, &width, &height, &fps);
     fps_ = fps;
 
     // use yuv format to get size of frame
@@ -96,12 +107,12 @@ void Video::loadY4M(const char *filename, const CHROMA_SUBSAMPLING format) {
     }
 
     while (!feof(file)) {// read all frames one-by-one and add them
-        Video::readFrame(file, width, height, uvWidth, uvHeight, format);
+        Video::read_frame(file, width, height, uvWidth, uvHeight, format);
     }
 }
 
-void Video::readFrame(FILE *file, const int width, const int height, const int uvWidth,
-                      const int uvHeight, const CHROMA_SUBSAMPLING format) {
+void Video::read_frame(FILE *file, const int width, const int height, const int uvWidth,
+                       const int uvHeight, const CHROMA_SUBSAMPLING format) {
     Image im;
     char buffer[6];
     im.set_color(YUV);
@@ -161,7 +172,7 @@ void Video::readFrame(FILE *file, const int width, const int height, const int u
     im_reel.push_back(im);
 }
 
-void Video::getHeaderData(FILE *file, int *width, int *height, float *fps) {
+void Video::get_header_data(FILE *file, int *width, int *height, float *fps) {
     char header[90];
     char discard[200];// should be enough for the rest
     int frame_rate_num, frame_rate_den;
@@ -190,7 +201,7 @@ void Video::play(int stop_key) {
     }
 }
 
-void Video::convertTo(const COLOR_SPACE f1, const COLOR_SPACE f2) {
+void Video::convert_to(const COLOR_SPACE f1, const COLOR_SPACE f2) {
     function<Image(Image &)> func = [](Image &im) { return im; };
     switch (f1) {
         case BGR:
@@ -228,23 +239,23 @@ void Video::convertTo(const COLOR_SPACE f1, const COLOR_SPACE f2) {
 
 void Video::encode_hybrid(const std::string &path, int m, int period, int search_radius, int block_size, int threshold) const {
     if (loaded()) {
-        auto *bs = new BitStream(path, std::ios::out);
-        Golomb g(bs);
+        BitStream bs(path, std::ios::out);
+        Golomb g(&bs);
 
         Image sample_image = im_reel.front();
 
         //write header
-        bs->writeBits(static_cast<int>(im_reel.size()), 8 * sizeof(int));
-        bs->writeBits(period, 8);
-        bs->writeBits(search_radius, 8);
-        bs->writeBits(block_size, 8);
-        bs->writeBits(static_cast<int>(fps_), 8 * sizeof(int));
-        bs->writeBits(threshold, 8 * sizeof(int));
-        bs->writeBits(sample_image.get_color(), 4);
-        bs->writeBits(sample_image.get_chroma(), 4);
-        bs->writeBits(sample_image.get_image_mat()->cols, 8 * sizeof(int));
-        bs->writeBits(sample_image.get_image_mat()->rows, 8 * sizeof(int));
-        bs->writeBits(m, 8 * sizeof(int));
+        bs.writeBits(static_cast<int>(im_reel.size()), 8 * sizeof(int));
+        bs.writeBits(period, 8);
+        bs.writeBits(search_radius, 8);
+        bs.writeBits(block_size, 8);
+        bs.writeBits(static_cast<int>(fps_), 8 * sizeof(int));
+        bs.writeBits(threshold, 8 * sizeof(int));
+        bs.writeBits(sample_image.get_color(), 4);
+        bs.writeBits(sample_image.get_chroma(), 4);
+        bs.writeBits(sample_image.get_image_mat()->cols, 8 * sizeof(int));
+        bs.writeBits(sample_image.get_image_mat()->rows, 8 * sizeof(int));
+        bs.writeBits(m, 8 * sizeof(int));
         g.set_m(m);
         //encode in bulk into the buffers
         int cnt = period;
@@ -258,12 +269,10 @@ void Video::encode_hybrid(const std::string &path, int m, int period, int search
             } else {
                 Frame frame_intra(im_reel[last_intra]);
                 frame.calculate_MV(&frame_intra, block_size, search_radius, false);
-                auto mv = frame.getMotionVectors().at(1);
                 frame.write(&g);
                 cnt++;
             }
         }
-        delete bs;
     } else {
         throw std::runtime_error("Video hasn't been loaded");
     }

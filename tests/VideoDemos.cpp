@@ -17,14 +17,14 @@ TEST(VideoTestSuite, VideoPlay) {
 
 TEST(VideoTestSuite, Y4MVideoTest) {
     Video vid;
-    vid.loadY4M(vid_yuv_file, YUV420);
+    vid.load_y4m(vid_yuv_file, YUV420);
     vid.play(27);
 }
 
 TEST(VideoTestSuite, Y4M2BGRVideoTest) {
     Video vid;
-    vid.loadY4M(vid_yuv_file, YUV420);
-    vid.convertTo(YUV, BGR);
+    vid.load_y4m(vid_yuv_file, YUV420);
+    vid.convert_to(YUV, BGR);
     vid.play(27);
 }
 

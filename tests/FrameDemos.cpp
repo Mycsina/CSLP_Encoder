@@ -14,8 +14,8 @@ protected:
     Frame f1, f2, f3;
     void SetUp() override {
         auto vid = Video();
-        vid.loadY4M(smallMoving, YUV420);
-        vid.convertTo(YUV, BGR);
+        vid.load_y4m(smallMoving, YUV420);
+        vid.convert_to(YUV, BGR);
         f1 = vid.get_frame(0);
         f2 = vid.get_frame(3);
         f3 = vid.get_frame(6);

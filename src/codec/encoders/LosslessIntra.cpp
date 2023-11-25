@@ -12,7 +12,7 @@ void LosslessIntraEncoder::encode() {
     auto *golomb = new Golomb(bs);
     golomb->set_m(golomb_m);
     const Video vid = Video(src);
-    const vector<Frame *> frames = vid.generateFrames();
+    const vector<Frame *> frames = vid.generate_frames();
     const Frame sample = *frames[0];
     header.extractInfo(sample);
     header.golomb_m = golomb_m;
@@ -29,13 +29,13 @@ void LosslessIntraEncoder::encode() {
 }
 
 void LosslessIntraEncoder::decode() {
-    auto *bs = new BitStream(src, ios::in);
-    auto *golomb = new Golomb(bs);
-    header = Header::readHeader(bs);
-    golomb->set_m(header.golomb_m);
-// TODO last frame is not decoded correctly
+    BitStream bs(src, ios::in);
+    Golomb golomb(&bs);
+    header = Header::readHeader(&bs);
+    golomb.set_m(header.golomb_m);
+    // TODO last frame is not decoded correctly
     for (int i = 0; i < header.length - 1; i++) {
-        Frame img = Frame::decode_JPEG_LS(golomb, header);
+        Frame img = Frame::decode_JPEG_LS(&golomb, header);
         frames.push_back(img);
     }
 }
