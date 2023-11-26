@@ -5,6 +5,9 @@ using namespace cv;
 
 MotionVector::MotionVector() : x(0), y(0) {}
 MotionVector::MotionVector(const int x, const int y) : x(x), y(y) {}
+bool MotionVector::operator==(const MotionVector &rhs) const {
+    return x == rhs.x && y == rhs.y;
+}
 ostream &operator<<(ostream &os, const MotionVector &vector) {
     os << "x: " << vector.x << " y: " << vector.y;
     return os;
@@ -119,7 +122,7 @@ double Block::SAD::block_diff(const Block &a, const Block &b) {
     return diff;
 }
 bool Block::SAD::isBetter(const double score) {
-    return score > best_score;
+    return score < best_score;
 }
 
 bool Block::isLeftEdge() const {
@@ -135,29 +138,29 @@ Frame::Frame(const Image &img) {
     block_diff_ = new Block::SAD();
     motion_vectors_ = vector<MotionVector>();
 }
-Image Frame::getImage() const { return image_; }
+Image Frame::get_image() const { return image_; }
 
-bool Frame::isBlockDiff(const Block::BlockDiff *blockDiff) const {
+bool Frame::is_block_diff(const Block::BlockDiff *blockDiff) const {
     if (block_diff_ == nullptr)
         return false;
     return block_diff_ == blockDiff;
 }
 
-void Frame::setBlockDiff(Block::BlockDiff *blockDiff) {
-    if (!isBlockDiff(blockDiff))
+void Frame::set_block_diff(Block::BlockDiff *blockDiff) {
+    if (!is_block_diff(blockDiff))
         block_diff_ = blockDiff;
 }
 
 
-std::vector<MotionVector> Frame::getMotionVectors() const {
+std::vector<MotionVector> Frame::get_motion_vectors() const {
     return motion_vectors_;
 }
 
-const vector<int> &Frame::getIntraEncoding() const {
+const vector<int> &Frame::get_intra_encoding() const {
     return intra_encoding;
 }
 
-FrameType Frame::getType() const {
+FrameType Frame::get_type() const {
     return type_;
 }
 
@@ -308,15 +311,15 @@ uchar Frame::predict_JPEG_LS(Mat mat, const int row, const int col, const int ch
 
     if (c >= std::max(a, b)) {
         return std::min(a, b);
-    } else if (c <= std::min(a, b)) {
-        return std::max(a, b);
-    } else {
-        return a + b - c;
     }
+    if (c <= std::min(a, b)) {
+        return std::max(a, b);
+    }
+    return a + b - c;
 }
 
 std::array<int, 4> Frame::get_search_window(const Block &block, const int search_radius) const {
-    // block reference is top-left corner, so we need to account for that when calculating the search window
+    // Block reference is top-left corner, so we need to account for that when calculating the search window
     const array<int, 4> block_coords = block.getVertices();
     const int x1 = max(block_coords[0] - search_radius, 0);
     const int y1 = max(block_coords[1] - search_radius, 0);
@@ -325,18 +328,13 @@ std::array<int, 4> Frame::get_search_window(const Block &block, const int search
     return {x1, y1, x2, y2};
 }
 
-std::array<Point, 5> Frame::get_rood_points(const Point center, const int arm_size, const int block_size) const {
+vector<Point> Frame::get_rood_points(const Point center, const int arm_size, const int block_size) const {
     // center is top left corner of block
     const Point up = {center.x, max(center.y - arm_size, 0)};
     const Point down = {center.x, min(center.y + arm_size, image_.size().height - block_size)};
     const Point right = {min(center.x + arm_size, image_.size().width - block_size), center.y};
     const Point left = {max(center.x - arm_size, 0), center.y};
-    cout << "For point " << center << " the rood points are: " << endl;
-    cout << up << endl;
-    cout << left << endl;
-    cout << down << endl;
-    cout << right << endl;
-    if (motion_vectors_.empty())
+    if (motion_vectors_.empty() || arm_size == 1)
         return {up, right, down, left, center};
     const Point MV_prediction = {center.x + motion_vectors_.back().x, center.y + motion_vectors_.back().y};
     return {up, right, down, left, MV_prediction};
@@ -344,7 +342,7 @@ std::array<Point, 5> Frame::get_rood_points(const Point center, const int arm_si
 
 bool Block::BlockDiff::compare(const Block &block, const Frame *reference, const Point center) {
     const auto block_coords = block.getVertices();
-    const Block ref_block = get_block(reference->getImage(), block.getSize(), center.y, center.x);
+    const Block ref_block = get_block(reference->get_image(), block.getSize(), center.y, center.x);
     const double diff_value = block_diff(block, ref_block);
     if (isBetter(diff_value)) {
         MotionVector mv = {center.x - block_coords[0], center.y - block_coords[1]};
@@ -356,7 +354,6 @@ bool Block::BlockDiff::compare(const Block &block, const Frame *reference, const
                 mv.residual.at<Vec3s>(i, j)[2] = block.getBlockMat().at<Vec3b>(i, j)[2] - ref_block.getBlockMat().at<Vec3b>(i, j)[2];
             }
         best_score = diff_value;
-        previous_best = best_match;
         best_match = mv;
     }
     if (diff_value <= threshold)
@@ -387,7 +384,7 @@ MotionVector Frame::match_block_es(const Block &block, const Frame *reference, c
     for (int i = upper; i < down; i++) {
         for (int j = left; j < right; j++) {
 #ifdef _VISUALIZE
-            Mat canvas = this->getImage().getImageMat()->clone();
+            Mat canvas = this->get_image().get_image_mat()->clone();
             rectangle(canvas, Point(block_coords[0], block_coords[1]), Point(block_coords[2], block_coords[3]), Scalar(255, 255, 255));
             rectangle(canvas, Point(j, i), Point(j + block.getSize(), i + block.getSize()), Scalar(0, 0, 255));
             imshow("Canvas", canvas);
@@ -402,59 +399,69 @@ MotionVector Frame::match_block_es(const Block &block, const Frame *reference, c
 }
 
 
-MotionVector Frame::match_block_arps(const Block &block, Frame *reference, int threshold) const {
-    throw runtime_error("This function mustn't be used");
-    bool finished;
+MotionVector Frame::match_block_arps(const Block &block, Frame *reference) const {
+    bool finished = false;
+    vector<Point> visited;
     block_diff_->reset();
-    double self_sad = block_diff_->compare(block, reference, {block.getCol(), block.getRow()});
-    if (self_sad == block_diff_->threshold)
-        return block_diff_->best_match;
     auto block_coords = block.getVertices();
     int size;
     if (block.isLeftEdge())
         size = 2;
     else
-        size = max(motion_vectors_.back().x, motion_vectors_.back().y);
-    array<Point, 5> initial_points;
+        size = max(abs(motion_vectors_.back().x), abs(motion_vectors_.back().y));
+    vector<Point> initial_points;
     if (size == 0)
-        initial_points = {Point(block_coords[0], block_coords[1]), {0, 0}, {0, 0}, {0, 0}, {0, 0}};
+        initial_points = {Point(block_coords[0], block_coords[1])};
     initial_points = get_rood_points({block_coords[0], block_coords[1]}, size, block.getSize());
     for (auto point: initial_points) {
 #ifdef _VISUALIZE
-        Mat canvas = this->getImage().getImageMat()->clone();
+        Mat canvas = this->get_image().get_image_mat()->clone();
         rectangle(canvas, Point(block_coords[0], block_coords[1]), Point(block_coords[2], block_coords[3]), Scalar(255, 255, 255));
         rectangle(canvas, Point(point.x, point.y), Point(point.x + block.getSize(), point.y + block.getSize()), Scalar(0, 0, 255));
         imshow("Canvas", canvas);
         waitKey(1);
 #endif
+        if (find(visited.begin(), visited.end(), point) != visited.end())
+            continue;
         finished = block_diff_->compare(block, reference, point);
+        visited.push_back(point);
         if (finished)
             return block_diff_->best_match;
     }
+    MotionVector mv = block_diff_->best_match;
     do {
-        auto new_points = get_rood_points({block_coords[0] + block_diff_->best_match.x, block_coords[1] + block_diff_->best_match.y}, size, block.getSize());
+        auto new_points = get_rood_points({block_coords[0] + block_diff_->best_match.x, block_coords[1] + block_diff_->best_match.y}, 1, block.getSize());
+        int found = new_points.size();
         for (auto point: new_points) {
 #ifdef _VISUALIZE
-            Mat canvas = this->getImage().getImageMat()->clone();
+            Mat canvas = this->get_image().get_image_mat()->clone();
             rectangle(canvas, Point(block_coords[0], block_coords[1]), Point(block_coords[2], block_coords[3]), Scalar(255, 255, 255));
             rectangle(canvas, Point(point.x, point.y), Point(point.x + block.getSize(), point.y + block.getSize()), Scalar(0, 0, 255));
             imshow("Canvas", canvas);
             waitKey(1);
 #endif
+            if (find(visited.begin(), visited.end(), point) != visited.end()) {
+                found--;
+                if (found == 0)
+                    return block_diff_->best_match;
+                continue;
+            }
             finished = block_diff_->compare(block, reference, point);
+            visited.push_back(point);
         }
-    } while (!finished);
+    } while (!finished && !(mv == block_diff_->best_match));
     return block_diff_->best_match;
 }
 
 void Frame::calculate_MV(Frame *reference, const int block_size, const int search_radius, const bool fast) {
     type_ = P_FRAME;
-    setBlockDiff(new Block::MSE());
     vector<MotionVector> motion_vectors;
     for (int i = 0; i + block_size <= image_.size().height; i += block_size) {
         for (int j = 0; j + block_size <= image_.size().width; j += block_size) {
             Block block = get_block(image_, block_size, i, j);
             MotionVector mv;
+            if (block_diff_ == nullptr)
+                block_diff_ = new Block::SAD();
             if (fast) {
                 mv = match_block_arps(block, reference);
             } else {
@@ -467,11 +474,11 @@ void Frame::calculate_MV(Frame *reference, const int block_size, const int searc
 }
 
 Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &motion_vectors, int block_size) {
-    Mat reconstructed = Mat::zeros(reference->getImage().size(), CV_8UC3);
-    for (int i = 0; i + block_size <= reference->getImage().size().height; i += block_size) {
-        for (int j = 0; j + block_size <= reference->getImage().size().width; j += block_size) {
-            MotionVector mv = motion_vectors[i / block_size * (reference->getImage().size().width / block_size) + j / block_size];
-            Block block = get_block(reference->getImage(), block_size, i + mv.y, j + mv.x);
+    Mat reconstructed = Mat::zeros(reference->get_image().size(), CV_8UC3);
+    for (int i = 0; i + block_size <= reference->get_image().size().height; i += block_size) {
+        for (int j = 0; j + block_size <= reference->get_image().size().width; j += block_size) {
+            MotionVector mv = motion_vectors[i / block_size * (reference->get_image().size().width / block_size) + j / block_size];
+            Block block = get_block(reference->get_image(), block_size, i + mv.y, j + mv.x);
             Mat reconstructed_block = Mat::zeros(block.getBlockMat().size(), CV_8UC3);
             for (int k = 0; k < block.getBlockMat().rows; k++)
                 for (int l = 0; l < block.getBlockMat().cols; l++) {
@@ -492,7 +499,7 @@ Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &mot
 void Frame::visualize_MV(const Frame *reference, const int block_size) const {
     int i = 0;
     int j = 0;
-    Mat res = Mat::zeros(reference->getImage().size(), CV_8UC3);
+    Mat res = Mat::zeros(reference->get_image().size(), CV_8UC3);
     for (const auto &v: motion_vectors_) {
         setSlice(res, v.residual, j, i);
         arrowedLine(res, Point(i + block_size / 2, j + block_size / 2), Point(i + v.x + block_size / 2, j + v.y + block_size / 2), Scalar(0, 0, 255), 1, 8, 0);
@@ -507,7 +514,7 @@ void Frame::visualize_MV(const Frame *reference, const int block_size) const {
 }
 
 void Frame::write(Golomb *g) const {
-    for (const auto &mv: getMotionVectors()) {
+    for (const auto &mv: get_motion_vectors()) {
         g->encode(mv.x);
         g->encode(mv.y);
         Mat residual = mv.residual;

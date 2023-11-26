@@ -16,10 +16,10 @@ void Header::writeHeader(BitStream *bs) const {
     bs->writeBits(length, 32);
 }
 void Header::extractInfo(const Frame &frame) {
-    color_space = frame.getImage().get_color();
-    chroma_subsampling = frame.getImage().get_chroma();
-    width = frame.getImage().size().width;
-    height = frame.getImage().size().height;
+    color_space = frame.get_image().get_color();
+    chroma_subsampling = frame.get_image().get_chroma();
+    width = frame.get_image().size().width;
+    height = frame.get_image().size().height;
 }
 Header Header::readHeader(BitStream *bs) {
     Header header{};
@@ -40,7 +40,7 @@ InterHeader::InterHeader(Header header) : block_size(0) {
     this->golomb_m = header.golomb_m;
     this->length = header.length;
 }
-void InterHeader::writeHeader(BitStream *bs) const {
+void InterHeader::write_header(BitStream *bs) const {
     Header::writeHeader(bs);
     bs->writeBits(block_size, 8);
 }
@@ -68,7 +68,7 @@ HybridHeader::HybridHeader(const InterHeader header) : period(0), search_radius(
 }
 
 void HybridHeader::writeHeader(BitStream *bs) const {
-    InterHeader::writeHeader(bs);
+    InterHeader::write_header(bs);
     bs->writeBits(period, 8);
     bs->writeBits(search_radius, 8);
 }

@@ -68,7 +68,7 @@ public:
      * \brief Writes header to BitStream
      * \param bs BitStream pointer
      */
-    void writeHeader(BitStream *bs) const;
+    void write_header(BitStream *bs) const;
     /**
      * \brief Reads header from BitStream
      * \param bs BitStream pointer

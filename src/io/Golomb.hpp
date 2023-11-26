@@ -7,6 +7,7 @@
 #pragma once
 
 #include "BitStream.hpp"
+#include <opencv2/core/mat.hpp>
 #include <string>
 
 /**
@@ -79,4 +80,11 @@ public:
     //! Encodes and writes a single int to file using truncated binary
     //! @param n the int to encode
     void writeBinaryTrunc(int n) const;
+
+    //! Finds optimal m parameter from given data points
+    //! \details Uses the method described in [On the Determination of Optimal Parameterized Prefix Codes for Adaptive Entropy Coding](https://www.hpl.hp.com/techreports/2006/HPL-2006-74.pdf)
+    //! @param data vector of data points
+    //! @param sample_factor sample factor
+    //! @return the optimal m parameter
+    static int adjust_m(const std::vector<int> &data, int sample_factor);
 };

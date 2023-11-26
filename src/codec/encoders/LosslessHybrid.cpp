@@ -20,7 +20,6 @@ void LosslessHybridEncoder::encode() {
     header.length = frames.size();
     header.block_size = block_size;
     header.writeHeader(&bs);
-    Frame *last = frames[0];
     g.set_m(golomb_m);
     int cnt = period;
     int last_intra = 0;
@@ -32,7 +31,7 @@ void LosslessHybridEncoder::encode() {
             cnt = 0;
         } else {
             Frame *frame_intra = frames[last_intra];
-            frame->calculate_MV(frame_intra, block_size, header.search_radius, false);
+            frame->calculate_MV(frame_intra, block_size, header.search_radius, true);
             frame->write(&g);
             cnt++;
         }

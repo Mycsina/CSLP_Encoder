@@ -15,23 +15,6 @@ protected:
     }
 };
 
-TEST_F(EncoderTest, IntraTest) {
-    const int m = 2;
-    const char *file = small_still.c_str();
-    auto *encoder = new LosslessIntraEncoder(file, "../../tests/resource/encoded", m);
-    encoder->encode();
-    delete encoder;
-    auto *decoder = new LosslessIntraEncoder("../../tests/resource/encoded", "decoded", m);
-    decoder->decode();
-    const auto video_frames = Video(file).generate_frames();
-    for (int i = 0; i < video_frames.size(); i++) {
-        Image im1 = video_frames[i]->getImage();
-        Image im2 = decoder->frames[i].getImage();
-        // if this SIGSEVs it's because last frame is not decoded correctly
-        ASSERT_TRUE(im1 == im2);
-    }
-}
-
 TEST_F(EncoderTest, InterTest) {
     const int m = 2;
     const char *file = small_still.c_str();
@@ -41,8 +24,8 @@ TEST_F(EncoderTest, InterTest) {
     decoder.decode();
     const auto video_frames = Video(file).generate_frames();
     for (int i = 0; i < video_frames.size(); i++) {
-        Image im1 = video_frames[i]->getImage();
-        Image im2 = decoder.frames[i].getImage();
+        Image im1 = video_frames[i]->get_image();
+        Image im2 = decoder.frames[i].get_image();
         ASSERT_TRUE(im1 == im2);
     }
 }
@@ -56,8 +39,26 @@ TEST_F(EncoderTest, HybridTest) {
     decoder.decode();
     const auto video_frames = Video(file).generate_frames();
     for (int i = 0; i < video_frames.size(); i++) {
-        Image im1 = video_frames[i]->getImage();
-        Image im2 = decoder.frames[i].getImage();
+        Image im1 = video_frames[i]->get_image();
+        Image im2 = decoder.frames[i].get_image();
+        ASSERT_TRUE(im1 == im2);
+    }
+}
+
+
+TEST_F(EncoderTest, IntraTest) {
+    const int m = 2;
+    const char *file = small_still.c_str();
+    auto *encoder = new LosslessIntraEncoder(file, "../../tests/resource/encoded");
+    encoder->encode();
+    delete encoder;
+    auto *decoder = new LosslessIntraEncoder("../../tests/resource/encoded", "decoded");
+    decoder->decode();
+    const auto video_frames = Video(file).generate_frames();
+    for (int i = 0; i < video_frames.size(); i++) {
+        Image im1 = video_frames[i]->get_image();
+        Image im2 = decoder->frames[i].get_image();
+        // if this SIGSEVs it's because last frame is not decoded correctly
         ASSERT_TRUE(im1 == im2);
     }
 }

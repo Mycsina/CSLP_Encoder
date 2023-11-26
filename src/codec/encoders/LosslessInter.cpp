@@ -26,7 +26,7 @@ void LosslessInterFrameEncoder::encode() {
 #pragma omp parallel for default(none) shared(frames, last)
     for (int i = 1; i < frames.size(); i++) {
         Frame *current = frames[i];
-        current->calculate_MV(last, block_size, 7, false);
+        current->calculate_MV(last, block_size, 7, true);
         last = current;
     }
     for (auto &frame: frames) {

@@ -29,7 +29,7 @@ Video::Video(const std::vector<Image> &reel) {
 Video::Video(const std::vector<Frame> &frames) {
     vector<Image> reel;
     for (auto &it: frames) {
-        reel.push_back(it.getImage());
+        reel.push_back(it.get_image());
     }
     im_reel = reel;
 }

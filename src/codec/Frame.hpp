@@ -9,12 +9,14 @@
 #include "Header.hpp"
 #include <opencv2/core/mat.hpp>
 
+//! @brief The MotionVector struct represents a motion vector and its residual
 struct MotionVector {
     int x, y;
     cv::Mat residual;
     MotionVector();
     MotionVector(int x, int y);
     friend std::ostream &operator<<(std::ostream &os, const MotionVector &vector);
+    bool operator==(const MotionVector &rhs) const;
 };
 class Frame;
 //! @brief The Block class represents a block of pixels.
@@ -92,7 +94,6 @@ public:
         virtual bool isBetter(double score) = 0;
         double best_score{};       //!< Best score
         MotionVector best_match;   //!< Best motion vector
-        MotionVector previous_best;//!< Previous best motion vector
         int threshold{};           //!< Threshold for the block difference
         virtual void reset();      //!< Resets the best score and best motion vector
         /**
@@ -206,30 +207,30 @@ public:
      * \brief Returns the Image object
      * \return Image object
      */
-    Image getImage() const;
+    Image get_image() const;
     /**
      * \brief Checks if blockDiff method has been set
      * \param blockDiff Block difference method
      * \return Boolean indicating whether given blockDiff method has been set
      */
-    bool isBlockDiff(const Block::BlockDiff *blockDiff) const;
+    bool is_block_diff(const Block::BlockDiff *blockDiff) const;
     /**
      * \brief Sets the blockDiff method
      * \param blockDiff Block difference method
      */
-    void setBlockDiff(Block::BlockDiff *blockDiff);
+    void set_block_diff(Block::BlockDiff *blockDiff);
     /**
      * \brief Returns the calculated motion vectors
      */
-    std::vector<MotionVector> getMotionVectors() const;
+    std::vector<MotionVector> get_motion_vectors() const;
     /**
      * \brief Returns the calculated intra encoding values
      */
-    const std::vector<int> &getIntraEncoding() const;
+    const std::vector<int> &get_intra_encoding() const;
     /**
      * \brief Gets the type of frame
      */
-    FrameType getType() const;
+    FrameType get_type() const;
     /**
      * \brief Sets the type of frame
      */
@@ -257,7 +258,7 @@ public:
     //! @return Array of integers representing the search window in the format [x1, y1, x2, y2]
     std::array<int, 4> get_search_window(const Block &block, int search_radius) const;
 
-    std::array<cv::Point, 5> get_rood_points(cv::Point center, int arm_size, int block_size) const;
+    std::vector<cv::Point> get_rood_points(cv::Point center, int arm_size, int block_size) const;
 
     //! Returns the best motion vector between this frame and the nth previous frame
     //! @details This function uses an optimized version of [Exhaustive Search](https://en.wikipedia.org/wiki/Block-matching_algorithm#Exhaustive_Search), checking the block at it's original position first.
@@ -271,9 +272,8 @@ public:
     //! @details This function uses the [Adaptive Rood Pattern Search](https://ieeexplore.ieee.org/document/1176932) algorithm
     //! @param block Block to be compared
     //! @param reference Reference frame
-    //! @param threshold Threshold for the search
     //! @return Motion vector
-    MotionVector match_block_arps(const Block &block, Frame *reference, int threshold = 512) const;
+    MotionVector match_block_arps(const Block &block, Frame *reference) const;
 
     //! Calculate motion vectors for all blocks in the frame
     //! @param block_size Size of the macroblocks to be compared

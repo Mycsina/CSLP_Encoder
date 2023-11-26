@@ -83,7 +83,7 @@ int Golomb::readBinaryTrunc() const {
     if (k_bits < u) {
         return k_bits;
     }
-    return ((k_bits << 1) + bs->readBit()) - u;
+    return (k_bits << 1) + bs->readBit() - u;
 }
 
 void Golomb::writeBinaryTrunc(const int n) const {
@@ -94,4 +94,19 @@ void Golomb::writeBinaryTrunc(const int n) const {
     } else {
         bs->writeBits(n + u, k + 1);
     }
+}
+
+int Golomb::adjust_m(const std::vector<int> &data, int sample_factor) {
+    double sum = 0;
+    double sample_num = data.size() / sample_factor;
+    for (int i = 0; i < sample_num; i++) {
+        sum += abs(data[rand() % data.size()]);
+    }
+    double mean = sum / sample_num;
+    const double golden_ratio = (sqrt(5) + 1) / 2;
+    // M. Kiely, 2004
+    int result = static_cast<int>(max(0.0, 1 + floor(log2(log(golden_ratio - 1) / log(mean / (mean + 1))))));
+    // A. Said, 2006
+    result = static_cast<int>(max(0.0, ceil(log2(mean) - 0.05 + 0.6 / mean)));
+    return result;
 }
