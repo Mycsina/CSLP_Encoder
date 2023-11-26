@@ -1,0 +1,7 @@
+<map id="LosslessHybridEncoder" name="LosslessHybridEncoder">
+<area shape="rect" id="node1" title="The LosslessHybridEncoder class provides methods to encode/decode video using the lossless hybrid cod..." alt="" coords="5,247,177,273"/>
+<area shape="rect" id="node2" href="$classEncoder.html" title=" " alt="" coords="14,157,89,184"/>
+<area shape="rect" id="node3" href="$classHybridHeader.html" title=" " alt="" coords="113,157,225,184"/>
+<area shape="rect" id="node4" href="$classInterHeader.html" title=" " alt="" coords="119,81,218,108"/>
+<area shape="rect" id="node5" href="$classHeader.html" title="The Header class defines the basic header structure for the codec." alt="" coords="134,5,203,32"/>
+</map>

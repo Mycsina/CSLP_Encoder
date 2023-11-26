@@ -1,0 +1,14 @@
+<map id="Header.hpp" name="Header.hpp">
+<area shape="rect" id="node1" title="Header classContains the Header class, which defines the basic header structure for the codec,..." alt="" coords="481,5,577,32"/>
+<area shape="rect" id="node2" href="$Image_8hpp.html" title="Image class." alt="" coords="456,80,603,107"/>
+<area shape="rect" id="node3" href="$Golomb_8hpp.html" title="Header file for Golomb classDeclares the Golomb class, which provides methods to encode/decode int va..." alt="" coords="93,155,222,181"/>
+<area shape="rect" id="node8" title=" " alt="" coords="247,155,327,181"/>
+<area shape="rect" id="node9" title=" " alt="" coords="351,155,521,181"/>
+<area shape="rect" id="node10" title=" " alt="" coords="545,155,703,181"/>
+<area shape="rect" id="node11" title=" " alt="" coords="727,155,905,181"/>
+<area shape="rect" id="node12" title=" " alt="" coords="929,155,1084,181"/>
+<area shape="rect" id="node4" href="$BitStream_8hpp.html" title="BitStream classDeclares the BitStream class, which defines methods to access individual bits of a fil..." alt="" coords="5,229,120,256"/>
+<area shape="rect" id="node6" title=" " alt="" coords="125,304,184,331"/>
+<area shape="rect" id="node7" title=" " alt="" coords="195,229,362,256"/>
+<area shape="rect" id="node5" title=" " alt="" coords="26,304,99,331"/>
+</map>

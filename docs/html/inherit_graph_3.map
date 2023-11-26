@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classEncoder.html" title=" " alt="" coords="5,56,80,83"/>
+<area shape="rect" id="node2" href="$classLosslessHybridEncoder.html" title="The LosslessHybridEncoder class provides methods to encode/decode video using the lossless hybrid cod..." alt="" coords="142,5,314,32"/>
+<area shape="rect" id="node3" href="$classLosslessInterFrameEncoder.html" title=" " alt="" coords="128,56,328,83"/>
+<area shape="rect" id="node4" href="$classLosslessIntraEncoder.html" title="The LosslessInterFrameEncoder provides methods to encode/decode a video using the lossless interframe..." alt="" coords="149,107,307,133"/>
+</map>

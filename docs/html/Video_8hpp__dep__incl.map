@@ -1,0 +1,11 @@
+<map id="Video.hpp" name="Video.hpp">
+<area shape="rect" id="node1" title="Video class." alt="" coords="282,5,369,32"/>
+<area shape="rect" id="node2" href="$Encoder_8hpp.html" title=" " alt="" coords="275,80,376,107"/>
+<area shape="rect" id="node4" href="$LosslessHybrid_8cpp.html" title=" " alt="" coords="5,229,152,256"/>
+<area shape="rect" id="node6" href="$LosslessInter_8cpp.html" title=" " alt="" coords="237,229,371,256"/>
+<area shape="rect" id="node8" href="$LosslessIntra_8cpp.html" title=" " alt="" coords="437,229,571,256"/>
+<area shape="rect" id="node9" href="$Video_8cpp.html" title=" " alt="" coords="627,80,714,107"/>
+<area shape="rect" id="node3" href="$LosslessHybrid_8hpp.html" title="LosslessHybrid encoder class." alt="" coords="86,155,234,181"/>
+<area shape="rect" id="node5" href="$LosslessInter_8hpp.html" title="LosslessIntraFrameEncoder class." alt="" coords="258,155,393,181"/>
+<area shape="rect" id="node7" href="$LosslessIntra_8hpp.html" title="LosslessIntraEncoder class." alt="" coords="417,155,551,181"/>
+</map>

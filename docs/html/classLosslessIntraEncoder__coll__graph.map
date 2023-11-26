@@ -1,0 +1,5 @@
+<map id="LosslessIntraEncoder" name="LosslessIntraEncoder">
+<area shape="rect" id="node1" title="The LosslessInterFrameEncoder provides methods to encode/decode a video using the lossless interframe..." alt="" coords="11,95,170,121"/>
+<area shape="rect" id="node2" href="$classEncoder.html" title=" " alt="" coords="5,5,80,32"/>
+<area shape="rect" id="node3" href="$classHeader.html" title="The Header class defines the basic header structure for the codec." alt="" coords="104,5,173,32"/>
+</map>

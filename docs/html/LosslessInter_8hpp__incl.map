@@ -1,0 +1,21 @@
+<map id="LosslessInter.hpp" name="LosslessInter.hpp">
+<area shape="rect" id="node1" title="LosslessIntraFrameEncoder class." alt="" coords="828,5,963,32"/>
+<area shape="rect" id="node2" href="$Encoder_8hpp.html" title=" " alt="" coords="784,80,897,107"/>
+<area shape="rect" id="node16" href="$Header_8hpp.html" title="Header classContains the Header class, which defines the basic header structure for the codec,..." alt="" coords="901,304,997,331"/>
+<area shape="rect" id="node3" href="$Image_8hpp.html" title="Image class." alt="" coords="534,379,681,405"/>
+<area shape="rect" id="node14" href="$Video_8hpp.html" title="Video class." alt="" coords="713,155,856,181"/>
+<area shape="rect" id="node15" href="$Frame_8hpp.html" title="The Frame class provides methods to manipulate an Image in the context of video encoding." alt="" coords="919,229,1064,256"/>
+<area shape="rect" id="node4" href="$Golomb_8hpp.html" title="Header file for Golomb classDeclares the Golomb class, which provides methods to encode/decode int va..." alt="" coords="763,453,892,480"/>
+<area shape="rect" id="node9" title=" " alt="" coords="917,453,997,480"/>
+<area shape="rect" id="node10" title=" " alt="" coords="5,453,175,480"/>
+<area shape="rect" id="node11" title=" " alt="" coords="199,453,357,480"/>
+<area shape="rect" id="node12" title=" " alt="" coords="381,453,559,480"/>
+<area shape="rect" id="node13" title=" " alt="" coords="583,453,738,480"/>
+<area shape="rect" id="node5" href="$BitStream_8hpp.html" title="BitStream classDeclares the BitStream class, which defines methods to access individual bits of a fil..." alt="" coords="697,528,811,555"/>
+<area shape="rect" id="node7" title=" " alt="" coords="817,603,875,629"/>
+<area shape="rect" id="node8" title=" " alt="" coords="929,528,1096,555"/>
+<area shape="rect" id="node6" title=" " alt="" coords="717,603,791,629"/>
+<area shape="rect" id="node17" title=" " alt="" coords="722,229,783,256"/>
+<area shape="rect" id="node18" title=" " alt="" coords="808,229,895,256"/>
+<area shape="rect" id="node19" title=" " alt="" coords="635,229,697,256"/>
+</map>
