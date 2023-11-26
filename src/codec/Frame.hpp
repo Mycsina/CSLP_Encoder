@@ -292,7 +292,14 @@ public:
     //! @return Reconstructed frame
     Frame static reconstruct_frame(Frame *reference, const std::vector<MotionVector> &motion_vectors, int block_size);
 
+    //! Write the motions vectors of a frame to file using golomb encoding
+    //! @param g reference to the Golomb encoder
     void write(Golomb *g) const;
 
+    //! Decodes a frame using interframe codec
+    //! @param g refernece to the golomb encoder
+    //! @param reference intraframe that serves as reference
+    //! @param header header data
+    //! @return decoded frame
     static Frame decode_inter(Golomb *g, Frame *reference, InterHeader header);
 };

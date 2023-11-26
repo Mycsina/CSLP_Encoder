@@ -34,6 +34,13 @@ public:
     uint8_t block_size;   ///< Macroblock size
     uint8_t period{};     ///< Period of intra frames
     uint8_t fps;          ///< Frames per second
+
+    /**
+     * \brief encodes a video from src into dst with a mix of inter and intraframe encoding
+     */
     void encode() override;
+    /**
+     * \brief decodes a video from dst with a mix of inter and intraframe encoding
+     */
     void decode() override;
 };
