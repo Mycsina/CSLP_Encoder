@@ -10,8 +10,8 @@ Header::Header(COLOR_SPACE color_space, CHROMA_SUBSAMPLING cs, uint8_t width, ui
 void Header::writeHeader(BitStream *bs) const {
     bs->writeBits(color_space, 3);
     bs->writeBits(chroma_subsampling, 3);
-    bs->writeBits(width, 8);
-    bs->writeBits(height, 8);
+    bs->writeBits(width, 32);
+    bs->writeBits(height, 32);
     bs->writeBits(golomb_m, 8);
     bs->writeBits(length, 32);
 }
@@ -25,8 +25,8 @@ Header Header::readHeader(BitStream *bs) {
     Header header{};
     header.color_space = static_cast<COLOR_SPACE>(bs->readBits(3));
     header.chroma_subsampling = static_cast<CHROMA_SUBSAMPLING>(bs->readBits(3));
-    header.width = bs->readBits(8);
-    header.height = bs->readBits(8);
+    header.width = bs->readBits(32);
+    header.height = bs->readBits(32);
     header.golomb_m = bs->readBits(8);
     header.length = bs->readBits(32);
     return header;
@@ -41,7 +41,7 @@ InterHeader::InterHeader(Header header) : block_size(0) {
     this->length = header.length;
 }
 void InterHeader::write_header(BitStream *bs) const {
-    Header::writeHeader(bs);
+    writeHeader(bs);
     bs->writeBits(block_size, 8);
 }
 
@@ -49,8 +49,8 @@ InterHeader InterHeader::readHeader(BitStream *bs) {
     InterHeader header{};
     header.color_space = static_cast<COLOR_SPACE>(bs->readBits(3));
     header.chroma_subsampling = static_cast<CHROMA_SUBSAMPLING>(bs->readBits(3));
-    header.width = bs->readBits(8);
-    header.height = bs->readBits(8);
+    header.width = bs->readBits(32);
+    header.height = bs->readBits(32);
     header.golomb_m = bs->readBits(8);
     header.length = bs->readBits(32);
     header.block_size = bs->readBits(8);
@@ -68,7 +68,7 @@ HybridHeader::HybridHeader(const InterHeader header) : period(0), search_radius(
 }
 
 void HybridHeader::writeHeader(BitStream *bs) const {
-    InterHeader::write_header(bs);
+    write_header(bs);
     bs->writeBits(period, 8);
     bs->writeBits(search_radius, 8);
 }
@@ -77,8 +77,8 @@ HybridHeader HybridHeader::readHeader(BitStream *bs) {
     HybridHeader header{};
     header.color_space = static_cast<COLOR_SPACE>(bs->readBits(3));
     header.chroma_subsampling = static_cast<CHROMA_SUBSAMPLING>(bs->readBits(3));
-    header.width = bs->readBits(8);
-    header.height = bs->readBits(8);
+    header.width = bs->readBits(32);
+    header.height = bs->readBits(32);
     header.golomb_m = bs->readBits(8);
     header.length = bs->readBits(32);
     header.block_size = bs->readBits(8);

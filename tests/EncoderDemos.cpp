@@ -1,3 +1,4 @@
+#include "../src/codec/encoders/LosslessHybrid.hpp"
 #include "../src/codec/encoders/LosslessIntra.hpp"
 #include "../src/visual/Video.hpp"
 #include <gtest/gtest.h>
@@ -15,35 +16,28 @@ protected:
     }
 };
 
-TEST_F(EncoderDemo, losslessPredictive) {
-    string file = small_still;
-    string encoded = file + "_encoded";
-    string decoded = file + "_decoded";
-    LosslessIntraEncoder encoder(file.c_str(), encoded.c_str());
-    encoder.encode();
-    LosslessIntraEncoder decoder(encoded.c_str(), decoded.c_str());
-    decoder.decode();
-    const auto video_frames = Video(file.c_str()).generate_frames();
-    for (Frame *frame: video_frames) {
-        frame->show();
+TEST_F(EncoderDemo, IntraDemo) {
+    const char *file = small_still;
+    auto *encoder = new LosslessIntraEncoder(file, "../../tests/resource/encoded");
+    encoder->encode();
+    delete encoder;
+    auto *decoder = new LosslessIntraEncoder("../../tests/resource/encoded", "decoded");
+    decoder->decode();
+    for (auto &frame: decoder->frames) {
+        Image im2 = frame.get_image();
+        im2.show();
     }
 }
 
-TEST_F(EncoderDemo, losslessIntraBestM) {
-    int best_size = INFINITY;
-    for (int m = 2; m < 8; m++) {
-        const char *file = normal_video;
-        LosslessIntraEncoder encoder(file, "encoded");
-        encoder.encode();
-        ifstream testFile("encoded", ios::binary);
-        auto begin = testFile.tellg();
-        testFile.seekg(0, ios::end);
-        const auto end = testFile.tellg();
-        const auto fsize = (end - begin);
-        if (fsize < best_size) {
-            best_size = static_cast<int>(fsize);
-            cout << "Best size: " << best_size << " with m = " << m << endl;
-        }
+TEST_F(EncoderDemo, HybridDemo) {
+    const int m = 2;
+    const char *file = small_still;
+    LosslessHybridEncoder encoder(file, "encoded", m, 16, 5);
+    encoder.encode();
+    LosslessHybridEncoder decoder("encoded", "decoded", m, 16, 5);
+    decoder.decode();
+    for (auto &frame: decoder.frames) {
+        Image im2 = frame.get_image();
+        im2.show();
     }
-    remove("encoded");
 }

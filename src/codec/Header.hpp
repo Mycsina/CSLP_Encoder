@@ -17,8 +17,8 @@ class Header {
 public:
     COLOR_SPACE color_space;              //!< Color space
     CHROMA_SUBSAMPLING chroma_subsampling;//!< Chroma subsampling format
-    uint8_t width;                        //!< Width
-    uint8_t height;                       //!< Height
+    uint32_t width;                        //!< Width
+    uint32_t height;                       //!< Height
     uint8_t golomb_m{};                   //!< Golomb m parameter
     uint32_t length{};                    //!< Number of frames
     /**
