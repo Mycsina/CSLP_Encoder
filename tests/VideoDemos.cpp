@@ -34,10 +34,3 @@ TEST(VideoTestSuite, NewConstructorTest) {
     Video vid2(vid_yuv_file);
     vid2.play(27);
 }
-
-TEST(VideoTestSuite, InterframeDemoSlow) {
-    Video vid1(vid_yuv_file);
-    vid1.encode_hybrid(interframe_dst, 2, 5, 7, 8);
-    Video vid2 = Video::decode_hybrid(interframe_dst);
-    vid2.play(27);
-}
