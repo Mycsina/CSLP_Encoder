@@ -1,9 +1,15 @@
 <map id="Encoder.hpp" name="Encoder.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="194,5,295,32"/>
-<area shape="rect" id="node2" href="$LosslessHybrid_8hpp.html" title="LosslessHybrid encoder class." alt="" coords="5,80,153,107"/>
-<area shape="rect" id="node4" href="$LosslessInter_8hpp.html" title="LosslessIntraFrameEncoder class." alt="" coords="177,80,312,107"/>
-<area shape="rect" id="node6" href="$LosslessIntra_8hpp.html" title="LosslessIntraEncoder class." alt="" coords="336,80,471,107"/>
-<area shape="rect" id="node3" href="$LosslessHybrid_8cpp.html" title=" " alt="" coords="6,155,153,181"/>
-<area shape="rect" id="node5" href="$LosslessInter_8cpp.html" title=" " alt="" coords="178,155,311,181"/>
-<area shape="rect" id="node7" href="$LosslessIntra_8cpp.html" title=" " alt="" coords="336,155,471,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="180,5,273,31"/>
+<area shape="rect" id="Node000002" href="$LosslessHybrid_8hpp.html" title="LosslessHybrid encoder class." alt="" coords="5,79,141,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,40,100,81,98,76,185,36"/>
+<area shape="rect" id="Node000004" href="$LosslessInter_8hpp.html" title="LosslessIntraFrameEncoder class." alt="" coords="164,79,289,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="229,46,229,79,224,79,224,46"/>
+<area shape="rect" id="Node000006" href="$LosslessIntra_8hpp.html" title="LosslessIntraEncoder class." alt="" coords="312,79,437,105"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="266,36,350,76,348,81,264,41"/>
+<area shape="rect" id="Node000003" href="$LosslessHybrid_8cpp.html" title=" " alt="" coords="5,153,141,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="76,120,76,152,70,152,70,120"/>
+<area shape="rect" id="Node000005" href="$LosslessInter_8cpp.html" title=" " alt="" coords="164,153,289,178"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="229,120,229,152,224,152,224,120"/>
+<area shape="rect" id="Node000007" href="$LosslessIntra_8cpp.html" title=" " alt="" coords="312,153,437,178"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="377,120,377,152,372,152,372,120"/>
 </map>

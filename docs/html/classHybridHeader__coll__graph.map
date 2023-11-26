@@ -1,5 +1,7 @@
 <map id="HybridHeader" name="HybridHeader">
-<area shape="rect" id="node1" title=" " alt="" coords="5,155,117,181"/>
-<area shape="rect" id="node2" href="$classInterHeader.html" title=" " alt="" coords="12,80,111,107"/>
-<area shape="rect" id="node3" href="$classHeader.html" title="The Header class defines the basic header structure for the codec." alt="" coords="27,5,96,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,153,106,178"/>
+<area shape="rect" id="Node000002" href="$classInterHeader.html" title=" " alt="" coords="11,79,100,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="58,120,58,152,53,152,53,120"/>
+<area shape="rect" id="Node000003" href="$classHeader.html" title="The Header class defines the basic header structure for the codec." alt="" coords="24,5,87,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="58,46,58,79,53,79,53,46"/>
 </map>

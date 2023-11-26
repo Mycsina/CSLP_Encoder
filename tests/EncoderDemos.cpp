@@ -19,10 +19,9 @@ TEST_F(EncoderDemo, losslessPredictive) {
     string file = small_still;
     string encoded = file + "_encoded";
     string decoded = file + "_decoded";
-    int golomb_m = 2;
-    LosslessIntraEncoder encoder(file.c_str(), encoded.c_str(), golomb_m);
+    LosslessIntraEncoder encoder(file.c_str(), encoded.c_str());
     encoder.encode();
-    LosslessIntraEncoder decoder(encoded.c_str(), decoded.c_str(), golomb_m);
+    LosslessIntraEncoder decoder(encoded.c_str(), decoded.c_str());
     decoder.decode();
     const auto video_frames = Video(file.c_str()).generate_frames();
     for (Frame *frame: video_frames) {
@@ -34,7 +33,7 @@ TEST_F(EncoderDemo, losslessIntraBestM) {
     int best_size = INFINITY;
     for (int m = 2; m < 8; m++) {
         const char *file = normal_video;
-        LosslessIntraEncoder encoder(file, "encoded", m);
+        LosslessIntraEncoder encoder(file, "encoded");
         encoder.encode();
         ifstream testFile("encoded", ios::binary);
         auto begin = testFile.tellg();

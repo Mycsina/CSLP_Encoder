@@ -1,7 +1,11 @@
 <map id="ImageProcessing.hpp" name="ImageProcessing.hpp">
-<area shape="rect" id="node1" title="Image processing functionsContains functions for image processing, such as watermarking,..." alt="" coords="247,5,409,32"/>
-<area shape="rect" id="node2" href="$LosslessHybrid_8cpp.html" title=" " alt="" coords="5,80,152,107"/>
-<area shape="rect" id="node3" href="$LosslessInter_8cpp.html" title=" " alt="" coords="176,80,309,107"/>
-<area shape="rect" id="node4" href="$ImageProcessing_8cpp.html" title=" " alt="" coords="333,80,493,107"/>
-<area shape="rect" id="node5" href="$Video_8cpp.html" title=" " alt="" coords="518,80,605,107"/>
+<area shape="rect" id="Node000001" title="Image processing functionsContains functions for image processing, such as watermarking,..." alt="" coords="247,5,393,31"/>
+<area shape="rect" id="Node000002" href="$ImageProcessing_8cpp.html" title=" " alt="" coords="5,79,152,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="265,38,120,81,119,76,264,33"/>
+<area shape="rect" id="Node000003" href="$LosslessHybrid_8cpp.html" title=" " alt="" coords="176,79,312,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="298,44,258,81,255,77,294,40"/>
+<area shape="rect" id="Node000004" href="$LosslessInter_8cpp.html" title=" " alt="" coords="335,79,459,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="346,40,386,77,382,81,342,44"/>
+<area shape="rect" id="Node000005" href="$Video_8cpp.html" title=" " alt="" coords="483,79,562,105"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="370,34,489,76,487,81,368,39"/>
 </map>

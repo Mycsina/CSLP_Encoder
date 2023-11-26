@@ -1,19 +1,50 @@
 <map id="Image.hpp" name="Image.hpp">
-<area shape="rect" id="node1" title="Image class." alt="" coords="561,5,651,32"/>
-<area shape="rect" id="node2" href="$Encoder_8hpp.html" title=" " alt="" coords="226,304,327,331"/>
-<area shape="rect" id="node9" href="$Frame_8hpp.html" title="The Frame class provides methods to manipulate an Image in the context of video encoding." alt="" coords="406,155,497,181"/>
-<area shape="rect" id="node12" href="$Video_8hpp.html" title="Video class." alt="" coords="563,229,649,256"/>
-<area shape="rect" id="node13" href="$Video_8cpp.html" title=" " alt="" coords="648,304,735,331"/>
-<area shape="rect" id="node14" href="$Header_8hpp.html" title="Header classContains the Header class, which defines the basic header structure for the codec,..." alt="" coords="225,80,321,107"/>
-<area shape="rect" id="node15" href="$Image_8cpp.html" title=" " alt="" coords="698,80,789,107"/>
-<area shape="rect" id="node16" href="$ImageProcessing_8hpp.html" title="Image processing functionsContains functions for image processing, such as watermarking,..." alt="" coords="743,229,904,256"/>
-<area shape="rect" id="node3" href="$LosslessHybrid_8hpp.html" title="LosslessHybrid encoder class." alt="" coords="164,379,312,405"/>
-<area shape="rect" id="node5" href="$LosslessInter_8hpp.html" title="LosslessIntraFrameEncoder class." alt="" coords="336,379,471,405"/>
-<area shape="rect" id="node7" href="$LosslessIntra_8hpp.html" title="LosslessIntraEncoder class." alt="" coords="5,379,140,405"/>
-<area shape="rect" id="node4" href="$LosslessHybrid_8cpp.html" title=" " alt="" coords="470,453,617,480"/>
-<area shape="rect" id="node6" href="$LosslessInter_8cpp.html" title=" " alt="" coords="641,453,774,480"/>
-<area shape="rect" id="node8" href="$LosslessIntra_8cpp.html" title=" " alt="" coords="167,453,301,480"/>
-<area shape="rect" id="node10" href="$Frame_8cpp.html" title=" " alt="" coords="447,229,538,256"/>
-<area shape="rect" id="node11" href="$Header_8cpp.html" title=" " alt="" coords="277,229,372,256"/>
-<area shape="rect" id="node17" href="$ImageProcessing_8cpp.html" title=" " alt="" coords="861,304,1021,331"/>
+<area shape="rect" id="Node000001" title="Image class." alt="" coords="531,5,612,31"/>
+<area shape="rect" id="Node000002" href="$Encoder_8hpp.html" title=" " alt="" coords="213,300,306,326"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="515,23,433,26,340,36,257,53,226,66,206,81,190,107,185,137,189,168,198,200,226,258,253,298,248,301,221,260,193,202,183,169,180,137,185,105,201,77,223,61,255,48,339,30,433,21,515,17"/>
+<area shape="rect" id="Node000009" href="$Frame_8hpp.html" title="The Frame class provides methods to manipulate an Image in the context of video encoding." alt="" coords="388,153,470,178"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="551,44,443,154,439,150,547,40"/>
+<area shape="rect" id="Node000012" href="$Video_8hpp.html" title="Video class." alt="" coords="532,226,611,252"/>
+<area shape="poly" id="edge31_Node000001_Node000012" title=" " alt="" coords="574,46,574,226,569,226,569,46"/>
+<area shape="rect" id="Node000013" href="$Video_8cpp.html" title=" " alt="" coords="612,300,691,326"/>
+<area shape="poly" id="edge30_Node000001_Node000013" title=" " alt="" coords="583,45,593,78,651,299,646,300,588,80,577,47"/>
+<area shape="rect" id="Node000014" href="$Header_8hpp.html" title="Header classContains the Header class, which defines the basic header structure for the codec,..." alt="" coords="216,79,303,105"/>
+<area shape="poly" id="edge18_Node000001_Node000014" title=" " alt="" coords="517,35,304,83,303,78,516,30"/>
+<area shape="rect" id="Node000015" href="$Image_8cpp.html" title=" " alt="" coords="662,79,743,105"/>
+<area shape="poly" id="edge24_Node000001_Node000015" title=" " alt="" coords="608,36,681,76,679,81,605,41"/>
+<area shape="rect" id="Node000016" href="$ImageProcessing_8hpp.html" title="Image processing functionsContains functions for image processing, such as watermarking,..." alt="" coords="705,226,851,252"/>
+<area shape="poly" id="edge25_Node000001_Node000016" title=" " alt="" coords="628,20,662,26,697,36,730,53,758,77,770,95,778,115,786,157,786,197,783,226,778,226,781,197,781,158,773,117,765,98,753,81,727,57,695,41,660,31,628,25"/>
+<area shape="rect" id="Node000003" href="$LosslessHybrid_8hpp.html" title="LosslessHybrid encoder class." alt="" coords="153,374,289,399"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="248,341,230,374,225,372,244,338"/>
+<area shape="rect" id="Node000005" href="$LosslessInter_8hpp.html" title="LosslessIntraFrameEncoder class." alt="" coords="312,374,436,399"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="293,332,356,371,353,375,291,337"/>
+<area shape="rect" id="Node000007" href="$LosslessIntra_8hpp.html" title="LosslessIntraEncoder class." alt="" coords="5,374,130,399"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="214,334,101,376,99,371,212,329"/>
+<area shape="rect" id="Node000004" href="$LosslessHybrid_8cpp.html" title=" " alt="" coords="444,447,579,473"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="286,401,463,444,461,449,284,406"/>
+<area shape="rect" id="Node000006" href="$LosslessInter_8cpp.html" title=" " alt="" coords="603,447,727,473"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="439,401,616,444,615,449,438,406"/>
+<area shape="rect" id="Node000008" href="$LosslessIntra_8cpp.html" title=" " alt="" coords="157,447,282,473"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="108,404,195,444,192,449,106,409"/>
+<area shape="poly" id="edge9_Node000009_Node000002" title=" " alt="" coords="416,193,394,223,365,254,326,282,288,302,286,297,323,277,362,250,390,220,412,189"/>
+<area shape="rect" id="Node000010" href="$Frame_8cpp.html" title=" " alt="" coords="426,226,509,252"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="445,191,463,225,459,227,440,193"/>
+<area shape="rect" id="Node000011" href="$Header_8cpp.html" title=" " alt="" coords="264,226,351,252"/>
+<area shape="poly" id="edge11_Node000009_Node000011" title=" " alt="" coords="396,189,330,228,327,223,394,184"/>
+<area shape="poly" id="edge12_Node000009_Node000012" title=" " alt="" coords="468,183,548,223,546,228,466,188"/>
+<area shape="poly" id="edge13_Node000012_Node000002" title=" " alt="" coords="518,255,307,303,306,298,517,250"/>
+<area shape="poly" id="edge14_Node000012_Node000004" title=" " alt="" coords="567,267,517,448,512,446,562,266"/>
+<area shape="poly" id="edge15_Node000012_Node000006" title=" " alt="" coords="582,266,603,325,635,394,661,446,656,448,630,396,598,327,577,267"/>
+<area shape="poly" id="edge16_Node000012_Node000008" title=" " alt="" coords="561,267,518,335,487,371,450,402,409,423,366,439,282,456,281,451,364,434,407,418,447,397,483,367,514,331,557,265"/>
+<area shape="poly" id="edge17_Node000012_Node000013" title=" " alt="" coords="598,260,640,298,636,302,595,264"/>
+<area shape="poly" id="edge21_Node000014_Node000003" title=" " alt="" coords="236,117,221,134,210,154,195,200,191,237,195,276,203,325,218,372,213,374,198,326,190,277,186,237,190,199,205,152,217,131,232,113"/>
+<area shape="poly" id="edge22_Node000014_Node000005" title=" " alt="" coords="253,120,246,149,242,182,243,218,254,251,267,267,283,276,301,284,320,298,350,337,370,372,366,375,346,340,316,302,298,288,280,281,264,272,249,253,238,219,237,182,241,148,248,119"/>
+<area shape="poly" id="edge23_Node000014_Node000007" title=" " alt="" coords="234,117,196,154,154,216,119,279,75,374,70,372,114,277,150,213,192,151,230,113"/>
+<area shape="poly" id="edge19_Node000014_Node000009" title=" " alt="" coords="303,109,401,150,399,155,301,114"/>
+<area shape="poly" id="edge20_Node000014_Node000011" title=" " alt="" coords="271,119,306,225,301,227,266,120"/>
+<area shape="poly" id="edge27_Node000016_Node000004" title=" " alt="" coords="762,266,735,296,704,328,658,365,610,399,533,449,530,445,607,395,655,361,700,324,732,293,758,262"/>
+<area shape="poly" id="edge28_Node000016_Node000006" title=" " alt="" coords="772,268,749,327,709,397,675,448,671,445,705,394,744,325,767,266"/>
+<area shape="poly" id="edge29_Node000016_Node000013" title=" " alt="" coords="745,262,674,302,672,297,742,258"/>
+<area shape="rect" id="Node000017" href="$ImageProcessing_8cpp.html" title=" " alt="" coords="816,300,962,326"/>
+<area shape="poly" id="edge26_Node000016_Node000017" title=" " alt="" coords="811,258,871,297,869,302,808,263"/>
 </map>

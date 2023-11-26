@@ -1,4 +1,5 @@
 <map id="Block::BlockDiff" name="Block::BlockDiff">
-<area shape="rect" id="node1" title="Block difference abstract class." alt="" coords="5,95,131,121"/>
-<area shape="rect" id="node2" href="$structMotionVector.html" title="The MotionVector struct represents a motion vector and its residual." alt="" coords="14,5,122,32"/>
+<area shape="rect" id="Node000001" title="Block difference abstract class." alt="" coords="5,94,118,120"/>
+<area shape="rect" id="Node000002" href="$structMotionVector.html" title="The MotionVector struct represents a motion vector and its residual." alt="" coords="12,5,111,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,47,64,94,59,94,59,47"/>
 </map>

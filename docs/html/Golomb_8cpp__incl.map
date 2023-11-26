@@ -1,9 +1,17 @@
 <map id="Golomb.cpp" name="Golomb.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="350,5,450,32"/>
-<area shape="rect" id="node2" href="$Golomb_8hpp.html" title="Header file for Golomb classDeclares the Golomb class, which provides methods to encode/decode int va..." alt="" coords="168,80,269,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="128,229,187,256"/>
-<area shape="rect" id="node7" title=" " alt="" coords="438,80,501,107"/>
-<area shape="rect" id="node3" href="$BitStream_8hpp.html" title="BitStream classDeclares the BitStream class, which defines methods to access individual bits of a fil..." alt="" coords="5,155,120,181"/>
-<area shape="rect" id="node6" title=" " alt="" coords="195,155,362,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="26,229,99,256"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="325,5,416,31"/>
+<area shape="rect" id="Node000002" href="$Golomb_8hpp.html" title="Header file for Golomb classDeclares the Golomb class, which provides methods to encode/decode int va..." alt="" coords="157,79,248,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="343,34,246,75,244,70,341,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="120,226,173,252"/>
+<area shape="poly" id="edge8_Node000001_Node000005" title=" " alt="" coords="375,31,378,61,377,100,368,142,359,162,347,180,312,208,270,226,227,236,189,240,188,235,226,231,268,221,309,204,343,177,355,160,363,141,372,100,372,61,370,32"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="408,79,466,105"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="383,29,417,66,413,69,379,33"/>
+<area shape="rect" id="Node000003" href="$BitStream_8hpp.html" title="BitStream classDeclares the BitStream class, which defines methods to access individual bits of a fil..." alt="" coords="5,153,109,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="179,108,97,148,94,143,177,103"/>
+<area shape="poly" id="edge6_Node000002_Node000005" title=" " alt="" coords="198,106,174,154,155,212,150,211,169,152,193,104"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="184,153,333,178"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="214,103,242,139,237,142,209,107"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="24,226,90,252"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="60,179,60,211,54,211,54,179"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="74,177,121,214,118,219,70,181"/>
 </map>

@@ -1,6 +1,9 @@
 <map id="Encoder" name="Encoder">
-<area shape="rect" id="node1" title=" " alt="" coords="265,5,339,32"/>
-<area shape="rect" id="node2" href="$classLosslessHybridEncoder.html" title="The LosslessHybridEncoder class provides methods to encode/decode video using the lossless hybrid cod..." alt="" coords="5,80,177,107"/>
-<area shape="rect" id="node3" href="$classLosslessInterFrameEncoder.html" title=" " alt="" coords="202,80,402,107"/>
-<area shape="rect" id="node4" href="$classLosslessIntraEncoder.html" title="The LosslessInterFrameEncoder provides methods to encode/decode a video using the lossless interframe..." alt="" coords="427,80,585,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="246,5,315,31"/>
+<area shape="rect" id="Node000002" href="$classLosslessHybridEncoder.html" title="The LosslessHybridEncoder class provides methods to encode/decode video using the lossless hybrid cod..." alt="" coords="5,79,164,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="234,39,119,81,117,76,232,34"/>
+<area shape="rect" id="Node000003" href="$classLosslessInterFrameEncoder.html" title=" " alt="" coords="188,79,373,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="283,46,283,79,278,79,278,46"/>
+<area shape="rect" id="Node000004" href="$classLosslessIntraEncoder.html" title="The LosslessInterFrameEncoder provides methods to encode/decode a video using the lossless interframe..." alt="" coords="396,79,544,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="327,34,438,76,437,81,326,39"/>
 </map>

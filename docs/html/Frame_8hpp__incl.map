@@ -1,15 +1,30 @@
 <map id="Frame.hpp" name="Frame.hpp">
-<area shape="rect" id="node1" title="The Frame class provides methods to manipulate an Image in the context of video encoding." alt="" coords="616,5,707,32"/>
-<area shape="rect" id="node2" href="$Image_8hpp.html" title="Image class." alt="" coords="503,155,649,181"/>
-<area shape="rect" id="node7" title=" " alt="" coords="593,304,759,331"/>
-<area shape="rect" id="node13" href="$Header_8hpp.html" title="Header classContains the Header class, which defines the basic header structure for the codec,..." alt="" coords="613,80,709,107"/>
-<area shape="rect" id="node3" href="$Golomb_8hpp.html" title="Header file for Golomb classDeclares the Golomb class, which provides methods to encode/decode int va..." alt="" coords="45,229,174,256"/>
-<area shape="rect" id="node8" title=" " alt="" coords="199,229,279,256"/>
-<area shape="rect" id="node9" title=" " alt="" coords="303,229,473,256"/>
-<area shape="rect" id="node10" title=" " alt="" coords="497,229,655,256"/>
-<area shape="rect" id="node11" title=" " alt="" coords="679,229,857,256"/>
-<area shape="rect" id="node12" title=" " alt="" coords="881,229,1036,256"/>
-<area shape="rect" id="node4" href="$BitStream_8hpp.html" title="BitStream classDeclares the BitStream class, which defines methods to access individual bits of a fil..." alt="" coords="5,304,120,331"/>
-<area shape="rect" id="node6" title=" " alt="" coords="125,379,184,405"/>
-<area shape="rect" id="node5" title=" " alt="" coords="26,379,99,405"/>
+<area shape="rect" id="Node000001" title="The Frame class provides methods to manipulate an Image in the context of video encoding." alt="" coords="564,5,646,31"/>
+<area shape="rect" id="Node000002" href="$Image_8hpp.html" title="Image class." alt="" coords="459,153,588,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="592,33,571,54,551,80,539,110,531,138,526,137,534,108,547,78,567,50,589,29"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="545,300,694,326"/>
+<area shape="poly" id="edge15_Node000001_Node000007" title=" " alt="" coords="647,26,757,55,820,77,881,104,932,135,952,152,967,170,976,189,978,210,972,232,958,254,941,267,918,278,855,295,781,305,710,311,709,306,781,300,854,289,916,273,938,262,954,250,967,229,972,210,971,191,962,173,948,155,929,139,879,108,818,82,755,60,646,31"/>
+<area shape="rect" id="Node000013" href="$Header_8hpp.html" title="Header classContains the Header class, which defines the basic header structure for the codec,..." alt="" coords="561,79,649,105"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="608,31,608,63,602,63,602,31"/>
+<area shape="rect" id="Node000003" href="$Golomb_8hpp.html" title="Header file for Golomb classDeclares the Golomb class, which provides methods to encode/decode int va..." alt="" coords="44,226,158,252"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="459,180,174,228,173,223,458,175"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="183,226,254,252"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="472,182,270,228,268,223,470,176"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="278,226,431,252"/>
+<area shape="poly" id="edge9_Node000002_Node000009" title=" " alt="" coords="496,181,398,222,396,217,494,176"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="454,226,593,252"/>
+<area shape="poly" id="edge10_Node000002_Node000010" title=" " alt="" coords="526,179,526,211,521,211,521,179"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="618,226,779,252"/>
+<area shape="poly" id="edge11_Node000002_Node000011" title=" " alt="" coords="554,176,655,218,653,222,552,181"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="803,226,943,252"/>
+<area shape="poly" id="edge12_Node000002_Node000012" title=" " alt="" coords="584,176,799,220,798,225,583,182"/>
+<area shape="rect" id="Node000004" href="$BitStream_8hpp.html" title="BitStream classDeclares the BitStream class, which defines methods to access individual bits of a fil..." alt="" coords="5,300,109,326"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="96,254,75,288,70,285,91,251"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="117,374,170,399"/>
+<area shape="poly" id="edge7_Node000003_Node000006" title=" " alt="" coords="108,251,124,299,140,358,135,359,118,301,103,253"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="159,248,171,249,530,298,529,303,170,255,158,253"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="24,374,90,399"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="60,326,60,358,54,358,54,326"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="73,324,119,362,116,366,70,328"/>
+<area shape="poly" id="edge14_Node000013_Node000002" title=" " alt="" coords="593,107,550,144,547,140,589,103"/>
 </map>

@@ -1,6 +1,9 @@
 <map id="LosslessInterFrameEncoder" name="LosslessInterFrameEncoder">
-<area shape="rect" id="node1" title=" " alt="" coords="5,171,205,197"/>
-<area shape="rect" id="node2" href="$classEncoder.html" title=" " alt="" coords="29,81,104,108"/>
-<area shape="rect" id="node3" href="$classInterHeader.html" title=" " alt="" coords="128,81,227,108"/>
-<area shape="rect" id="node4" href="$classHeader.html" title="The Header class defines the basic header structure for the codec." alt="" coords="143,5,212,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,169,190,195"/>
+<area shape="rect" id="Node000002" href="$classEncoder.html" title=" " alt="" coords="27,80,96,106"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,119,95,168,90,170,70,121"/>
+<area shape="rect" id="Node000003" href="$classInterHeader.html" title=" " alt="" coords="120,80,209,106"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,120,109,170,105,167,144,117"/>
+<area shape="rect" id="Node000004" href="$classHeader.html" title="The Header class defines the basic header structure for the codec." alt="" coords="133,5,196,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="167,46,167,80,162,80,162,46"/>
 </map>

@@ -1,5 +1,7 @@
 <map id="LosslessIntraEncoder" name="LosslessIntraEncoder">
-<area shape="rect" id="node1" title="The LosslessInterFrameEncoder provides methods to encode/decode a video using the lossless interframe..." alt="" coords="11,95,170,121"/>
-<area shape="rect" id="node2" href="$classEncoder.html" title=" " alt="" coords="5,5,80,32"/>
-<area shape="rect" id="node3" href="$classHeader.html" title="The Header class defines the basic header structure for the codec." alt="" coords="104,5,173,32"/>
+<area shape="rect" id="Node000001" title="The LosslessInterFrameEncoder provides methods to encode/decode a video using the lossless interframe..." alt="" coords="10,94,157,120"/>
+<area shape="rect" id="Node000002" href="$classEncoder.html" title=" " alt="" coords="5,5,74,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="55,44,80,92,75,95,50,46"/>
+<area shape="rect" id="Node000003" href="$classHeader.html" title="The Header class defines the basic header structure for the codec." alt="" coords="97,5,161,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="118,46,92,95,87,92,113,44"/>
 </map>

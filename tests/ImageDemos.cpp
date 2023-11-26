@@ -82,7 +82,7 @@ TEST_F(ImageDemo, WatermarkDemo) {
     auto mark_file = "../../tests/resource/lena.ppm";
     Image mark(mark_file);
     watermark(im, mark, {0, 0},
-              {mark.size()[1], mark.size()[0]}, 0.5);
+              {mark.size().width, mark.size().height}, 0.5);
     im.show();
 }
 

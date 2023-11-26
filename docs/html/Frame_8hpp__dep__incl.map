@@ -1,14 +1,29 @@
 <map id="Frame.hpp" name="Frame.hpp">
-<area shape="rect" id="node1" title="The Frame class provides methods to manipulate an Image in the context of video encoding." alt="" coords="385,5,476,32"/>
-<area shape="rect" id="node2" href="$Encoder_8hpp.html" title=" " alt="" coords="368,155,469,181"/>
-<area shape="rect" id="node9" href="$Frame_8cpp.html" title=" " alt="" coords="327,80,417,107"/>
-<area shape="rect" id="node10" href="$Header_8cpp.html" title=" " alt="" coords="442,80,537,107"/>
-<area shape="rect" id="node11" href="$Video_8hpp.html" title="Video class." alt="" coords="215,80,302,107"/>
-<area shape="rect" id="node3" href="$LosslessHybrid_8hpp.html" title="LosslessHybrid encoder class." alt="" coords="257,229,405,256"/>
-<area shape="rect" id="node5" href="$LosslessInter_8hpp.html" title="LosslessIntraFrameEncoder class." alt="" coords="46,229,181,256"/>
-<area shape="rect" id="node7" href="$LosslessIntra_8hpp.html" title="LosslessIntraEncoder class." alt="" coords="429,229,563,256"/>
-<area shape="rect" id="node4" href="$LosslessHybrid_8cpp.html" title=" " alt="" coords="185,304,332,331"/>
-<area shape="rect" id="node6" href="$LosslessInter_8cpp.html" title=" " alt="" coords="5,304,139,331"/>
-<area shape="rect" id="node8" href="$LosslessIntra_8cpp.html" title=" " alt="" coords="481,304,615,331"/>
-<area shape="rect" id="node12" href="$Video_8cpp.html" title=" " alt="" coords="257,155,343,181"/>
+<area shape="rect" id="Node000001" title="The Frame class provides methods to manipulate an Image in the context of video encoding." alt="" coords="361,5,443,31"/>
+<area shape="rect" id="Node000002" href="$Encoder_8hpp.html" title=" " alt="" coords="345,153,438,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="459,35,485,47,508,63,520,83,520,94,515,106,500,124,481,139,439,157,437,152,478,134,496,120,511,103,515,93,515,84,504,67,483,52,456,39"/>
+<area shape="rect" id="Node000009" href="$Frame_8cpp.html" title=" " alt="" coords="306,79,389,105"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="386,45,359,80,355,77,382,41"/>
+<area shape="rect" id="Node000010" href="$Header_8cpp.html" title=" " alt="" coords="413,79,501,105"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="422,41,450,77,445,80,418,45"/>
+<area shape="rect" id="Node000011" href="$Video_8hpp.html" title="Video class." alt="" coords="204,79,283,105"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="363,40,272,81,269,76,361,35"/>
+<area shape="rect" id="Node000003" href="$LosslessHybrid_8hpp.html" title="LosslessHybrid encoder class." alt="" coords="244,226,379,252"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="368,191,327,228,323,224,365,187"/>
+<area shape="rect" id="Node000005" href="$LosslessInter_8hpp.html" title="LosslessIntraFrameEncoder class." alt="" coords="44,226,168,252"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="331,185,156,228,154,223,330,179"/>
+<area shape="rect" id="Node000007" href="$LosslessIntra_8hpp.html" title="LosslessIntraEncoder class." alt="" coords="403,226,527,252"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="416,187,454,224,451,228,413,191"/>
+<area shape="rect" id="Node000004" href="$LosslessHybrid_8cpp.html" title=" " alt="" coords="176,300,311,326"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="292,265,257,301,253,298,288,261"/>
+<area shape="rect" id="Node000006" href="$LosslessInter_8cpp.html" title=" " alt="" coords="5,300,130,326"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="95,267,76,301,72,298,90,264"/>
+<area shape="rect" id="Node000008" href="$LosslessIntra_8cpp.html" title=" " alt="" coords="452,300,576,326"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="484,263,508,298,504,301,480,266"/>
+<area shape="poly" id="edge11_Node000011_Node000002" title=" " alt="" coords="284,109,367,150,365,154,281,114"/>
+<area shape="poly" id="edge12_Node000011_Node000004" title=" " alt="" coords="240,120,234,153,231,202,234,252,243,299,238,300,229,252,226,202,229,152,234,119"/>
+<area shape="poly" id="edge13_Node000011_Node000006" title=" " alt="" coords="191,112,149,130,105,155,65,187,34,227,30,246,35,265,58,298,53,301,30,267,25,246,29,225,61,184,102,151,147,125,188,108"/>
+<area shape="poly" id="edge14_Node000011_Node000008" title=" " alt="" coords="298,103,384,126,451,150,505,179,525,197,542,225,546,246,542,267,525,301,521,298,537,265,541,246,537,227,521,200,502,183,449,155,383,132,297,109"/>
+<area shape="rect" id="Node000012" href="$Video_8cpp.html" title=" " alt="" coords="243,153,321,178"/>
+<area shape="poly" id="edge15_Node000011_Node000012" title=" " alt="" coords="259,117,278,151,273,153,255,120"/>
 </map>
