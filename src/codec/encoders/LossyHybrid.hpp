@@ -1,0 +1,8 @@
+//
+// Created by bruno on 11/28/23.
+//
+
+#ifndef CSLP_PROJECT_LOSSYHYBRID_HPP
+#define CSLP_PROJECT_LOSSYHYBRID_HPP
+
+#endif //CSLP_PROJECT_LOSSYHYBRID_HPP
