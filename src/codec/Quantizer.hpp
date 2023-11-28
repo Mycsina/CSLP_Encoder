@@ -2,13 +2,17 @@
 // Created by bruno on 11/28/23.
 //
 
-#ifndef CSLP_PROJECT_QUANTIZER_HPP
-#define CSLP_PROJECT_QUANTIZER_HPP
-
+#pragma once
 
 class Quantizer {
+private:
+    int amp;
+    int num_levels;
+    int step;
+public:
+    Quantizer(int amplitude, int num_bits);
 
+    int get_level(int value);
+    int get_value(int level);
+    int quantize(int value);
 };
-
-
-#endif //CSLP_PROJECT_QUANTIZER_HPP
