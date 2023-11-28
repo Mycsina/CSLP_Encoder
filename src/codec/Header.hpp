@@ -103,3 +103,30 @@ public:
      */
     static HybridHeader readHeader(BitStream *bs);
 };
+
+class LossyHybridHeader: public HybridHeader{
+public:
+    uint8_t period;       //!< Period
+    uint8_t search_radius;//!< Search radius
+    uint8_t fps;          //!< FPS
+    /**
+     * \brief Default constructor
+     */
+    LossyHybridHeader() = default;
+    /**
+     * \brief Constructor
+     * \param header Base header to copy from
+     */
+    explicit LossyHybridHeader(InterHeader header);
+    /**
+     * \brief Writes header to BitStream
+     * \param bs BitStream pointer
+     */
+    void writeHeader(BitStream *bs) const;
+    /**
+     * \brief Reads header from BitStream
+     * \param bs BitStream pointer
+     * \return HybridHeader object
+     */
+    static HybridHeader readHeader(BitStream *bs);
+};
