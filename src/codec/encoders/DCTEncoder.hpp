@@ -7,9 +7,10 @@
 #include "../Encoder.hpp"
 #include "../Header.hpp"
 #include "../Frame.hpp"
+#include "RLEEncoder.hpp"
 #include <opencv2/core/mat.hpp>
 
-class DCTEncoder : public Encoder{
+class DCTEncoder final : public Encoder{
 private:
     int (*y_qmat)[8]=new int[8][8]{
         {16,11,10,16,24,40,51,61},
@@ -32,7 +33,7 @@ private:
             {99,99,99,99,99,99,99,99}
     };
 
-    //since the arrays are always the same size, hardcoding the zigzag coordinates, while hard to do, avoids having to recalculat
+    //since the arrays are always the same size, hard coding the zigzag coordinates, while hard to do, avoids having to recalculate every block of every frame
     int (*zigzag_order)[2]=new int[64][2]{
             {0, 0}, {0, 1}, {1, 0}, {2, 0},
             {1, 1}, {0, 2}, {0, 3}, {1, 2},
@@ -61,10 +62,8 @@ public:
     HybridHeader header{};///< Header object
     uint8_t golomb_m;     ///< Golomb m parameter
     uint8_t block_size;   ///< Macroblock size
-    uint8_t period{};     ///< Period of intra frames
-    uint8_t fps;          ///< Frames per second
 
-    ~DCTEncoder();
+    ~DCTEncoder() override;
 
     void encode(Video *v, BitStream *bs, int m);
     void decode(BitStream *bs);
