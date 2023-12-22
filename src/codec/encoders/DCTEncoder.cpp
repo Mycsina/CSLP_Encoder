@@ -16,6 +16,39 @@ DCTEncoder::~DCTEncoder(){
     delete[] zigzag_order;
 }
 
+void DCTEncoder::encode_frame(Frame *frame, Golomb *g) {
+    RLEEncoder rle(g);
+    Mat *image_mat=frame->get_image().get_image_mat();
+    //for each channel
+    for(int channel=0;channel<image_mat->channels();channel++){
+        //for each block
+        for(int row=0;row<image_mat->rows;row+=8){
+            for(int col=0;col<image_mat->cols;col+=8){
+                int block[8][8];
+                double dct_matrix[8][8];
+                //copy the block to a 8x8 int matrix
+                for(int br=0;br<8;br++){
+                    for(int bc=0;bc<8;bc++){
+                        block[br][bc]=image_mat->at<Vec3b>(row+br,col+bc)[channel];
+                    }
+                }
+                //get the dct of it into dct_matrix
+                dct8x8(block,dct_matrix);
+
+                //scan the dct_matrix in zigzag, do element-wise division and save using RLE (and golomb)
+                for(int i=0;i<64;i++){
+                    int dct_val,q_val,zz_r,zz_c;
+                    zz_r=zigzag_order[i][0];
+                    zz_c=zigzag_order[i][0];
+                    dct_val=dct_matrix[zz_r][zz_c];
+                }
+
+            }
+        }
+    }
+}
+
+
 void DCTEncoder::dct8x8(int (&in)[8][8], double (&out)[8][8]) {
     double sum;
     for(int I=0; I<8; I++){
@@ -46,3 +79,4 @@ void DCTEncoder::idct8x8(double (&in)[8][8], int (&out)[8][8]) {
         }
     }
 }
+
