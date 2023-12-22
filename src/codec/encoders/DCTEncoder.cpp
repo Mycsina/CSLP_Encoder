@@ -1,4 +1,4 @@
-#include "DCTEncoder.hpp";
+#include "DCTEncoder.hpp"
 
 using namespace std;
 using namespace cv;
@@ -6,6 +6,9 @@ using namespace cv;
 #ifndef PI
 #define PI 3.14159265358979324
 #endif
+
+DCTEncoder::DCTEncoder(const char *src, const char *dst, const uint8_t golomb_m) : src(src), dst(dst), golomb_m(golomb_m) {}
+DCTEncoder::DCTEncoder(const char *src, const char *dst) : src(src), dst(dst), golomb_m(0) {}
 
 DCTEncoder::~DCTEncoder(){
     delete[] y_qmat;

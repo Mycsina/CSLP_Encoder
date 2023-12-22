@@ -1,6 +1,6 @@
 /**
-    * @file LosslessHybrid.hpp
-    * @brief LosslessHybrid encoder class
+    * @file DCTEncoder.hpp
+    * @brief DCT encoder class
     */
 
 #pragma once
@@ -9,7 +9,7 @@
 #include "../Frame.hpp"
 #include <opencv2/core/mat.hpp>
 
-class DCTEncoder {
+class DCTEncoder : public Encoder{
 private:
     int (*y_qmat)[8]=new int[8][8]{
         {16,11,10,16,24,40,51,61},
@@ -53,7 +53,16 @@ private:
     };
 
 public:
-    DCTEncoder()=default;
+    DCTEncoder(const char *src, const char *dst, uint8_t golomb_m);
+
+    DCTEncoder(const char *src, const char *dst);
+    const char *src{};    ///< File path of the input video
+    const char *dst{};    ///< File path of the encoded video
+    HybridHeader header{};///< Header object
+    uint8_t golomb_m;     ///< Golomb m parameter
+    uint8_t block_size;   ///< Macroblock size
+    uint8_t period{};     ///< Period of intra frames
+    uint8_t fps;          ///< Frames per second
 
     ~DCTEncoder();
 
