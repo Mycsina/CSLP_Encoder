@@ -16,6 +16,23 @@ DCTEncoder::~DCTEncoder(){
     delete[] zigzag_order;
 }
 
+void DCTEncoder::encode(){
+    BitStream bs(dst, ios::out);
+    Golomb g(&bs);
+    const Video vid(src);
+    const vector<Frame *> frames = vid.generate_frames();
+    const Frame sample = *frames[0];
+    header.extractInfo(sample);
+    header.golomb_m = golomb_m;
+    header.length = frames.size();
+    header.block_size = 8;
+    header.writeHeader(&bs);
+
+    for(Frame *frame: frames){
+        encode_frame(frame,&g);
+    }
+}
+
 void DCTEncoder::encode_frame(Frame *frame, Golomb *g) {
     RLEEncoder rle(g);
     Mat *image_mat=frame->get_image().get_image_mat();

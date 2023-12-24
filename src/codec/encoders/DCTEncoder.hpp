@@ -65,8 +65,8 @@ public:
 
     ~DCTEncoder() override;
 
-    void encode(Video *v, BitStream *bs, int m);
-    void decode(BitStream *bs);
+    void encode();
+    void decode();
 
     void encode_frame(Frame* frame, Golomb *g);
     Frame decode_frame(Golomb *g);
