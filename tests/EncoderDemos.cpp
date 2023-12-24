@@ -1,5 +1,6 @@
 #include "../src/codec/encoders/LosslessHybrid.hpp"
 #include "../src/codec/encoders/LosslessIntra.hpp"
+#include "../src/codec/encoders/DCTEncoder.hpp"
 #include "../src/visual/Video.hpp"
 #include <gtest/gtest.h>
 #include <iostream>
@@ -40,4 +41,10 @@ TEST_F(EncoderDemo, HybridDemo) {
         Image im2 = frame.get_image();
         im2.show();
     }
+}
+TEST_F(EncoderDemo, DCTEncode){
+    const char *file = small_still;
+    auto *encoder = new DCTEncoder(file,"../../tests/resource/encoded",2);
+    encoder->encode();
+    delete encoder;
 }

@@ -27,6 +27,7 @@ void DCTEncoder::encode(){
     header.length = frames.size();
     header.block_size = 8;
     header.writeHeader(&bs);
+    g.set_m(golomb_m);
 
     for(Frame *frame: frames){
         encode_frame(frame,&g);
@@ -96,11 +97,15 @@ void DCTEncoder::idct8x8(double (&in)[8][8], int (&out)[8][8]) {
             sum=0;
             for (int r=0; r<8; r++){
                 for (int c=0; c<8; c++){
-                    sum+=in[r][c] * cos((2*I+1)*c*PI/16) * cos((2*II+1)*v*PI/16) * ((r==0)?1/sqrt(2):1) * ((c==0)?1/sqrt(2):1); //I got this formula from the internet as Fourier transform is complicated
+                    sum+=in[r][c] * cos((2*I+1)*r*PI/16) * cos((2*II+1)*c*PI/16) * ((r==0)?1/sqrt(2):1) * ((c==0)?1/sqrt(2):1); //I got this formula from the internet as Fourier transform is complicated
                 }
             }
             out[I][II]=(int)sum/4;
         }
     }
+}
+
+void DCTEncoder::decode() {
+
 }
 
