@@ -68,10 +68,10 @@ public:
     void encode(Video *v, BitStream *bs, int m);
     void decode(BitStream *bs);
 
-    void encode_frame(Frame* frame, Golomb *g):
+    void encode_frame(Frame* frame, Golomb *g);
     Frame decode_frame(Golomb *g);
 
-    void dct8x8(int (&in)[8][8], double (&out)[8][8]);
-    void idct8x8(double (&in)[8][8], int (&out)[8][8]);
+    static void dct8x8(int (&in)[8][8], double (&out)[8][8]);
+    static void idct8x8(double (&in)[8][8], int (&out)[8][8]);
 
 };
