@@ -67,7 +67,7 @@ public:
     void encode() override;
     void decode() override;
 
-    void encode_frame(Frame* frame, Golomb *g);
+    void encode_frame(Image* im, Golomb *g);
     Frame decode_frame(Golomb *g);
 
     static void dct8x8(int (&in)[8][8], double (&out)[8][8]);

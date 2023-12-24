@@ -19,7 +19,7 @@ DCTEncoder::~DCTEncoder(){
 void DCTEncoder::encode(){
     BitStream bs(dst, ios::out);
     Golomb g(&bs);
-    const Video vid(src);
+    Video vid(src);
     const vector<Frame *> frames = vid.generate_frames();
     const Frame sample = *frames[0];
     header.extractInfo(sample);
@@ -29,19 +29,20 @@ void DCTEncoder::encode(){
     header.writeHeader(&bs);
     g.set_m(golomb_m);
 
-    for(Frame *frame: frames){
-        encode_frame(frame,&g);
+    for(Image img: vid.get_reel()){
+        encode_frame(&img,&g);
     }
 }
 
-void DCTEncoder::encode_frame(Frame *frame, Golomb *g) {
+void DCTEncoder::encode_frame(Image *im, Golomb *g) {
     RLEEncoder rle(g);
-    Mat *image_mat=frame->get_image().get_image_mat();
+    Mat *image_mat=im->get_image_mat();
+
     //for each channel
     for(int channel=0;channel<image_mat->channels();channel++){
         //for each block
-        for(int row=0;row<image_mat->rows;row+=8){
-            for(int col=0;col<image_mat->cols;col+=8){
+        for(int row=0;row<(*image_mat).rows;row+=8){
+            for(int col=0;col<(*image_mat).cols;col+=8){
                 int block[8][8];
                 double dct_matrix[8][8];
                 //copy the block to a 8x8 int matrix
@@ -68,7 +69,6 @@ void DCTEncoder::encode_frame(Frame *frame, Golomb *g) {
                     result=(int)dct_val/q_val;
                     rle.push(result);
                 }
-
             }
         }
     }
