@@ -37,10 +37,18 @@ void DCTEncoder::encode_frame(Frame *frame, Golomb *g) {
 
                 //scan the dct_matrix in zigzag, do element-wise division and save using RLE (and golomb)
                 for(int i=0;i<64;i++){
-                    int dct_val,q_val,zz_r,zz_c;
+                    int q_val=1,zz_r,zz_c,result;
+                    double dct_val;
                     zz_r=zigzag_order[i][0];
                     zz_c=zigzag_order[i][0];
                     dct_val=dct_matrix[zz_r][zz_c];
+                    if(channel==0){
+                        q_val=y_qmat[zz_r][zz_c];
+                    }else{
+                        q_val=uv_qmat[zz_r][zz_c];
+                    }
+                    result=(int)dct_val/q_val;
+                    rle.push(result);
                 }
 
             }
@@ -66,7 +74,6 @@ void DCTEncoder::dct8x8(int (&in)[8][8], double (&out)[8][8]) {
 
 void DCTEncoder::idct8x8(double (&in)[8][8], int (&out)[8][8]) {
     double sum;
-
     for(int I=0; I<8; I++){
         for(int II=0; II<8; II++){
             sum=0;
