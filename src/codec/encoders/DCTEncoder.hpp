@@ -64,9 +64,8 @@ public:
     uint8_t block_size;   ///< Macroblock size
 
     ~DCTEncoder() override;
-
-    void encode();
-    void decode();
+    void encode() override;
+    void decode() override;
 
     void encode_frame(Frame* frame, Golomb *g);
     Frame decode_frame(Golomb *g);
