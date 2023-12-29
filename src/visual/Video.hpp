@@ -40,6 +40,11 @@ public:
     //! @return Image object representing the frame
     Frame get_frame(int pos) const;
 
+    //! Inserts Image at given position
+    //! @param im Image to be inserted
+    //! @param pos position of the Image
+    void insert_image(const Image &im, int pos);
+
     //! Applies a function to every frame in the video
     //! @param func function to be applied
     void map(const std::function<void(Image &)> &func);
@@ -50,8 +55,7 @@ public:
 
     //! Loads Video from Y4M file
     //! @param filename path to the file
-    //! @param format chroma subsampling format
-    void load_y4m(const char *filename, CHROMA_SUBSAMPLING format);
+    void load_y4m(const char *filename);
 
     //! Parses header data into given pointers (the read pointer is advanced to
     //! the byte after the header)
@@ -83,4 +87,8 @@ public:
     //! @param f1 source color space
     //! @param f2 destination color space
     void convert_to(COLOR_SPACE f1, COLOR_SPACE f2);
+
+    //! Write Video to file
+    //! @param filename path to the file
+    void save(const char *filename) const;
 };

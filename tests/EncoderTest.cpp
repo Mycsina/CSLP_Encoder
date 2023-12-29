@@ -16,11 +16,11 @@ protected:
 };
 
 TEST_F(EncoderTest, HybridTest) {
-    const int m = 2;
+    constexpr int m = 2;
     const char *file = small_still.c_str();
-    LosslessHybridEncoder encoder = LosslessHybridEncoder(file, "encoded", m, 16, 5);
+    auto encoder = LosslessHybridEncoder(file, "../../tests/resource/encoded", m, 16, 5);
     encoder.encode();
-    LosslessHybridEncoder decoder = LosslessHybridEncoder("encoded", "decoded", m, 16, 5);
+    auto decoder = LosslessHybridEncoder("../../tests/resource/encoded", "../../tests/resource/decoded", m, 16, 5);
     decoder.decode();
     const auto video_frames = Video(file).generate_frames();
     for (int i = 0; i < video_frames.size(); i++) {
@@ -36,7 +36,7 @@ TEST_F(EncoderTest, IntraTest) {
     auto *encoder = new LosslessIntraEncoder(file, "../../tests/resource/encoded");
     encoder->encode();
     delete encoder;
-    auto *decoder = new LosslessIntraEncoder("../../tests/resource/encoded", "decoded");
+    auto *decoder = new LosslessIntraEncoder("../../tests/resource/encoded", "../../tests/resource/decoded");
     decoder->decode();
     const auto video_frames = Video(file).generate_frames();
     for (int i = 0; i < video_frames.size() - 1; i++) {
