@@ -35,28 +35,29 @@ void YuvParser::parse_header() {
 
     fgets(buffer, buffer_size, file);
 
-    int frame_num, frame_den;
-    int aspect_num, aspect_den;
     char interlace_mode;
-    char raw_cs[10];
+    char cs_buffer[buffer_size];
 
     const auto required = "YUV4MPEG2 W%d H%d F%d:%d I%c A%d:%d %s";
     const int required_parsed = sscanf(buffer,
                                        required,
                                        &this->header.width,
                                        &this->header.height,
-                                       &frame_num,
-                                       &frame_den,
+                                       &this->header.fps_num,
+                                       &this->header.fps_den,
                                        &interlace_mode,
-                                       &aspect_num,
-                                       &aspect_den,
-                                       raw_cs);
+                                       &this->header.aspect_ratio_num,
+                                       &this->header.aspect_ratio_den,
+                                       cs_buffer);
 
     if (required_parsed < 4) {
         throw runtime_error("Error parsing header");
     }
-    this->header.fps = static_cast<float>(frame_num) / static_cast<float>(frame_den);
-    this->header.aspect_ratio = static_cast<float>(aspect_num) / static_cast<float>(aspect_den);
+    if (cs_buffer[0] == 'C') {
+        this->header.raw_color_space = string(cs_buffer);
+    }
+    this->header.fps = static_cast<float>(this->header.fps_num) / static_cast<float>(this->header.fps_den);
+    this->header.aspect_ratio = static_cast<float>(this->header.aspect_ratio_num) / static_cast<float>(this->header.aspect_ratio_den);
     switch (interlace_mode) {
         case 'p':
             this->header.interlacing = PROGRESSIVE;
@@ -73,7 +74,7 @@ void YuvParser::parse_header() {
         default:
             throw runtime_error("Unrecognised interlace mode");
     }
-    const string color_space(raw_cs);
+    const string color_space = this->header.raw_color_space;
     this->header.color_space = YUV420;
     if (color_space.find("422") != string::npos) {
         this->header.color_space = YUV422;
@@ -97,7 +98,7 @@ Video YuvParser::load_y4m() {
         case YUV444:
             break;
         case YUV422:
-            uvWidth = uvWidth / 2;
+            this->header.width = uvWidth / 2;
             break;
         case YUV420:
             uvWidth = uvWidth / 2;
@@ -109,6 +110,7 @@ Video YuvParser::load_y4m() {
 
     Video video;
     video.set_fps(this->header.fps);
+    video.set_header(this->header);
     int pos = 0;
 
     // rewind to beginning of file

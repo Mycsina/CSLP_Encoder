@@ -9,6 +9,7 @@ add_library(Visual Image.cpp
         ImageProcessing.cpp
         Video.cpp
         YuvParser.cpp
+        YuvWriter.cpp
 )
 
 target_link_libraries(Visual ${OpenCV_LIBS})
