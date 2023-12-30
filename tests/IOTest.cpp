@@ -36,30 +36,33 @@ TEST(IOTestSuite, GolombReadWriteTest) {
 }
 
 TEST(IOTestSuite, YUV444WriteReadTest) {
-    auto yuv444_file = "../../tests/resource/ducks_take_off_444_720p50.y4m";
-    Video yuv444(yuv444_file);
-    auto yuv444_out = "../../tests/resource/ducks_take_off_444_720p50_out.y4m";
-    YuvWriter yuv444_writer(yuv444_out);
-    yuv444_writer.write_video(yuv444);
+    auto original_path = "../../tests/resource/ducks_take_off_444_720p50.y4m";
+    Video yuv(original_path);
+    auto saved_path = "../../tests/resource/ducks_take_off_444_720p50_out.y4m";
+    YuvWriter yuv_writer(saved_path);
+    yuv_writer.write_video(yuv);
     // compare files
-    std::ifstream yuv444_ifs(yuv444_file, std::ios::binary);
-    std::ifstream yuv444_out_ifs(yuv444_out, std::ios::binary);
-    while (yuv444_ifs.good() && yuv444_out_ifs.good()) {
-        ASSERT_EQ(yuv444_ifs.get(), yuv444_out_ifs.get());
+    Video original(original_path);
+    Video saved(saved_path);
+    for (int i = 0; i < saved.get_reel().size(); i++) {
+        Image original_image = original.get_frame(i).get_image();
+        Image saved_image = saved.get_frame(i).get_image();
+        ASSERT_TRUE(original_image == saved_image);
     }
 }
 
 TEST(IOTestSuite, YUV420WriteReadTest) {
-    auto yuv420_file = "../../tests/resource/akiyo_qcif.y4m";
-    Video yuv420(yuv420_file);
-    auto yuv420_out = "../../tests/resource/akiyo_qcif_out.y4m";
-    YuvWriter yuv420_writer(yuv420_out);
-    yuv420_writer.write_video(yuv420);
+    auto original_path = "../../tests/resource/akiyo_qcif.y4m";
+    Video yuv(original_path);
+    auto saved_path = "../../tests/resource/akiyo_qcif_out.y4m";
+    YuvWriter yuv_writer(saved_path);
+    yuv_writer.write_video(yuv);
     // compare files
-    std::ifstream yuv420_ifs(yuv420_file, std::ios::binary);
-    std::ifstream yuv420_out_ifs(yuv420_out, std::ios::binary);
-    while (yuv420_ifs.good() && yuv420_out_ifs.good()) {
-        std::cout << yuv420_ifs.tellg() << std::endl;
-        ASSERT_EQ(yuv420_ifs.get(), yuv420_out_ifs.get());
+    Video original(original_path);
+    Video saved(saved_path);
+    for (int i = 0; i < saved.get_reel().size(); i++) {
+        Image original_image = original.get_frame(i).get_image();
+        Image saved_image = saved.get_frame(i).get_image();
+        ASSERT_TRUE(original_image == saved_image);
     }
 }
