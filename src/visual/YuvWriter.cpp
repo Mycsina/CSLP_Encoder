@@ -34,11 +34,28 @@ void YuvWriter::write_header() const {
 
 void YuvWriter::write_image(Image &image) const {
     fprintf(file, "FRAME%c", 0x0A);
+    const int width = header.width;
+    const int height = header.height;
+    int uvWidth, uvHeight;
+    get_adjusted_dims(header, &uvWidth, &uvHeight);
     const Mat image_mat = *image.get_image_mat();
     vector<Mat> planes;
     split(image_mat, planes);
-    for (auto &plane: planes) {
-        fwrite(plane.data, sizeof(uchar), plane.total(), file);
+    const Mat yPlane = planes[0];
+    Mat uPlane = planes[1];
+    Mat vPlane = planes[2];
+    if (this->header.color_space != YUV444) {
+        resize(uPlane, uPlane, Size(uvWidth, uvHeight));
+        resize(vPlane, vPlane, Size(uvWidth, uvHeight));
+    }
+    if (fwrite(yPlane.data, sizeof(uchar), width * height, file) != width * height) {
+        throw runtime_error("Error writing Y plane");
+    }
+    if (fwrite(uPlane.data, sizeof(uchar), uvWidth * uvHeight, file) != uvWidth * uvHeight) {
+        throw runtime_error("Error writing U plane");
+    }
+    if (fwrite(vPlane.data, sizeof(uchar), uvWidth * uvHeight, file) != uvWidth * uvHeight) {
+        throw runtime_error("Error writing V plane");
     }
 }
 

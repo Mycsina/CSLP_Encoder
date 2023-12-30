@@ -91,22 +91,9 @@ Video YuvParser::load_y4m() {
     }
 
     parse_header();
-    int uvWidth = this->header.width;
-    int uvHeight = this->header.height;
 
-    switch (this->header.color_space) {
-        case YUV444:
-            break;
-        case YUV422:
-            this->header.width = uvWidth / 2;
-            break;
-        case YUV420:
-            uvWidth = uvWidth / 2;
-            uvHeight = uvHeight / 2;
-            break;
-        default:
-            throw runtime_error("Unrecognised UV format");
-    }
+    int uvWidth, uvHeight;
+    get_adjusted_dims(this->header, &uvWidth, &uvHeight);
 
     Video video;
     video.set_fps(this->header.fps);
@@ -122,6 +109,7 @@ Video YuvParser::load_y4m() {
     fseek(file, -2, SEEK_CUR);
     while (!feof(file)) {
         Image im = read_image(file, uvWidth, uvHeight);
+
         if (im.get_image_mat()->empty()) {
             break;
         }
@@ -138,14 +126,16 @@ Image YuvParser::read_image(FILE *file, const int uvWidth, const int uvHeight) c
     im.set_chroma(this->header.color_space);
     const int width = this->header.width;
     const int height = this->header.height;
+    // ReSharper disable CppLocalVariableMayBeConst
     Mat yPlane(height, width, CV_8UC1);
+    // ReSharper restore CppLocalVariableMayBeConst
     Mat uPlane(uvHeight, uvWidth, CV_8UC1);
     Mat vPlane(uvHeight, uvWidth, CV_8UC1);
     Mat frame(height, width, CV_8UC3);
     vector<Mat> channels(3);
 
     if (fread(buffer, sizeof(char), 6, file) != 6 && !feof(file)) {
-        throw runtime_error("incomplete reading");
+        throw runtime_error("Could not read FRAME header from file with error code " + to_string(ferror(file)));
     }
     if (string(buffer) != "FRAME\n") {
         if (feof(file)) {
@@ -155,19 +145,14 @@ Image YuvParser::read_image(FILE *file, const int uvWidth, const int uvHeight) c
         throw runtime_error("Misaligned FRAME header");
     }
 
-    // read yPlane
     if (fread(yPlane.data, sizeof(uint8_t),
               width * height, file) != width * height) {
         throw runtime_error("yPlane reading not completed");
     }
-
-    // read uPlane
     if (fread(uPlane.data, sizeof(uint8_t),
               uvWidth * uvHeight, file) != uvWidth * uvHeight) {
         throw runtime_error("uPlane reading not completed");
     }
-
-    // read vPlane
     if (fread(vPlane.data, sizeof(uint8_t),
               uvWidth * uvHeight, file) != uvWidth * uvHeight) {
         throw runtime_error("vPlane reading not completed");
