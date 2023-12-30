@@ -132,7 +132,6 @@ Image YuvParser::read_image(FILE *file, const int uvWidth, const int uvHeight) c
     Mat uPlane(uvHeight, uvWidth, CV_8UC1);
     Mat vPlane(uvHeight, uvWidth, CV_8UC1);
     Mat frame(height, width, CV_8UC3);
-    vector<Mat> channels(3);
 
     if (fread(buffer, sizeof(char), 6, file) != 6 && !feof(file)) {
         throw runtime_error("Could not read FRAME header from file with error code " + to_string(ferror(file)));
@@ -163,13 +162,8 @@ Image YuvParser::read_image(FILE *file, const int uvWidth, const int uvHeight) c
         resize(uPlane, uPlane, Size(width, height));
         resize(vPlane, vPlane, Size(width, height));
     }
-
-    // merge the three channels
-    split(frame, channels);
-    channels[0] = yPlane;
-    channels[1] = uPlane;
-    channels[2] = vPlane;
-    merge(channels, frame);
+    const Mat channels[] = {yPlane, uPlane, vPlane};
+    cv::merge(channels, 3, frame);
 
     im.set_image_mat(frame);
     return im;
