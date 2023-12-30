@@ -65,4 +65,5 @@ void YuvWriter::write_video(Video &video) {
     for (auto image: video.get_reel()) {
         write_image(image);
     }
+    fclose(file);
 }
