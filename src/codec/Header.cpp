@@ -57,7 +57,7 @@ InterHeader InterHeader::readHeader(BitStream *bs) {
     return header;
 }
 
-HybridHeader::HybridHeader(const InterHeader header) : period(0), search_radius(0) {
+HybridHeader::HybridHeader(const InterHeader &header) {
     this->color_space = header.color_space;
     this->chroma_subsampling = header.chroma_subsampling;
     this->height = header.height;
@@ -84,5 +84,20 @@ HybridHeader HybridHeader::readHeader(BitStream *bs) {
     header.block_size = bs->readBits(8);
     header.period = bs->readBits(8);
     header.search_radius = bs->readBits(8);
+    return header;
+}
+
+LossyHybridHeader LossyHybridHeader::readHeader(BitStream *bs) {
+    LossyHybridHeader header{};
+    header.color_space = static_cast<COLOR_SPACE>(bs->readBits(3));
+    header.chroma_subsampling = static_cast<CHROMA_SUBSAMPLING>(bs->readBits(3));
+    header.width = bs->readBits(32);
+    header.height = bs->readBits(32);
+    header.golomb_m = bs->readBits(8);
+    header.length = bs->readBits(32);
+    header.block_size = bs->readBits(8);
+    header.period = bs->readBits(8);
+    header.num_bits = bs->readBits(8);
+    header.amplitude = bs->readBits(8);
     return header;
 }

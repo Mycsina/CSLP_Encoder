@@ -17,8 +17,8 @@ class Header {
 public:
     COLOR_SPACE color_space;              //!< Color space
     CHROMA_SUBSAMPLING chroma_subsampling;//!< Chroma subsampling format
-    uint32_t width;                        //!< Width
-    uint32_t height;                       //!< Height
+    uint32_t width;                       //!< Width
+    uint32_t height;                      //!< Height
     uint8_t golomb_m{};                   //!< Golomb m parameter
     uint32_t length{};                    //!< Number of frames
     /**
@@ -79,9 +79,9 @@ public:
 
 class HybridHeader : public InterHeader {
 public:
-    uint8_t period;       //!< Period
-    uint8_t search_radius;//!< Search radius
-    uint8_t fps;          //!< FPS
+    uint8_t period{};       //!< Period
+    uint8_t search_radius{};//!< Search radius
+    uint8_t fps{};          //!< FPS
     /**
      * \brief Default constructor
      */
@@ -90,7 +90,7 @@ public:
      * \brief Constructor
      * \param header Base header to copy from
      */
-    explicit HybridHeader(InterHeader header);
+    explicit HybridHeader(const InterHeader &header);
     /**
      * \brief Writes header to BitStream
      * \param bs BitStream pointer
@@ -104,11 +104,10 @@ public:
     static HybridHeader readHeader(BitStream *bs);
 };
 
-class LossyHybridHeader: public HybridHeader{
+class LossyHybridHeader : public HybridHeader {
 public:
-    uint8_t period;       //!< Period
-    uint8_t search_radius;//!< Search radius
-    uint8_t fps;          //!< FPS
+    uint8_t num_bits{}; //!< Number of bits
+    uint8_t amplitude{};//!< Amplitude
     /**
      * \brief Default constructor
      */
@@ -128,5 +127,5 @@ public:
      * \param bs BitStream pointer
      * \return HybridHeader object
      */
-    static HybridHeader readHeader(BitStream *bs);
+    static LossyHybridHeader readHeader(BitStream *bs);
 };

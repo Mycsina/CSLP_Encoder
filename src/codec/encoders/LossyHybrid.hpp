@@ -3,11 +3,10 @@
 #include "../Encoder.hpp"
 #include "../Header.hpp"
 
-class LossyHybridEncoder final : public Encoder{
-private:
+class LossyHybridEncoder final : public Encoder {
     const char *src{};    ///< File path of the input video
     const char *dst{};    ///< File path of the encoded video
-    HybridHeader header{};///< Header object
+    LossyHybridHeader header{};///< Header object
     uint8_t golomb_m;     ///< Golomb m parameter
     uint8_t block_size;   ///< Macroblock size
     uint8_t period{};     ///< Period of intra frames
@@ -25,5 +24,5 @@ public:
      */
     void decode() override;
 
-    Frame decode_intra(Golomb *g, Header header);
+    Frame decode_intra(Golomb *g);
 };

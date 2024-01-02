@@ -4,12 +4,12 @@
 using namespace std;
 using namespace cv;
 
-LossyHybridEncoder::LossyHybridEncoder(const char *src, const char *dst, const uint8_t golomb_m, const uint8_t block_size, uint8_t period, uint8_t quant_bits) : src(src), dst(dst), golomb_m(golomb_m), block_size(block_size), period(period), quant_bits(quant_bits){}
+LossyHybridEncoder::LossyHybridEncoder(const char *src, const char *dst, const uint8_t golomb_m, const uint8_t block_size, uint8_t period, uint8_t quant_bits) : src(src), dst(dst), golomb_m(golomb_m), block_size(block_size), period(period), fps(0), quant_bits(quant_bits) {}
 
 void LossyHybridEncoder::decode(){
     BitStream bs(src, ios::in);
     Golomb g(&bs);
-    header = HybridHeader::readHeader(&bs);
+    header = LossyHybridHeader::readHeader(&bs);
     g.set_m(header.golomb_m);
     int cnt = period;
     int last_intra = 0;
@@ -28,9 +28,9 @@ void LossyHybridEncoder::decode(){
     }
 }
 
-Frame LossyHybridEncoder::decode_intra(Golomb *g, const Header header){
+Frame LossyHybridEncoder::decode_intra(Golomb *g) {
     Mat mat;
-    Quantizer quantizer(header.num_bits);
+    Quantizer quantizer(header.amplitude, header.num_bits);
     if (header.color_space == GRAY) {
         mat = Mat::zeros(header.height, header.width, CV_8UC1);
     } else {
