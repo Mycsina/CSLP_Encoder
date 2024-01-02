@@ -5,11 +5,14 @@
  */
 
 #pragma once
-#include "../codec/Frame.hpp"
-#include "Image.hpp"
-#include <cstdio>
+
 #include <functional>
 #include <vector>
+
+#include "../codec/Frame.hpp"
+#include "Image.hpp"
+#include "YuvHeader.hpp"
+
 
 class Image;
 /**
@@ -18,6 +21,7 @@ class Image;
 class Video {
     std::vector<Image> im_reel;
     float fps_{};
+    YuvHeader header;
 
 public:
     Video() = default;
@@ -29,6 +33,8 @@ public:
     void set_reel(std::vector<Image> *reel);
     float get_fps() const;
     void set_fps(float fps);
+    YuvHeader get_header() const;
+    void set_header(const YuvHeader &header);
 
     //! Generates vector of frames from the video
     //! @warning Must be deallocated after use
@@ -56,24 +62,6 @@ public:
     //! Loads Video from Y4M file
     //! @param filename path to the file
     void load_y4m(const char *filename);
-
-    //! Parses header data into given pointers (the read pointer is advanced to
-    //! the byte after the header)
-    //! @param file pointer to FILE object
-    //! @param width pointer to the width variable
-    //! @param height pointer to the height variable
-    //! @param fps pointer to the fps variable
-    static void get_header_data(FILE *file, int *width, int *height, float *fps);
-
-    //! Read a frame from an opened Y4M file
-    //! @param file pointer to FILE object
-    //! @param width width of the frame
-    //! @param height height of the frame
-    //! @param uvWidth width of the chroma subsampled frame
-    //! @param uvHeight height of the chroma subsampled frame
-    //! @param format chroma subsampling format
-    void read_frame(FILE *file, int width, int height, int uvWidth, int uvHeight,
-                    CHROMA_SUBSAMPLING format);
 
     //! Plays the Video
     //! @param stop_key value of the key that stops the video
