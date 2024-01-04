@@ -22,11 +22,11 @@ void DCTEncoder::encode(){
     Video vid(src);
     const vector<Frame *> frames = vid.generate_frames();
     const Frame sample = *frames[0];
-    header.extractInfo(sample);
+    header.extract_info(sample);
     header.golomb_m = golomb_m;
     header.length = frames.size();
     header.block_size = 8;
-    header.writeHeader(&bs);
+    header.write_header(bs);
     g.set_m(golomb_m);
 
     for(Image img: vid.get_reel()){

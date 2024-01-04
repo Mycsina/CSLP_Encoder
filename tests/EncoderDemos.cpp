@@ -54,7 +54,7 @@ TEST_F(EncoderDemo, DCTDemo){
     auto *encoder = new DCTEncoder(file,"../../tests/resource/encoded",12);
     encoder->encode();
     auto *decoder = new DCTEncoder("../../tests/resource/encoded","../../tests/resource/decoded",12);
-    decoder->encode();
+    decoder->decode();
 
     for (auto &frame: decoder->frames) {
         Image im2 = frame.get_image();
