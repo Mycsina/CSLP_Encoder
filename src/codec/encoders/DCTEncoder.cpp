@@ -148,10 +148,17 @@ Frame DCTEncoder::decode_frame(RLEEncoder *rle, Header *h){
 
 
                 for(int i=0;i<64;i++){
-                    int r=zigzag_order[i][0]; //row to put value in
-                    int c=zigzag_order[i][1]; //col to put value in
-                    dct_matrix[r][c]=rle->pop();
+                    int zz_r=zigzag_order[i][0]; //row to put value in
+                    int zz_c=zigzag_order[i][1]; //col to put value in
+                    int q_val;
+                    if(channel==0){
+                        q_val=y_qmat[zz_r][zz_c];
+                    }else{
+                        q_val=uv_qmat[zz_r][zz_c];
+                    }
+                    dct_matrix[zz_r][zz_c]=rle->pop()*q_val;
                 }
+
 
                 //reverse the dct into block
                 idct8x8(dct_matrix,block);
