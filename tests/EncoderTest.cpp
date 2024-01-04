@@ -39,7 +39,7 @@ TEST_F(EncoderTest, IntraTest) {
     auto *decoder = new LosslessIntraEncoder("../../tests/resource/encoded", "../../tests/resource/decoded");
     decoder->decode();
     const auto video_frames = Video(file).generate_frames();
-    for (int i = 0; i < video_frames.size() - 1; i++) {
+    for (int i = 0; i < video_frames.size(); i++) {
         Image im1 = video_frames[i]->get_image();
         Image im2 = decoder->frames[i].get_image();
         ASSERT_TRUE(im1 == im2);

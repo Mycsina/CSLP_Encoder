@@ -7,9 +7,9 @@ using namespace cv;
 LosslessIntraEncoder::LosslessIntraEncoder(const char *src, const char *dst) : src(src), dst(dst) {}
 
 void LosslessIntraEncoder::encode() {
-    auto *bs = new BitStream(dst, ios::out);
-    auto *golomb = new Golomb(bs);
-    const Video vid = Video(src);
+    BitStream bs(dst, ios::out);
+    Golomb g(&bs);
+    const auto vid = Video(src);
     const vector<Frame *> frames = vid.generate_frames();
 #pragma omp parallel for default(none) shared(frames)
     for (auto &frame: frames) {
@@ -17,33 +17,31 @@ void LosslessIntraEncoder::encode() {
     }
     // Best m
     double sum = 0;
-    auto sample_f = sample_frames(frames, sample_factor);
+    const auto sample_f = sample_frames(frames, sample_factor);
     for (auto &frame: sample_f) {
         sum += Golomb::adjust_m(frame->get_intra_encoding(), sample_factor);
     }
-    int k = static_cast<int>(sum / (frames.size() / sample_factor));
-    int golomb_m = 1 << k;
-    golomb->set_m(golomb_m);
+    const int k = static_cast<int>(sum / (frames.size() / sample_factor));
+    const int golomb_m = 1 << k;
+    g.set_m(golomb_m);
     // Write header
     const Frame sample = *frames[0];
-    header.extractInfo(sample);
+    header.extract_info(sample);
     header.golomb_m = golomb_m;
     header.length = frames.size();
-    header.writeHeader(bs);
+    header.write_header(bs);
     for (auto &frame: frames) {
-        frame->write_JPEG_LS(golomb);
+        frame->write_JPEG_LS(g);
     }
-    delete golomb;
 }
 
 void LosslessIntraEncoder::decode() {
     BitStream bs(src, ios::in);
     Golomb golomb(&bs);
-    header = Header::readHeader(&bs);
+    header = Header::read_header(bs);
     golomb.set_m(header.golomb_m);
-    // TODO last frame is not decoded correctly
-    for (int i = 0; i < header.length - 1; i++) {
-        Frame img = Frame::decode_JPEG_LS(&golomb, header);
+    for (int i = 0; i < header.length; i++) {
+        Frame img = Frame::decode_JPEG_LS(golomb, header);
         frames.push_back(img);
     }
 }

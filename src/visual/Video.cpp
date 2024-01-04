@@ -1,10 +1,7 @@
 #include "Video.hpp"
+#include "YuvParser.hpp"
 #include "Image.hpp"
 #include "ImageProcessing.hpp"
-#include "YuvParser.hpp"
-
-#include <cstdio>
-#include <iostream>
 
 #include <opencv2/core/mat.hpp>
 #include <opencv2/highgui.hpp>
@@ -38,6 +35,8 @@ const vector<Image> &Video::get_reel() { return im_reel; }
 void Video::set_reel(vector<Image> *reel) { im_reel = *reel; }
 float Video::get_fps() const { return fps_; }
 void Video::set_fps(float fps) { fps_ = fps; }
+YuvHeader Video::get_header() const { return header; }
+void Video::set_header(const YuvHeader &header) { Video::header = header; }
 
 vector<Frame *> Video::generate_frames() const {
     vector<Frame *> frames;
@@ -84,6 +83,7 @@ void Video::load_y4m(const char *filename) {
     Video video = parser.load_y4m();
     im_reel = video.get_reel();
     fps_ = video.get_fps();
+    header = video.get_header();
 }
 
 void Video::play(const int stop_key) const {

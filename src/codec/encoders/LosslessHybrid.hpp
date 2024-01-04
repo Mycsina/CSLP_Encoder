@@ -7,6 +7,33 @@
 #include "../Encoder.hpp"
 #include "../Header.hpp"
 
+class HybridHeader : public InterHeader {
+public:
+    uint8_t period{};       //!< Period of intra frames
+    uint8_t search_radius{};//!< Search radius
+
+    /**
+     * \brief Default constructor
+     */
+    HybridHeader() = default;
+    /**
+     * \brief Constructor
+     * \param header Base header to copy from
+     */
+    explicit HybridHeader(const Header &header);
+    /**
+     * \brief Writes header to BitStream
+     * \param bs BitStream pointer
+     */
+    void write_header(BitStream &bs) const;
+    /**
+     * \brief Reads header from BitStream
+     * \param bs BitStream pointer
+     * \return HybridHeader object
+     */
+    static HybridHeader read_header(BitStream *bs);
+};
+
 /**
  * \brief The LosslessHybridEncoder class provides methods to encode/decode video using the lossless hybrid codec
  */
@@ -33,7 +60,6 @@ public:
     uint8_t golomb_m;     ///< Golomb m parameter
     uint8_t block_size;   ///< Macroblock size
     uint8_t period{};     ///< Period of intra frames
-    uint8_t fps;          ///< Frames per second
 
     /**
      * \brief encodes a video from src into dst with a mix of inter and intraframe encoding

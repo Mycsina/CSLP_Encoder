@@ -1,27 +1,11 @@
 #pragma once
 
-#include "Image.hpp"
-
 #include <string>
 
+#include "YuvHeader.hpp"
 
 class Video;
-enum InterlaceMode {
-    PROGRESSIVE,
-    TOP_FIELD_FIRST,
-    BOTTOM_FIELD_FIRST,
-    MIXED_MODE
-};
-
-struct YuvHeader {
-    int width;
-    int height;
-    float fps;
-    InterlaceMode interlacing;
-    float aspect_ratio;
-    CHROMA_SUBSAMPLING color_space;
-    std::string comment;
-};
+class Image;
 
 class YuvParser {
     YuvHeader header;

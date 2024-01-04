@@ -130,6 +130,7 @@ public:
         //! @return MSE value (lesser is better)
         double block_diff(const Block &a, const Block &b) override;
         bool isBetter(double score) override;
+        int threshold_;
     };
 
     class PSNR final : public BlockDiff {
@@ -242,11 +243,11 @@ public:
 
     void encode_JPEG_LS();
 
-    void encode_JPEG_LS(Golomb *g);
+    void encode_JPEG_LS(const Golomb &g);
 
-    void write_JPEG_LS(Golomb *g) const;
+    void write_JPEG_LS(Golomb &g) const;
 
-    static Frame decode_JPEG_LS(Golomb *g, Header header);
+    static Frame decode_JPEG_LS(Golomb &g, const Header &header);
 
     static Frame decode_JPEG_LS(const std::vector<int> &encodings, COLOR_SPACE color, CHROMA_SUBSAMPLING chroma, int rows, int cols);
 
@@ -290,16 +291,16 @@ public:
     //! @param motion_vectors Vector of motion vectors
     //! @param block_size Size of the macroblocks to be compared
     //! @return Reconstructed frame
-    Frame static reconstruct_frame(Frame *reference, const std::vector<MotionVector> &motion_vectors, int block_size);
+    Frame static reconstruct_frame(Frame &reference, const std::vector<MotionVector> &motion_vectors, int block_size);
 
     //! Write the motions vectors of a frame to file using golomb encoding
     //! @param g reference to the Golomb encoder
-    void write(Golomb *g) const;
+    void write(const Golomb &g) const;
 
     //! Decodes a frame using interframe codec
     //! @param g refernece to the golomb encoder
     //! @param reference intraframe that serves as reference
     //! @param header header data
     //! @return decoded frame
-    static Frame decode_inter(Golomb *g, Frame *reference, InterHeader header);
+    static Frame decode_inter(Golomb &g, Frame &reference, const InterHeader &header);
 };

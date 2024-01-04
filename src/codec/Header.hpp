@@ -17,10 +17,10 @@ class Header {
 public:
     COLOR_SPACE color_space;              //!< Color space
     CHROMA_SUBSAMPLING chroma_subsampling;//!< Chroma subsampling format
-    uint32_t width;                        //!< Width
-    uint32_t height;                       //!< Height
-    uint8_t golomb_m{};                   //!< Golomb m parameter
-    uint32_t length{};                    //!< Number of frames
+    uint32_t width;                       //!< Width
+    uint32_t height;                      //!< Height
+    uint8_t golomb_m;                     //!< Golomb m parameter
+    uint32_t length;                      //!< Number of frames
     /**
      * \brief Default constructor
      */
@@ -35,21 +35,21 @@ public:
     Header(COLOR_SPACE color_space, CHROMA_SUBSAMPLING cs, uint8_t width, uint8_t height);
     /**
      * \brief Writes header to BitStream
-     * \param bs BitStream pointer
+     * \param bs BitStream reference
      */
-    void writeHeader(BitStream *bs) const;
+    void write_header(BitStream &bs) const;
     /**
      * \brief Extracts header info from given Frame
      * \details Extracts color space, chroma subsampling format, width and height from given Frame
      * \param frame Frame to extract info from
      */
-    void extractInfo(const Frame &frame);
+    void extract_info(const Frame &frame);
     /**
      * \brief Reads header from BitStream
      * \param bs BitStream pointer
      * \return Header object
      */
-    Header static readHeader(BitStream *bs);
+    Header static read_header(BitStream &bs);
 };
 
 class InterHeader : public Header {
@@ -63,43 +63,16 @@ public:
      * \brief Constructor
      * \param header Base header to copy from
      */
-    explicit InterHeader(Header header);
+    explicit InterHeader(const Header &header);
     /**
      * \brief Writes header to BitStream
-     * \param bs BitStream pointer
+     * \param bs BitStream reference
      */
-    void write_header(BitStream *bs) const;
+    void write_header(BitStream &bs) const;
     /**
      * \brief Reads header from BitStream
      * \param bs BitStream pointer
      * \return InterHeader object
      */
-    static InterHeader readHeader(BitStream *bs);
-};
-
-class HybridHeader : public InterHeader {
-public:
-    uint8_t period;       //!< Period
-    uint8_t search_radius;//!< Search radius
-    uint8_t fps;          //!< FPS
-    /**
-     * \brief Default constructor
-     */
-    HybridHeader() = default;
-    /**
-     * \brief Constructor
-     * \param header Base header to copy from
-     */
-    explicit HybridHeader(InterHeader header);
-    /**
-     * \brief Writes header to BitStream
-     * \param bs BitStream pointer
-     */
-    void writeHeader(BitStream *bs) const;
-    /**
-     * \brief Reads header from BitStream
-     * \param bs BitStream pointer
-     * \return HybridHeader object
-     */
-    static HybridHeader readHeader(BitStream *bs);
+    static InterHeader read_header(BitStream &bs);
 };
