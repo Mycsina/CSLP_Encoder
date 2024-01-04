@@ -59,7 +59,7 @@ public:
     DCTEncoder(const char *src, const char *dst);
     const char *src{};    ///< File path of the input video
     const char *dst{};    ///< File path of the encoded video
-    HybridHeader header{};///< Header object
+    InterHeader header{};///< Header object
     uint8_t golomb_m;     ///< Golomb m parameter
     uint8_t block_size;   ///< Macroblock size
 
@@ -68,7 +68,7 @@ public:
     void decode() override;
 
     void encode_frame(Image* im, Golomb *g);
-    Frame decode_frame(Golomb *g);
+    Frame decode_frame(RLEEncoder *rle, Header *h);
 
     static void dct8x8(int (&in)[8][8], double (&out)[8][8]);
     static void idct8x8(double (&in)[8][8], int (&out)[8][8]);

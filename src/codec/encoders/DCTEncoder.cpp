@@ -59,7 +59,7 @@ void DCTEncoder::encode_frame(Image *im, Golomb *g) {
                     int q_val=1,zz_r,zz_c,result;
                     double dct_val;
                     zz_r=zigzag_order[i][0];
-                    zz_c=zigzag_order[i][0];
+                    zz_c=zigzag_order[i][1];
                     dct_val=dct_matrix[zz_r][zz_c];
                     if(channel==0){
                         q_val=y_qmat[zz_r][zz_c];
@@ -106,6 +106,66 @@ void DCTEncoder::idct8x8(double (&in)[8][8], int (&out)[8][8]) {
 }
 
 void DCTEncoder::decode() {
+    BitStream bs(src, ios::in);
+    Golomb g(&bs);
+    header=InterHeader::read_header(bs);
 
+    g.set_m(header.golomb_m);
+    RLEEncoder rle(&g);
+
+    int rows=header.width;
+    int cols=header.height;
+    CHROMA_SUBSAMPLING cs=header.chroma_subsampling;
+    COLOR_SPACE color = header.color_space;
+
+    for(int i=0;i<header.length;i++){
+        frames.push_back(decode_frame(&rle,&header));
+    }
 }
 
+Frame DCTEncoder::decode_frame(RLEEncoder *rle, Header *h){
+    Image im;
+    int rows=header.height;
+    int cols=header.width;
+    Mat mat;
+
+    im.set_color(header.color_space);
+    im.set_chroma(header.chroma_subsampling);
+
+    if(header.color_space==GRAY) {
+        mat = Mat::zeros(rows, cols, CV_8UC1);
+    }else{
+        mat=Mat::zeros(rows,cols,CV_8UC3);
+    }
+
+    //for each channel
+    for(int channel=0;channel<mat.channels();channel++){
+        //for each block
+        for(int row=0;row<mat.rows;row+=8){
+            for(int col=0;col<mat.cols;col+=8){
+                int block[8][8];
+                double dct_matrix[8][8];
+
+
+                for(int i=0;i<64;i++){
+                    int r=zigzag_order[i][0]; //row to put value in
+                    int c=zigzag_order[i][1]; //col to put value in
+                    dct_matrix[r][c]=rle->pop();
+                }
+
+                //reverse the dct into block
+                idct8x8(dct_matrix,block);
+
+                //put the block into mat
+                for(int br=0;br<8;br++){
+                    for(int bc=0;bc<8;bc++){
+                        mat.at<Vec3b>(row+br,col+bc)[channel]=block[br][bc];
+                    }
+                }
+            }
+        }
+    }
+
+    im.set_image_mat(mat);
+    return Frame(im);
+}

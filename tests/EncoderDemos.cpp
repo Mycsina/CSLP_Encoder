@@ -43,8 +43,24 @@ TEST_F(EncoderDemo, HybridDemo) {
     }
 }
 TEST_F(EncoderDemo, DCTEncode){
-    const char *file = small_still;
-    auto *encoder = new DCTEncoder(file,"../../tests/resource/encoded",2);
+    const char *file = small_moving;
+    auto *encoder = new DCTEncoder(file,"../../tests/resource/encoded",12);
     encoder->encode();
     delete encoder;
+}
+
+TEST_F(EncoderDemo, DCTDemo){
+    const char *file = small_moving;
+    auto *encoder = new DCTEncoder(file,"../../tests/resource/encoded",12);
+    encoder->encode();
+    auto *decoder = new DCTEncoder("../../tests/resource/encoded","../../tests/resource/decoded",12);
+    decoder->encode();
+
+    for (auto &frame: decoder->frames) {
+        Image im2 = frame.get_image();
+        im2.show();
+    }
+
+    delete encoder;
+    delete decoder;
 }
