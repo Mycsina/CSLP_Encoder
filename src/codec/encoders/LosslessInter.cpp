@@ -10,19 +10,19 @@ LosslessInterFrameEncoder::LosslessInterFrameEncoder(const char *src, const char
 
 
 void LosslessInterFrameEncoder::encode() {
-    auto *bs = new BitStream(dst, ios::out);
-    auto *golomb = new Golomb(bs);
-    golomb->set_m(golomb_m);
+    BitStream bs(dst, ios::out);
+    Golomb g(&bs);
+    g.set_m(golomb_m);
     const Video vid = Video(src);
     const vector<Frame *> frames = vid.generate_frames();
     const Frame sample = *frames[0];
-    header.extractInfo(sample);
+    header.extract_info(sample);
     header.golomb_m = golomb_m;
     header.length = frames.size();
     header.block_size = block_size;
-    header.writeHeader(bs);
+    header.write_header(bs);
     Frame *last = frames[0];
-    last->encode_JPEG_LS(golomb);
+    last->encode_JPEG_LS(g);
 #pragma omp parallel for default(none) shared(frames, last)
     for (int i = 1; i < frames.size(); i++) {
         Frame *current = frames[i];
@@ -30,19 +30,18 @@ void LosslessInterFrameEncoder::encode() {
         last = current;
     }
     for (auto &frame: frames) {
-        frame->write(golomb);
+        frame->write(g);
     }
-    delete golomb;
 }
 
 void LosslessInterFrameEncoder::decode() {
     BitStream bs(src, ios::in);
     Golomb golomb(&bs);
-    header = InterHeader::readHeader(&bs);
+    header = InterHeader::read_header(bs);
     golomb.set_m(header.golomb_m);
-    frames.push_back(Frame::decode_JPEG_LS(&golomb, static_cast<Header>(header)));
+    frames.push_back(Frame::decode_JPEG_LS(golomb, static_cast<Header>(header)));
     for (int i = 1; i < header.length - 1; i++) {
-        Frame img = Frame::decode_inter(&golomb, &frames[i - 1], header);
+        Frame img = Frame::decode_inter(golomb, frames[i - 1], header);
         frames.push_back(img);
     }
 }

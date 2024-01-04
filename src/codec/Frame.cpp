@@ -51,10 +51,10 @@ array<int, 4> Block::getVertices() const {
     return {col_, row_, col_ + size_, row_ + size_};
 }
 
-Block::MAD::MAD(int threshold) {
+Block::MAD::MAD(const int threshold) {
     best_score = INFINITY;
     best_match = {0, 0};
-    threshold = threshold;
+    this->threshold = threshold;
 }
 double Block::MAD::block_diff(const Block &a, const Block &b) {
     int diff = 0;
@@ -71,10 +71,10 @@ bool Block::MAD::isBetter(const double score) {
     return score < best_score;
 }
 
-Block::MSE::MSE(int threshold) {
+Block::MSE::MSE(int threshold) : threshold_(threshold) {
     best_score = INFINITY;
     best_match = {0, 0};
-    threshold = threshold;
+    this->threshold = threshold;
 }
 double Block::MSE::block_diff(const Block &a, const Block &b) {
     double diff = 0;
@@ -91,11 +91,12 @@ bool Block::MSE::isBetter(const double score) {
     return score < best_score;
 }
 
-Block::PSNR::PSNR(int threshold) {
+Block::PSNR::PSNR(const int threshold) {
     best_score = INFINITY;
     best_match = {0, 0};
-    threshold = threshold;
+    this->threshold = threshold;
 }
+
 double Block::PSNR::block_diff(const Block &a, const Block &b) {
     const double mse_metric = MSE().block_diff(a, b);
     if (mse_metric == 0) return INFINITY;
@@ -188,7 +189,7 @@ void Frame::encode_JPEG_LS() {
     }
 }
 
-void Frame::encode_JPEG_LS(Golomb *g) {
+void Frame::encode_JPEG_LS(const Golomb &g) {
     type_ = I_FRAME;
     Mat image_mat_ = *image_.get_image_mat();
     for (int r = 0; r < image_mat_.rows; r++) {
@@ -197,19 +198,19 @@ void Frame::encode_JPEG_LS(Golomb *g) {
                 const int real = image_mat_.at<Vec3b>(r, c)[channel];
                 const int predicted = predict_JPEG_LS(image_mat_, r, c, channel);
                 const int diff = real - predicted;
-                g->encode(diff);
+                g.encode(diff);
             }
         }
     }
 }
 
-void Frame::write_JPEG_LS(Golomb *g) const {
+void Frame::write_JPEG_LS(Golomb &g) const {
     for (const auto diff: intra_encoding) {
-        g->encode(diff);
+        g.encode(diff);
     }
 }
 
-Frame Frame::decode_JPEG_LS(Golomb *g, const Header header) {
+Frame Frame::decode_JPEG_LS(Golomb &g, const Header &header) {
     Mat mat;
     if (header.color_space == GRAY) {
         mat = Mat::zeros(header.height, header.width, CV_8UC1);
@@ -219,7 +220,7 @@ Frame Frame::decode_JPEG_LS(Golomb *g, const Header header) {
     for (int r = 0; r < mat.rows; r++) {
         for (int c = 0; c < mat.cols; c++) {
             for (int channel = 0; channel < mat.channels(); channel++) {
-                const auto diff = g->decode();
+                const auto diff = g.decode();
                 const uchar predicted = predict_JPEG_LS(mat, r, c, channel);
                 const uchar real = diff + predicted;
                 if (mat.channels() > 1) {
@@ -236,9 +237,9 @@ Frame Frame::decode_JPEG_LS(Golomb *g, const Header header) {
     return Frame(im);
 }
 
-Frame Frame::decode_JPEG_LS(const vector<int> &encodings, const COLOR_SPACE c_space, const CHROMA_SUBSAMPLING cs_ratio, const int rows, const int cols) {
+Frame Frame::decode_JPEG_LS(const vector<int> &encodings, const COLOR_SPACE color, const CHROMA_SUBSAMPLING cs_ratio, const int rows, const int cols) {
     Mat mat;
-    if (c_space == GRAY) {
+    if (color == GRAY) {
         mat = Mat::zeros(rows, cols, CV_8UC1);
     } else {
         mat = Mat::zeros(rows, cols, CV_8UC3);
@@ -259,7 +260,7 @@ Frame Frame::decode_JPEG_LS(const vector<int> &encodings, const COLOR_SPACE c_sp
         }
     }
     Image im(mat);
-    im.set_color(c_space);
+    im.set_color(color);
     im.set_chroma(cs_ratio);
     return Frame(im);
 }
@@ -428,7 +429,7 @@ MotionVector Frame::match_block_arps(const Block &block, Frame *reference) const
         if (finished)
             return block_diff_->best_match;
     }
-    MotionVector mv = block_diff_->best_match;
+    const MotionVector mv = block_diff_->best_match;
     do {
         auto new_points = get_rood_points({block_coords[0] + block_diff_->best_match.x, block_coords[1] + block_diff_->best_match.y}, 1, block.getSize());
         int found = new_points.size();
@@ -473,12 +474,12 @@ void Frame::calculate_MV(Frame *reference, const int block_size, const int searc
     }
 }
 
-Frame Frame::reconstruct_frame(Frame *reference, const vector<MotionVector> &motion_vectors, int block_size) {
-    Mat reconstructed = Mat::zeros(reference->get_image().size(), CV_8UC3);
-    for (int i = 0; i + block_size <= reference->get_image().size().height; i += block_size) {
-        for (int j = 0; j + block_size <= reference->get_image().size().width; j += block_size) {
-            MotionVector mv = motion_vectors[i / block_size * (reference->get_image().size().width / block_size) + j / block_size];
-            Block block = get_block(reference->get_image(), block_size, i + mv.y, j + mv.x);
+Frame Frame::reconstruct_frame(Frame &reference, const vector<MotionVector> &motion_vectors, int block_size) {
+    Mat reconstructed = Mat::zeros(reference.get_image().size(), CV_8UC3);
+    for (int i = 0; i + block_size <= reference.get_image().size().height; i += block_size) {
+        for (int j = 0; j + block_size <= reference.get_image().size().width; j += block_size) {
+            MotionVector mv = motion_vectors[i / block_size * (reference.get_image().size().width / block_size) + j / block_size];
+            Block block = get_block(reference.get_image(), block_size, i + mv.y, j + mv.x);
             Mat reconstructed_block = Mat::zeros(block.getBlockMat().size(), CV_8UC3);
             for (int k = 0; k < block.getBlockMat().rows; k++)
                 for (int l = 0; l < block.getBlockMat().cols; l++) {
@@ -513,22 +514,22 @@ void Frame::visualize_MV(const Frame *reference, const int block_size) const {
     waitKey(0);
 }
 
-void Frame::write(Golomb *g) const {
+void Frame::write(const Golomb &g) const {
     for (const auto &mv: get_motion_vectors()) {
-        g->encode(mv.x);
-        g->encode(mv.y);
+        g.encode(mv.x);
+        g.encode(mv.y);
         Mat residual = mv.residual;
         for (int row = 0; row < residual.rows; row++) {
             for (int col = 0; col < residual.cols; col++) {
                 for (int channel = 0; channel < residual.channels(); channel++) {
-                    g->encode(residual.at<Vec3s>(row, col)[channel]);
+                    g.encode(residual.at<Vec3s>(row, col)[channel]);
                 }
             }
         }
     }
 }
 
-Frame Frame::decode_inter(Golomb *g, Frame *reference, InterHeader header) {
+Frame Frame::decode_inter(Golomb &g, Frame &reference, const InterHeader &header) {
     vector<MotionVector> mvs;
     const int block_size = header.block_size;
     const int rows = header.height;
@@ -541,12 +542,12 @@ Frame Frame::decode_inter(Golomb *g, Frame *reference, InterHeader header) {
         } else {
             residual = Mat::zeros(block_size, block_size, CV_16SC3);
         }
-        mv.x = g->decode();
-        mv.y = g->decode();
+        mv.x = g.decode();
+        mv.y = g.decode();
         for (int row = 0; row < block_size; row++) {
             for (int col = 0; col < block_size; col++) {
                 for (int channel = 0; channel < residual.channels(); channel++) {
-                    residual.at<Vec3s>(row, col)[channel] = static_cast<short>(g->decode());
+                    residual.at<Vec3s>(row, col)[channel] = static_cast<short>(g.decode());
                 }
             }
         }

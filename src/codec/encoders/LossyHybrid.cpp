@@ -4,7 +4,24 @@
 using namespace std;
 using namespace cv;
 
-LossyHybridEncoder::LossyHybridEncoder(const char *src, const char *dst, const uint8_t golomb_m, const uint8_t block_size, uint8_t period, uint8_t quant_bits) : src(src), dst(dst), golomb_m(golomb_m), block_size(block_size), period(period), fps(0), quant_bits(quant_bits) {}
+LossyHybridEncoder::LossyHybridEncoder(const char *src, const char *dst, const uint8_t golomb_m, const uint8_t block_size, const uint8_t period, const uint8_t y, const uint8_t u, const uint8_t v) : src(src), dst(dst), golomb_m(golomb_m), block_size(block_size), period(period), y(y), u(u), v(v) {}
+
+void LossyHybridEncoder::encode() {
+    BitStream bs(dst, ios::out);
+    Golomb g(&bs);
+    const Video vid(src);
+    const vector<Frame *> frames = vid.generate_frames();
+    const Frame sample = *frames[0];
+    header.extract_info(sample);
+    header.golomb_m = golomb_m;
+    header.length = frames.size();
+    header.block_size = block_size;
+    header.y = y;
+    header.u = u;
+    header.v = v;
+    header.writeHeader(&bs);
+}
+
 
 void LossyHybridEncoder::decode(){
     BitStream bs(src, ios::in);
@@ -15,22 +32,23 @@ void LossyHybridEncoder::decode(){
     int last_intra = 0;
     for (int index = 0; index < header.length; index++) {
         if (cnt == period) {
-            frames.push_back(Frame::decode_JPEG_LS(&g, static_cast<Header>(header)));
+            frames.push_back(Frame::decode_JPEG_LS(g, static_cast<Header>(header)));
             last_intra = index;
             cnt = 0;
         } else {
             Frame frame_intra = frames[last_intra];
             auto hd = InterHeader(static_cast<Header>(header));
             hd.block_size = block_size;
-            frames.push_back(Frame::decode_inter(&g, &frame_intra, hd));
+            frames.push_back(Frame::decode_inter(g, frame_intra, hd));
             cnt++;
         }
     }
 }
 
 Frame LossyHybridEncoder::decode_intra(Golomb *g) {
+    /*
     Mat mat;
-    Quantizer quantizer(header.amplitude, header.num_bits);
+    Quantizer quantizer();
     if (header.color_space == GRAY) {
         mat = Mat::zeros(header.height, header.width, CV_8UC1);
     } else {
@@ -54,4 +72,5 @@ Frame LossyHybridEncoder::decode_intra(Golomb *g) {
     im.set_color(header.color_space);
     im.set_chroma(header.chroma_subsampling);
     return Frame(im);
+    */
 }

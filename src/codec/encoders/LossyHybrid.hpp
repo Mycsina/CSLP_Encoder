@@ -3,6 +3,36 @@
 #include "../Encoder.hpp"
 #include "../Header.hpp"
 
+class LossyHybridHeader : public Header {
+public:
+    uint8_t period{};       //!< Period of intra frames
+    uint8_t search_radius{};//!< Search radius
+    uint8_t block_size{};   //!< Block size
+    uint8_t y{}; //!< Quantization steps for Y channel
+    uint8_t u{}; //!< Quantization steps for U channel
+    uint8_t v{}; //!< Quantization steps for V channel
+    /**
+     * \brief Default constructor
+     */
+    LossyHybridHeader() = default;
+    /**
+     * \brief Constructor
+     * \param header Base header to copy from
+     */
+    explicit LossyHybridHeader(Header header);
+    /**
+     * \brief Writes header to BitStream
+     * \param bs BitStream pointer
+     */
+    void writeHeader(BitStream *bs) const;
+    /**
+     * \brief Reads header from BitStream
+     * \param bs BitStream pointer
+     * \return HybridHeader object
+     */
+    static LossyHybridHeader readHeader(BitStream *bs);
+};
+
 class LossyHybridEncoder final : public Encoder {
     const char *src{};    ///< File path of the input video
     const char *dst{};    ///< File path of the encoded video
@@ -10,11 +40,12 @@ class LossyHybridEncoder final : public Encoder {
     uint8_t golomb_m;     ///< Golomb m parameter
     uint8_t block_size;   ///< Macroblock size
     uint8_t period{};     ///< Period of intra frames
-    uint8_t fps;          ///< Frames per second
-    uint8_t quant_bits;   ///< Number of bits in quantization
+    uint8_t y = 0;        ///< Quantization steps for Y channel
+    uint8_t u = 0;        ///< Quantization steps for U channel
+    uint8_t v = 0;        ///< Quantization steps for V channel
 
 public:
-    LossyHybridEncoder(const char *src, const char *dst, const uint8_t golomb_m, const uint8_t block_size, uint8_t period, uint8_t quant_bits);
+    LossyHybridEncoder(const char *src, const char *dst, uint8_t golomb_m, uint8_t block_size, uint8_t period, uint8_t y, uint8_t u, uint8_t v);
     /**
      * \brief encodes a video from src into dst with a mix of inter and intraframe encoding
      */

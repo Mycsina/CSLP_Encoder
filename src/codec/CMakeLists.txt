@@ -11,15 +11,12 @@ add_library(Codec
         encoders/LosslessIntra.cpp
         encoders/LosslessInter.cpp
         encoders/LosslessHybrid.cpp
-        encoders/LossyHybrid.hpp
-        encoders/LossyIntra.hpp
-        encoders/LossyInter.hpp
         encoders/LossyHybrid.cpp
         encoders/LossyInter.cpp
         encoders/LossyIntra.cpp
         Quantizer.cpp
-        Quantizer.hpp
 )
+
 if (OpenMP_CXX_FOUND)
     target_link_libraries(Codec PUBLIC OpenMP::OpenMP_CXX)
 endif ()
