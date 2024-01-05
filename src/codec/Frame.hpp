@@ -282,7 +282,7 @@ public:
     //! @param block Block to be compared
     //! @param reference Reference frame
     //! @return Motion vector
-    MotionVector match_block_arps(const Block &block, Frame *reference) const;
+    MotionVector match_block_arps(const Block &block, const Frame *reference) const;
 
     //! Calculate motion vectors for all blocks in the frame
     //! @param block_size Size of the macroblocks to be compared

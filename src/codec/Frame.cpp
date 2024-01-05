@@ -346,7 +346,13 @@ vector<Point> Frame::get_rood_points(const Point center, const int arm_size, con
     if (motion_vectors_.empty() || arm_size == 1)
         return {up, right, down, left, center};
     const Point MV_prediction = {center.x + motion_vectors_.back().x, center.y + motion_vectors_.back().y};
-    return {up, right, down, left, MV_prediction};
+    const auto search_bounds = get_search_window({image_, block_size, center.y, center.x}, 1);
+    vector<Point> points = {up, right, down, left, MV_prediction};
+    for (auto &point: points) {
+        if (point.x < search_bounds[0] || point.x > search_bounds[2] || point.y < search_bounds[1] || point.y > search_bounds[3])
+            point = center;
+    }
+    return points;
 }
 
 bool Block::BlockDiff::compare(const Block &block, const Frame *reference, const Point center) {
@@ -408,7 +414,7 @@ MotionVector Frame::match_block_es(const Block &block, const Frame *reference, c
 }
 
 
-MotionVector Frame::match_block_arps(const Block &block, Frame *reference) const {
+MotionVector Frame::match_block_arps(const Block &block, const Frame *reference) const {
     bool finished = false;
     vector<Point> visited;
     block_diff_->reset();
