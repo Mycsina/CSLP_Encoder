@@ -17,7 +17,7 @@ protected:
 };
 
 TEST_F(EncoderTest, HybridTest) {
-    constexpr int m = 2;
+    constexpr int m = 3;
     const char *file = test_video.c_str();
     auto encoder = LosslessHybridEncoder(file, "../../tests/resource/encoded", m, 16, 5);
     encoder.encode();

@@ -20,6 +20,7 @@ Golomb::~Golomb() {
 
 void Golomb::set_m(const int m_) {
     m = m_;
+    // REPORT: We used to be calculating k and u for every encode/decode call
     k = floor(log2(m));
     u = static_cast<int>(pow(k + 1, 2)) - m;
 }
@@ -40,9 +41,7 @@ int Golomb::decode() {
 }
 
 void Golomb::encode(int n) const {
-    if (m <= 0) {
-        throw std::invalid_argument("value of m unknown or invalid");
-    }
+    assert(m > 0);
     if (n < 0) {
         bs->writeBit(1);
     } else {

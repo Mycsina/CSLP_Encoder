@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.14)
 project(CSLP_Project)
 
+add_compile_options(-Ofast -march=native)
+
 # CMake configuration
 ## Avoid compile warning CMP0135
 cmake_policy(SET CMP0135 NEW)

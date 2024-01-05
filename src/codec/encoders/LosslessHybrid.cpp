@@ -59,14 +59,21 @@ void LosslessHybridEncoder::encode() {
     for (int index = 0; index < frames.size(); index++) {
         Frame *frame = frames[index];
         if (cnt == period) {
-            frame->encode_JPEG_LS(g);
+            frame->encode_JPEG_LS();
             last_intra = index;
             cnt = 0;
         } else {
             const Frame *frame_intra = frames[last_intra];
             frame->calculate_MV(*frame_intra, block_size, header.search_radius, true);
-            frame->write(g);
             cnt++;
+        }
+    }
+    // REPORT: moving writes to separate loop (-10s)
+    for (auto &frame: frames) {
+        if (frame->get_type() == P_FRAME) {
+            frame->write(g);
+        } else {
+            frame->write_JPEG_LS(g);
         }
     }
 }

@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 project(CSLP_Project)
 
-add_compile_options(-Ofast -march=native)
-
 ## Libraries
 add_library(Codec
         Frame.cpp
@@ -12,8 +10,6 @@ add_library(Codec
         encoders/LosslessInter.cpp
         encoders/LosslessHybrid.cpp
         encoders/LossyHybrid.cpp
-        encoders/LossyInter.cpp
-        encoders/LossyIntra.cpp
         Quantizer.cpp
 )
 
