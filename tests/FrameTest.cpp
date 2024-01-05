@@ -7,13 +7,14 @@ using namespace std;
 
 auto frameTestVideo = "../../tests/resource/video.mp4";
 auto smallFrameTestVideo = "../../tests/resource/akiyo_qcif.y4m";
+auto testVideo = "../../tests/resource/ducks_take_off_444_720p50.y4m";
 
 class FrameTest : public ::testing::Test {
 protected:
     Frame f1, f2, f3;
     void SetUp() override {
         auto video = Video();
-        video.load(frameTestVideo);
+        video.load(testVideo);
         f1 = video.get_frame(0);
         f2 = video.get_frame(3);
         f3 = video.get_frame(6);

@@ -1,5 +1,6 @@
 #include "../src/codec/encoders/LosslessHybrid.hpp"
 #include "../src/codec/encoders/LosslessIntra.hpp"
+#include "../src/codec/encoders/LossyHybrid.hpp"
 #include "../src/visual/Video.hpp"
 #include <gtest/gtest.h>
 #include <iostream>
@@ -35,6 +36,19 @@ TEST_F(EncoderDemo, HybridDemo) {
     LosslessHybridEncoder encoder(file, "encoded", m, 16, 5);
     encoder.encode();
     LosslessHybridEncoder decoder("encoded", "decoded", m, 16, 5);
+    decoder.decode();
+    for (auto &frame: decoder.frames) {
+        Image im2 = frame.get_image();
+        im2.show();
+    }
+}
+
+TEST_F(EncoderDemo, LossyHybridDemo) {
+    const int m = 2;
+    const char *file = small_moving;
+    LossyHybridEncoder encoder(file, "encoded", m, 16, 5, 1, 1, 1);
+    encoder.encode();
+    LossyHybridEncoder decoder("encoded", "decoded", m, 16, 5, 1, 1, 1);
     decoder.decode();
     for (auto &frame: decoder.frames) {
         Image im2 = frame.get_image();

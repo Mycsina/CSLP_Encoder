@@ -39,6 +39,6 @@ TEST_F(FrameDemo, FrameReconstructionDemo) {
     f3.show();
     int block_size = 16;
     f3.calculate_MV(&f1, block_size, 10, false);
-    Frame reconstruct = Frame::reconstruct_frame(&f1, f3.get_motion_vectors(), block_size);
+    Frame reconstruct = Frame::reconstruct_frame(f1, f3.get_motion_vectors(), block_size);
     reconstruct.show();
 }

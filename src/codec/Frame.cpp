@@ -157,8 +157,16 @@ std::vector<MotionVector> Frame::get_motion_vectors() const {
     return motion_vectors_;
 }
 
+void Frame::set_motion_vectors(const vector<MotionVector> &new_motion_vectors) {
+    motion_vectors_ = new_motion_vectors;
+}
+
 const vector<int> &Frame::get_intra_encoding() const {
     return intra_encoding;
+}
+
+void Frame::set_intra_encoding(const vector<int> &new_intra_encoding) {
+    intra_encoding = new_intra_encoding;
 }
 
 FrameType Frame::get_type() const {

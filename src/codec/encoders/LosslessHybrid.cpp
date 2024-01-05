@@ -21,17 +21,17 @@ void HybridHeader::write_header(BitStream &bs) const {
     bs.writeBits(search_radius, 8);
 }
 
-HybridHeader HybridHeader::read_header(BitStream *bs) {
+HybridHeader HybridHeader::read_header(BitStream &bs) {
     HybridHeader header{};
-    header.color_space = static_cast<COLOR_SPACE>(bs->readBits(3));
-    header.chroma_subsampling = static_cast<CHROMA_SUBSAMPLING>(bs->readBits(3));
-    header.width = bs->readBits(32);
-    header.height = bs->readBits(32);
-    header.golomb_m = bs->readBits(8);
-    header.length = bs->readBits(32);
-    header.block_size = bs->readBits(8);
-    header.period = bs->readBits(8);
-    header.search_radius = bs->readBits(8);
+    header.color_space = static_cast<COLOR_SPACE>(bs.readBits(3));
+    header.chroma_subsampling = static_cast<CHROMA_SUBSAMPLING>(bs.readBits(3));
+    header.width = bs.readBits(32);
+    header.height = bs.readBits(32);
+    header.golomb_m = bs.readBits(8);
+    header.length = bs.readBits(32);
+    header.block_size = bs.readBits(8);
+    header.period = bs.readBits(8);
+    header.search_radius = bs.readBits(8);
     return header;
 }
 
@@ -51,6 +51,7 @@ void LosslessHybridEncoder::encode() {
     header.golomb_m = golomb_m;
     header.length = frames.size();
     header.block_size = block_size;
+    header.period = period;
     header.write_header(bs);
     g.set_m(golomb_m);
     int cnt = period;
@@ -73,7 +74,7 @@ void LosslessHybridEncoder::encode() {
 void LosslessHybridEncoder::decode() {
     BitStream bs(src, ios::in);
     Golomb g(&bs);
-    header = HybridHeader::read_header(&bs);
+    header = HybridHeader::read_header(bs);
     g.set_m(header.golomb_m);
     int cnt = period;
     int last_intra = 0;

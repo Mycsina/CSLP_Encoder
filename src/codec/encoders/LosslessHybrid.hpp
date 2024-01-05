@@ -31,7 +31,7 @@ public:
      * \param bs BitStream pointer
      * \return HybridHeader object
      */
-    static HybridHeader read_header(BitStream *bs);
+    static HybridHeader read_header(BitStream &bs);
 };
 
 /**

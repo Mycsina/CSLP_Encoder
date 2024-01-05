@@ -225,9 +225,17 @@ public:
      */
     std::vector<MotionVector> get_motion_vectors() const;
     /**
+     * \brief Sets the motion vectors
+     */
+    void set_motion_vectors(const std::vector<MotionVector> &new_motion_vectors);
+    /**
      * \brief Returns the calculated intra encoding values
      */
     const std::vector<int> &get_intra_encoding() const;
+    /**
+     * \brief Sets the intra encoding values
+     */
+    void set_intra_encoding(const std::vector<int> &new_intra_encoding);
     /**
      * \brief Gets the type of frame
      */
