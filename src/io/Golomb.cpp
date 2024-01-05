@@ -34,9 +34,9 @@ int Golomb::decode() {
         k = floor(log2(m));
         u = static_cast<int>(pow(k + 1, 2)) - m;
     }
-    int sign = (bs->readBit() == 0) ? 1 : -1;
-    int q = readUnary();
-    int r = readBinaryTrunc();
+    const int sign = (bs->readBit() == 0) ? 1 : -1;
+    const int q = readUnary();
+    const int r = readBinaryTrunc();
     return sign * (q * m + r);
 }
 

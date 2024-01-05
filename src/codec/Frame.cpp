@@ -491,10 +491,11 @@ void Frame::calculate_MV(const Frame &reference, const int block_size, const int
 }
 
 Frame Frame::reconstruct_frame(Frame &reference, const vector<MotionVector> &motion_vectors, int block_size) {
-    Mat reconstructed = Mat::zeros(reference.get_image().size(), CV_8UC3);
-    for (int i = 0; i + block_size <= reference.get_image().size().height; i += block_size) {
-        for (int j = 0; j + block_size <= reference.get_image().size().width; j += block_size) {
-            MotionVector mv = motion_vectors[i / block_size * (reference.get_image().size().width / block_size) + j / block_size];
+    Size size = reference.get_image().size();
+    Mat reconstructed = Mat::zeros(size, CV_8UC3);
+    for (int i = 0; i + block_size <= size.height; i += block_size) {
+        for (int j = 0; j + block_size <= size.width; j += block_size) {
+            MotionVector mv = motion_vectors[i / block_size * (size.width / block_size) + j / block_size];
             Block block = get_block(reference.get_image(), block_size, i + mv.y, j + mv.x);
             Mat reconstructed_block = Mat::zeros(block.getBlockMat().size(), CV_8UC3);
             for (int k = 0; k < block.getBlockMat().rows; k++)
