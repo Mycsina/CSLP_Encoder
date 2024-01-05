@@ -82,19 +82,12 @@ void LossyHybridEncoder::encode() {
             auto encodings = frame->get_intra_encoding();
             for (int i = 0; i < encodings.size(); i++) {
                 Quantizer quant;
-                switch (i % 3) {
-                    case 0:
-                        quant = y_quant;
-                        break;
-                    case 1:
-                        quant = u_quant;
-                        break;
-                    case 2:
-                        quant = v_quant;
-                        break;
-                    default:
-                        quant = y_quant;
-                        break;
+                if (i % 3 == 0) {
+                    quant = y_quant;
+                } else if (i % 3 == 1) {
+                    quant = u_quant;
+                } else {
+                    quant = v_quant;
                 }
                 encodings[i] = quant.quantize(encodings[i]);
             }
@@ -128,7 +121,7 @@ void LossyHybridEncoder::decode() {
     int last_intra = 0;
     for (int index = 0; index < header.length; index++) {
         if (cnt == period) {
-            frames.push_back(Frame::decode_JPEG_LS(g, static_cast<Header>(header)));
+            frames.push_back(decode_intra(g));
             last_intra = index;
             cnt = 0;
         } else {
@@ -140,7 +133,7 @@ void LossyHybridEncoder::decode() {
     }
 }
 
-Frame LossyHybridEncoder::decode_intra(Golomb *g) {
+Frame LossyHybridEncoder::decode_intra(Golomb &g) {
     Mat mat;
     Quantizer y_quant(256, header.y);
     Quantizer u_quant(256, header.u);
@@ -168,7 +161,7 @@ Frame LossyHybridEncoder::decode_intra(Golomb *g) {
                         quantizer = y_quant;
                         break;
                 }
-                const auto diff = quantizer.get_value(g->decode());
+                const auto diff = quantizer.get_value(g.decode());
                 const uchar predicted = Frame::predict_JPEG_LS(mat, r, c, channel);
                 const uchar real = diff + predicted;
                 if (mat.channels() > 1) {

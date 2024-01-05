@@ -54,5 +54,5 @@ public:
      */
     void decode() override;
 
-    Frame decode_intra(Golomb *g);
+    Frame decode_intra(Golomb &g);
 };

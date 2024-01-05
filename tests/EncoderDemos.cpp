@@ -19,14 +19,13 @@ protected:
 
 TEST_F(EncoderDemo, IntraDemo) {
     const char *file = small_still;
-    auto *encoder = new LosslessIntraEncoder(file, "../../tests/resource/encoded");
-    encoder->encode();
-    delete encoder;
-    auto *decoder = new LosslessIntraEncoder("../../tests/resource/encoded", "decoded");
-    decoder->decode();
-    for (auto &frame: decoder->frames) {
+    auto encoder = LosslessIntraEncoder(file, "../../tests/resource/encoded");
+    encoder.encode();
+    auto decoder = LosslessIntraEncoder("../../tests/resource/encoded", "../../tests/resource/decoded");
+    decoder.decode();
+    for (auto &frame: decoder.frames) {
         Image im2 = frame.get_image();
-        im2.show();
+        im2.show(true);
     }
 }
 
@@ -39,19 +38,19 @@ TEST_F(EncoderDemo, HybridDemo) {
     decoder.decode();
     for (auto &frame: decoder.frames) {
         Image im2 = frame.get_image();
-        im2.show();
+        im2.show(true);
     }
 }
 
 TEST_F(EncoderDemo, LossyHybridDemo) {
     const int m = 2;
-    const char *file = small_moving;
-    LossyHybridEncoder encoder(file, "encoded", m, 16, 5, 1, 1, 1);
+    const char *file = small_still;
+    LossyHybridEncoder encoder(file, "encoded", m, 16, 5, 255, 255, 255);
     encoder.encode();
-    LossyHybridEncoder decoder("encoded", "decoded", m, 16, 5, 1, 1, 1);
+    LossyHybridEncoder decoder("encoded", "decoded", m, 16, 5, 255, 255, 255);
     decoder.decode();
     for (auto &frame: decoder.frames) {
         Image im2 = frame.get_image();
-        im2.show();
+        im2.show(true);
     }
 }

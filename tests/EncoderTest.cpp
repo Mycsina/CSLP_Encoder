@@ -34,15 +34,14 @@ TEST_F(EncoderTest, HybridTest) {
 
 TEST_F(EncoderTest, IntraTest) {
     const char *file = test_video.c_str();
-    auto *encoder = new LosslessIntraEncoder(file, "../../tests/resource/encoded");
-    encoder->encode();
-    delete encoder;
-    auto *decoder = new LosslessIntraEncoder("../../tests/resource/encoded", "../../tests/resource/decoded");
-    decoder->decode();
+    auto encoder = LosslessIntraEncoder(file, "../../tests/resource/encoded");
+    encoder.encode();
+    auto decoder = LosslessIntraEncoder("../../tests/resource/encoded", "../../tests/resource/decoded");
+    decoder.decode();
     const auto video_frames = Video(file).generate_frames();
     for (int i = 0; i < video_frames.size(); i++) {
         Image im1 = video_frames[i]->get_image();
-        Image im2 = decoder->frames[i].get_image();
+        Image im2 = decoder.frames[i].get_image();
         ASSERT_TRUE(im1 == im2);
     }
 }
