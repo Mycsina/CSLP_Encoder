@@ -71,7 +71,7 @@ bool Block::MAD::isBetter(const double score) {
     return score < best_score;
 }
 
-Block::MSE::MSE(int threshold) : threshold_(threshold) {
+Block::MSE::MSE(const int threshold) {
     best_score = INFINITY;
     best_match = {0, 0};
     this->threshold = threshold;
@@ -106,10 +106,10 @@ bool Block::PSNR::isBetter(const double score) {
     return score > best_score;
 }
 
-Block::SAD::SAD(int threshold) {
+Block::SAD::SAD(const int threshold) {
     best_score = INFINITY;
     best_match = {0, 0};
-    threshold = threshold;
+    this->threshold = threshold;
 }
 double Block::SAD::block_diff(const Block &a, const Block &b) {
     double diff = 0;
@@ -212,7 +212,7 @@ void Frame::encode_JPEG_LS(const Golomb &g) {
     }
 }
 
-void Frame::write_JPEG_LS(Golomb &g) const {
+void Frame::write_JPEG_LS(const Golomb &g) const {
     for (const auto diff: intra_encoding) {
         g.encode(diff);
     }
@@ -228,7 +228,7 @@ Frame Frame::decode_JPEG_LS(Golomb &g, const Header &header) {
     for (int r = 0; r < mat.rows; r++) {
         for (int c = 0; c < mat.cols; c++) {
             for (int channel = 0; channel < mat.channels(); channel++) {
-                const auto diff = g.decode();
+                const int diff = g.decode();
                 const uchar predicted = predict_JPEG_LS(mat, r, c, channel);
                 const uchar real = diff + predicted;
                 if (mat.channels() > 1) {
@@ -355,9 +355,9 @@ vector<Point> Frame::get_rood_points(const Point center, const int arm_size, con
     return points;
 }
 
-bool Block::BlockDiff::compare(const Block &block, const Frame *reference, const Point center) {
+bool Block::BlockDiff::compare(const Block &block, const Frame &reference, const Point center) {
     const auto block_coords = block.getVertices();
-    const Block ref_block = get_block(reference->get_image(), block.getSize(), center.y, center.x);
+    const Block ref_block = get_block(reference.get_image(), block.getSize(), center.y, center.x);
     const double diff_value = block_diff(block, ref_block);
     if (isBetter(diff_value)) {
         MotionVector mv = {center.x - block_coords[0], center.y - block_coords[1]};
@@ -385,12 +385,14 @@ void Block::PSNR::reset() {
     best_match = {0, 0};
 }
 
-MotionVector Frame::match_block_es(const Block &block, const Frame *reference, const int search_radius) const {
+MotionVector Frame::match_block_es(const Block &block, const Frame &reference, const int search_radius) const {
     block_diff_->reset();
     bool finished = block_diff_->compare(block, reference, {block.getCol(), block.getRow()});
     if (finished)
         return block_diff_->best_match;
+#ifdef _VISUALIZE
     auto block_coords = block.getVertices();
+#endif
     const auto search_bounds = get_search_window(block, search_radius);
     const int left = search_bounds[0];
     const int upper = search_bounds[1];
@@ -414,7 +416,7 @@ MotionVector Frame::match_block_es(const Block &block, const Frame *reference, c
 }
 
 
-MotionVector Frame::match_block_arps(const Block &block, const Frame *reference) const {
+MotionVector Frame::match_block_arps(const Block &block, const Frame &reference) const {
     bool finished = false;
     vector<Point> visited;
     block_diff_->reset();
@@ -468,7 +470,7 @@ MotionVector Frame::match_block_arps(const Block &block, const Frame *reference)
     return block_diff_->best_match;
 }
 
-void Frame::calculate_MV(Frame *reference, const int block_size, const int search_radius, const bool fast) {
+void Frame::calculate_MV(const Frame &reference, const int block_size, const int search_radius, const bool fast) {
     type_ = P_FRAME;
     vector<MotionVector> motion_vectors;
     for (int i = 0; i + block_size <= image_.size().height; i += block_size) {
@@ -511,10 +513,10 @@ Frame Frame::reconstruct_frame(Frame &reference, const vector<MotionVector> &mot
     return frame;
 }
 
-void Frame::visualize_MV(const Frame *reference, const int block_size) const {
+void Frame::visualize_MV(const Frame &reference, const int block_size) const {
     int i = 0;
     int j = 0;
-    Mat res = Mat::zeros(reference->get_image().size(), CV_8UC3);
+    Mat res = Mat::zeros(reference.get_image().size(), CV_8UC3);
     for (const auto &v: motion_vectors_) {
         setSlice(res, v.residual, j, i);
         arrowedLine(res, Point(i + block_size / 2, j + block_size / 2), Point(i + v.x + block_size / 2, j + v.y + block_size / 2), Scalar(0, 0, 255), 1, 8, 0);

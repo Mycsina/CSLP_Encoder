@@ -31,7 +31,7 @@ TEST_F(FrameTest, IntraFrameTest) {
 }
 
 TEST_F(FrameTest, InterFrameTest) {
-    f1.calculate_MV(&f2, 16, 7, false);
+    f1.calculate_MV(f2, 16, 7, false);
     Frame reconstruct = Frame::reconstruct_frame(f2, f1.get_motion_vectors(), 16);
     Image im1 = f1.get_image();
     Image im2 = reconstruct.get_image();
@@ -42,7 +42,7 @@ TEST_F(FrameTest, InterFrameTestFast) {
     const auto comparator = new Block::SAD();
     comparator->threshold = 512;
     f1.set_block_diff(comparator);
-    f1.calculate_MV(&f2, 16, 7, true);
+    f1.calculate_MV(f2, 16, 7, true);
     Frame reconstruct = Frame::reconstruct_frame(f2, f1.get_motion_vectors(), 16);
     Image im1 = f1.get_image();
     Image im2 = reconstruct.get_image();

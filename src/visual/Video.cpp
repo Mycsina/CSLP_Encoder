@@ -19,11 +19,11 @@ Video::Video(const char *filename) {
         load(filename);
     }
 }
-Video::Video(const std::vector<Image> &reel) {
+Video::Video(const std::vector<Image> &reel) : header() {
     im_reel = reel;
 }
 
-Video::Video(const std::vector<Frame> &frames) {
+Video::Video(const std::vector<Frame> &frames) : header() {
     vector<Image> reel;
     for (auto &it: frames) {
         reel.push_back(it.get_image());
@@ -32,9 +32,9 @@ Video::Video(const std::vector<Frame> &frames) {
 }
 
 const vector<Image> &Video::get_reel() { return im_reel; }
-void Video::set_reel(vector<Image> *reel) { im_reel = *reel; }
+void Video::set_reel(const vector<Image> *reel) { im_reel = *reel; }
 float Video::get_fps() const { return fps_; }
-void Video::set_fps(float fps) { fps_ = fps; }
+void Video::set_fps(const float fps) { fps_ = fps; }
 YuvHeader Video::get_header() const { return header; }
 void Video::set_header(const YuvHeader &header) { Video::header = header; }
 

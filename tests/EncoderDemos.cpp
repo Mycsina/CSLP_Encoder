@@ -30,7 +30,7 @@ TEST_F(EncoderDemo, IntraDemo) {
 }
 
 TEST_F(EncoderDemo, HybridDemo) {
-    const int m = 2;
+    constexpr int m = 2;
     const char *file = small_still;
     LosslessHybridEncoder encoder(file, "encoded", m, 16, 5);
     encoder.encode();
@@ -43,7 +43,7 @@ TEST_F(EncoderDemo, HybridDemo) {
 }
 
 TEST_F(EncoderDemo, LossyHybridDemo) {
-    const int m = 2;
+    constexpr int m = 2;
     const char *file = small_still;
     LossyHybridEncoder encoder(file, "encoded", m, 16, 5, 255, 255, 255);
     encoder.encode();

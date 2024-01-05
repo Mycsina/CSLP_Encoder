@@ -95,7 +95,7 @@ void LossyHybridEncoder::encode() {
             frame->write_JPEG_LS(g);
         } else {
             Frame *frame_intra = frames[last_intra];
-            frame->calculate_MV(frame_intra, block_size, header.search_radius, true);
+            frame->calculate_MV(*frame_intra, block_size, header.search_radius, true);
             auto mvs = frame->get_motion_vectors();
             for (const auto &mv: mvs) {
                 auto residual = mv.residual;

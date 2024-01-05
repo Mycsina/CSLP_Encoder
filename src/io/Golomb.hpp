@@ -16,6 +16,8 @@
 class Golomb {
     BitStream *bs;           ///< BitStream object
     int m = -1;              ///< m parameter of golomb code
+    int k = -1;              ///< k parameter of golomb code
+    int u = -1;              ///< u parameter of golomb code
     std::string filepath;    ///< path to file
     bool localStream = false;///< whether the BitStream object was created locally
 

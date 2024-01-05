@@ -30,7 +30,7 @@ public:
     explicit Video(const std::vector<Image> &reel);
     explicit Video(const std::vector<Frame> &frames);
     const std::vector<Image> &get_reel();
-    void set_reel(std::vector<Image> *reel);
+    void set_reel(const std::vector<Image> *reel);
     float get_fps() const;
     void set_fps(float fps);
     YuvHeader get_header() const;

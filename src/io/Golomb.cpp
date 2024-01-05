@@ -18,7 +18,11 @@ Golomb::~Golomb() {
     if (localStream) { delete bs; }
 }
 
-void Golomb::set_m(const int m_) { m = m_; }
+void Golomb::set_m(const int m_) {
+    m = m_;
+    k = floor(log2(m));
+    u = static_cast<int>(pow(k + 1, 2)) - m;
+}
 int Golomb::get_m() const { return m; }
 BitStream *Golomb::get_bs() const { return bs; }
 
@@ -26,6 +30,8 @@ BitStream *Golomb::get_bs() const { return bs; }
 int Golomb::decode() {
     if (m <= 0) {
         m = bs->readBits(8 * sizeof(int));
+        k = floor(log2(m));
+        u = static_cast<int>(pow(k + 1, 2)) - m;
     }
     int sign = (bs->readBit() == 0) ? 1 : -1;
     int q = readUnary();
@@ -50,6 +56,8 @@ void Golomb::encode(int n) const {
 }
 
 void Golomb::encode(const int n, const int m_) {
+    k = floor(log2(m_));
+    u = static_cast<int>(pow(k + 1, 2)) - m_;
     if (m <= 0) {
         m = m_;
         bs->writeBits(m_, 8 * sizeof(int));
@@ -77,8 +85,6 @@ void Golomb::writeUnary(const int n) const {
 }
 
 int Golomb::readBinaryTrunc() const {
-    const int k = floor(log2(m));
-    const int u = static_cast<int>(pow(k + 1, 2)) - m;
     const int k_bits = bs->readBits(k);
     if (k_bits < u) {
         return k_bits;
@@ -87,8 +93,6 @@ int Golomb::readBinaryTrunc() const {
 }
 
 void Golomb::writeBinaryTrunc(const int n) const {
-    const int k = floor(log2(m));
-    const int u = static_cast<int>(pow(k + 1, 2)) - m;
     if (n < u) {
         bs->writeBits(n, k);
     } else {
@@ -96,13 +100,13 @@ void Golomb::writeBinaryTrunc(const int n) const {
     }
 }
 
-int Golomb::adjust_m(const std::vector<int> &data, int sample_factor) {
+int Golomb::adjust_m(const std::vector<int> &data, const int sample_factor) {
     double sum = 0;
-    double sample_num = data.size() / sample_factor;
+    const double sample_num = data.size() / sample_factor;
     for (int i = 0; i < sample_num; i++) {
         sum += abs(data[rand() % data.size()]);
     }
-    double mean = sum / sample_num;
+    const double mean = sum / sample_num;
     const double golden_ratio = (sqrt(5) + 1) / 2;
     // M. Kiely, 2004
     int result = static_cast<int>(max(0.0, 1 + floor(log2(log(golden_ratio - 1) / log(mean / (mean + 1))))));

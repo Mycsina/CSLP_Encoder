@@ -63,8 +63,8 @@ void LosslessHybridEncoder::encode() {
             last_intra = index;
             cnt = 0;
         } else {
-            Frame *frame_intra = frames[last_intra];
-            frame->calculate_MV(frame_intra, block_size, header.search_radius, true);
+            const Frame *frame_intra = frames[last_intra];
+            frame->calculate_MV(*frame_intra, block_size, header.search_radius, true);
             frame->write(g);
             cnt++;
         }
