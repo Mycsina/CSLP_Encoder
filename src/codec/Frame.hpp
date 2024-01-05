@@ -259,7 +259,7 @@ public:
 
     static Frame decode_JPEG_LS(const std::vector<int> &encodings, COLOR_SPACE color, CHROMA_SUBSAMPLING chroma, int rows, int cols);
 
-    static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel = 0);
+    static uchar predict_JPEG_LS(cv::Mat &mat, int row, int col, int channel = 0);
 
     //! Returns a valid search window
     //! @param block Block that is being compared (top-left corner)

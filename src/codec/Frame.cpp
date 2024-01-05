@@ -184,12 +184,12 @@ void Frame::show() {
 
 void Frame::encode_JPEG_LS() {
     type_ = I_FRAME;
-    Mat image_mat_ = *image_.get_image_mat();
-    for (int r = 0; r < image_mat_.rows; r++) {
-        for (int c = 0; c < image_mat_.cols; c++) {
-            for (int channel = 0; channel < image_mat_.channels(); channel++) {
-                const int real = image_mat_.at<Vec3b>(r, c)[channel];
-                const int predicted = predict_JPEG_LS(image_mat_, r, c, channel);
+    Mat *image_mat_ = image_.get_image_mat();
+    for (int r = 0; r < image_mat_->rows; r++) {
+        for (int c = 0; c < image_mat_->cols; c++) {
+            for (int channel = 0; channel < image_mat_->channels(); channel++) {
+                const int real = image_mat_->at<Vec3b>(r, c)[channel];
+                const int predicted = predict_JPEG_LS(*image_mat_, r, c, channel);
                 int diff = real - predicted;
                 intra_encoding.push_back(diff);
             }
@@ -273,7 +273,7 @@ Frame Frame::decode_JPEG_LS(const vector<int> &encodings, const COLOR_SPACE colo
     return Frame(im);
 }
 
-uchar Frame::predict_JPEG_LS(Mat mat, const int row, const int col, const int channel) {
+uchar Frame::predict_JPEG_LS(Mat &mat, const int row, const int col, const int channel) {
     if (row < 0 || row >= mat.rows || col < 0 || col >= mat.cols) {
         throw std::out_of_range("Pixel out of bounds");
     }
