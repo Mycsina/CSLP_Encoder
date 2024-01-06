@@ -368,7 +368,7 @@ bool Block::BlockDiff::compare(const Block &block, const Frame &reference, const
                 mv.residual.at<Vec3s>(i, j)[1] = block.getBlockMat().at<Vec3b>(i, j)[1] - ref_block.getBlockMat().at<Vec3b>(i, j)[1];
                 mv.residual.at<Vec3s>(i, j)[2] = block.getBlockMat().at<Vec3b>(i, j)[2] - ref_block.getBlockMat().at<Vec3b>(i, j)[2];
             }
-        double best_score = diff_value;
+        best_score = diff_value;
         best_match = mv;
     }
     if (diff_value <= threshold)
