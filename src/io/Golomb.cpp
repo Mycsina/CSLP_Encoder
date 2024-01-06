@@ -102,14 +102,13 @@ void Golomb::writeBinaryTrunc(const int n) const {
     }
 }
 
-int Golomb::adjust_m(const std::vector<int> &data, const int sample_factor) {
+int Golomb::adjust_m(const std::vector<int> &data) {
     double sum = 0;
-    const double sample_num = data.size() / sample_factor;
-    for (int i = 0; i < sample_num; i++) {
-        sum += abs(data[rand() % data.size()]);
+    for (int i : data) {
+        sum += abs(i);
     }
-    const double mean = sum / sample_num;
-    const double golden_ratio = PHI;
+    const double mean = sum / data.size();
+    constexpr double golden_ratio = PHI;
     // M. Kiely, 2004
     // int result = static_cast<int>(max(0.0, 1 + floor(log2(log(golden_ratio - 1) / log(mean / (mean + 1))))));
     // A. Said, 2006

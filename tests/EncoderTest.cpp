@@ -17,7 +17,22 @@ protected:
 };
 
 TEST_F(EncoderTest, HybridTest) {
-    constexpr int m = 3;
+    constexpr int m = 4;
+    const char *file = test_video.c_str();
+    auto encoder = LosslessHybridEncoder(file, "../../tests/resource/encoded", m, 16, 5);
+    encoder.encode();
+    auto decoder = LosslessHybridEncoder("../../tests/resource/encoded", "../../tests/resource/decoded", m, 16, 5);
+    decoder.decode();
+    const auto video_frames = Video(file).generate_frames();
+    for (int i = 0; i < video_frames.size(); i++) {
+        Image im1 = video_frames[i]->get_image();
+        Image im2 = decoder.frames[i].get_image();
+        ASSERT_TRUE(im1 == im2);
+    }
+}
+
+TEST_F(EncoderTest, HybridTestAutoGolomb) {
+    constexpr int m = 0;
     const char *file = test_video.c_str();
     auto encoder = LosslessHybridEncoder(file, "../../tests/resource/encoded", m, 16, 5);
     encoder.encode();
