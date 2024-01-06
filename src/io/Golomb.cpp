@@ -109,7 +109,7 @@ int Golomb::adjust_m(const std::vector<int> &data, const int sample_factor) {
         sum += abs(data[rand() % data.size()]);
     }
     const double mean = sum / sample_num;
-    const double golden_ratio = PHI;
+    constexpr double golden_ratio = PHI;
     // M. Kiely, 2004
     // int result = static_cast<int>(max(0.0, 1 + floor(log2(log(golden_ratio - 1) / log(mean / (mean + 1))))));
     // A. Said, 2006

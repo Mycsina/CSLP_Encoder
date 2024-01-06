@@ -54,12 +54,13 @@ public:
      * \param dst File path of the encoded video
      */
     LosslessHybridEncoder(const char *src, const char *dst);
-    const char *src{};    ///< File path of the input video
-    const char *dst{};    ///< File path of the encoded video
-    HybridHeader header{};///< Header object
-    uint8_t golomb_m;     ///< Golomb m parameter
-    uint8_t block_size;   ///< Macroblock size
-    uint8_t period{};     ///< Period of intra frames
+    const char *src{};      ///< File path of the input video
+    const char *dst{};      ///< File path of the encoded video
+    HybridHeader header{};  ///< Header object
+    uint8_t golomb_m;       ///< Golomb m parameter
+    uint8_t block_size;     ///< Macroblock size
+    uint8_t period{};       ///< Period of intra frames
+    int sample_factor = 100;///< Sample factor for calculating golomb_m
 
     /**
      * \brief encodes a video from src into dst with a mix of inter and intraframe encoding

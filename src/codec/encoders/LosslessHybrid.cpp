@@ -44,8 +44,53 @@ void LosslessHybridEncoder::encode() {
     const Video vid(src);
     const vector<Frame *> frames = vid.generate_frames();
     const Frame sample = *frames[0];
+    int cnt = period;
+    int last_intra = 0;
+    vector<Frame *> intra_frames;
+    vector<Frame *> inter_frames;
+    for (int index = 0; index < frames.size(); index++) {
+        Frame *frame = frames[index];
+        if (cnt == period) {
+            frame->encode_JPEG_LS();
+            intra_frames.push_back(frame);
+            last_intra = index;
+            cnt = 0;
+        } else {
+            const Frame *frame_intra = frames[last_intra];
+            inter_frames.push_back(frame);
+            frame->calculate_MV(*frame_intra, block_size, header.search_radius, true);
+            cnt++;
+        }
+    }
     if (golomb_m == 0) {
-        // calculate golomb_m
+        // Best m
+        double sum = 0;
+        const auto intra = sample_frames(intra_frames, sample_factor);
+        const auto inter = sample_frames(inter_frames, sample_factor);
+        for (auto &frame: intra) {
+            sum += Golomb::adjust_m(frame->get_intra_encoding(), sample_factor);
+        }
+        for (auto &frame: inter) {
+            vector<int> inter_encoding;
+            for (auto &mv: frame->get_motion_vectors()) {
+                inter_encoding.push_back(mv.x);
+                inter_encoding.push_back(mv.y);
+                for (int row = 0; row < block_size; row++) {
+                    for (int col = 0; col < block_size; col++) {
+                        auto residual = mv.residual.at<Vec3s>(row, col);
+                        inter_encoding.push_back(residual[0]);
+                        inter_encoding.push_back(residual[1]);
+                        inter_encoding.push_back(residual[2]);
+                    }
+                }
+            }
+            sum += Golomb::adjust_m(inter_encoding, sample_factor * 5);
+        }
+        auto size = intra.size() + inter.size();
+        const int k = static_cast<int>(sum / (size / sample_factor));
+        const int golomb_m = 1 << k;
+        this->golomb_m = golomb_m;
+        g.set_m(golomb_m);
     }
     header.extract_info(sample);
     header.golomb_m = golomb_m;
@@ -54,20 +99,6 @@ void LosslessHybridEncoder::encode() {
     header.period = period;
     header.write_header(bs);
     g.set_m(golomb_m);
-    int cnt = period;
-    int last_intra = 0;
-    for (int index = 0; index < frames.size(); index++) {
-        Frame *frame = frames[index];
-        if (cnt == period) {
-            frame->encode_JPEG_LS();
-            last_intra = index;
-            cnt = 0;
-        } else {
-            const Frame *frame_intra = frames[last_intra];
-            frame->calculate_MV(*frame_intra, block_size, header.search_radius, true);
-            cnt++;
-        }
-    }
     // REPORT: moving writes to separate loop (-10s)
     for (auto &frame: frames) {
         if (frame->get_type() == P_FRAME) {
