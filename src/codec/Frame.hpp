@@ -103,7 +103,7 @@ public:
          * \param center Where the block will be placed to be compared
          * \return Boolean indicating whether search is finished (score is below threshold)
          */
-        bool compare(const Block &block, const Frame *reference, cv::Point center);
+        bool compare(const Block &block, const Frame &reference, cv::Point center);
     };
 
     class MAD final : public BlockDiff {
@@ -130,7 +130,6 @@ public:
         //! @return MSE value (lesser is better)
         double block_diff(const Block &a, const Block &b) override;
         bool isBetter(double score) override;
-        int threshold_;
     };
 
     class PSNR final : public BlockDiff {
@@ -225,9 +224,17 @@ public:
      */
     std::vector<MotionVector> get_motion_vectors() const;
     /**
+     * \brief Sets the motion vectors
+     */
+    void set_motion_vectors(const std::vector<MotionVector> &new_motion_vectors);
+    /**
      * \brief Returns the calculated intra encoding values
      */
     const std::vector<int> &get_intra_encoding() const;
+    /**
+     * \brief Sets the intra encoding values
+     */
+    void set_intra_encoding(const std::vector<int> &new_intra_encoding);
     /**
      * \brief Gets the type of frame
      */
@@ -245,13 +252,13 @@ public:
 
     void encode_JPEG_LS(const Golomb &g);
 
-    void write_JPEG_LS(Golomb &g) const;
+    void write_JPEG_LS(const Golomb &g) const;
 
     static Frame decode_JPEG_LS(Golomb &g, const Header &header);
 
-    static Frame decode_JPEG_LS(const std::vector<int> &encodings, COLOR_SPACE color, CHROMA_SUBSAMPLING chroma, int rows, int cols);
+    static Frame decode_JPEG_LS(const std::vector<int> &encodings, COLOR_SPACE color, CHROMA_SUBSAMPLING cs_ratio, int rows, int cols);
 
-    static uchar predict_JPEG_LS(cv::Mat mat, int row, int col, int channel = 0);
+    static uchar predict_JPEG_LS(cv::Mat &mat, int row, int col, int channel = 0);
 
     //! Returns a valid search window
     //! @param block Block that is being compared (top-left corner)
@@ -267,14 +274,14 @@ public:
     //! @param reference Reference frame
     //! @param search_radius Radius of the search area (not including the block itself)
     //! @return Motion vector
-    MotionVector match_block_es(const Block &block, const Frame *reference, int search_radius) const;
+    MotionVector match_block_es(const Block &block, const Frame &reference, int search_radius) const;
 
     //! Returns the motion vector between this frame and the nth previous frame
     //! @details This function uses the [Adaptive Rood Pattern Search](https://ieeexplore.ieee.org/document/1176932) algorithm
     //! @param block Block to be compared
     //! @param reference Reference frame
     //! @return Motion vector
-    MotionVector match_block_arps(const Block &block, Frame *reference) const;
+    MotionVector match_block_arps(const Block &block, const Frame &reference) const;
 
     //! Calculate motion vectors for all blocks in the frame
     //! @param block_size Size of the macroblocks to be compared
@@ -282,9 +289,9 @@ public:
     //! @param search_radius Radius of the search area (not including the block itself)
     //! @param fast Indicates whether the fast search algorithm should be used
     //! @return Vector of motion vectors
-    void calculate_MV(Frame *reference, int block_size, int search_radius, bool fast);
+    void calculate_MV(const Frame &reference, int block_size, int search_radius, bool fast);
 
-    void visualize_MV(const Frame *reference, int block_size) const;
+    void visualize_MV(const Frame &reference, int block_size) const;
 
     //! Reconstruct a frame using a frame, a vector of motion vectors and a block size
     //! @param reference Reference frame

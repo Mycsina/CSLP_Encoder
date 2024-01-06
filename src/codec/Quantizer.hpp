@@ -5,14 +5,13 @@
 #pragma once
 
 class Quantizer {
-private:
     int amp;
-    int num_levels;
     int step;
 public:
-    Quantizer(int amplitude, int num_bits);
+    Quantizer() = default;
+    Quantizer(int amplitude, int steps);
 
-    int get_level(int value);
-    int get_value(int level);
-    int quantize(int value);
+    int get_level(int value) const;
+    int get_value(int level) const;
+    int quantize(int value) const;
 };

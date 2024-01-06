@@ -2,6 +2,8 @@
 #include <cmath>
 #include <string>
 
+#define PHI 1.61803398874989484820458683436563811772030917980576286213544862270526046281890
+
 using namespace std;
 
 Golomb::Golomb(const std::string &filePath, const std::ios_base::openmode mode) {
@@ -18,7 +20,12 @@ Golomb::~Golomb() {
     if (localStream) { delete bs; }
 }
 
-void Golomb::set_m(const int m_) { m = m_; }
+void Golomb::set_m(const int m_) {
+    m = m_;
+    // REPORT: We used to be calculating k and u for every encode/decode call
+    k = floor(log2(m));
+    u = static_cast<int>(pow(k + 1, 2)) - m;
+}
 int Golomb::get_m() const { return m; }
 BitStream *Golomb::get_bs() const { return bs; }
 
@@ -26,17 +33,17 @@ BitStream *Golomb::get_bs() const { return bs; }
 int Golomb::decode() {
     if (m <= 0) {
         m = bs->readBits(8 * sizeof(int));
+        k = floor(log2(m));
+        u = static_cast<int>(pow(k + 1, 2)) - m;
     }
-    int sign = (bs->readBit() == 0) ? 1 : -1;
-    int q = readUnary();
-    int r = readBinaryTrunc();
+    const int sign = (bs->readBit() == 0) ? 1 : -1;
+    const int q = readUnary();
+    const int r = readBinaryTrunc();
     return sign * (q * m + r);
 }
 
 void Golomb::encode(int n) const {
-    if (m <= 0) {
-        throw std::invalid_argument("value of m unknown or invalid");
-    }
+    assert(m > 0);
     if (n < 0) {
         bs->writeBit(1);
     } else {
@@ -50,6 +57,8 @@ void Golomb::encode(int n) const {
 }
 
 void Golomb::encode(const int n, const int m_) {
+    k = floor(log2(m_));
+    u = static_cast<int>(pow(k + 1, 2)) - m_;
     if (m <= 0) {
         m = m_;
         bs->writeBits(m_, 8 * sizeof(int));
@@ -77,18 +86,15 @@ void Golomb::writeUnary(const int n) const {
 }
 
 int Golomb::readBinaryTrunc() const {
-    const int k = floor(log2(m));
-    const int u = static_cast<int>(pow(k + 1, 2)) - m;
     const int k_bits = bs->readBits(k);
     if (k_bits < u) {
         return k_bits;
     }
-    return (k_bits << 1) + bs->readBit() - u;
+    const int next = bs->readBit();
+    return (k_bits << 1) + next - u;
 }
 
 void Golomb::writeBinaryTrunc(const int n) const {
-    const int k = floor(log2(m));
-    const int u = static_cast<int>(pow(k + 1, 2)) - m;
     if (n < u) {
         bs->writeBits(n, k);
     } else {
@@ -96,17 +102,16 @@ void Golomb::writeBinaryTrunc(const int n) const {
     }
 }
 
-int Golomb::adjust_m(const std::vector<int> &data, int sample_factor) {
+int Golomb::adjust_m(const std::vector<int> &data) {
     double sum = 0;
-    double sample_num = data.size() / sample_factor;
-    for (int i = 0; i < sample_num; i++) {
-        sum += abs(data[rand() % data.size()]);
+    for (int i : data) {
+        sum += abs(i);
     }
-    double mean = sum / sample_num;
-    const double golden_ratio = (sqrt(5) + 1) / 2;
+    const double mean = sum / data.size();
+    constexpr double golden_ratio = PHI;
     // M. Kiely, 2004
-    int result = static_cast<int>(max(0.0, 1 + floor(log2(log(golden_ratio - 1) / log(mean / (mean + 1))))));
+    // int result = static_cast<int>(max(0.0, 1 + floor(log2(log(golden_ratio - 1) / log(mean / (mean + 1))))));
     // A. Said, 2006
-    result = static_cast<int>(max(0.0, ceil(log2(mean) - 0.05 + 0.6 / mean)));
+    int result = static_cast<int>(max(0.0, ceil(log2(mean) - 0.05 + 0.6 / mean)));
     return result;
 }

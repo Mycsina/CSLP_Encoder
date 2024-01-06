@@ -7,13 +7,13 @@ using namespace std;
 
 auto frameTestVideo = "../../tests/resource/video.mp4";
 auto smallFrameTestVideo = "../../tests/resource/akiyo_qcif.y4m";
+auto testVideo = "../../tests/resource/ducks_take_off_444_720p50.y4m";
 
 class FrameTest : public ::testing::Test {
 protected:
     Frame f1, f2, f3;
     void SetUp() override {
-        auto video = Video();
-        video.load(frameTestVideo);
+        auto video = Video(testVideo);
         f1 = video.get_frame(0);
         f2 = video.get_frame(3);
         f3 = video.get_frame(6);
@@ -31,7 +31,7 @@ TEST_F(FrameTest, IntraFrameTest) {
 }
 
 TEST_F(FrameTest, InterFrameTest) {
-    f1.calculate_MV(&f2, 16, 7, false);
+    f1.calculate_MV(f2, 16, 7, false);
     Frame reconstruct = Frame::reconstruct_frame(f2, f1.get_motion_vectors(), 16);
     Image im1 = f1.get_image();
     Image im2 = reconstruct.get_image();
@@ -39,10 +39,10 @@ TEST_F(FrameTest, InterFrameTest) {
 }
 
 TEST_F(FrameTest, InterFrameTestFast) {
-    auto comparator = new Block::SAD();
+    const auto comparator = new Block::SAD();
     comparator->threshold = 512;
     f1.set_block_diff(comparator);
-    f1.calculate_MV(&f2, 16, 7, true);
+    f1.calculate_MV(f2, 16, 7, true);
     Frame reconstruct = Frame::reconstruct_frame(f2, f1.get_motion_vectors(), 16);
     Image im1 = f1.get_image();
     Image im2 = reconstruct.get_image();

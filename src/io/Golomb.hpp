@@ -16,6 +16,8 @@
 class Golomb {
     BitStream *bs;           ///< BitStream object
     int m = -1;              ///< m parameter of golomb code
+    int k = -1;              ///< k parameter of golomb code
+    int u = -1;              ///< u parameter of golomb code
     std::string filepath;    ///< path to file
     bool localStream = false;///< whether the BitStream object was created locally
 
@@ -84,7 +86,6 @@ public:
     //! Finds optimal m parameter from given data points
     //! \details Uses the method described in [On the Determination of Optimal Parameterized Prefix Codes for Adaptive Entropy Coding](https://www.hpl.hp.com/techreports/2006/HPL-2006-74.pdf)
     //! @param data vector of data points
-    //! @param sample_factor sample factor
     //! @return the optimal m parameter
-    static int adjust_m(const std::vector<int> &data, int sample_factor);
+    static int adjust_m(const std::vector<int> &data);
 };

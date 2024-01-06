@@ -136,10 +136,10 @@ Image YuvParser::read_image(FILE *file, const int uvWidth, const int uvHeight) c
     if (fread(buffer, sizeof(char), 6, file) != 6 && !feof(file)) {
         throw runtime_error("Could not read FRAME header from file with error code " + to_string(ferror(file)));
     }
+    if (feof(file)) {
+        return im;
+    }
     if (string(buffer) != "FRAME\n") {
-        if (feof(file)) {
-            return im;
-        }
         // we're already past the FRAME, alignments are wrong
         throw runtime_error("Misaligned FRAME header");
     }

@@ -3,11 +3,10 @@
 #include "../Encoder.hpp"
 #include "../Header.hpp"
 
-class LossyHybridHeader : public Header {
+class LossyHybridHeader : public InterHeader {
 public:
     uint8_t period{};       //!< Period of intra frames
     uint8_t search_radius{};//!< Search radius
-    uint8_t block_size{};   //!< Block size
     uint8_t y{}; //!< Quantization steps for Y channel
     uint8_t u{}; //!< Quantization steps for U channel
     uint8_t v{}; //!< Quantization steps for V channel
@@ -19,18 +18,18 @@ public:
      * \brief Constructor
      * \param header Base header to copy from
      */
-    explicit LossyHybridHeader(Header header);
+    explicit LossyHybridHeader(const Header &header);
     /**
      * \brief Writes header to BitStream
      * \param bs BitStream pointer
      */
-    void writeHeader(BitStream *bs) const;
+    void write_header(BitStream &bs) const;
     /**
      * \brief Reads header from BitStream
      * \param bs BitStream pointer
      * \return HybridHeader object
      */
-    static LossyHybridHeader readHeader(BitStream *bs);
+    static LossyHybridHeader read_header(BitStream &bs);
 };
 
 class LossyHybridEncoder final : public Encoder {
@@ -55,5 +54,5 @@ public:
      */
     void decode() override;
 
-    Frame decode_intra(Golomb *g);
+    Frame decode_intra(Golomb &g);
 };

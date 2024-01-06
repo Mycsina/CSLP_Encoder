@@ -5,16 +5,19 @@
  * Declares the BitStream class, which defines methods to access individual bits of a file
  */
 #pragma once
+#include <cstdint>
 #include <fstream>
 #include <string>
+#include <vector>
 
 /**
  * @brief The BitStream class provides methods for reading and writing bits to a file.
  */
 class BitStream {
-    std::fstream file;   ///< Output file stream.
-    unsigned char buffer;///< Buffer to store bits.
-    int bufferSize;      ///< Current size of the buffer.
+    std::fstream file;          ///< Output file stream.
+    std::vector<uint8_t> buffer;///< Buffer to store bits.
+    uint8_t currentByte;        ///< Current byte being read/written.
+    int bufferSize;             ///< Current size of the buffer.
 
 public:
     /**

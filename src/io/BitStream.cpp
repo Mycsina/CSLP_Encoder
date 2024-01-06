@@ -1,5 +1,6 @@
 #include "BitStream.hpp"
 #include <bitset>
+#include <cassert>
 #include <iostream>
 
 using namespace std;
@@ -10,7 +11,8 @@ BitStream::BitStream(const string &filePath,
     if (!file.is_open()) {
         throw runtime_error("File does not exist or can't be opened");
     }
-    buffer = 0;
+    currentByte = 0;
+    buffer = vector<uint8_t>(0);
     bufferSize = 0;
 }
 
@@ -20,35 +22,33 @@ BitStream::~BitStream() {
 }
 
 void BitStream::writeBit(int bit) {
-    buffer <<= 1;
+    currentByte <<= 1;
     if (bit) {//!=0
-        buffer |= 1;
+        currentByte |= 1;
     }
     bufferSize++;
     if (bufferSize == 8) {
-        file.put(buffer);
-        buffer = 0;
+        buffer.push_back(currentByte);
+        currentByte = 0;
         bufferSize = 0;
     }
 }
 
 int BitStream::readBit() {
     if (bufferSize == 0) {
-        if (!file) {
-            throw runtime_error("End of file reached");
-        }
-        file.read(reinterpret_cast<char *>(&buffer), 1);
+        assert(file);
+        file.read(reinterpret_cast<char *>(&currentByte), 1);
         bufferSize = 8;
     }
 
-    int bit = (buffer >> (bufferSize - 1)) & 1;
+    const int bit = (currentByte >> (bufferSize - 1)) & 1;
     bufferSize--;
     return bit;
 }
 
 void BitStream::writeBits(int value, int n) {
     for (int i = n - 1; i >= 0; i--) {
-        writeBit(value >> i & 1); //get the nth bit and write it
+        writeBit(value >> i & 1);//get the nth bit and write it
     }
 }
 
@@ -90,15 +90,17 @@ std::string BitStream::readString() {
 }
 
 void BitStream::flushBuffer() {
-    if (bufferSize > 0) {
-        buffer <<= (8 - bufferSize);
-        file.put(buffer);
-        buffer = 0;
-        bufferSize = 0;
+    file.write(reinterpret_cast<char *>(buffer.data()), buffer.size());
+    if (currentByte) {
+        for (int i = bufferSize; i < 8; i++) {
+            currentByte <<= 1;
+        }
     }
+    file.put(currentByte);
+    bufferSize = 0;
+    file.flush();
 }
 
 int BitStream::getPosition() {
     return file.tellg();
 }
-
