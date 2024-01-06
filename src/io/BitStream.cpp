@@ -92,7 +92,7 @@ std::string BitStream::readString() {
 void BitStream::flushBuffer() {
     file.write(reinterpret_cast<char *>(buffer.data()), buffer.size());
     if (currentByte) {
-        while (!(currentByte & 0x80)) {
+        for (int i = bufferSize; i < 8; i++) {
             currentByte <<= 1;
         }
     }

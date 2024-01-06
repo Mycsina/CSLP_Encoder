@@ -2,6 +2,8 @@
 #include <cmath>
 #include <string>
 
+#define PHI 1.61803398874989484820458683436563811772030917980576286213544862270526046281890
+
 using namespace std;
 
 Golomb::Golomb(const std::string &filePath, const std::ios_base::openmode mode) {
@@ -88,7 +90,8 @@ int Golomb::readBinaryTrunc() const {
     if (k_bits < u) {
         return k_bits;
     }
-    return (k_bits << 1) + bs->readBit() - u;
+    const int next = bs->readBit();
+    return (k_bits << 1) + next - u;
 }
 
 void Golomb::writeBinaryTrunc(const int n) const {
@@ -106,10 +109,10 @@ int Golomb::adjust_m(const std::vector<int> &data, const int sample_factor) {
         sum += abs(data[rand() % data.size()]);
     }
     const double mean = sum / sample_num;
-    const double golden_ratio = (sqrt(5) + 1) / 2;
+    const double golden_ratio = PHI;
     // M. Kiely, 2004
-    int result = static_cast<int>(max(0.0, 1 + floor(log2(log(golden_ratio - 1) / log(mean / (mean + 1))))));
+    // int result = static_cast<int>(max(0.0, 1 + floor(log2(log(golden_ratio - 1) / log(mean / (mean + 1))))));
     // A. Said, 2006
-    result = static_cast<int>(max(0.0, ceil(log2(mean) - 0.05 + 0.6 / mean)));
+    int result = static_cast<int>(max(0.0, ceil(log2(mean) - 0.05 + 0.6 / mean)));
     return result;
 }
