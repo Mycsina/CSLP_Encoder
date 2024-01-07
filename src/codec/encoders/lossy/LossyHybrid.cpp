@@ -53,6 +53,9 @@ LossyHybridEncoder::LossyHybridEncoder(const char *src, const char *dst, const u
     this->u_quant = Quantizer(256, u);
     this->v_quant = Quantizer(256, v);
 }
+LossyHybridEncoder::LossyHybridEncoder(const char *src) : golomb_m(0), block_size(0), y_quant(), u_quant(), v_quant() {
+    this->src = src;
+}
 
 void LossyHybridEncoder::encode() {
     BitStream bs(dst, ios::out);

@@ -124,7 +124,7 @@ Frame LossyIntraEncoder::decode_intra(Golomb &g) const {
                 } else {
                     quantizer = v_quant;
                 }
-                const auto diff = quantizer.get_value(g.decode());
+                const auto diff = g.decode();
                 const uchar predicted = Frame::predict_JPEG_LS(mat, r, c, channel);
                 const uchar real = diff + predicted;
                 if (mat.channels() > 1) {

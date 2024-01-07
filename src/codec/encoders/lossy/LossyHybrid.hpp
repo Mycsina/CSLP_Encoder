@@ -48,10 +48,13 @@ public:
     Quantizer u_quant;     ///< Quantizer for U channel
     Quantizer v_quant;     ///< Quantizer for V channel
     LossyHybridEncoder(const char *src, const char *dst, uint8_t golomb_m, uint8_t block_size, uint8_t period, uint8_t y, uint8_t u, uint8_t v);
+    explicit LossyHybridEncoder(const char *src);
+
     /**
      * \brief encodes a video from src into dst with a mix of inter and intraframe encoding
      */
     void encode() override;
+
     /**
      * \brief decodes a video from dst with a mix of inter and intraframe encoding
      */

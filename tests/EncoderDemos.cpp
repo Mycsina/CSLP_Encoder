@@ -47,9 +47,9 @@ TEST_F(EncoderDemo, HybridDemo) {
 TEST_F(EncoderDemo, LossyIntraDemo) {
     constexpr int m = 2;
     const char *file = test_video;
-    LossyIntraEncoder encoder(file, "../../tests/resource/encoded", m, 128, 128, 128);
+    LossyIntraEncoder encoder(file, "../../tests/resource/encoded", m, 32, 32, 32);
     encoder.encode();
-    LossyIntraEncoder decoder("../../tests/resource/encoded", "../../tests/resource/decoded", m, 128, 128, 128);
+    LossyIntraEncoder decoder("../../tests/resource/encoded");
     decoder.decode();
     for (auto &frame: decoder.frames) {
         Image im2 = frame.get_image();
@@ -62,7 +62,7 @@ TEST_F(EncoderDemo, LossyHybridDemo) {
     const char *file = test_video;
     LossyHybridEncoder encoder(file, "../../tests/resource/encoded", m, 16, 5, 255, 255, 255);
     encoder.encode();
-    LossyHybridEncoder decoder("../../tests/resource/encoded", "../../tests/resource/decoded", m, 16, 5, 255, 255, 255);
+    LossyHybridEncoder decoder("../../tests/resource/encoded");
     decoder.decode();
     for (auto &frame: decoder.frames) {
         Image im2 = frame.get_image();
