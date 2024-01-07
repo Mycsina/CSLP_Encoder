@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Encoder.hpp"
-#include "../Header.hpp"
-#include "../Quantizer.hpp"
+#include "../../Encoder.hpp"
+#include "../../Header.hpp"
+#include "../../Quantizer.hpp"
 
 class LossyHybridHeader : public InterHeader {
 public:

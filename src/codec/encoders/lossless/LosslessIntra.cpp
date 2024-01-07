@@ -1,10 +1,11 @@
 #include "LosslessIntra.hpp"
-#include "../../visual/Video.hpp"
+#include "../../../visual/Video.hpp"
 
 using namespace std;
 using namespace cv;
 
 LosslessIntraEncoder::LosslessIntraEncoder(const char *src, const char *dst) : src(src), dst(dst) {}
+LosslessIntraEncoder::LosslessIntraEncoder(const char *src) : src(src) {}
 
 void LosslessIntraEncoder::encode() {
     BitStream bs(dst, ios::out);
@@ -43,5 +44,8 @@ void LosslessIntraEncoder::decode() {
     for (int i = 0; i < header.length; i++) {
         Frame img = Frame::decode_JPEG_LS(golomb, header);
         frames.push_back(img);
+    }
+    if (dst != nullptr) {
+        Video vid(frames);
     }
 }

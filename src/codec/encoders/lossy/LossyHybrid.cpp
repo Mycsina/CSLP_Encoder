@@ -1,5 +1,5 @@
 #include "LossyHybrid.hpp"
-#include "../Quantizer.hpp"
+#include "../../Quantizer.hpp"
 
 using namespace std;
 using namespace cv;

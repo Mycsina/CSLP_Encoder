@@ -1,6 +1,7 @@
-#include "../src/codec/encoders/LosslessHybrid.hpp"
-#include "../src/codec/encoders/LosslessIntra.hpp"
-#include "../src/codec/encoders/LossyHybrid.hpp"
+#include "../src/codec/encoders/lossless/LosslessHybrid.hpp"
+#include "../src/codec/encoders/lossless/LosslessIntra.hpp"
+#include "../src/codec/encoders/lossy/LossyHybrid.hpp"
+#include "../src/codec/encoders/lossy/LossyIntra.hpp"
 #include "../src/visual/Video.hpp"
 #include <gtest/gtest.h>
 #include <iostream>
@@ -35,7 +36,20 @@ TEST_F(EncoderDemo, HybridDemo) {
     const char *file = small_moving;
     LosslessHybridEncoder encoder(file, "encoded", m, 16, 5);
     encoder.encode();
-    LosslessHybridEncoder decoder("encoded", "decoded", m, 16, 5);
+    LosslessHybridEncoder decoder("encoded");
+    decoder.decode();
+    for (auto &frame: decoder.frames) {
+        Image im2 = frame.get_image();
+        im2.show(true);
+    }
+}
+
+TEST_F(EncoderDemo, LossyIntraDemo) {
+    constexpr int m = 2;
+    const char *file = test_video;
+    LossyIntraEncoder encoder(file, "../../tests/resource/encoded", m, 128, 128, 128);
+    encoder.encode();
+    LossyIntraEncoder decoder("../../tests/resource/encoded", "../../tests/resource/decoded", m, 128, 128, 128);
     decoder.decode();
     for (auto &frame: decoder.frames) {
         Image im2 = frame.get_image();

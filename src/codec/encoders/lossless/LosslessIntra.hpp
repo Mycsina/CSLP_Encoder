@@ -4,8 +4,8 @@
  */
 
 #pragma once
-#include "../Encoder.hpp"
-#include "../Header.hpp"
+#include "../../Encoder.hpp"
+#include "../../Header.hpp"
 
 /**
  * \brief The LosslessInterFrameEncoder provides methods to encode/decode a video using the lossless interframe codec
@@ -18,6 +18,12 @@ public:
      * \param dst File path of the encoded video
      */
     LosslessIntraEncoder(const char *src, const char *dst);
+    /**
+     * \brief Constructor for the LosslessIntraFrameEncoder class
+     * \param src File path of the input video
+     */
+    explicit LosslessIntraEncoder(const char *src);
+
     const char *src{};
     const char *dst{};
     Header header{};
