@@ -35,6 +35,7 @@ public:
     void set_fps(float fps);
     YuvHeader get_header() const;
     void set_header(const YuvHeader &header);
+    bool is_y4m() const;
 
     //! Generates vector of frames from the video
     //! @warning Must be deallocated after use
@@ -78,5 +79,5 @@ public:
 
     //! Write Video to file
     //! @param filename path to the file
-    void save(const char *filename) const;
+    void save(const char *filename);
 };

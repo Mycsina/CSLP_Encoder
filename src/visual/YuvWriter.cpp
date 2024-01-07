@@ -1,5 +1,7 @@
 #include "YuvWriter.hpp"
 
+#include <utility>
+
 #include "Image.hpp"
 #include "Video.hpp"
 
@@ -7,6 +9,14 @@ using namespace std;
 using namespace cv;
 
 YuvWriter::YuvWriter(const string &filename) : header() {
+    path = filename;
+    file = fopen(filename.c_str(), "wb");
+    if (file == nullptr) {
+        throw runtime_error("Could not open file " + filename);
+    }
+}
+
+YuvWriter::YuvWriter(const string &filename, YuvHeader header) : header(std::move(header)) {
     path = filename;
     file = fopen(filename.c_str(), "wb");
     if (file == nullptr) {

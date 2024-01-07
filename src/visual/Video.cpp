@@ -1,7 +1,8 @@
 #include "Video.hpp"
-#include "YuvParser.hpp"
 #include "Image.hpp"
 #include "ImageProcessing.hpp"
+#include "YuvParser.hpp"
+#include "YuvWriter.hpp"
 
 #include <opencv2/core/mat.hpp>
 #include <opencv2/highgui.hpp>
@@ -37,6 +38,7 @@ float Video::get_fps() const { return fps_; }
 void Video::set_fps(const float fps) { fps_ = fps; }
 YuvHeader Video::get_header() const { return header; }
 void Video::set_header(const YuvHeader &header) { Video::header = header; }
+bool Video::is_y4m() const { return im_reel[0].get_color() == YUV; }
 
 vector<Frame *> Video::generate_frames() const {
     vector<Frame *> frames;
@@ -133,4 +135,19 @@ void Video::convert_to(const COLOR_SPACE f1, const COLOR_SPACE f2) {
         temp.push_back(func(im));
     }
     im_reel = temp;
+}
+
+void Video::save(const char *filename) {
+    const string ext = filename;
+    if (is_y4m()) {
+        YuvWriter writer(filename, header);
+        writer.write_video(*this);
+    }
+    else {
+        const auto fourcc = VideoWriter::fourcc('M', 'J', 'P', 'G');
+        auto writer = VideoWriter(ext, fourcc, fps_, Size(header.width, header.height));
+        for (auto &it: im_reel) {
+            writer.write(*it.get_image_mat());
+        }
+    }
 }

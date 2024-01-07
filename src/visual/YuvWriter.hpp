@@ -13,7 +13,7 @@ class YuvWriter {
 
 public:
     explicit YuvWriter(const std::string &filename);
-    ~YuvWriter() = default;
+    YuvWriter(const std::string &filename, YuvHeader header);
     void write_header() const;
     void write_image(Image &image) const;
     void write_video(Video &video);
