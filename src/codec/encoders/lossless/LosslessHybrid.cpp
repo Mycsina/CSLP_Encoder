@@ -35,7 +35,11 @@ HybridHeader HybridHeader::read_header(BitStream &bs) {
     return header;
 }
 
-LosslessHybridEncoder::LosslessHybridEncoder(const char *src, const char *dst, const uint8_t golomb_m, const uint8_t block_size, const uint8_t period) : src(src), dst(dst), golomb_m(golomb_m), block_size(block_size), period(period) {}
+LosslessHybridEncoder::LosslessHybridEncoder(const char *src, const char *dst, const uint8_t golomb_m,
+                                             const uint8_t block_size, const uint8_t period)
+    : src(src), dst(dst), golomb_m(golomb_m), block_size(block_size), period(period) {}
+LosslessHybridEncoder::LosslessHybridEncoder(const char *src, const char *dst)
+    : src(src), dst(dst), golomb_m(0), block_size(0) {}
 LosslessHybridEncoder::LosslessHybridEncoder(const char *src) : src(src), golomb_m(0), block_size(0) {}
 
 void LosslessHybridEncoder::encode() {
@@ -67,9 +71,7 @@ void LosslessHybridEncoder::encode() {
         double sum = 0;
         const auto intra = sample_frames(intra_frames, sample_factor);
         const auto inter = sample_frames(inter_frames, sample_factor);
-        for (auto &frame: intra) {
-            sum += Golomb::adjust_m(frame->get_intra_encoding());
-        }
+        for (auto &frame: intra) { sum += Golomb::adjust_m(frame->get_intra_encoding()); }
         for (auto &frame: inter) {
             vector<int> inter_encoding;
             for (auto &mv: frame->get_motion_vectors()) {
@@ -128,7 +130,5 @@ void LosslessHybridEncoder::decode() {
             cnt++;
         }
     }
-    if (dst != nullptr) {
-        const Video vid(frames);
-    }
+    if (dst != nullptr) { const Video vid(frames); }
 }

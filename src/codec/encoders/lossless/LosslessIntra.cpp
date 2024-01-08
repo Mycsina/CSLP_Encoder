@@ -4,6 +4,8 @@
 using namespace std;
 using namespace cv;
 
+LosslessIntraEncoder::LosslessIntraEncoder(const char *src, const char *dst, const uint8_t golomb_m)
+    : src(src), dst(dst), golomb_m(golomb_m) {}
 LosslessIntraEncoder::LosslessIntraEncoder(const char *src, const char *dst) : src(src), dst(dst) {}
 LosslessIntraEncoder::LosslessIntraEncoder(const char *src) : src(src) {}
 
@@ -13,27 +15,25 @@ void LosslessIntraEncoder::encode() {
     const auto vid = Video(src);
     const vector<Frame *> frames = vid.generate_frames();
 #pragma omp parallel for default(none) shared(frames)
-    for (auto &frame: frames) {
-        frame->encode_JPEG_LS();
+    for (auto &frame: frames) { frame->encode_JPEG_LS(); }
+    if (golomb_m == 0) {
+        // Best m
+        double sum = 0;
+        const auto sample_f = sample_frames(frames, sample_factor);
+        for (auto &frame: sample_f) { sum += Golomb::adjust_m(frame->get_intra_encoding()); }
+        const int k = static_cast<int>(sum / sample_f.size());
+        const int golomb_m = 1 << k;
+        g.set_m(golomb_m);
+    } else {
+        g.set_m(golomb_m);
     }
-    // Best m
-    double sum = 0;
-    const auto sample_f = sample_frames(frames, sample_factor);
-    for (auto &frame: sample_f) {
-        sum += Golomb::adjust_m(frame->get_intra_encoding());
-    }
-    const int k = static_cast<int>(sum / sample_f.size());
-    const int golomb_m = 1 << k;
-    g.set_m(golomb_m);
     // Write header
     const Frame sample = *frames[0];
     header.extract_info(sample);
     header.golomb_m = golomb_m;
     header.length = frames.size();
     header.write_header(bs);
-    for (auto &frame: frames) {
-        frame->write_JPEG_LS(g);
-    }
+    for (auto &frame: frames) { frame->write_JPEG_LS(g); }
 }
 
 void LosslessIntraEncoder::decode() {
@@ -45,7 +45,5 @@ void LosslessIntraEncoder::decode() {
         Frame img = Frame::decode_JPEG_LS(golomb, header);
         frames.push_back(img);
     }
-    if (dst != nullptr) {
-        Video vid(frames);
-    }
+    if (dst != nullptr) { Video vid(frames); }
 }

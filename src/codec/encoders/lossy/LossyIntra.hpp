@@ -45,6 +45,7 @@ public:
     Quantizer v_quant;     ///< Quantizer for V channel
 
     LossyIntraEncoder(const char *src, const char *dst, uint8_t golomb_m, uint8_t y, uint8_t u, uint8_t v);
+    LossyIntraEncoder(const char *src, const char *dst);
     explicit LossyIntraEncoder(const char *src);
     /**
      * \brief encodes a video from src into dst with a mix of inter and intraframe encoding

@@ -68,6 +68,12 @@ LossyHybridEncoder::LossyHybridEncoder(const char *src) : golomb_m(0), block_siz
     this->src = src;
 }
 
+LossyHybridEncoder::LossyHybridEncoder(const char *src, const char *dst)
+    : golomb_m(0), block_size(0), search_radius(0), period(0), y_quant(), u_quant(), v_quant() {
+    this->src = src;
+    this->dst = dst;
+}
+
 void LossyHybridEncoder::encode() {
     BitStream bs(dst, ios::out);
     Golomb g(&bs);

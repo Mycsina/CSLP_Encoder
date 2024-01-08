@@ -44,6 +44,11 @@ LossyIntraEncoder::LossyIntraEncoder(const char *src, const char *dst, const uin
     initialize_quantizers();
 }
 
+LossyIntraEncoder::LossyIntraEncoder(const char *src, const char *dst) : golomb_m(0), y_quant(), u_quant(), v_quant() {
+    this->src = src;
+    this->dst = dst;
+}
+
 LossyIntraEncoder::LossyIntraEncoder(const char *src) : golomb_m(0), y_quant(), u_quant(), v_quant() {
     this->src = src;
 }

@@ -16,6 +16,4 @@ add_library(Codec
         Quantizer.cpp
 )
 
-if (OpenMP_CXX_FOUND)
-    target_link_libraries(Codec PUBLIC OpenMP::OpenMP_CXX)
-endif ()
+target_link_libraries(Codec ${OpenCV_LIBS})

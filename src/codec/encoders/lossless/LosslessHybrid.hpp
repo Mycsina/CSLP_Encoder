@@ -39,6 +39,14 @@ public:
  */
 class LosslessHybridEncoder final : public Encoder {
 public:
+    const char *src{};      ///< File path of the input video
+    const char *dst{};      ///< File path of the encoded video
+    HybridHeader header{};  ///< Header object
+    uint8_t golomb_m;       ///< Golomb m parameter
+    uint8_t block_size;     ///< Macroblock size
+    uint8_t period{};       ///< Period of intra frames
+    int sample_factor = 100;///< Sample factor for calculating golomb_m
+
     /**
      * \brief Constructor for the LosslessHybridEncoder class
      * \param src File path of the input video
@@ -50,16 +58,16 @@ public:
     LosslessHybridEncoder(const char *src, const char *dst, uint8_t golomb_m, uint8_t block_size, uint8_t period);
     /**
      * \brief Constructor for the LosslessHybridEncoder class
-     * \param src File path of the input video
+     * \param src File path of the input encoded video
+     * \param dst File path of the decoded video
      */
-    LosslessHybridEncoder(const char *src);
-    const char *src{};      ///< File path of the input video
-    const char *dst{};      ///< File path of the encoded video
-    HybridHeader header{};  ///< Header object
-    uint8_t golomb_m;       ///< Golomb m parameter
-    uint8_t block_size;     ///< Macroblock size
-    uint8_t period{};       ///< Period of intra frames
-    int sample_factor = 100;///< Sample factor for calculating golomb_m
+    LosslessHybridEncoder(const char *src, const char *dst);
+    /**
+     * \brief Constructor for the LosslessHybridEncoder class
+     * \param src File path of the input encoded video
+     */
+    explicit LosslessHybridEncoder(const char *src);
+    LosslessHybridEncoder() = default;
 
     /**
      * \brief encodes a video from src into dst with a mix of inter and intraframe encoding

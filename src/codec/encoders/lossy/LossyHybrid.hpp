@@ -50,6 +50,7 @@ public:
     Quantizer v_quant;         ///< Quantizer for V channel
     LossyHybridEncoder(const char *src, const char *dst, uint8_t golomb_m, uint8_t block_size, uint8_t period, uint8_t search_radius, uint8_t y, uint8_t u, uint8_t v);
     LossyHybridEncoder(const char *src, const char *dst, uint8_t golomb_m, uint8_t block_size, uint8_t period, uint8_t y, uint8_t u, uint8_t v);
+    LossyHybridEncoder(const char *src, const char *dst);
     explicit LossyHybridEncoder(const char *src);
 
     /**
