@@ -63,4 +63,16 @@ public:
     void encode_JPEG_LS(Frame &frame) const;
 
     Frame decode_intra(Golomb &g) const;
+
+    Frame decode_inter(Golomb &g, Frame &frame_intra) const;
+
+    /**
+     * \brief Populates encoder with data from header
+     */
+    void populate();
+
+    /**
+     * \brief Initializes quantizers
+     */
+    void initialize_quantizers();
 };

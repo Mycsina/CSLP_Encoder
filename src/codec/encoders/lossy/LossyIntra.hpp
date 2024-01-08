@@ -58,4 +58,6 @@ public:
     void encode_JPEG_LS(Frame &frame) const;
 
     Frame decode_intra(Golomb &g) const;
+
+    void initialize_quantizers();
 };

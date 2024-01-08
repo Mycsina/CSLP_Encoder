@@ -480,6 +480,7 @@ void Frame::calculate_MV(const Frame &reference, const int block_size, const int
             if (block_diff_ == nullptr)
                 block_diff_ = new Block::SAD();
             if (fast) {
+                block_diff_->threshold = 512;
                 mv = match_block_arps(block, reference);
             } else {
                 block_diff_->threshold = 0;

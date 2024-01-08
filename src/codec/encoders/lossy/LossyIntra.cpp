@@ -41,9 +41,7 @@ LossyIntraEncoder::LossyIntraEncoder(const char *src, const char *dst, const uin
     this->y = y;
     this->u = u;
     this->v = v;
-    this->y_quant = Quantizer(256, y);
-    this->u_quant = Quantizer(256, u);
-    this->v_quant = Quantizer(256, v);
+    initialize_quantizers();
 }
 
 LossyIntraEncoder::LossyIntraEncoder(const char *src) : golomb_m(0), y_quant(), u_quant(), v_quant() {
@@ -55,6 +53,7 @@ void LossyIntraEncoder::encode() {
     Golomb g(&bs);
     const auto vid = Video(src);
     const vector<Frame *> frames = vid.generate_frames();
+#pragma omp parallel for default(none) shared(frames)
     for (auto &frame: frames) {
         encode_JPEG_LS(*frame);
     }
@@ -64,6 +63,9 @@ void LossyIntraEncoder::encode() {
     header.extract_info(sample);
     header.golomb_m = golomb_m;
     header.length = frames.size();
+    header.y = y;
+    header.u = u;
+    header.v = v;
     header.write_header(bs);
     for (auto &frame: frames) {
         frame->write_JPEG_LS(g);
@@ -74,7 +76,12 @@ void LossyIntraEncoder::decode() {
     BitStream bs(src, ios::in);
     Golomb golomb(&bs);
     header = LossyIntraHeader::read_header(bs);
-    golomb.set_m(header.golomb_m);
+    golomb_m = header.golomb_m;
+    y = header.y;
+    u = header.u;
+    v = header.v;
+    initialize_quantizers();
+    golomb.set_m(golomb_m);
     for (int i = 0; i < header.length; i++) {
         Frame img = decode_intra(golomb);
         frames.push_back(img);
@@ -102,8 +109,9 @@ void LossyIntraEncoder::encode_JPEG_LS(Frame &frame) const {
                 } else {
                     quant = v_quant;
                 }
-                const int quantized = quant.quantize(diff);
-                intra_encoding.push_back(quantized);
+                const int level = quant.get_level(diff);
+                const int quantized = quant.get_value(level);
+                intra_encoding.push_back(level);
                 image_mat_.at<Vec3b>(r, c)[channel] = predicted + quantized;
             }
         }
@@ -124,7 +132,7 @@ Frame LossyIntraEncoder::decode_intra(Golomb &g) const {
                 } else {
                     quantizer = v_quant;
                 }
-                const auto diff = g.decode();
+                const auto diff = quantizer.get_value(g.decode());
                 const uchar predicted = Frame::predict_JPEG_LS(mat, r, c, channel);
                 const uchar real = diff + predicted;
                 if (mat.channels() > 1) {
@@ -141,4 +149,10 @@ Frame LossyIntraEncoder::decode_intra(Golomb &g) const {
     Frame frame(im);
     frame.setType(I_FRAME);
     return frame;
+}
+
+void LossyIntraEncoder::initialize_quantizers() {
+    this->y_quant = Quantizer(256, y);
+    this->u_quant = Quantizer(256, u);
+    this->v_quant = Quantizer(256, v);
 }
