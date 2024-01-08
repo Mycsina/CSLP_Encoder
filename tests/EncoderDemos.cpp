@@ -1,8 +1,8 @@
 #include "../src/codec/encoders/lossless/LosslessHybrid.hpp"
 #include "../src/codec/encoders/lossless/LosslessIntra.hpp"
+#include "../src/codec/encoders/lossy/DCTEncoder.hpp"
 #include "../src/codec/encoders/lossy/LossyHybrid.hpp"
 #include "../src/codec/encoders/lossy/LossyIntra.hpp"
-#include "../src/codec/encoders/DCTEncoder.hpp"
 #include "../src/visual/Video.hpp"
 #include <gtest/gtest.h>
 #include <iostream>
@@ -26,27 +26,25 @@ TEST_F(EncoderDemo, IntraDemo) {
     encoder.encode();
     auto decoder = LosslessIntraEncoder("../../tests/resource/encoded", "../../tests/resource/decoded");
     decoder.decode();
-    for (auto &frame: decoder.frames) {
-        Image im2 = frame.get_image();
-        im2.show(true);
-    }
+    Video vid(decoder.frames);
+    vid.convert_to(YUV, BGR);
+    vid.play();
 }
 
 TEST_F(EncoderDemo, HybridDemo) {
-    constexpr int m = 2;
+    constexpr int m = 4;
     const char *file = small_moving;
     LosslessHybridEncoder encoder(file, "encoded", m, 16, 5);
     encoder.encode();
     LosslessHybridEncoder decoder("encoded");
     decoder.decode();
-    for (auto &frame: decoder.frames) {
-        Image im2 = frame.get_image();
-        im2.show(true);
-    }
+    Video vid(decoder.frames);
+    vid.convert_to(YUV, BGR);
+    vid.play();
 }
 
 TEST_F(EncoderDemo, LossyIntraDemo) {
-    constexpr int m = 2;
+    constexpr int m = 4;
     const char *file = test_video;
     LossyIntraEncoder encoder(file, "../../tests/resource/encoded", m, 64, 32, 32);
     encoder.encode();
@@ -58,7 +56,7 @@ TEST_F(EncoderDemo, LossyIntraDemo) {
 }
 
 TEST_F(EncoderDemo, LossyHybridDemo) {
-    constexpr int m = 2;
+    constexpr int m = 4;
     const char *file = test_video;
     LossyHybridEncoder encoder(file, "../../tests/resource/encoded", m, 16, 5, 64, 32, 32);
     encoder.encode();
@@ -68,25 +66,15 @@ TEST_F(EncoderDemo, LossyHybridDemo) {
     vid.convert_to(YUV, BGR);
     vid.play();
 }
-TEST_F(EncoderDemo, DCTEncode){
-    const char *file = small_moving;
-    auto *encoder = new DCTEncoder(file,"../../tests/resource/encoded",12);
-    encoder->encode();
-    delete encoder;
-}
 
-TEST_F(EncoderDemo, DCTDemo){
-    const char *file = small_moving;
-    auto *encoder = new DCTEncoder(file,"../../tests/resource/encoded",12);
-    encoder->encode();
-    auto *decoder = new DCTEncoder("../../tests/resource/encoded","../../tests/resource/decoded",12);
-    decoder->decode();
-
-    for (auto &frame: decoder->frames) {
-        Image im2 = frame.get_image();
-        im2.show();
-    }
-
-    delete encoder;
-    delete decoder;
+TEST_F(EncoderDemo, DCTDemo) {
+    constexpr int m = 8;
+    const char *file = test_video;
+    DCTEncoder encoder(file, "../../tests/resource/encoded", m);
+    encoder.encode();
+    DCTEncoder decoder("../../tests/resource/encoded", "../../tests/resource/decoded", m);
+    decoder.decode();
+    Video vid(decoder.frames);
+    vid.convert_to(YUV, BGR);
+    vid.play();
 }

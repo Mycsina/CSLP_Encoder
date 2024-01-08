@@ -11,10 +11,9 @@ add_library(Codec
         encoders/lossless/LosslessHybrid.cpp
         encoders/lossy/LossyHybrid.cpp
         encoders/lossy/LossyIntra.cpp
-        encoders/lossy/LossyIntra.hpp
-        Quantizer.cpp
-        encoders/DCTEncoder.cpp
+        encoders/lossy/DCTEncoder.cpp
         encoders/RLEEncoder.cpp
+        Quantizer.cpp
 )
 
 if (OpenMP_CXX_FOUND)

@@ -5,17 +5,14 @@
 
 #pragma once
 #include "../Encoder.hpp"
-#include "../Header.hpp"
-#include "../Frame.hpp"
-#include <opencv2/core/mat.hpp>
 
 class RLEEncoder {
-private:
     Golomb *g;
     int last_value;
     int cnt;
+
 public:
-    RLEEncoder(Golomb *g);
+    explicit RLEEncoder(Golomb *golomb);
     ~RLEEncoder();
     void flush_buffer();
     void fetch_buffer();
@@ -23,4 +20,3 @@ public:
     void push(int value);
     int pop();
 };
-
