@@ -1,6 +1,6 @@
 #include "LosslessInter.hpp"
-#include "../../visual/ImageProcessing.hpp"
-#include "../../visual/Video.hpp"
+#include "../../../visual/ImageProcessing.hpp"
+#include "../../../visual/Video.hpp"
 
 using namespace std;
 using namespace cv;
@@ -10,10 +10,10 @@ LosslessInterFrameEncoder::LosslessInterFrameEncoder(const char *src, const char
 
 
 void LosslessInterFrameEncoder::encode() {
+    const Video vid(src);
     BitStream bs(dst, ios::out);
     Golomb g(&bs);
     g.set_m(golomb_m);
-    const Video vid = Video(src);
     const vector<Frame *> frames = vid.generate_frames();
     const Frame sample = *frames[0];
     header.extract_info(sample);

@@ -1,6 +1,7 @@
-#include "../src/codec/encoders/LosslessHybrid.hpp"
-#include "../src/codec/encoders/LosslessIntra.hpp"
-#include "../src/codec/encoders/LossyHybrid.hpp"
+#include "../src/codec/encoders/lossless/LosslessHybrid.hpp"
+#include "../src/codec/encoders/lossless/LosslessIntra.hpp"
+#include "../src/codec/encoders/lossy/LossyHybrid.hpp"
+#include "../src/codec/encoders/lossy/LossyIntra.hpp"
 #include "../src/codec/encoders/DCTEncoder.hpp"
 #include "../src/visual/Video.hpp"
 #include <gtest/gtest.h>
@@ -36,7 +37,7 @@ TEST_F(EncoderDemo, HybridDemo) {
     const char *file = small_moving;
     LosslessHybridEncoder encoder(file, "encoded", m, 16, 5);
     encoder.encode();
-    LosslessHybridEncoder decoder("../../tests/resource/encoded", "../../tests/resource/decoded", m, 16, 5);
+    LosslessHybridEncoder decoder("encoded");
     decoder.decode();
     for (auto &frame: decoder.frames) {
         Image im2 = frame.get_image();
@@ -44,17 +45,28 @@ TEST_F(EncoderDemo, HybridDemo) {
     }
 }
 
+TEST_F(EncoderDemo, LossyIntraDemo) {
+    constexpr int m = 2;
+    const char *file = test_video;
+    LossyIntraEncoder encoder(file, "../../tests/resource/encoded", m, 64, 32, 32);
+    encoder.encode();
+    LossyIntraEncoder decoder("../../tests/resource/encoded");
+    decoder.decode();
+    Video vid(decoder.frames);
+    vid.convert_to(YUV, BGR);
+    vid.play();
+}
+
 TEST_F(EncoderDemo, LossyHybridDemo) {
     constexpr int m = 2;
     const char *file = test_video;
-    LossyHybridEncoder encoder(file, "../../tests/resource/encoded", m, 16, 5, 255, 255, 255);
+    LossyHybridEncoder encoder(file, "../../tests/resource/encoded", m, 16, 5, 64, 32, 32);
     encoder.encode();
-    LossyHybridEncoder decoder("../../tests/resource/encoded", "../../tests/resource/decoded", m, 16, 5, 255, 255, 255);
+    LossyHybridEncoder decoder("../../tests/resource/encoded");
     decoder.decode();
-    for (auto &frame: decoder.frames) {
-        Image im2 = frame.get_image();
-        im2.show(true);
-    }
+    Video vid(decoder.frames);
+    vid.convert_to(YUV, BGR);
+    vid.play();
 }
 TEST_F(EncoderDemo, DCTEncode){
     const char *file = small_moving;

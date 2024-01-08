@@ -1,5 +1,5 @@
 #include "LossyHybrid.hpp"
-#include "../Quantizer.hpp"
+#include "../../Quantizer.hpp"
 
 using namespace std;
 using namespace cv;
@@ -49,13 +49,17 @@ LossyHybridEncoder::LossyHybridEncoder(const char *src, const char *dst, const u
     this->y = y;
     this->u = u;
     this->v = v;
+    initialize_quantizers();
+}
+LossyHybridEncoder::LossyHybridEncoder(const char *src) : golomb_m(0), block_size(0), y_quant(), u_quant(), v_quant() {
+    this->src = src;
 }
 
 void LossyHybridEncoder::encode() {
     BitStream bs(dst, ios::out);
     Golomb g(&bs);
     const Video vid(src);
-    const vector<Frame *> frames = vid.generate_frames();
+    vector<Frame *> frames = vid.generate_frames();
     const Frame sample = *frames[0];
     header.extract_info(sample);
     header.golomb_m = golomb_m;
@@ -69,45 +73,23 @@ void LossyHybridEncoder::encode() {
     g.set_m(golomb_m);
     int cnt = period;
     int last_intra = 0;
-    Quantizer y_quant(256, y);
-    Quantizer u_quant(256, u);
-    Quantizer v_quant(256, v);
     for (int index = 0; index < frames.size(); index++) {
         Frame *frame = frames[index];
         if (cnt == period) {
-            frame->encode_JPEG_LS();
+            encode_JPEG_LS(*frame);
             last_intra = index;
             cnt = 0;
-            // quantize encodings
-            auto encodings = frame->get_intra_encoding();
-            for (int i = 0; i < encodings.size(); i++) {
-                Quantizer quant;
-                if (i % 3 == 0) {
-                    quant = y_quant;
-                } else if (i % 3 == 1) {
-                    quant = u_quant;
-                } else {
-                    quant = v_quant;
-                }
-                encodings[i] = quant.quantize(encodings[i]);
-            }
-            frame->set_intra_encoding(encodings);
+        } else {
+            const Frame *frame_intra = frames[last_intra];
+            frame->calculate_MV(*frame_intra, block_size, header.search_radius, true);
+            cnt++;
+        }
+    }
+    for (const auto &frame: frames) {
+        if (frame->get_type() == I_FRAME) {
             frame->write_JPEG_LS(g);
         } else {
-            Frame *frame_intra = frames[last_intra];
-            frame->calculate_MV(*frame_intra, block_size, header.search_radius, true);
-            auto mvs = frame->get_motion_vectors();
-            for (const auto &mv: mvs) {
-                auto residual = mv.residual;
-                residual.forEach<Vec3s>([&](Vec3s &p, const int *) -> void {
-                    p[0] = y_quant.quantize(p[0]);
-                    p[1] = u_quant.quantize(p[1]);
-                    p[2] = v_quant.quantize(p[2]);
-                });
-            }
-            frame->set_motion_vectors(mvs);
             frame->write(g);
-            cnt++;
         }
     }
 }
@@ -116,6 +98,7 @@ void LossyHybridEncoder::decode() {
     BitStream bs(src, ios::in);
     Golomb g(&bs);
     header = LossyHybridHeader::read_header(bs);
+    populate();
     g.set_m(header.golomb_m);
     int cnt = period;
     int last_intra = 0;
@@ -126,40 +109,52 @@ void LossyHybridEncoder::decode() {
             cnt = 0;
         } else {
             Frame frame_intra = frames[last_intra];
-            header.block_size = block_size;
             frames.push_back(Frame::decode_inter(g, frame_intra, header));
             cnt++;
         }
     }
 }
 
-Frame LossyHybridEncoder::decode_intra(Golomb &g) {
-    Mat mat;
-    Quantizer y_quant(256, header.y);
-    Quantizer u_quant(256, header.u);
-    Quantizer v_quant(256, header.v);
-    if (header.color_space == GRAY) {
-        mat = Mat::zeros(header.height, header.width, CV_8UC1);
-    } else {
-        mat = Mat::zeros(header.height, header.width, CV_8UC3);
+void LossyHybridEncoder::encode_JPEG_LS(Frame &frame) const {
+    vector<int> intra_encoding;
+    frame.setType(I_FRAME);
+    Mat image_mat_ = *frame.get_image().get_image_mat();
+    for (int r = 0; r < image_mat_.rows; r++) {
+        for (int c = 0; c < image_mat_.cols; c++) {
+            for (int channel = 0; channel < image_mat_.channels(); channel++) {
+                const int real = image_mat_.at<Vec3b>(r, c)[channel];
+                const int predicted = Frame::predict_JPEG_LS(image_mat_, r, c, channel);
+                const int diff = real - predicted;
+                Quantizer quant;
+                if (channel == 0) {
+                    quant = y_quant;
+                } else if (channel == 1) {
+                    quant = u_quant;
+                } else {
+                    quant = v_quant;
+                }
+                const int level = quant.get_level(diff);
+                const int quantized = quant.get_value(level);
+                intra_encoding.push_back(level);
+                image_mat_.at<Vec3b>(r, c)[channel] = predicted + quantized;
+            }
+        }
     }
+    frame.set_intra_encoding(intra_encoding);
+}
+
+Frame LossyHybridEncoder::decode_intra(Golomb &g) const {
+    Mat mat(header.height, header.width, CV_8UC3);
     for (int r = 0; r < mat.rows; r++) {
         for (int c = 0; c < mat.cols; c++) {
             for (int channel = 0; channel < mat.channels(); channel++) {
                 Quantizer quantizer;
-                switch (channel) {
-                    case 0:
-                        quantizer = y_quant;
-                        break;
-                    case 1:
-                        quantizer = u_quant;
-                        break;
-                    case 2:
-                        quantizer = v_quant;
-                        break;
-                    default:
-                        quantizer = y_quant;
-                        break;
+                if (channel == 0) {
+                    quantizer = y_quant;
+                } else if (channel == 1) {
+                    quantizer = u_quant;
+                } else {
+                    quantizer = v_quant;
                 }
                 const auto diff = quantizer.get_value(g.decode());
                 const uchar predicted = Frame::predict_JPEG_LS(mat, r, c, channel);
@@ -175,5 +170,24 @@ Frame LossyHybridEncoder::decode_intra(Golomb &g) {
     Image im(mat);
     im.set_color(header.color_space);
     im.set_chroma(header.chroma_subsampling);
-    return Frame(im);
+    Frame frame(im);
+    frame.setType(I_FRAME);
+    return frame;
+}
+
+void LossyHybridEncoder::populate() {
+    golomb_m = header.golomb_m;
+    block_size = header.block_size;
+    period = header.period;
+    y = header.y;
+    u = header.u;
+    v = header.v;
+    initialize_quantizers();
+}
+
+
+void LossyHybridEncoder::initialize_quantizers() {
+    this->y_quant = Quantizer(256, y);
+    this->u_quant = Quantizer(256, u);
+    this->v_quant = Quantizer(256, v);
 }

@@ -1,6 +1,6 @@
-#include "../src/codec/encoders/LosslessInter.hpp"
-#include "../src/codec/encoders/LosslessIntra.hpp"
-#include "../src/codec/encoders/LosslessHybrid.hpp"
+#include "../src/codec/encoders/lossless/LosslessInter.hpp"
+#include "../src/codec/encoders/lossless/LosslessIntra.hpp"
+#include "../src/codec/encoders/lossless/LosslessHybrid.hpp"
 #include "../src/visual/Video.hpp"
 #include <gtest/gtest.h>
 

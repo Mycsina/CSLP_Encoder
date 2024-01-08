@@ -77,7 +77,7 @@ Vec3b Image::getPixel(const int row, const int col) const {
             col >= image_mat_.cols) {
             throw std::out_of_range("Pixel out of bounds");
         }
-        Vec3b color_values = image_mat_.at<Vec3b>(row, col);
+        auto color_values = image_mat_.at<Vec3b>(row, col);
         return color_values;
     }
     throw std::runtime_error("Image hasn't been loaded");
@@ -95,8 +95,8 @@ Image Image::clone() const {
         Image clone;
         clone.image_mat_ = image_mat_.clone();
         return clone;
-    } else
-        throw std::runtime_error("Image hasn't been loaded");
+    }
+    throw std::runtime_error("Image hasn't been loaded");
 }
 
 bool Image::operator==(Image &other) const {
@@ -116,11 +116,11 @@ vector<Mat> Image::color_histograms(const int bins, const bool fill_hist, const 
             colors[0] = Scalar(255, 255, 255);
         }
         for (int i = 0; i < channels.size(); i++) {
-            Histogram hist = Histogram(bins);
+            Histogram hist(bins);
             hist.color = colors[i];
             Mat backMat = histogram<uchar>(channels[i], bins);
             const int bin_w = cvRound(static_cast<double>(width) / 256);
-            Vec3b backColor = (0, 0, 0);
+            Vec3b backColor = {0, 0, 0};
 
             Mat histImage(height, width, CV_8UC3, backColor);
 

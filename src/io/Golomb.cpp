@@ -104,14 +104,14 @@ void Golomb::writeBinaryTrunc(const int n) const {
 
 int Golomb::adjust_m(const std::vector<int> &data) {
     double sum = 0;
-    for (int i : data) {
+    for (int i: data) {
         sum += abs(i);
     }
     const double mean = sum / data.size();
     constexpr double golden_ratio = PHI;
     // M. Kiely, 2004
-    // int result = static_cast<int>(max(0.0, 1 + floor(log2(log(golden_ratio - 1) / log(mean / (mean + 1))))));
+    // const int result = static_cast<int>(max(0.0, 1 + floor(log2(log(golden_ratio - 1) / log(mean / (mean + 1))))));
     // A. Said, 2006
-    int result = static_cast<int>(max(0.0, ceil(log2(mean) - 0.05 + 0.6 / mean)));
+    const int result = static_cast<int>(max(0.0, ceil(log2(mean) - 0.05 + 0.6 / mean)));
     return result;
 }

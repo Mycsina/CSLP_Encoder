@@ -6,10 +6,12 @@ add_library(Codec
         Frame.cpp
         Header.hpp
         Header.cpp
-        encoders/LosslessIntra.cpp
-        encoders/LosslessInter.cpp
-        encoders/LosslessHybrid.cpp
-        encoders/LossyHybrid.cpp
+        encoders/lossless/LosslessIntra.cpp
+        encoders/lossless/LosslessInter.cpp
+        encoders/lossless/LosslessHybrid.cpp
+        encoders/lossy/LossyHybrid.cpp
+        encoders/lossy/LossyIntra.cpp
+        encoders/lossy/LossyIntra.hpp
         Quantizer.cpp
         encoders/DCTEncoder.cpp
         encoders/RLEEncoder.cpp

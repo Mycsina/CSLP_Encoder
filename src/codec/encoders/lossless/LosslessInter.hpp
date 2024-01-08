@@ -4,8 +4,8 @@
  */
 
 #pragma once
-#include "../Encoder.hpp"
-#include "../Header.hpp"
+#include "../../Encoder.hpp"
+#include "../../Header.hpp"
 
 /**
  * The LosslessInterFrameEncoder provides methods to encode/decode a video using the lossless interframe codec

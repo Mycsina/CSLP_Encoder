@@ -1,6 +1,6 @@
 #include "LosslessHybrid.hpp"
-#include "../../visual/ImageProcessing.hpp"
-#include "../../visual/Video.hpp"
+#include "../../../visual/ImageProcessing.hpp"
+#include "../../../visual/Video.hpp"
 
 using namespace std;
 using namespace cv;
@@ -36,7 +36,7 @@ HybridHeader HybridHeader::read_header(BitStream &bs) {
 }
 
 LosslessHybridEncoder::LosslessHybridEncoder(const char *src, const char *dst, const uint8_t golomb_m, const uint8_t block_size, const uint8_t period) : src(src), dst(dst), golomb_m(golomb_m), block_size(block_size), period(period) {}
-LosslessHybridEncoder::LosslessHybridEncoder(const char *src, const char *dst) : src(src), dst(dst), golomb_m(0), block_size(0) {}
+LosslessHybridEncoder::LosslessHybridEncoder(const char *src) : src(src), golomb_m(0), block_size(0) {}
 
 void LosslessHybridEncoder::encode() {
     BitStream bs(dst, ios::out);
@@ -127,5 +127,8 @@ void LosslessHybridEncoder::decode() {
             frames.push_back(Frame::decode_inter(g, frame_intra, header));
             cnt++;
         }
+    }
+    if (dst != nullptr) {
+        const Video vid(frames);
     }
 }

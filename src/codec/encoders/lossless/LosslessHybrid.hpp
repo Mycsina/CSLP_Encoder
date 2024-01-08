@@ -4,8 +4,8 @@
     */
 
 #pragma once
-#include "../Encoder.hpp"
-#include "../Header.hpp"
+#include "../../Encoder.hpp"
+#include "../../Header.hpp"
 
 class HybridHeader : public InterHeader {
 public:
@@ -51,9 +51,8 @@ public:
     /**
      * \brief Constructor for the LosslessHybridEncoder class
      * \param src File path of the input video
-     * \param dst File path of the encoded video
      */
-    LosslessHybridEncoder(const char *src, const char *dst);
+    LosslessHybridEncoder(const char *src);
     const char *src{};      ///< File path of the input video
     const char *dst{};      ///< File path of the encoded video
     HybridHeader header{};  ///< Header object
