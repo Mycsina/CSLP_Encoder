@@ -7,6 +7,10 @@ using namespace cv;
 #define PI 3.14159265358979324
 #endif
 
+#ifndef SQRT2INV
+#define SQRT2INV (1.0/sqrt(2))
+#endif
+
 DCTEncoder::DCTEncoder(const char *src, const char *dst, const uint8_t golomb_m) : src(src), dst(dst), golomb_m(golomb_m), block_size(0) {}
 DCTEncoder::DCTEncoder(const char *src, const char *dst) : src(src), dst(dst), golomb_m(0), block_size(0) {}
 
@@ -70,11 +74,16 @@ void DCTEncoder::encode_frame(Image *im, Golomb *g) {
 
 void DCTEncoder::dct8x8(int (&in)[8][8], double (&out)[8][8]) {
     for (int I = 0; I < 8; I++) {
+        double factorI=(I == 0) ? SQRT2INV : 1;
         for (int II = 0; II < 8; II++) {
+            double factorII=(II == 0) ? SQRT2INV : 1;
             double sum = 0;
             for (int r = 0; r < 8; r++) {
+                double cosR=cos((2 * r + 1) * I * PI / 16);
                 for (int c = 0; c < 8; c++) {
-                    sum += in[r][c] * cos((2 * r + 1) * I * PI / 16) * cos((2 * c + 1) * II * PI / 16) * ((I == 0) ? 1 / sqrt(2) : 1) * ((II == 0) ? 1 / sqrt(2) : 1);//I got this formula from the internet as Fourier transform is complicated
+                    double cosC=cos((2 * c + 1) * II * PI / 16);
+
+                    sum += in[r][c] * cosR * cosC * factorI * factorII;//I got this formula from the internet as Fourier transform is complicated
                 }
             }
             out[I][II] = sum / 4;
@@ -87,8 +96,9 @@ void DCTEncoder::idct8x8(double (&in)[8][8], int (&out)[8][8]) {
         for (int II = 0; II < 8; II++) {
             double sum = 0;
             for (int r = 0; r < 8; r++) {
+                double cosR=cos((2 * I + 1) * r * PI / 16);
                 for (int c = 0; c < 8; c++) {
-                    sum += in[r][c] * cos((2 * I + 1) * r * PI / 16) * cos((2 * II + 1) * c * PI / 16) * ((r == 0) ? 1 / sqrt(2) : 1) * ((c == 0) ? 1 / sqrt(2) : 1);//I got this formula from the internet as Fourier transform is complicated
+                    sum += in[r][c] * cosR * cos((2 * II + 1) * c * PI / 16) * ((r == 0) ? SQRT2INV : 1) * ((c == 0) ? SQRT2INV : 1);//I got this formula from the internet as Fourier transform is complicated
                 }
             }
             out[I][II] = static_cast<int>(sum) / 4;
