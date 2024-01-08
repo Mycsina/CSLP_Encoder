@@ -40,6 +40,19 @@ LossyHybridHeader LossyHybridHeader::read_header(BitStream &bs) {
     return header;
 }
 
+LossyHybridEncoder::LossyHybridEncoder(const char *src, const char *dst, const uint8_t golomb_m, const uint8_t block_size, const uint8_t period, const uint8_t search_radius, const uint8_t y, const uint8_t u, const uint8_t v) {
+    this->src = src;
+    this->dst = dst;
+    this->golomb_m = golomb_m;
+    this->block_size = block_size;
+    this->period = period;
+    this->search_radius = search_radius;
+    this->y = y;
+    this->u = u;
+    this->v = v;
+    initialize_quantizers();
+}
+
 LossyHybridEncoder::LossyHybridEncoder(const char *src, const char *dst, const uint8_t golomb_m, const uint8_t block_size, const uint8_t period, const uint8_t y, const uint8_t u, const uint8_t v) {
     this->src = src;
     this->dst = dst;
@@ -51,7 +64,7 @@ LossyHybridEncoder::LossyHybridEncoder(const char *src, const char *dst, const u
     this->v = v;
     initialize_quantizers();
 }
-LossyHybridEncoder::LossyHybridEncoder(const char *src) : golomb_m(0), block_size(0), y_quant(), u_quant(), v_quant() {
+LossyHybridEncoder::LossyHybridEncoder(const char *src) : golomb_m(0), block_size(0), search_radius(0), period(0), y_quant(), u_quant(), v_quant() {
     this->src = src;
 }
 
@@ -59,13 +72,14 @@ void LossyHybridEncoder::encode() {
     BitStream bs(dst, ios::out);
     Golomb g(&bs);
     const Video vid(src);
-    vector<Frame *> frames = vid.generate_frames();
+    const vector<Frame *> frames = vid.generate_frames();
     const Frame sample = *frames[0];
     header.extract_info(sample);
     header.golomb_m = golomb_m;
     header.length = frames.size();
     header.block_size = block_size;
     header.period = period;
+    header.search_radius = search_radius;
     header.y = y;
     header.u = u;
     header.v = v;
@@ -82,6 +96,7 @@ void LossyHybridEncoder::encode() {
         } else {
             const Frame *frame_intra = frames[last_intra];
             frame->calculate_MV(*frame_intra, block_size, header.search_radius, true);
+            quantize_inter(*frame);
             cnt++;
         }
     }
@@ -109,7 +124,7 @@ void LossyHybridEncoder::decode() {
             cnt = 0;
         } else {
             Frame frame_intra = frames[last_intra];
-            frames.push_back(Frame::decode_inter(g, frame_intra, header));
+            frames.push_back(decode_inter(g, frame_intra));
             cnt++;
         }
     }
@@ -143,6 +158,16 @@ void LossyHybridEncoder::encode_JPEG_LS(Frame &frame) const {
     frame.set_intra_encoding(intra_encoding);
 }
 
+void LossyHybridEncoder::quantize_inter(Frame &frame) const {
+    for (auto &mv: frame.get_motion_vectors()) {
+        mv.residual.forEach<Vec3s>([&](Vec3s &pixel, const int *) -> void {
+            pixel[0] = y_quant.get_level(pixel[0]);
+            pixel[1] = u_quant.get_level(pixel[1]);
+            pixel[2] = v_quant.get_level(pixel[2]);
+        });
+    }
+}
+
 Frame LossyHybridEncoder::decode_intra(Golomb &g) const {
     Mat mat(header.height, header.width, CV_8UC3);
     for (int r = 0; r < mat.rows; r++) {
@@ -173,6 +198,41 @@ Frame LossyHybridEncoder::decode_intra(Golomb &g) const {
     Frame frame(im);
     frame.setType(I_FRAME);
     return frame;
+}
+
+Frame LossyHybridEncoder::decode_inter(Golomb &g, Frame &frame_intra) const {
+    vector<MotionVector> mvs;
+    const int rows = header.height;
+    const int cols = header.width;
+    for (int block_num = 0; block_num < (rows / block_size) * (cols / block_size); block_num++) {
+        MotionVector mv;
+        Mat residual;
+        if (header.color_space == GRAY) {
+            residual = Mat::zeros(block_size, block_size, CV_16SC1);
+        } else {
+            residual = Mat::zeros(block_size, block_size, CV_16SC3);
+        }
+        mv.x = g.decode();
+        mv.y = g.decode();
+        for (int row = 0; row < block_size; row++) {
+            for (int col = 0; col < block_size; col++) {
+                for (int channel = 0; channel < residual.channels(); channel++) {
+                    Quantizer quantizer;
+                    if (channel == 0) {
+                        quantizer = y_quant;
+                    } else if (channel == 1) {
+                        quantizer = u_quant;
+                    } else {
+                        quantizer = v_quant;
+                    }
+                    residual.at<Vec3s>(row, col)[channel] = static_cast<short>(quantizer.get_value(g.decode()));
+                }
+            }
+        }
+        mv.residual = residual;
+        mvs.push_back(mv);
+    }
+    return Frame::reconstruct_frame(frame_intra, mvs, block_size);
 }
 
 void LossyHybridEncoder::populate() {

@@ -40,13 +40,15 @@ public:
     LossyHybridHeader header{};///< Header object
     uint8_t golomb_m;          ///< Golomb m parameter
     uint8_t block_size;        ///< Macroblock size
-    uint8_t period{};          ///< Period of intra frames
+    uint8_t search_radius;     ///< Search radius
+    uint8_t period;            ///< Period of intra frames
     uint8_t y = 0;             ///< Quantization steps for Y channel
     uint8_t u = 0;             ///< Quantization steps for U channel
     uint8_t v = 0;             ///< Quantization steps for V channel
-    Quantizer y_quant;     ///< Quantizer for Y channel
-    Quantizer u_quant;     ///< Quantizer for U channel
-    Quantizer v_quant;     ///< Quantizer for V channel
+    Quantizer y_quant;         ///< Quantizer for Y channel
+    Quantizer u_quant;         ///< Quantizer for U channel
+    Quantizer v_quant;         ///< Quantizer for V channel
+    LossyHybridEncoder(const char *src, const char *dst, uint8_t golomb_m, uint8_t block_size, uint8_t period, uint8_t search_radius, uint8_t y, uint8_t u, uint8_t v);
     LossyHybridEncoder(const char *src, const char *dst, uint8_t golomb_m, uint8_t block_size, uint8_t period, uint8_t y, uint8_t u, uint8_t v);
     explicit LossyHybridEncoder(const char *src);
 
@@ -61,6 +63,8 @@ public:
     void decode() override;
 
     void encode_JPEG_LS(Frame &frame) const;
+
+    void quantize_inter(Frame &frame) const;
 
     Frame decode_intra(Golomb &g) const;
 
