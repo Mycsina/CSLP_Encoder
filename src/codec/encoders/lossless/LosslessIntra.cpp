@@ -23,10 +23,9 @@ void LosslessIntraEncoder::encode() {
         for (auto &frame: sample_f) { sum += Golomb::adjust_m(frame->get_intra_encoding()); }
         const int k = static_cast<int>(sum / sample_f.size());
         const int golomb_m = 1 << k;
-        g.set_m(golomb_m);
-    } else {
-        g.set_m(golomb_m);
+        this->golomb_m = golomb_m;
     }
+    g.set_m(golomb_m);
     // Write header
     const Frame sample = *frames[0];
     header.extract_info(sample);

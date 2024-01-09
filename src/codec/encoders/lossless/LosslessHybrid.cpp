@@ -92,15 +92,14 @@ void LosslessHybridEncoder::encode() {
         const int k = static_cast<int>(sum / size);
         const int golomb_m = 1 << k;
         this->golomb_m = golomb_m;
-        g.set_m(golomb_m);
     }
+    g.set_m(golomb_m);
     header.extract_info(sample);
     header.golomb_m = golomb_m;
     header.length = frames.size();
     header.block_size = block_size;
     header.period = period;
     header.write_header(bs);
-    g.set_m(golomb_m);
     // REPORT: moving writes to separate loop (-10s)
     for (auto &frame: frames) {
         if (frame->get_type() == P_FRAME) {

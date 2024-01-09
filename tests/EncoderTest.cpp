@@ -48,8 +48,9 @@ TEST_F(EncoderTest, HybridTestAutoGolomb) {
 
 
 TEST_F(EncoderTest, IntraTest) {
+    constexpr int m = 0;
     const char *file = test_video.c_str();
-    auto encoder = LosslessIntraEncoder(file, "../../tests/resource/encoded");
+    auto encoder = LosslessIntraEncoder(file, "../../tests/resource/encoded", m);
     encoder.encode();
     auto decoder = LosslessIntraEncoder("../../tests/resource/encoded", "../../tests/resource/decoded");
     decoder.decode();

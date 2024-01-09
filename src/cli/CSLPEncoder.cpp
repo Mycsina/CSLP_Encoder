@@ -48,6 +48,11 @@ int main(const int argc, char **argv) {
         if (lossless) {
             if (codec == "lossless_intra") { encoder = new LosslessIntraEncoder(input.c_str(), output.c_str(), m); }
             if (codec == "lossless_hybrid") {
+                if (m == 0) {
+                    cout << "[E] Golomb m parameter is required for lossless hybrid encoding" << endl;
+                    cout << "    A value between 2 and 16 is reasonable" << endl;
+                    return 1;
+                }
                 const auto b = result["block_size"].as<uint8_t>();
                 const auto p = result["period"].as<uint8_t>();
                 encoder = new LosslessHybridEncoder(input.c_str(), output.c_str(), m, b, p);
