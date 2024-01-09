@@ -11,6 +11,8 @@ LossyIntraHeader::LossyIntraHeader(const Header &header) : Header() {
     this->width = header.width;
     this->golomb_m = header.golomb_m;
     this->length = header.length;
+    this->fps_num = header.fps_num;
+    this->fps_den = header.fps_den;
 }
 
 void LossyIntraHeader::write_header(BitStream &bs) const {
@@ -21,13 +23,7 @@ void LossyIntraHeader::write_header(BitStream &bs) const {
 }
 
 LossyIntraHeader LossyIntraHeader::read_header(BitStream &bs) {
-    LossyIntraHeader header{};
-    header.color_space = static_cast<COLOR_SPACE>(bs.readBits(3));
-    header.chroma_subsampling = static_cast<CHROMA_SUBSAMPLING>(bs.readBits(3));
-    header.width = bs.readBits(32);
-    header.height = bs.readBits(32);
-    header.golomb_m = bs.readBits(8);
-    header.length = bs.readBits(32);
+    LossyIntraHeader header(Header::read_header(bs));
     header.y = bs.readBits(8);
     header.u = bs.readBits(8);
     header.v = bs.readBits(8);
@@ -93,6 +89,7 @@ void LossyIntraEncoder::decode() {
     }
     if (dst != nullptr) {
         Video vid(frames);
+        vid.save_y4m(dst, header);
     }
 }
 

@@ -57,10 +57,10 @@ TEST_F(EncoderDemo, LossyIntraDemo) {
 
 TEST_F(EncoderDemo, LossyHybridDemo) {
     constexpr int m = 4;
-    const char *file = test_video;
-    LossyHybridEncoder encoder(file, "../../tests/resource/encoded", m, 16, 5, 64, 32, 32);
+    const char *file = small_still;
+    LossyHybridEncoder encoder(file, "../../encode", m, 16, 5, 255, 255, 255);
     encoder.encode();
-    LossyHybridEncoder decoder("../../tests/resource/encoded");
+    LossyHybridEncoder decoder("../../encode");
     decoder.decode();
     Video vid(decoder.frames);
     vid.convert_to(YUV, BGR);

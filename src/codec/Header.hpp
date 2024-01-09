@@ -7,6 +7,7 @@
 
 #pragma once
 #include "../visual/Image.hpp"
+#include "../visual/YuvHeader.hpp"
 
 class Frame;
 
@@ -21,6 +22,8 @@ public:
     uint32_t height;                      //!< Height
     uint8_t golomb_m;                     //!< Golomb m parameter
     uint32_t length;                      //!< Number of frames
+    uint8_t fps_num;                      //!< FPS numerator
+    uint8_t fps_den;                      //!< FPS denominator
     /**
      * \brief Default constructor
      */

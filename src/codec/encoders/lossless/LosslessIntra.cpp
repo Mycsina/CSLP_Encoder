@@ -30,6 +30,8 @@ void LosslessIntraEncoder::encode() {
     const Frame sample = *frames[0];
     header.extract_info(sample);
     header.golomb_m = golomb_m;
+    header.fps_num = vid.get_header().fps_num;
+    header.fps_den = vid.get_header().fps_den;
     header.length = frames.size();
     header.write_header(bs);
     for (auto &frame: frames) { frame->write_JPEG_LS(g); }
@@ -44,5 +46,8 @@ void LosslessIntraEncoder::decode() {
         Frame img = Frame::decode_JPEG_LS(golomb, header);
         frames.push_back(img);
     }
-    if (dst != nullptr) { Video vid(frames); }
+    if (dst != nullptr) {
+        Video vid(frames);
+        vid.save_y4m(dst, header);
+    }
 }

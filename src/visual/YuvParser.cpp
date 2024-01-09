@@ -72,7 +72,8 @@ void YuvParser::parse_header() {
             this->header.interlacing = MIXED_MODE;
             break;
         default:
-            throw runtime_error("Unrecognised interlace mode");
+            this->header.interlacing = UNKNOWN;
+            break;
     }
     const string color_space = this->header.raw_color_space;
     this->header.color_space = YUV420;

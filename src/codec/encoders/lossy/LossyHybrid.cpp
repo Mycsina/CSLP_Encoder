@@ -11,6 +11,8 @@ LossyHybridHeader::LossyHybridHeader(const Header &header) : InterHeader() {
     this->width = header.width;
     this->golomb_m = header.golomb_m;
     this->length = header.length;
+    this->fps_num = header.fps_num;
+    this->fps_den = header.fps_den;
 }
 
 void LossyHybridHeader::write_header(BitStream &bs) const {
@@ -24,13 +26,7 @@ void LossyHybridHeader::write_header(BitStream &bs) const {
 }
 
 LossyHybridHeader LossyHybridHeader::read_header(BitStream &bs) {
-    LossyHybridHeader header{};
-    header.color_space = static_cast<COLOR_SPACE>(bs.readBits(3));
-    header.chroma_subsampling = static_cast<CHROMA_SUBSAMPLING>(bs.readBits(3));
-    header.width = bs.readBits(32);
-    header.height = bs.readBits(32);
-    header.golomb_m = bs.readBits(8);
-    header.length = bs.readBits(32);
+    LossyHybridHeader header(Header::read_header(bs));
     header.block_size = bs.readBits(8);
     header.period = bs.readBits(8);
     header.search_radius = bs.readBits(8);
@@ -133,6 +129,13 @@ void LossyHybridEncoder::decode() {
             frames.push_back(decode_inter(g, frame_intra));
             cnt++;
         }
+        Image im = frames[index].get_image();
+        im.set_color(header.color_space);
+        im.set_chroma(header.chroma_subsampling);
+    }
+    if (dst != nullptr) {
+        Video vid(frames);
+        vid.save_y4m(dst, header);
     }
 }
 

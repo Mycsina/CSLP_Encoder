@@ -12,12 +12,14 @@ int main(const int argc, char **argv) {
     cxxopts::Options options("CSLP", "A video codecs suite");
     options.add_options()("c, codec", "The codec to use", cxxopts::value<std::string>()->default_value("hybrid"))(
             "mode", "Whether to encode or decode", cxxopts::value<std::string>()->default_value("encode"))(
-            "i,input", "Path to video file to read from", cxxopts::value<std::string>())(
+            "compare", "Compare two video files, requires input and output paths",
+            cxxopts::value<bool>()->default_value("false"))("i,input", "Path to video file to read from",
+                                                            cxxopts::value<std::string>())(
             "o,output", "Path where to output video file", cxxopts::value<std::string>())(
             "m,golomb_m", "Golomb m parameter, if not provided will pick a good one",
             cxxopts::value<uint8_t>()->default_value("0"))("b,block_size", "Block size",
                                                            cxxopts::value<uint8_t>()->default_value("16"))(
-            "p,period", "Period", cxxopts::value<uint8_t>()->default_value("10"))(
+            "p,period", "Period", cxxopts::value<uint8_t>()->default_value("5"))(
             "search,search_radius", "Search radius, if not provided will use faster search", cxxopts::value<uint8_t>())(
             "y,y_quantizer", "Y quantizer", cxxopts::value<uint8_t>())("u,u_quantizer", "U quantizer",
                                                                        cxxopts::value<uint8_t>())(
@@ -37,6 +39,15 @@ int main(const int argc, char **argv) {
     const auto input = result["input"].as<string>();
     const auto output = result["output"].as<string>();
     const auto m = result["m"].as<uint8_t>();
+    const auto compare = result["compare"].as<bool>();
+    if (compare) {
+        Video vid1(input.c_str());
+        Video vid2(output.c_str());
+        auto psnr = vid1.compare(vid2);
+        cout << "Average PSNR: " << psnr << endl;
+        if (psnr == INFINITY) { cout << "Videos are equal" << endl; }
+        return 0;
+    }
     if (mode != "encode" && mode != "decode") {
         cout << "[E] Invalid mode requested" << endl;
         cout << "    Valid modes are 'encode' and 'decode'" << endl;
@@ -57,25 +68,36 @@ int main(const int argc, char **argv) {
                 const auto p = result["period"].as<uint8_t>();
                 encoder = new LosslessHybridEncoder(input.c_str(), output.c_str(), m, b, p);
             }
-        }
-        if (!result.count("y") || !result.count("u") || !result.count("v")) {
-            cout << "[E] Y, U and V quantizing steps are required for lossy encoding" << endl;
-            cout << "    Valid values are between 1 and 255, but prefer values such as (32, 64, 128)" << endl;
-            return 1;
-        }
-        if (codec == "hybrid") {
-            const auto b = result["block_size"].as<uint8_t>();
-            const auto p = result["period"].as<uint8_t>();
-            const auto y = result["y"].as<uint8_t>();
-            const auto u = result["u"].as<uint8_t>();
-            const auto v = result["v"].as<uint8_t>();
-            encoder = new LossyHybridEncoder(input.c_str(), output.c_str(), m, b, p, y, u, v);
-        }
-        if (codec == "intra") {
-            const auto y = result["y"].as<uint8_t>();
-            const auto u = result["u"].as<uint8_t>();
-            const auto v = result["v"].as<uint8_t>();
-            encoder = new LossyIntraEncoder(input.c_str(), output.c_str(), m, y, u, v);
+        } else {
+            if (!result.count("y") || !result.count("u") || !result.count("v")) {
+                cout << "[E] Y, U and V quantizing steps are required for lossy encoding" << endl;
+                cout << "    Valid values are between 1 and 255, but prefer values such as (32, 64, 128)" << endl;
+                return 1;
+            }
+            auto y = result["y"].as<uint8_t>();
+            auto u = result["u"].as<uint8_t>();
+            auto v = result["v"].as<uint8_t>();
+            cout << "[I] Quantizing steps: Y=" << static_cast<int>(y) << ", U=" << static_cast<int>(u)
+                 << ", V=" << static_cast<int>(v) << endl;
+            if (m == 0) {
+                cout << "[E] Golomb m parameter is required for lossy encoding" << endl;
+                cout << "    A value between 2 and 16 is reasonable" << endl;
+                return 1;
+            }
+            if (codec == "hybrid") {
+                const auto b = result["block_size"].as<uint8_t>();
+                const auto p = result["period"].as<uint8_t>();
+                const auto y = result["y"].as<uint8_t>();
+                const auto u = result["u"].as<uint8_t>();
+                const auto v = result["v"].as<uint8_t>();
+                encoder = new LossyHybridEncoder(input.c_str(), output.c_str(), m, b, p, y, u, v);
+            }
+            if (codec == "intra") {
+                const auto y = result["y"].as<uint8_t>();
+                const auto u = result["u"].as<uint8_t>();
+                const auto v = result["v"].as<uint8_t>();
+                encoder = new LossyIntraEncoder(input.c_str(), output.c_str(), m, y, u, v);
+            }
         }
         if (encoder == nullptr) {
             cout << "[E] Invalid codec requested" << endl;
@@ -92,15 +114,15 @@ int main(const int argc, char **argv) {
     }
     if (mode == "decode") {
 
-        Encoder *encoder;
+        Encoder *decoder;
         if (codec == "lossless_intra") {
-            encoder = new LosslessIntraEncoder(input.c_str(), output.c_str());
+            decoder = new LosslessIntraEncoder(input.c_str(), output.c_str());
         } else if (codec == "lossless_hybrid") {
-            encoder = new LosslessHybridEncoder(input.c_str(), output.c_str());
+            decoder = new LosslessHybridEncoder(input.c_str(), output.c_str());
         } else if (codec == "hybrid") {
-            encoder = new LossyHybridEncoder(input.c_str(), output.c_str());
+            decoder = new LossyHybridEncoder(input.c_str(), output.c_str());
         } else if (codec == "intra") {
-            encoder = new LossyIntraEncoder(input.c_str(), output.c_str());
+            decoder = new LossyIntraEncoder(input.c_str(), output.c_str());
         } else {
             cout << "[E] Invalid codec requested" << endl;
             cout << "    Valid codecs are 'lossless_intra', 'lossless_hybrid', 'intra' and 'hybrid'" << endl;
@@ -108,10 +130,10 @@ int main(const int argc, char **argv) {
         }
         cout << "[I] Starting decoding with " << codec << " codec" << endl;
         const auto start = clock();
-        encoder->decode();
+        decoder->decode();
         const auto end = clock();
         cout << "[I] Decoding took " << (end - start) / static_cast<double>(CLOCKS_PER_SEC) << " seconds" << endl;
-        delete encoder;
+        delete decoder;
         return 0;
     }
 }

@@ -77,7 +77,21 @@ public:
     //! @param f2 destination color space
     void convert_to(COLOR_SPACE f1, COLOR_SPACE f2);
 
-    //! Write Video to file
+    //! Get video parameters from Encoder header
+    //! @param header Encoder header
+    void from_encoder(const Header &header);
+
+    //! Write Video to file using the MJPG codec
     //! @param filename path to the file
     void save(const char *filename);
+
+    //! Write Video to file as Y4M
+    //! @param filename path to the file
+    //! @param header Decoder header
+    void save_y4m(const char *filename, const Header &header);
+
+    //! Compares two videos
+    //! @param other video to be compared with
+    //! @return average PSNR value
+    double compare(Video &other) const;
 };

@@ -1,4 +1,5 @@
 #include "../codec/Header.hpp"
+#include "../visual/Video.hpp"
 #include "Frame.hpp"
 
 Header::Header(const COLOR_SPACE color_space, const CHROMA_SUBSAMPLING cs, const uint8_t width, const uint8_t height) : golomb_m(0), length(0) {
@@ -14,6 +15,8 @@ void Header::write_header(BitStream &bs) const {
     bs.writeBits(height, 32);
     bs.writeBits(golomb_m, 8);
     bs.writeBits(length, 32);
+    bs.writeBits(fps_num, 8);
+    bs.writeBits(fps_den, 8);
 }
 void Header::extract_info(const Frame &frame) {
     color_space = frame.get_image().get_color();
@@ -29,6 +32,8 @@ Header Header::read_header(BitStream &bs) {
     header.height = bs.readBits(32);
     header.golomb_m = bs.readBits(8);
     header.length = bs.readBits(32);
+    header.fps_num = bs.readBits(8);
+    header.fps_den = bs.readBits(8);
     return header;
 }
 
