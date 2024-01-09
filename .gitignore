@@ -37,3 +37,6 @@ build/
 .idea/
 *.bin
 /cmake-build-release/
+/profiling/
+/tests/resource/
+/bin/

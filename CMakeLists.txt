@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.14)
 project(CSLP_Project)
 
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    message("Release mode")
-    add_compile_options(-Ofast -march=native)
-elseif (CMAKE_BUILD_TYPE STREQUAL "Debug")
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message("Debug mode")
     add_compile_options(-g -Wall -Wextra -pedantic)
+else ()
+  message("Release mode")
+  add_compile_options(-Ofast -march=native)
 endif ()
 
 # CMake configuration

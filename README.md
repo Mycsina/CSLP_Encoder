@@ -2,14 +2,24 @@
 ## Building
 To build the project, run the following commands:
 ```bash
-/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=ninja -G Ninja -S . -B ./cmake-build-debug
+mkdir build
+cd build
+cmake ../
+cmake --build . --target CSLPEncoder -j 8
 ```
+
+## Running
+To run the project, run the following command:
+```bash
+bin/CSLPEncoder -h
+```
+Pass the `-h` flag to see the help message and the available options.
 
 ## Running a demo
 First, build the demos target.
 ```bash
-/usr/bin/cmake --build ./cmake-build-debug --target Demos -j 6
-cd ./cmake-build-debug/tests
+cmake --build . --target Demos -j 8
+cd tests
 ```
 Then, run any of the demos.
 ```bash
@@ -76,8 +86,8 @@ For example:
 ## Testing
 Build the tests target.
 ```bash
-/usr/bin/cmake --build ./cmake-build-debug --target tests_run -j 6
-cd ./cmake-build-debug/tests
+cmake --build . --target tests_run -j 8
+cd tests
 ```
 To run all tests, run the following command:
 ```bash
