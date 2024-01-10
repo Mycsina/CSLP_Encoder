@@ -11,7 +11,7 @@ auto jpegls_file = "../../tests/resource/jpegls_out.bin";
 
 TEST(ImageTestSuite, ImageLoadTest) {
     Image image;
-    Mat I = imread(img_file, IMREAD_COLOR);
+    const Mat I = imread(img_file, IMREAD_COLOR);
     ASSERT_NO_THROW(image.load(img_file));
     image.show();
     ASSERT_EQ(image.size().height, I.rows);
@@ -20,15 +20,15 @@ TEST(ImageTestSuite, ImageLoadTest) {
 
 TEST(ImageTestSuite, ImageLoadFailTest) {
     Image im;
-    auto gibb = "gibber-ish";
+    const auto gibb = "gibber-ish";
     ASSERT_ANY_THROW(im.load(gibb));
 }
 
 TEST(ImageTestSuite, PixelSetPersistTest) {
-    auto tempImage = "../../tests/resource/persist.png";
+    const auto tempImage = "../../tests/resource/persist.png";
     Image im;
     im.load(img_file);
-    Vec3b values = {12, 54, 255};
+    const Vec3b values = {12, 54, 255};
     im.setPixel(0, 0, values);
     im.save(tempImage);
     Image im2;

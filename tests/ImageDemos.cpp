@@ -37,7 +37,7 @@ TEST_F(ImageDemo, SubSampling_Demo) {
 TEST_F(ImageDemo, ColorHist_Demo) {
     im.show();
     // im = convert_BGR_GRAY(im);
-    vector<Mat> hists = im.color_histograms(256, true, 1024, 800);
+    const vector<Mat> hists = im.color_histograms(256, true, 1024, 800);
     // NOTE I found that if you try to allocate a new array with same shape and
     // type, it will return the previous array, so it's needed to assure that it
     // is filled with zeroes
@@ -60,7 +60,7 @@ TEST_F(ImageDemo, EqualizedColorHist_Demo) {
     equalize_hist(im);
     im.show();
     // im = convert_BGR_GRAY(im);
-    vector<Mat> hists = im.color_histograms(256, true, 1024, 800);
+    const vector<Mat> hists = im.color_histograms(256, true, 1024, 800);
     // NOTE I found that if you try to allocate a new array with same shape and
     // type, it will return the previous array, so it's needed to assure that it
     // is filled with zeroes
@@ -79,8 +79,8 @@ TEST_F(ImageDemo, EqualizedColorHist_Demo) {
 }
 
 TEST_F(ImageDemo, WatermarkDemo) {
-    auto mark_file = "../../tests/resource/lena.ppm";
-    Image mark(mark_file);
+    const auto mark_file = "../../tests/resource/lena.ppm";
+    const Image mark(mark_file);
     watermark(im, mark, {0, 0},
               {mark.size().width, mark.size().height}, 0.5);
     im.show();
@@ -108,14 +108,14 @@ TEST_F(ImageDemo, GaussianDemoFlat1) {
     // 1  1  1
     // 1  1  1
     im.show();
-    Mat blur(3, 3, CV_8UC3, Scalar(1, 1, 1));
+    const Mat blur(3, 3, CV_8UC3, Scalar(1, 1, 1));
     im.gaussian_blur(blur).show();
 }
 
 TEST_F(ImageDemo, GaussianDemoFlat2) {
     //[11x11]
     im.show();
-    Mat blur(11, 11, CV_8UC3, Scalar(1, 1, 1));
+    const Mat blur(11, 11, CV_8UC3, Scalar(1, 1, 1));
     im.gaussian_blur(blur).show();
 }
 

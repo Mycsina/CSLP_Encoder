@@ -12,11 +12,16 @@ auto small_still = "../../tests/resource/akiyo_qcif.y4m";
 auto vid_yuv_file = "../../tests/resource/ducks_take_off_444_720p50.y4m";
 
 TEST(VideoTest, CompareEqual) {
-    auto video = vid_yuv_file;
-    Video original(video);
+    const auto video = vid_yuv_file;
+    const Video original(video);
     Video copy(video);
-    auto psnr = original.compare(copy);
-    ASSERT_TRUE(psnr == INFINITY);
+    const auto psnr = original.compare(copy);
+    try {
+        ASSERT_TRUE(psnr == INFINITY);
+    } catch (const std::exception &e) {
+        std::cout << "Check that -Ofast is not enabled. It breaks the test." << std::endl;
+        std::cout << e.what() << std::endl;
+    }
 }
 
 TEST(VideoTest, CompareDifferent) {

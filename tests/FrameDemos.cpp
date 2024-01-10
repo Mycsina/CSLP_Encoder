@@ -23,14 +23,10 @@ protected:
     }
 };
 
-TEST_F(FrameDemo, BestGolombIntra) {
-    int i = 0;
-}
-
 TEST_F(FrameDemo, FrameMotionVectorDemo) {
     f1.show();
     f3.show();
-    int block_size = 16;
+    constexpr int block_size = 16;
     f3.calculate_MV(f1, block_size, 10, false);
     f3.visualize_MV(f1, block_size);
 }
@@ -38,7 +34,7 @@ TEST_F(FrameDemo, FrameMotionVectorDemo) {
 TEST_F(FrameDemo, FrameReconstructionDemo) {
     f1.show();
     f3.show();
-    int block_size = 16;
+    constexpr int block_size = 16;
     f3.calculate_MV(f1, block_size, 10, false);
     Frame reconstruct = Frame::reconstruct_frame(f1, f3.get_motion_vectors(), block_size);
     reconstruct.show();

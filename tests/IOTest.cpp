@@ -1,6 +1,5 @@
 #include <fstream>
 #include <gtest/gtest.h>
-#include <iostream>
 #include <string>
 
 #include "../src/io/BitStream.hpp"
