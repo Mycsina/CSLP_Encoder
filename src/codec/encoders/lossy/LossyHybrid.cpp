@@ -167,18 +167,20 @@ void LossyHybridEncoder::encode_JPEG_LS(Frame &frame) const {
     frame.set_intra_encoding(intra_encoding);
 }
 
-void LossyHybridEncoder::quantize_inter(Frame &frame) const {
+void LossyHybridEncoder::quantize_inter(const Frame &frame) const {
     for (auto &mv: frame.get_motion_vectors()) {
         mv.residual.forEach<Vec3s>([&](Vec3s &pixel, const int *) -> void {
-            pixel[0] = y_quant.get_level(pixel[0]);
-            pixel[1] = u_quant.get_level(pixel[1]);
-            pixel[2] = v_quant.get_level(pixel[2]);
+            pixel[0] = static_cast<short>(y_quant.get_level(pixel[0]));
+            pixel[1] = static_cast<short>(u_quant.get_level(pixel[1]));
+            pixel[2] = static_cast<short>(v_quant.get_level(pixel[2]));
         });
     }
 }
 
 Frame LossyHybridEncoder::decode_intra(Golomb &g) const {
-    Mat mat(header.height, header.width, CV_8UC3);
+    const int width = static_cast<int>(header.width);
+    const int height = static_cast<int>(header.height);
+    Mat mat(height, width, CV_8UC3);
     for (int r = 0; r < mat.rows; r++) {
         for (int c = 0; c < mat.cols; c++) {
             for (int channel = 0; channel < mat.channels(); channel++) {
@@ -211,8 +213,8 @@ Frame LossyHybridEncoder::decode_intra(Golomb &g) const {
 
 Frame LossyHybridEncoder::decode_inter(Golomb &g, Frame &frame_intra) const {
     vector<MotionVector> mvs;
-    const int rows = header.height;
-    const int cols = header.width;
+    const int rows = static_cast<int>(header.height);
+    const int cols = static_cast<int>(header.width);
     for (int block_num = 0; block_num < (rows / block_size) * (cols / block_size); block_num++) {
         MotionVector mv;
         Mat residual;

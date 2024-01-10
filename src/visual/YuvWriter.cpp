@@ -30,7 +30,7 @@ void YuvWriter::write_header() const {
     }
     if (header.raw_color_space[0] != '-') {
         fprintf(file, " %s", header.raw_color_space.c_str());
-    } else if (header.color_space != UNKNOWN) {
+    } else if (header.color_space != NA) {
         if (header.color_space == YUV444) {
             fprintf(file, " C444");
         } else if (header.color_space == YUV422) {

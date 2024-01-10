@@ -39,7 +39,7 @@ void LosslessInterFrameEncoder::decode() {
     Golomb golomb(&bs);
     header = InterHeader::read_header(bs);
     golomb.set_m(header.golomb_m);
-    frames.push_back(Frame::decode_JPEG_LS(golomb, static_cast<Header>(header)));
+    frames.push_back(Frame::decode_JPEG_LS(golomb, static_cast<Header>(header))); // NOLINT(*-slicing)
     for (int i = 1; i < header.length - 1; i++) {
         Frame img = Frame::decode_inter(golomb, frames[i - 1], header);
         frames.push_back(img);

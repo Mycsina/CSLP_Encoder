@@ -8,8 +8,6 @@
 
 #include "../io/Golomb.hpp"
 #include <iostream>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/opencv.hpp>
 
@@ -141,8 +139,8 @@ public:
     //! @param  width Width in pixels of the histogram
     //! @param  height Height in pixels of the histogram
     //! @return Vector with resulting Histograms
-    std::vector<cv::Mat> color_histograms(int bins = 256, bool fill_hist = false,
-                                          int width = 512, int height = 400) const;
+    std::vector<cv::Mat> color_histograms(int bins = 256, bool fill_hist = false, int width = 512,
+                                          int height = 400) const;
 
     //! Apply the gaussian blur filter to this image
     //! @param blur Blur coefficient matrix (values are int)
@@ -191,8 +189,6 @@ void setSlice(const cv::Mat &mat, const cv::Mat &slice, int row, int col);
 template<typename T>
 cv::Mat histogram(const cv::Mat &matrix, const int bins = 256) {
     cv::Mat histValues = cv::Mat::zeros(1, bins, CV_32F);
-    matrix.forEach<T>([&](T &pixel, const int position[]) -> void {
-        histValues.at<float>(pixel) += 1;
-    });
+    matrix.forEach<T>([&](T &pixel, const int position[]) -> void { histValues.at<float>(pixel) += 1; });
     return histValues;
 }

@@ -121,14 +121,16 @@ void Video::convert_to(const COLOR_SPACE f1, const COLOR_SPACE f2) {
 }
 
 void Video::from_encoder(const Header &header) {
-    this->header.width = header.width;
-    this->header.height = header.height;
+    this->header.width = static_cast<int>(header.width);
+    this->header.height = static_cast<int>(header.height);
     this->header.fps_num = header.fps_num;
     this->header.fps_den = header.fps_den;
     this->header.color_space = header.chroma_subsampling;
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
 void Video::save(const char *filename) {
+    // ReSharper restore CppMemberFunctionMayBeConst
     const string ext = filename;
     const auto fourcc = VideoWriter::fourcc('M', 'J', 'P', 'G');
     auto writer = VideoWriter(ext, fourcc, fps_, Size(header.width, header.height));
@@ -156,13 +158,13 @@ double Video::compare(Video &other) const {
             }
             return sum / (im1.size().height * im1.size().width);
         };
-        auto psnr = [](const double mse) -> double {
-            if (mse == 0) return INFINITY;
-            return 10 * log10(pow(255, 2) / mse);
+        auto psnr = [](const double mse_result) -> double {
+            if (mse_result == 0) return INFINITY;
+            return 10 * log10(pow(255, 2) / mse_result);
         };
         double sum = 0;
         for (int i = 0; i < im_reel.size(); i++) { sum += psnr(mse(im_reel[i], other.get_reel()[i])); }
-        return sum / im_reel.size();
+        return sum / static_cast<double>(im_reel.size());
     }
     throw std::runtime_error("Video hasn't been loaded");
 }

@@ -1,3 +1,9 @@
+/**
+* \file LossyHybrid.hpp
+* \brief Contains lossy hybrid encoder
+* \ingroup codec, lossy, encoders
+*/
+
 #pragma once
 
 #include "../../Encoder.hpp"
@@ -53,22 +59,36 @@ public:
     LossyHybridEncoder(const char *src, const char *dst);
     explicit LossyHybridEncoder(const char *src);
 
-    /**
-     * \brief encodes a video from src into dst with a mix of inter and intraframe encoding
-     */
     void encode() override;
 
-    /**
-     * \brief decodes a video from dst with a mix of inter and intraframe encoding
-     */
     void decode() override;
 
+    /**
+     * \brief Encodes a frame using intra prediction, quantizing the differences
+     * \param frame Frame to encode
+     * \details Prediction results are stored in the frame.intra_encodings vector
+     */
     void encode_JPEG_LS(Frame &frame) const;
 
-    void quantize_inter(Frame &frame) const;
+    /**
+     * \brief Quantizes motion vectors' residuals
+     * \param frame Frame to quantize
+     */
+    void quantize_inter(const Frame &frame) const;
 
+    /**
+     * \brief Decodes a frame using intra prediction, dequantizing the differences
+     * \param g Golomb decoder
+     * \return Decoded frame
+     */
     Frame decode_intra(Golomb &g) const;
 
+    /**
+     * \brief Decodes a frame using inter prediction, dequantizing the residuals
+     * \param g Golomb decoder
+     * \param frame_intra Intra frame to use for reference
+     * \return Decoded frame
+     */
     Frame decode_inter(Golomb &g, Frame &frame_intra) const;
 
     /**

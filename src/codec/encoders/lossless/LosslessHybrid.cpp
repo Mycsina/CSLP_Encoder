@@ -85,7 +85,7 @@ void LosslessHybridEncoder::encode() {
             sum += Golomb::adjust_m(inter_encoding);
         }
         auto size = intra.size() + inter.size();
-        const int k = static_cast<int>(sum / size);
+        const int k = static_cast<int>(sum / static_cast<double>(size));
         const int golomb_m = 1 << k;
         this->golomb_m = golomb_m;
     }
@@ -118,7 +118,7 @@ void LosslessHybridEncoder::decode() {
     int last_intra = 0;
     for (int index = 0; index < header.length; index++) {
         if (cnt == period) {
-            frames.push_back(Frame::decode_JPEG_LS(g, static_cast<Header>(header)));
+            frames.push_back(Frame::decode_JPEG_LS(g, static_cast<Header>(header))); // NOLINT(*-slicing)
             last_intra = index;
             cnt = 0;
         } else {

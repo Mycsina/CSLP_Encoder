@@ -1,3 +1,9 @@
+/**
+* \file LossyIntra.hpp
+* \brief Contains lossy intra encoder
+* \ingroup codec, lossy, encoders
+*/
+
 #pragma once
 
 #include "../../Encoder.hpp"
@@ -47,13 +53,7 @@ public:
     LossyIntraEncoder(const char *src, const char *dst, uint8_t golomb_m, uint8_t y, uint8_t u, uint8_t v);
     LossyIntraEncoder(const char *src, const char *dst);
     explicit LossyIntraEncoder(const char *src);
-    /**
-     * \brief encodes a video from src into dst with a mix of inter and intraframe encoding
-     */
     void encode() override;
-    /**
-     * \brief decodes a video from dst with a mix of inter and intraframe encoding
-     */
     void decode() override;
 
     void encode_JPEG_LS(Frame &frame) const;

@@ -5,12 +5,11 @@
 using namespace std;
 using namespace cv;
 
-void watermark(Image &im, Image mark, Point2i coord1, Point2i coord2,
-               double alpha) {
-    Mat image_mat = *im.get_image_mat();
+void watermark(Image &im, Image mark, const Point2i coord1, const Point2i coord2, const double alpha) {
+    const Mat image_mat = *im.get_image_mat();
     Mat markMat = *mark.get_image_mat();
-    int height = coord2.y - coord1.y;
-    int width = coord2.x - coord1.x;
+    const int height = coord2.y - coord1.y;
+    const int width = coord2.x - coord1.x;
     // Resize the watermark to fit the desired area
     InterpolationFlags flag;
     if (height < markMat.rows && width < markMat.cols) {
@@ -26,22 +25,22 @@ void watermark(Image &im, Image mark, Point2i coord1, Point2i coord2,
 
 Image convert_BGR_YUV444(Image &im) {
     auto image_mat_ = *im.get_image_mat();
-    int rows = image_mat_.rows;
-    int cols = image_mat_.cols;
+    const int rows = image_mat_.rows;
+    const int cols = image_mat_.cols;
 
     Mat yuv(rows, cols, CV_8UC3);
 
-    image_mat_.forEach<Vec3b>([&yuv](Vec3b &pixel, const int *position) {
-        int row = position[0];
-        int col = position[1];
+    image_mat_.forEach<Vec3b>([&yuv](const Vec3b &pixel, const int *position) {
+        const int row = position[0];
+        const int col = position[1];
 
-        double b = pixel.val[0];
-        double g = pixel.val[1];
-        double r = pixel.val[2];
+        const double b = pixel.val[0];
+        const double g = pixel.val[1];
+        const double r = pixel.val[2];
 
-        double y = 0.299 * r + 0.587 * g + 0.114 * b;
-        double u = 0.492 * (b - y) + 128.0;
-        double v = 0.877 * (r - y) + 128.0;
+        const double y = 0.299 * r + 0.587 * g + 0.114 * b;
+        const double u = 0.492 * (b - y) + 128.0;
+        const double v = 0.877 * (r - y) + 128.0;
 
         yuv.at<Vec3b>(row, col) = Vec3b(
                 static_cast<uchar>(y), static_cast<uchar>(u), static_cast<uchar>(v));
@@ -64,17 +63,17 @@ Image convert_BGR_YUV422(Image &im) {
     Mat vPlane(rows, cols / 2, CV_8UC1);
 
     image_mat_.forEach<Vec3b>(
-            [&yPlane, &uPlane, &vPlane](Vec3b &pixel, const int *position) {
-                int row = position[0];
-                int col = position[1];
+            [&yPlane, &uPlane, &vPlane](const Vec3b &pixel, const int *position) {
+        const int row = position[0];
+        const int col = position[1];
 
-                double b = pixel.val[0];
-                double g = pixel.val[1];
-                double r = pixel.val[2];
+        const double b = pixel.val[0];
+        const double g = pixel.val[1];
+        const double r = pixel.val[2];
 
-                double y = 0.299 * r + 0.587 * g + 0.114 * b;
-                double u = 0.492 * (b - y) + 128.0;
-                double v = 0.877 * (r - y) + 128.0;
+        const double y = 0.299 * r + 0.587 * g + 0.114 * b;
+        const double u = 0.492 * (b - y) + 128.0;
+        const double v = 0.877 * (r - y) + 128.0;
 
                 yPlane.at<u_char>(row, col) = static_cast<uchar>(y);
                 if (col % 2 == 0) {
@@ -110,17 +109,17 @@ Image convert_BGR_YUV420(Image &im) {
     Mat vPlane(rows / 2, cols / 2, CV_8UC1);
 
     mat.forEach<Vec3b>(
-            [&yPlane, &uPlane, &vPlane](Vec3b &pixel, const int *position) {
-                int row = position[0];
-                int col = position[1];
+            [&yPlane, &uPlane, &vPlane](const Vec3b &pixel, const int *position) {
+        const int row = position[0];
+        const int col = position[1];
 
-                double b = pixel.val[0];
-                double g = pixel.val[1];
-                double r = pixel.val[2];
+        const double b = pixel.val[0];
+        const double g = pixel.val[1];
+        const double r = pixel.val[2];
 
-                double y = 0.299 * r + 0.587 * g + 0.114 * b;
-                double u = 0.492 * (b - y) + 128.0;
-                double v = 0.877 * (r - y) + 128.0;
+        const double y = 0.299 * r + 0.587 * g + 0.114 * b;
+        const double u = 0.492 * (b - y) + 128.0;
+        const double v = 0.877 * (r - y) + 128.0;
 
                 yPlane.at<u_char>(row, col) = static_cast<uchar>(y);
                 if (row % 2 == 0 && col % 2 == 0) {
@@ -148,16 +147,16 @@ Image convert_BGR_YUV420(Image &im) {
 
 Image convert_YUV_BGR(Image &im) {
     auto image_mat_ = *im.get_image_mat();
-    int rows = image_mat_.rows;
-    int cols = image_mat_.cols;
+    const int rows = image_mat_.rows;
+    const int cols = image_mat_.cols;
     Mat bgr(rows, cols, CV_8UC3);
-    image_mat_.forEach<Vec3b>([&bgr](Vec3b &pixel, const int *position) -> void {
-        int row = position[0];
-        int col = position[1];
+    image_mat_.forEach<Vec3b>([&bgr](const Vec3b &pixel, const int *position) -> void {
+        const int row = position[0];
+        const int col = position[1];
 
-        double y = pixel.val[0];
-        double u = pixel.val[1] - 128.0;
-        double v = pixel.val[2] - 128.0;
+        const double y = pixel.val[0];
+        const double u = pixel.val[1] - 128.0;
+        const double v = pixel.val[2] - 128.0;
 
         double r = y + 1.13983 * v;
         double g = y - 0.39465 * u - 0.58060 * v;
@@ -190,9 +189,11 @@ Image convert_BGR_GRAY(Image &im) {
     }
     for (int i = 0; i < matrix->rows; i++) {
         for (int j = 0; j < matrix->cols; j++) {
-            Vec3b color = matrix->at<Vec3b>(i, j);
-            int R = color[2], G = color[1], B = color[0];
-            auto Y = static_cast<uchar>(0.299 * R + 0.587 * G + 0.114 * B);
+            auto color = matrix->at<Vec3b>(i, j);
+            const int R = color[2];
+            const int G = color[1];
+            const int B = color[0];
+            const auto Y = static_cast<uchar>(0.299 * R + 0.587 * G + 0.114 * B);
             gray.at<uchar>(i, j) = Y;
         }
     }
@@ -202,11 +203,11 @@ Image convert_BGR_GRAY(Image &im) {
     return result;
 }
 
-void subsample(Image &im, CHROMA_SUBSAMPLING cs) {
+void subsample(Image &im, const CHROMA_SUBSAMPLING cs) {
     Mat *matrix = im.get_image_mat();
     Mat channels[3];
     split(*matrix, channels);
-    Size target_size = Size(channels[0].size[1], channels[0].size[0]);
+    const Size target_size(channels[0].size[1], channels[0].size[0]);
     float scaling[2];
     if (matrix->cols % 2 != 0) {
         throw std::runtime_error("Matrix must have an even number of columns");
@@ -250,12 +251,12 @@ void equalize_hist(Image &im) {
 }
 
 //! Calculates the [empirical cumulative distribution function](https://en.wikipedia.org/wiki/Empirical_distribution_function) of a histogram
-Mat ecdf(const Mat &histogram, int total) {
+Mat ecdf(const Mat &histogram, const int total) {
     Mat res = Mat::zeros(histogram.rows, histogram.cols, CV_32F);
     float cumsum = 0;
     for (int j = 0; j < histogram.cols; j++) {
         cumsum += histogram.at<float>(j);
-        float val = cumsum / static_cast<float>(total);
+        const float val = cumsum / static_cast<float>(total);
         res.at<float>(j) = val;
     }
     return res;
@@ -263,8 +264,8 @@ Mat ecdf(const Mat &histogram, int total) {
 
 void binarize(Image &im) {
     Mat matrix = *im.get_image_mat();
-    int pix_num = matrix.rows * matrix.cols;
-    int bins = 256;
+    const int pix_num = matrix.rows * matrix.cols;
+    constexpr int bins = 256;
     if (matrix.depth() != CV_8U) {
         throw std::runtime_error(
                 "Original matrix must have 8-bit unsigned integers");
@@ -284,8 +285,8 @@ void binarize(Image &im) {
         // Calculate percentage of pixels above and below threshold (foreground and
         // background)
 
-        double fg_prob = distrib.at<float>(thresh);// w0
-        double bg_prob = 1 - fg_prob;              // w1
+        const double fg_prob = distrib.at<float>(thresh);// w0
+        const double bg_prob = 1 - fg_prob;              // w1
         // Skip if one of the percentages is 0
         if (fg_prob == 0 || bg_prob == 0) {
             continue;
@@ -300,7 +301,7 @@ void binarize(Image &im) {
         }
         fg_mean /= fg_prob;
         bg_mean /= bg_prob;
-        double inter_variance =
+        const double inter_variance =
                 fg_prob * bg_prob * ((fg_mean - bg_mean) * (fg_mean - bg_mean));
         if (inter_variance > max_variance) {
             max_variance = inter_variance;

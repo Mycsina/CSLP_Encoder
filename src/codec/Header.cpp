@@ -2,7 +2,8 @@
 #include "../visual/Video.hpp"
 #include "Frame.hpp"
 
-Header::Header(const COLOR_SPACE color_space, const CHROMA_SUBSAMPLING cs, const uint8_t width, const uint8_t height) : golomb_m(0), length(0) {
+Header::Header(const COLOR_SPACE color_space, const CHROMA_SUBSAMPLING cs, const uint8_t width, const uint8_t height)
+    : golomb_m(0), length(0), fps_num(0), fps_den(0) {
     this->color_space = color_space;
     this->chroma_subsampling = cs;
     this->width = width;
@@ -11,10 +12,10 @@ Header::Header(const COLOR_SPACE color_space, const CHROMA_SUBSAMPLING cs, const
 void Header::write_header(BitStream &bs) const {
     bs.writeBits(color_space, 3);
     bs.writeBits(chroma_subsampling, 3);
-    bs.writeBits(width, 32);
-    bs.writeBits(height, 32);
+    bs.writeBits(static_cast<int>(width), 32);
+    bs.writeBits(static_cast<int>(height), 32);
     bs.writeBits(golomb_m, 8);
-    bs.writeBits(length, 32);
+    bs.writeBits(static_cast<int>(length), 32);
     bs.writeBits(fps_num, 8);
     bs.writeBits(fps_den, 8);
 }

@@ -1,6 +1,7 @@
 /**
  * @file LosslessIntra.hpp
  * @brief LosslessIntraEncoder class
+ * @ingroup codec, lossless, encoders
  */
 
 #pragma once
@@ -38,12 +39,6 @@ public:
     explicit LosslessIntraEncoder(const char *src);
     LosslessIntraEncoder() = default;
 
-    /**
-     * \brief encodes a video from src into dst using intraframe encoding
-     */
     void encode() override;
-    /**
-     * \brief decodes a video from dst using intraframe encoding
-     */
     void decode() override;
 };

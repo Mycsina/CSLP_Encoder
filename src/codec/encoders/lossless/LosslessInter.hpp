@@ -1,6 +1,7 @@
 /**
  * @file LosslessInter.hpp
  * @brief LosslessIntraFrameEncoder class
+ * @ingroup codec, lossless, encoders
  */
 
 #pragma once
@@ -18,7 +19,6 @@ public:
     * \param dst File path of the encoded video
     * \param golomb_m Golomb m parameter
     * \param block_size Macroblock size
-    * \param period Period of intra frames
     */
     LosslessInterFrameEncoder(const char *src, const char *dst, uint8_t golomb_m, uint8_t block_size);
     /**

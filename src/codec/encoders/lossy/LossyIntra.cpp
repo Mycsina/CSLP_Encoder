@@ -122,7 +122,9 @@ void LossyIntraEncoder::encode_JPEG_LS(Frame &frame) const {
 }
 
 Frame LossyIntraEncoder::decode_intra(Golomb &g) const {
-    Mat mat(header.height, header.width, CV_8UC3);
+    const int width = static_cast<int>(header.width);
+    const int height = static_cast<int>(header.height);
+    Mat mat(height, width, CV_8UC3);
     for (int r = 0; r < mat.rows; r++) {
         for (int c = 0; c < mat.cols; c++) {
             for (int channel = 0; channel < mat.channels(); channel++) {

@@ -109,7 +109,7 @@ Video YuvParser::load_y4m() {
     // go back two bytes
     fseek(file, -2, SEEK_CUR);
     while (!feof(file)) {
-        Image im = read_image(file, uvWidth, uvHeight);
+        Image im = read_image(uvWidth, uvHeight);
 
         if (im.get_image_mat()->empty()) {
             break;
@@ -120,7 +120,7 @@ Video YuvParser::load_y4m() {
     return video;
 }
 
-Image YuvParser::read_image(FILE *file, const int uvWidth, const int uvHeight) const {
+Image YuvParser::read_image(const int uvWidth, const int uvHeight) const {
     Image im;
     char buffer[6];
     im.set_color(YUV);

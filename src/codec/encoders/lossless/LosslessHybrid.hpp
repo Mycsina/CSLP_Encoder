@@ -1,6 +1,7 @@
 /**
     * @file LosslessHybrid.hpp
     * @brief LosslessHybrid encoder class
+    * @ingroup codec, lossless, encoders
     */
 
 #pragma once
@@ -69,12 +70,6 @@ public:
     explicit LosslessHybridEncoder(const char *src);
     LosslessHybridEncoder() = default;
 
-    /**
-     * \brief encodes a video from src into dst with a mix of inter and intraframe encoding
-     */
     void encode() override;
-    /**
-     * \brief decodes a video from dst with a mix of inter and intraframe encoding
-     */
     void decode() override;
 };

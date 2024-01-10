@@ -220,10 +220,12 @@ void Frame::write_JPEG_LS(const Golomb &g) const {
 
 Frame Frame::decode_JPEG_LS(Golomb &g, const Header &header) {
     Mat mat;
+    const int width = static_cast<int>(header.width);
+    const int height = static_cast<int>(header.height);
     if (header.color_space == GRAY) {
-        mat = Mat::zeros(header.height, header.width, CV_8UC1);
+        mat = Mat::zeros(height, width, CV_8UC1);
     } else {
-        mat = Mat::zeros(header.height, header.width, CV_8UC3);
+        mat = Mat::zeros(height, width, CV_8UC3);
     }
     for (int r = 0; r < mat.rows; r++) {
         for (int c = 0; c < mat.cols; c++) {
@@ -364,9 +366,12 @@ bool Block::BlockDiff::compare(const Block &block, const Frame &reference, const
         mv.residual = Mat::zeros(block.getBlockMat().size(), CV_16SC3);
         for (int i = 0; i < mv.residual.rows; i++)
             for (int j = 0; j < mv.residual.cols; j++) {
-                mv.residual.at<Vec3s>(i, j)[0] = block.getBlockMat().at<Vec3b>(i, j)[0] - ref_block.getBlockMat().at<Vec3b>(i, j)[0];
-                mv.residual.at<Vec3s>(i, j)[1] = block.getBlockMat().at<Vec3b>(i, j)[1] - ref_block.getBlockMat().at<Vec3b>(i, j)[1];
-                mv.residual.at<Vec3s>(i, j)[2] = block.getBlockMat().at<Vec3b>(i, j)[2] - ref_block.getBlockMat().at<Vec3b>(i, j)[2];
+                mv.residual.at<Vec3s>(i, j)[0] = static_cast<short>(block.getBlockMat().at<Vec3b>(i, j)[0] -
+                                                                    ref_block.getBlockMat().at<Vec3b>(i, j)[0]);
+                mv.residual.at<Vec3s>(i, j)[1] = static_cast<short>(block.getBlockMat().at<Vec3b>(i, j)[1] -
+                                                                    ref_block.getBlockMat().at<Vec3b>(i, j)[1]);
+                mv.residual.at<Vec3s>(i, j)[2] = static_cast<short>(block.getBlockMat().at<Vec3b>(i, j)[2] -
+                                                                    ref_block.getBlockMat().at<Vec3b>(i, j)[2]);
             }
         best_score = diff_value;
         best_match = mv;
@@ -448,7 +453,7 @@ MotionVector Frame::match_block_arps(const Block &block, const Frame &reference)
     const MotionVector mv = block_diff_->best_match;
     do {
         auto new_points = get_rood_points({block_coords[0] + block_diff_->best_match.x, block_coords[1] + block_diff_->best_match.y}, 1, block.getSize());
-        int found = new_points.size();
+        int found = static_cast<int>(new_points.size());
         for (auto point: new_points) {
 #ifdef _VISUALIZE
             Mat canvas = this->get_image().get_image_mat()->clone();
@@ -550,8 +555,8 @@ void Frame::write(const Golomb &g) const {
 Frame Frame::decode_inter(Golomb &g, Frame &reference, const InterHeader &header) {
     vector<MotionVector> mvs;
     const int block_size = header.block_size;
-    const int rows = header.height;
-    const int cols = header.width;
+    const int rows = static_cast<int>(header.height);
+    const int cols = static_cast<int>(header.width);
     for (int block_num = 0; block_num < (rows / block_size) * (cols / block_size); block_num++) {
         MotionVector mv;
         Mat residual;
