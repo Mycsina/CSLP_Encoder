@@ -112,3 +112,14 @@ For example:
 ```bash
 ./tests_run --gtest_filter='ImageTest.GRAYEquivalenceTest'
 ```
+
+## Documentation
+
+To generate the documentation, run the following command:
+
+```bash
+doxygen Doxyfile
+```
+
+The documentation will be generated in the `docs` directory using
+the [Doxygen](https://www.doxygen.nl/index.html) tool.
