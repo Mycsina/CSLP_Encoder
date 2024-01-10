@@ -3,7 +3,7 @@ project(CSLP_Project)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message("Debug mode")
-    add_compile_options(-g -Wall -Wextra -pedantic)
+    add_compile_options(-Og -Wall -Wextra -pedantic)
 else ()
   message("Release mode")
   add_compile_options(-Ofast -march=native)
