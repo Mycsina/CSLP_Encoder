@@ -18,10 +18,10 @@ protected:
 
 TEST_F(EncoderTest, HybridTest) {
     constexpr int m = 4;
-    const char *file = small_still.c_str();
+    const char *file = test_video.c_str();
     auto encoder = LosslessHybridEncoder(file, "../../tests/resource/encoded", m, 16, 5);
     encoder.encode();
-    auto decoder = LosslessHybridEncoder("../../tests/resource/encoded", "../../tests/resource/decoded", m, 16, 5);
+    auto decoder = LosslessHybridEncoder("../../tests/resource/encoded");
     decoder.decode();
     const auto video_frames = Video(file).generate_frames();
     for (int i = 0; i < video_frames.size(); i++) {

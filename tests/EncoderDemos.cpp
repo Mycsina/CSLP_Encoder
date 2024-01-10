@@ -57,7 +57,7 @@ TEST_F(EncoderDemo, LossyIntraDemo) {
 
 TEST_F(EncoderDemo, LossyHybridDemo) {
     constexpr int m = 4;
-    const char *file = small_still;
+    const char *file = test_video;
     LossyHybridEncoder encoder(file, "../../encode", m, 16, 5, 255, 255, 255);
     encoder.encode();
     LossyHybridEncoder decoder("../../encode");

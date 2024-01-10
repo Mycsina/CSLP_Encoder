@@ -110,6 +110,9 @@ void LosslessHybridEncoder::decode() {
     BitStream bs(src, ios::in);
     Golomb g(&bs);
     header = HybridHeader::read_header(bs);
+    block_size = header.block_size;
+    period = header.period;
+    golomb_m = header.golomb_m;
     g.set_m(header.golomb_m);
     int cnt = period;
     int last_intra = 0;

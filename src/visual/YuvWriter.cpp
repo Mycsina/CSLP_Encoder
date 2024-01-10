@@ -11,33 +11,33 @@ using namespace cv;
 YuvWriter::YuvWriter(const string &filename) : header() {
     path = filename;
     file = fopen(filename.c_str(), "wb");
-    if (file == nullptr) {
-        throw runtime_error("Could not open file " + filename);
-    }
+    if (file == nullptr) { throw runtime_error("Could not open file " + filename); }
 }
 
 YuvWriter::YuvWriter(const string &filename, YuvHeader header) : header(std::move(header)) {
     path = filename;
     file = fopen(filename.c_str(), "wb");
-    if (file == nullptr) {
-        throw runtime_error("Could not open file " + filename);
-    }
+    if (file == nullptr) { throw runtime_error("Could not open file " + filename); }
 }
 
 void YuvWriter::write_header() const {
-    fprintf(file, "YUV4MPEG2 W%d H%d F%d:%d",
-            header.width,
-            header.height,
-            header.fps_num,
-            header.fps_den);
-    if (header.interlacing != UNKNOWN) {
-        fprintf(file, " I%c", header.interlacing);
-    }
+    fprintf(file, "YUV4MPEG2 W%d H%d F%d:%d", header.width, header.height, header.fps_num, header.fps_den);
+    fprintf(file, " I%c", header.interlacing);
     if (header.aspect_ratio_num != -1 && header.aspect_ratio_den != -1) {
         fprintf(file, " A%d:%d", header.aspect_ratio_num, header.aspect_ratio_den);
+    } else {
+        fprintf(file, " A0:0");
     }
     if (header.raw_color_space[0] != '-') {
         fprintf(file, " %s", header.raw_color_space.c_str());
+    } else if (header.color_space != UNKNOWN) {
+        if (header.color_space == YUV444) {
+            fprintf(file, " C444");
+        } else if (header.color_space == YUV422) {
+            fprintf(file, " C422");
+        } else if (header.color_space == YUV420) {
+            fprintf(file, " C420");
+        }
     }
     fprintf(file, "\n");
 }
@@ -72,8 +72,6 @@ void YuvWriter::write_image(Image &image) const {
 void YuvWriter::write_video(Video &video) {
     header = video.get_header();
     write_header();
-    for (auto image: video.get_reel()) {
-        write_image(image);
-    }
+    for (auto image: video.get_reel()) { write_image(image); }
     fclose(file);
 }
