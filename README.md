@@ -97,6 +97,17 @@ To run a specific test, run the following command:
 ```bash
 ./tests_run --gtest_filter='<test_suite_name>.<test_name>'
 ```
+
+### Warning
+
+Running all tests will take a long time.
+
+Most tests expect the file `ducks_take_off_444_720p50.y4m` to be present in
+the `tests/resource` directory. If it is not present, the tests will fail.
+
+You can download the file
+from [here](https://media.xiph.org/video/derf/y4m/ducks_take_off_444_720p50.y4m).
+
 For example:
 ```bash
 ./tests_run --gtest_filter='ImageTest.GRAYEquivalenceTest'
