@@ -6,6 +6,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_options(-Og -Wall -Wextra -pedantic)
 else ()
   message("Release mode")
+  #add_definitions(-D_VISUALIZE)
   add_compile_options(-Ofast -march=native)
 endif ()
 
